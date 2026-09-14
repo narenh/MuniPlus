@@ -2,22 +2,21 @@
 
 # Muni+
 
-**Muni Metro Tracker** — a simple, station-based tracker for San Francisco's Muni Metro system.
+**Muni+**: a station-based transit app for San Francisco's Muni Metro system.
 
 Unlike other transit apps, Muni+ is station-based instead of trip-based, giving you fast access to upcoming trains without worrying about entering a destination.
 
 ## Features
 
-- Station-based tracking (not trip-based)
-- Fast access to upcoming train information
-- Support for all Muni Metro lines: L Taraval, M Ocean View, J Church, N-Judah, T Third St, and Central Subway
+- Shows predictions for every light rail stop in SF
+- Fast API thanks to Cloudflare
+- All metro lines: L-Taraval, M-Ocean View, J-Church, N-Judah, T-Third St
 - Search stations by name
-- Custom favorites system
+- Set home and favorites
+- See nearby stations on a map, with walking estimates
 - Custom bus stops via 5-digit stop codes
-- Collapsible sections
-- Live train destinations displayed
-- Transfer station support
-- Updated Muni Metro map
+- Transfer stations displayed
+- Interactive Muni Metro map
 
 <p>
   <img src="screenshots/home.png" alt="Home screen" width="160">
@@ -36,21 +35,18 @@ Available on the App Store: [Muni+ on the App Store](https://apps.apple.com/us/a
 - **Compatibility:**
   - iPhone: iOS 17.6 or later
   - iPad: iPadOS 17.6 or later
-  - Mac: macOS 14.6, Apple M1 chip or later
-  - Apple Vision: visionOS 1.3 or later
 - **Languages:** English
 - **Age Rating:** 4+
 - **Privacy:** The developer does not collect any data from this app.
 
 ## About this repo
-
-This repository holds the Muni data used by the Muni+ iOS app and serves as the public home for the project — **open an issue here to report bugs, request features, or flag data problems** (e.g. incorrect stop codes, missing stations, outdated line info).
+This is the public home for Muni+.
+**Open an issue here to report bugs, request features, or flag data problems** (e.g. incorrect stop codes, missing stations, outdated line info).
 
 ## AI disclosure
 
-This support repo (README, issue templates, etc.) is AI-generated.
-
-The Muni+ app itself is mostly human-coded — **100% of the UI was built by hand**. AI assistance was used for data parsing and map features.
+This support repo was created with AI assistance.
+Muni+ app itself is mostly human-coded (100% of the UI was built by hand). AI assistance was used for data parsing and map features.
 
 ## License
 
