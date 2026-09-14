@@ -1,3 +1,5 @@
+<img src="appicon.png" alt="Muni+ app icon" width="128">
+
 # Muni+
 
 **Muni Metro Tracker** — a simple, station-based tracker for San Francisco's Muni Metro system.
@@ -16,6 +18,14 @@ Unlike other transit apps, Muni+ is station-based instead of trip-based, giving 
 - Live train destinations displayed
 - Transfer station support
 - Updated Muni Metro map
+
+<p>
+  <img src="screenshots/home.png" alt="Home screen" width="160">
+  <img src="screenshots/favorites.png" alt="Favorites screen" width="160">
+  <img src="screenshots/nearme.png" alt="Near Me screen" width="160">
+  <img src="screenshots/stations.png" alt="Stations screen" width="160">
+  <img src="screenshots/map.png" alt="Map screen" width="160">
+</p>
 
 ## Get the app
 
