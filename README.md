@@ -36,6 +36,12 @@ Available on the App Store: [Muni+ on the App Store](https://apps.apple.com/us/a
 
 This repository holds the Muni data used by the Muni+ iOS app and serves as the public home for the project — **open an issue here to report bugs, request features, or flag data problems** (e.g. incorrect stop codes, missing stations, outdated line info).
 
+## AI disclosure
+
+This support repo (README, issue templates, etc.) is AI-generated.
+
+The Muni+ app itself is mostly human-coded — **100% of the UI was built by hand**. AI assistance was used for data parsing and map features.
+
 ## License
 
 © Naren Hazareesingh
