@@ -79,10 +79,13 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
   stations are one-way streets and terminals, not errors.
 * **`kind`** is `underground` or `streetLevel`. Every generated station is
   `streetLevel`; only `data.json` has `underground` ones.
-* **`transferStations`** links a surface station to a nearby metro station it was
-  deliberately *not* merged into — `marketPowell` → `powell`. These links are
-  **one-way (surface → metro)**, because writing the reciprocal would mean editing
-  `data.json`. Symmetrize at load time if you want them bidirectional.
+* **`transferStations`** links a station to a nearby one it was deliberately *not*
+  merged into — `marketPowell` → `powell`. The **generator** only ever writes the
+  surface → metro direction; reciprocals are hand-written in `data.json`, and only
+  where they are wanted (`powell` lists `market4` and `market5`). The relation is
+  therefore **deliberately asymmetric** — 248 of the links are one-way, e.g.
+  `marketMontgomery` → `mongomery` with no reverse. **Do not symmetrize at load
+  time**, or you will invent links that were left out on purpose.
 * **`subways`** is empty in `bus.json`; only `data.json` populates it.
 * **`color`** for metro lines comes from `data.json` (hand-set, correct Muni
   branding). Surface colors come from GTFS: `#005B95` local, `#BF2B45` rapid,

@@ -297,7 +297,9 @@
       ],
       "latitude": 37.792862,
       "longitude": -122.39685,
-      "transferStations": [],
+      "transferStations": [
+        "marketEmbarcaderoSubway"
+      ],
       "transferAgencies": [
         "bart"
       ],
@@ -332,7 +334,9 @@
       ],
       "latitude": 37.789005,
       "longitude": -122.401739,
-      "transferStations": [],
+      "transferStations": [
+        "market2"
+      ],
       "transferAgencies": [
         "bart"
       ],
@@ -368,7 +372,9 @@
       "latitude": 37.784476,
       "longitude": -122.407454,
       "transferStations": [
-        "unionSquare"
+        "unionSquare",
+        "market4",
+        "market5"
       ],
       "transferAgencies": [
         "bart"
@@ -404,7 +410,10 @@
       ],
       "latitude": 37.779476,
       "longitude": -122.413785,
-      "transferStations": [],
+      "transferStations": [
+        "market7",
+        "market8"
+      ],
       "transferAgencies": [
         "bart"
       ],
@@ -439,7 +448,9 @@
       ],
       "latitude": 37.77518,
       "longitude": -122.419296,
-      "transferStations": [],
+      "transferStations": [
+        "marketVanNess"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -504,7 +515,9 @@
       ],
       "latitude": 37.762652,
       "longitude": -122.43526,
-      "transferStations": [],
+      "transferStations": [
+        "castroPlaza"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -616,7 +629,8 @@
       "latitude": 37.787142,
       "longitude": -122.4065,
       "transferStations": [
-        "powell"
+        "powell",
+        "market4"
       ],
       "transferAgencies": [],
       "platforms": [
