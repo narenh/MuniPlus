@@ -58,10 +58,16 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
   | 2 | 803 |
   | 3 | 96 |
   | 4 | 109 |
-  | 5+ | 20 |
+  | 5 | 12 |
+  | 6 | 5 |
+  | 7 | 3 |
 
-  `judah46` has four — the N runs east/west on Judah, the 18 runs north/south on
-  46th Ave. Single-platform stations are one-way streets and terminals, not errors.
+  Four is the floor for a crossroads of two bus corridors, two poles per street:
+  `judah46` has four because the N runs east-west on Judah and the 18 north-south on
+  46th Ave. It goes higher where local and rapid service use separate curbs —
+  `33rd & Geary` has **seven inside 34 m**, four on 33rd Ave and three on Geary,
+  because the 38 and 38R do not share poles. Single-platform stations are one-way
+  streets and terminals, not errors.
 * **`kind`** is `underground` or `streetLevel`. Every generated station is
   `streetLevel`; only `data.json` has `underground` ones.
 * **`transferStations`** links a surface station to a nearby metro station it was
@@ -126,18 +132,23 @@ Two traps, both of which produced confidently wrong answers before they were fix
 ### Where data.json disagrees, and why it still wins
 
 19 of the 88 stops shared with `data.json` would get a different heading from the
-rule above. They are two distinct things, and neither is a bug to fix silently:
+rule above. Every one of them is the same thing: **`data.json` labels a platform by
+the line's direction, not the compass.** The K is east/west in the Market subway and
+north/south for its *entire* outer branch, Ocean Ave included, even though Ocean Ave
+runs east-west. The L is east/west all the way to the Zoo, even after it turns south
+off Taraval onto 46th Ave and runs three blocks to its terminal. The J is north/south
+at `dolores30` while running east on 30th St.
 
-* **A deliberate line-relative convention (11 stops).** The K is labelled east/west
-  in the Market subway and north/south for its *entire* outer branch, Ocean Ave
-  included — even though Ocean Ave runs east-west. Same for the J at `dolores30`.
-  Consistent along the line, so leave it.
-* **One pole, two lines, genuinely different directions (8 stops).** `13599` is
-  `46th Ave & Taraval St`: the L turns there and is labelled eastbound, while the
-  18 runs north-south on 46th Ave through the same pole. Both are right for their
-  own line. The schema has one heading per platform and cannot express this. The
-  others are `13600`/`13601`/`13602`/`13603` on 46th Ave, `16932` at the Zoo, and
-  `17999` on 9th Ave. Deciding this needs a product call, not a code change.
+At every one of those 19 poles the train and the bus travel **the same physical
+direction** — verified by running the rail routes through this same street-axis rule,
+with the axis taken from rail and bus stops together, since rail alone has too few
+stops on any one street to establish one. Only the label differs. There is no case
+anywhere in the system of one pole serving two lines that genuinely run in opposite
+directions, so nothing here is beyond what one-heading-per-platform can express.
+
+Leave it as is: the convention is consistent along each line, and `data.json` is
+hand-curated. If the labels should ever become geometric, that is a mechanical edit
+to `data.json`, not a design problem.
 
 ## Regenerating
 
