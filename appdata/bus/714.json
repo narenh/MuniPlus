@@ -169,14 +169,14 @@
       "platforms": [
         {
           "id": "14386",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.733506,
           "longitude": -122.434148
         },
         {
           "id": "14387",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.733452,
           "longitude": -122.434217

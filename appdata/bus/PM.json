@@ -407,6 +407,13 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "15364",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.795513,
+          "longitude": -122.41154
+        },
+        {
           "id": "15365",
           "heading": "southbound",
           "name": null,
@@ -419,13 +426,6 @@
           "name": null,
           "latitude": 37.79545,
           "longitude": -122.411712
-        },
-        {
-          "id": "15364",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.795513,
-          "longitude": -122.41154
         }
       ]
     },

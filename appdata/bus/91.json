@@ -1987,18 +1987,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13127",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74012,
+          "longitude": -122.3887
+        },
+        {
           "id": "13129",
           "heading": "southbound",
           "name": null,
           "latitude": 37.73932,
           "longitude": -122.38926
-        },
-        {
-          "id": "13127",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.74012,
-          "longitude": -122.3887
         }
       ]
     },
@@ -2341,7 +2341,7 @@
       "platforms": [
         {
           "id": "13793",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.71062,
           "longitude": -122.40389
@@ -2502,7 +2502,7 @@
       "platforms": [
         {
           "id": "17026",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.713301,
           "longitude": -122.415486
@@ -2522,18 +2522,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "14937",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71201,
+          "longitude": -122.4159
+        },
+        {
           "id": "14938",
           "heading": "southbound",
           "name": null,
           "latitude": 37.712025,
           "longitude": -122.416047
-        },
-        {
-          "id": "14937",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.71201,
-          "longitude": -122.4159
         }
       ]
     },

@@ -93,7 +93,7 @@
       "platforms": [
         {
           "id": "15165",
-          "heading": "northbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.793999,
           "longitude": -122.422867
@@ -1631,7 +1631,7 @@
       "platforms": [
         {
           "id": "16882",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.746664,
           "longitude": -122.420248

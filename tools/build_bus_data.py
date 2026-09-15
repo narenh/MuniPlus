@@ -38,6 +38,8 @@ MERGE_RADIUS = 75               # m: bus stop <-> street-level metro station
 TRANSFER_RADIUS = 200           # m: bus station -> nearby metro station link
 CLUSTER_RADIUS = 250            # m: two stops at one intersection
 TERMINAL_SHARE = 0.25           # a stop is a terminal if this share of trips start there
+AXIS_RADIUS = 600               # m: how far to look for the run of a stop's own street
+AXIS_DOMINANCE = 2.0            # how lopsided that run must be to count as axis-aligned
 
 M_PER_DEG_LAT = 110540.0
 M_PER_DEG_LON = 111320.0 * math.cos(math.radians(37.76))    # fixed reference latitude for SF
@@ -202,20 +204,62 @@ def compute_headings(patterns, stops, metro):
         if last > 0 and (seq[0] not in start or start[seq[0]][0] < trips):
             start[seq[0]] = (trips, unit(pts[0], pts[1]))
 
-    head = {}
+    # The direction of travel alone mislabels a stop just before a turn: the 22
+    # at 16th & Church is still running west on 16th, and only turns onto Church
+    # after leaving. So snap each heading to the axis of the street the stop is
+    # named for, using nearby stops on that same street to find which way it runs.
+    # Only stops NAMED FOR a street tell you how it runs. 'Market St & 3rd St' is a
+    # stop on Market, and counting it as a 3rd St stop drags 3rd's axis east-west.
+    on_street = collections.defaultdict(list)
+    for s in vec:
+        named = streets(stops[s]['stop_name'])
+        if named:
+            on_street[named[0]].append((frozenset(named), xy(s)))
+
+    def street_axis(s):
+        """'x' if this stop's own street clearly runs east-west here, 'y' if clearly
+        north-south, None if it runs diagonally - SoMa and Mission Bay sit on a grid
+        rotated about 45 degrees, where neither answer is more right than the other."""
+        named = streets(stops[s]['stop_name'])
+        if not named:
+            return None
+        here, pt = frozenset(named), xy(s)
+        near = sorted(((metres(pt, p), p) for k, p in on_street[named[0]] if k != here),
+                      key=lambda t: t[0])[:3]
+        near = [p for d, p in near if d <= AXIS_RADIUS]
+        if not near:
+            return None
+        run_x = sum(abs(p[0] - pt[0]) for p in near) * M_PER_DEG_LON
+        run_y = sum(abs(p[1] - pt[1]) for p in near) * M_PER_DEG_LAT
+        lo, hi = sorted((run_x, run_y))
+        if hi < lo * AXIS_DOMINANCE:
+            return None
+        return 'x' if run_x > run_y else 'y'
+
+    head, snapped = {}, {}
     for s in vec:
         # label a terminal by where the bus leaves for, but only when a real share
         # of the service starts there - a rare short-line origin is not a terminal
         if s in start and start[s][0] >= TERMINAL_SHARE * total[s]:
-            head[s] = heading_of(*start[s][1])
+            dx, dy = start[s][1]
         else:
-            head[s] = heading_of(*vec[s])
+            dx, dy = vec[s]
+        plain = heading_of(dx, dy)
+        axis = street_axis(s)
+        if axis == 'x' and dx:
+            head[s] = 'eastbound' if dx > 0 else 'westbound'
+        elif axis == 'y' and dy:
+            head[s] = 'northbound' if dy > 0 else 'southbound'
+        else:
+            head[s] = plain
+        if head[s] != plain:
+            snapped[s] = plain
 
     curated = {p['id']: p['heading'] for st in metro['stations'] for p in st['platforms']}
     for s in head:
         if stops[s]['stop_code'] in curated:
             head[s] = curated[stops[s]['stop_code']]
-    return head
+    return head, snapped
 
 
 # ------------------------------------------------------------------ identity
@@ -454,7 +498,7 @@ def main():
     metro = json.load(open(METRO))
     frozen = json.load(open(ID_MAP)) if os.path.exists(ID_MAP) else {}
     routes, stops, patterns = read_gtfs(args.gtfs)
-    head = compute_headings(patterns, stops, metro)
+    head, snapped = compute_headings(patterns, stops, metro)
     station_of, records, notes = resolve_stations(patterns, stops, metro, frozen)
 
     route_stations = {r: route_order(r, patterns, station_of) for r in routes}

@@ -377,18 +377,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13435",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.757754,
-          "longitude": -122.392273
-        },
-        {
           "id": "13439",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.757674,
           "longitude": -122.392308
+        },
+        {
+          "id": "13435",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.757754,
+          "longitude": -122.392273
         }
       ]
     },
@@ -455,7 +455,7 @@
       "platforms": [
         {
           "id": "13410",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.760536,
           "longitude": -122.388707

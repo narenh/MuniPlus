@@ -970,7 +970,7 @@
       "platforms": [
         {
           "id": "13793",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.71062,
           "longitude": -122.40389
@@ -1117,7 +1117,7 @@
       "platforms": [
         {
           "id": "17026",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.713301,
           "longitude": -122.415486
@@ -1201,14 +1201,14 @@
       "platforms": [
         {
           "id": "16386",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.71049,
           "longitude": -122.41136
         },
         {
           "id": "16387",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.71034,
           "longitude": -122.4116

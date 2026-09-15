@@ -61,18 +61,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13793",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71062,
+          "longitude": -122.40389
+        },
+        {
           "id": "17520",
           "heading": "northbound",
           "name": null,
           "latitude": 37.709622,
           "longitude": -122.404654
-        },
-        {
-          "id": "13793",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.71062,
-          "longitude": -122.40389
         },
         {
           "id": "16847",
@@ -98,18 +98,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13793",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71062,
+          "longitude": -122.40389
+        },
+        {
           "id": "17520",
           "heading": "northbound",
           "name": null,
           "latitude": 37.709622,
           "longitude": -122.404654
-        },
-        {
-          "id": "13793",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.71062,
-          "longitude": -122.40389
         },
         {
           "id": "16847",
@@ -449,18 +449,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13127",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74012,
+          "longitude": -122.3887
+        },
+        {
           "id": "13129",
           "heading": "southbound",
           "name": null,
           "latitude": 37.73932,
           "longitude": -122.38926
-        },
-        {
-          "id": "13127",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.74012,
-          "longitude": -122.3887
         }
       ]
     },
@@ -929,7 +929,7 @@
       "platforms": [
         {
           "id": "18118",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.796619,
           "longitude": -122.409372

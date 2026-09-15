@@ -48,7 +48,8 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
   prediction API already takes. It is unique across the whole merged namespace:
   no code appears under two stations, and no code has two headings.
 * **`platforms[].heading`** is one of `northbound` / `southbound` / `eastbound` /
-  `westbound`. **Do not assume a station's platforms are an opposite pair.** After
+  `westbound`, and describes the street the stop *sits on* — see "How headings are
+  decided" below. **Do not assume a station's platforms are an opposite pair.** After
   merging, stations have 1–7 platforms (`data.json` alone maxes out at 2):
 
   | platforms | stations |
@@ -97,8 +98,46 @@ regenerating from a newer feed:
   get filed under the N's Duboce St station.
 * **Curated headings win, and they are sometimes line-relative rather than
   geometric.** `dolores30` is labelled southbound although the J physically runs
-  *east* there — its two platforms are 38 m apart east-west. 49 stops disagreed
-  with the computed geometry; `data.json` wins on all of them.
+  *east* there — its two platforms are 38 m apart east-west. `data.json` wins on
+  every stop it describes.
+
+## How headings are decided
+
+Direction of travel alone is not enough. A bus stopped at `16th St & Church St` is
+still running **west on 16th**; it only turns onto Church after leaving. Taking the
+vector through the stop labels it northbound, which is wrong.
+
+So a heading is the travel direction **snapped to the axis of the street the stop is
+named for**. SFMTA names a stop `<street it is on> & <cross street>`, and the street's
+local run comes from the nearest stops *named for that same street* within 600 m.
+This corrects 157 of 3,092 stops (5%).
+
+Two traps, both of which produced confidently wrong answers before they were fixed:
+
+* **Only stops named FOR a street reveal how it runs.** `Market St & 3rd St` is a
+  stop on Market. Counting it as a 3rd St stop drags 3rd's axis east-west and
+  flips every 3rd St heading downtown.
+* **SoMa, Mission Bay and South Beach sit on a grid rotated about 45°.** Consecutive
+  3rd St stops there differ by `dx=245, dy=-240`; north versus west is a coin flip
+  that rounding decides. When a street's run is not lopsided by at least 2:1 the
+  snap is skipped and the travel direction stands, because neither answer is more
+  right than the other.
+
+### Where data.json disagrees, and why it still wins
+
+19 of the 88 stops shared with `data.json` would get a different heading from the
+rule above. They are two distinct things, and neither is a bug to fix silently:
+
+* **A deliberate line-relative convention (11 stops).** The K is labelled east/west
+  in the Market subway and north/south for its *entire* outer branch, Ocean Ave
+  included — even though Ocean Ave runs east-west. Same for the J at `dolores30`.
+  Consistent along the line, so leave it.
+* **One pole, two lines, genuinely different directions (8 stops).** `13599` is
+  `46th Ave & Taraval St`: the L turns there and is labelled eastbound, while the
+  18 runs north-south on 46th Ave through the same pole. Both are right for their
+  own line. The schema has one heading per platform and cannot express this. The
+  others are `13600`/`13601`/`13602`/`13603` on 46th Ave, `16932` at the Zoo, and
+  `17999` on 9th Ave. Deciding this needs a product call, not a code change.
 
 ## Regenerating
 

@@ -1405,14 +1405,14 @@
       "platforms": [
         {
           "id": "13570",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.775242,
           "longitude": -122.505798
         },
         {
           "id": "13571",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.775206,
           "longitude": -122.505958
@@ -1433,14 +1433,14 @@
       "platforms": [
         {
           "id": "13572",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.773573,
           "longitude": -122.50567
         },
         {
           "id": "13573",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.773538,
           "longitude": -122.505831
