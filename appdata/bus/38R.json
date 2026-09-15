@@ -157,7 +157,7 @@
     },
     {
       "id": "ofarrellPowell",
-      "name": "O'Farrell & Powell",
+      "name": "Powell & O'Farrell",
       "kind": "streetLevel",
       "lines": [
         "38R"
@@ -337,7 +337,7 @@
     },
     {
       "id": "gearyPowell",
-      "name": "Geary & Powell",
+      "name": "Powell & Geary",
       "kind": "streetLevel",
       "lines": [
         "38R"

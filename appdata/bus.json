@@ -3009,6 +3009,109 @@
       ]
     },
     {
+      "id": "CA",
+      "name": "CA California Street Cable Car",
+      "shortName": "CA",
+      "color": "#B49A36",
+      "stationIds": [
+        "drummCalifornia",
+        "californiaDavis",
+        "californiaDavis",
+        "californiaFront",
+        "californiaBattery",
+        "sansomeCalifornia",
+        "californiaMontgomery",
+        "kearnyCalifornia",
+        "californiaGrant",
+        "californiaStockton",
+        "californiaPowell",
+        "californiaMason",
+        "californiaTaylor",
+        "californiaJones",
+        "leavenworthCalifornia",
+        "hydeCalifornia",
+        "californiaLarkin",
+        "californiaPolk",
+        "californiaVanNess"
+      ]
+    },
+    {
+      "id": "PH",
+      "name": "PH Powell-Hyde Cable Car",
+      "shortName": "PH",
+      "color": "#B49A36",
+      "stationIds": [
+        "marketPowell",
+        "ofarrellPowell",
+        "gearyPowell",
+        "postPowell",
+        "sutterPowell",
+        "powellBush",
+        "powellPine",
+        "californiaPowell",
+        "sacramentoPowell",
+        "clayPowell",
+        "powellJackson",
+        "masonJackson",
+        "jacksonTaylor",
+        "jacksonJones",
+        "leavenworthJackson",
+        "washingtonPowell",
+        "washingtonMason",
+        "washingtonMason",
+        "washingtonTaylor",
+        "washingtonJones",
+        "washingtonLeavenworth",
+        "jacksonHyde",
+        "pacificHyde",
+        "hydeBroadway",
+        "hydeVallejo",
+        "hydeGreen",
+        "unionHyde",
+        "hydeFilbert",
+        "hydeGreenwich",
+        "hydeLombard",
+        "hydeChestnut",
+        "hydeBay",
+        "northPointHyde",
+        "hydeBeach"
+      ]
+    },
+    {
+      "id": "PM",
+      "name": "PM Powell-Mason Cable Car",
+      "shortName": "PM",
+      "color": "#B49A36",
+      "stationIds": [
+        "marketPowell",
+        "ofarrellPowell",
+        "gearyPowell",
+        "postPowell",
+        "sutterPowell",
+        "powellBush",
+        "powellPine",
+        "californiaPowell",
+        "sacramentoPowell",
+        "clayPowell",
+        "washingtonPowell",
+        "washingtonMason",
+        "powellJackson",
+        "masonJackson",
+        "pacificMason",
+        "masonBroadway",
+        "masonVallejo",
+        "masonGreen",
+        "unionMason",
+        "masonFilbert",
+        "masonGreenwich",
+        "columbusLombard",
+        "columbusChestnut",
+        "columbusTaylor",
+        "taylorFrancisco",
+        "taylorBay"
+      ]
+    },
+    {
       "id": "14R",
       "name": "14R Mission Rapid",
       "shortName": "14R",
@@ -3846,10 +3949,12 @@
     },
     {
       "id": "clayPowell",
-      "name": "Clay & Powell",
+      "name": "Powell & Clay",
       "kind": "streetLevel",
       "lines": [
-        "1"
+        "1",
+        "PH",
+        "PM"
       ],
       "latitude": 37.793826,
       "longitude": -122.409591,
@@ -3858,6 +3963,20 @@
       ],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16051",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.793755,
+          "longitude": -122.409465
+        },
+        {
+          "id": "16052",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.793835,
+          "longitude": -122.409626
+        },
         {
           "id": "14027",
           "heading": "eastbound",
@@ -4259,16 +4378,32 @@
     },
     {
       "id": "sacramentoPowell",
-      "name": "Sacramento & Powell",
+      "name": "Powell & Sacramento",
       "kind": "streetLevel",
       "lines": [
-        "1"
+        "1",
+        "PH",
+        "PM"
       ],
       "latitude": 37.79305,
       "longitude": -122.40926,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16073",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.79288,
+          "longitude": -122.409259
+        },
+        {
+          "id": "16074",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.79296,
+          "longitude": -122.409443
+        },
         {
           "id": "16312",
           "heading": "westbound",
@@ -5757,10 +5892,12 @@
     },
     {
       "id": "postPowell",
-      "name": "Post & Powell",
+      "name": "Powell & Post",
       "kind": "streetLevel",
       "lines": [
-        "2"
+        "2",
+        "PH",
+        "PM"
       ],
       "latitude": 37.7883,
       "longitude": -122.40793,
@@ -5769,6 +5906,20 @@
       ],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16072",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.788195,
+          "longitude": -122.408299
+        },
+        {
+          "id": "16071",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.788392,
+          "longitude": -122.408505
+        },
         {
           "id": "16022",
           "heading": "eastbound",
@@ -6208,16 +6359,32 @@
     },
     {
       "id": "sutterPowell",
-      "name": "Sutter & Powell",
+      "name": "Powell & Sutter",
       "kind": "streetLevel",
       "lines": [
-        "2"
+        "2",
+        "PH",
+        "PM"
       ],
       "latitude": 37.789266,
       "longitude": -122.408677,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16075",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.789132,
+          "longitude": -122.408493
+        },
+        {
+          "id": "16076",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.789061,
+          "longitude": -122.408642
+        },
         {
           "id": "16604",
           "heading": "westbound",
@@ -7101,11 +7268,13 @@
     },
     {
       "id": "marketPowell",
-      "name": "Market & Powell",
+      "name": "Powell & Market",
       "kind": "streetLevel",
       "lines": [
         "5",
-        "5R"
+        "5R",
+        "PH",
+        "PM"
       ],
       "latitude": 37.784474,
       "longitude": -122.407544,
@@ -7114,6 +7283,20 @@
       ],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16063",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.784698,
+          "longitude": -122.407682
+        },
+        {
+          "id": "16064",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.784635,
+          "longitude": -122.407785
+        },
         {
           "id": "15688",
           "heading": "westbound",
@@ -12020,10 +12203,11 @@
     },
     {
       "id": "kearnyCalifornia",
-      "name": "Kearny & California",
+      "name": "California & Kearny",
       "kind": "streetLevel",
       "lines": [
         "8",
+        "CA",
         "8AX",
         "8BX"
       ],
@@ -12038,6 +12222,20 @@
           "name": null,
           "latitude": 37.792878,
           "longitude": -122.404364
+        },
+        {
+          "id": "13872",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792593,
+          "longitude": -122.40425
+        },
+        {
+          "id": "13871",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.792718,
+          "longitude": -122.404273
         }
       ]
     },
@@ -15304,16 +15502,31 @@
     },
     {
       "id": "pacificHyde",
-      "name": "Pacific & Hyde",
+      "name": "Hyde & Pacific",
       "kind": "streetLevel",
       "lines": [
-        "12"
+        "12",
+        "PH"
       ],
       "latitude": 37.795465,
       "longitude": -122.418297,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15082",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7954,
+          "longitude": -122.4182
+        },
+        {
+          "id": "15083",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.795354,
+          "longitude": -122.418361
+        },
         {
           "id": "15839",
           "heading": "eastbound",
@@ -15416,16 +15629,31 @@
     },
     {
       "id": "pacificMason",
-      "name": "Pacific & Mason",
+      "name": "Mason & Pacific",
       "kind": "streetLevel",
       "lines": [
-        "12"
+        "12",
+        "PM"
       ],
       "latitude": 37.796293,
       "longitude": -122.411717,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15366",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7962,
+          "longitude": -122.411619
+        },
+        {
+          "id": "15367",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.79612,
+          "longitude": -122.411769
+        },
         {
           "id": "15848",
           "heading": "eastbound",
@@ -15593,10 +15821,11 @@
     },
     {
       "id": "drummCalifornia",
-      "name": "Drumm & California",
+      "name": "California & Drumm",
       "kind": "streetLevel",
       "lines": [
-        "12"
+        "12",
+        "CA"
       ],
       "latitude": 37.79398,
       "longitude": -122.39635,
@@ -15611,6 +15840,13 @@
           "name": null,
           "latitude": 37.79398,
           "longitude": -122.39635
+        },
+        {
+          "id": "13860",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793678,
+          "longitude": -122.396373
         }
       ]
     },
@@ -22232,6 +22468,7 @@
       "kind": "streetLevel",
       "lines": [
         "1X",
+        "CA",
         "30X"
       ],
       "latitude": 37.793144,
@@ -22245,6 +22482,20 @@
           "name": null,
           "latitude": 37.793144,
           "longitude": -122.39987
+        },
+        {
+          "id": "17444",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.793127,
+          "longitude": -122.400099
+        },
+        {
+          "id": "13849",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793296,
+          "longitude": -122.399813
         }
       ]
     },
@@ -26940,13 +27191,28 @@
       "name": "Jackson & Hyde",
       "kind": "streetLevel",
       "lines": [
-        "27"
+        "27",
+        "PH"
       ],
       "latitude": 37.794605,
       "longitude": -122.418293,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15076",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.794542,
+          "longitude": -122.418189
+        },
+        {
+          "id": "15150",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.79464,
+          "longitude": -122.417994
+        },
         {
           "id": "15151",
           "heading": "westbound",
@@ -26961,7 +27227,8 @@
       "name": "Leavenworth & Jackson",
       "kind": "streetLevel",
       "lines": [
-        "27"
+        "27",
+        "PH"
       ],
       "latitude": 37.79465,
       "longitude": -122.41638,
@@ -26974,15 +27241,23 @@
           "name": null,
           "latitude": 37.79465,
           "longitude": -122.41638
+        },
+        {
+          "id": "15154",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.794854,
+          "longitude": -122.416366
         }
       ]
     },
     {
       "id": "leavenworthCalifornia",
-      "name": "Leavenworth & California",
+      "name": "California & Leavenworth",
       "kind": "streetLevel",
       "lines": [
-        "27"
+        "27",
+        "CA"
       ],
       "latitude": 37.79109,
       "longitude": -122.41567,
@@ -26995,6 +27270,20 @@
           "name": null,
           "latitude": 37.79109,
           "longitude": -122.41567
+        },
+        {
+          "id": "13878",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.791133,
+          "longitude": -122.415749
+        },
+        {
+          "id": "13877",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.791285,
+          "longitude": -122.415611
         }
       ]
     },
@@ -27042,10 +27331,11 @@
     },
     {
       "id": "hydeCalifornia",
-      "name": "Hyde & California",
+      "name": "California & Hyde",
       "kind": "streetLevel",
       "lines": [
-        "27"
+        "27",
+        "CA"
       ],
       "latitude": 37.79111,
       "longitude": -122.41747,
@@ -27058,6 +27348,20 @@
           "name": null,
           "latitude": 37.79111,
           "longitude": -122.41747
+        },
+        {
+          "id": "13868",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.790902,
+          "longitude": -122.417537
+        },
+        {
+          "id": "13867",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.791018,
+          "longitude": -122.41756
         }
       ]
     },
@@ -27870,18 +28174,33 @@
     },
     {
       "id": "northPointHyde",
-      "name": "North Point & Hyde",
+      "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [
         "28",
         "30",
-        "91"
+        "91",
+        "PH"
       ],
       "latitude": 37.805718,
       "longitude": -122.420346,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15080",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.805633,
+          "longitude": -122.420272
+        },
+        {
+          "id": "15081",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.805705,
+          "longitude": -122.420455
+        },
         {
           "id": "15459",
           "heading": "eastbound",
@@ -31171,13 +31490,21 @@
       "kind": "streetLevel",
       "lines": [
         "30",
-        "91"
+        "91",
+        "PM"
       ],
       "latitude": 37.802598,
       "longitude": -122.413646,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14113",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.802687,
+          "longitude": -122.413531
+        },
         {
           "id": "14114",
           "heading": "eastbound",
@@ -31193,13 +31520,21 @@
       "kind": "streetLevel",
       "lines": [
         "30",
-        "91"
+        "91",
+        "PM"
       ],
       "latitude": 37.803285,
       "longitude": -122.414643,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16645",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.803758,
+          "longitude": -122.414998
+        },
         {
           "id": "14118",
           "heading": "eastbound",
@@ -31237,13 +31572,28 @@
       "kind": "streetLevel",
       "lines": [
         "30",
-        "91"
+        "91",
+        "PM"
       ],
       "latitude": 37.803794,
       "longitude": -122.415136,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14104",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.80341,
+          "longitude": -122.414586
+        },
+        {
+          "id": "17181",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.80283,
+          "longitude": -122.413978
+        },
         {
           "id": "14103",
           "heading": "westbound",
@@ -37534,10 +37884,12 @@
     },
     {
       "id": "ofarrellPowell",
-      "name": "O'Farrell & Powell",
+      "name": "Powell & O'Farrell",
       "kind": "streetLevel",
       "lines": [
         "38",
+        "PH",
+        "PM",
         "38R"
       ],
       "latitude": 37.786322,
@@ -37547,6 +37899,20 @@
       ],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16068",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.786322,
+          "longitude": -122.407933
+        },
+        {
+          "id": "16067",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.786509,
+          "longitude": -122.408139
+        },
         {
           "id": "15817",
           "heading": "eastbound",
@@ -37632,10 +37998,12 @@
     },
     {
       "id": "gearyPowell",
-      "name": "Geary & Powell",
+      "name": "Powell & Geary",
       "kind": "streetLevel",
       "lines": [
         "38",
+        "PH",
+        "PM",
         "38R"
       ],
       "latitude": 37.787401,
@@ -37645,6 +38013,20 @@
       ],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "16058",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.787267,
+          "longitude": -122.408128
+        },
+        {
+          "id": "16057",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.787464,
+          "longitude": -122.408322
+        },
         {
           "id": "14757",
           "heading": "westbound",
@@ -41246,16 +41628,31 @@
     },
     {
       "id": "unionMason",
-      "name": "Union & Mason",
+      "name": "Mason & Union",
       "kind": "streetLevel",
       "lines": [
-        "45"
+        "45",
+        "PM"
       ],
       "latitude": 37.800033,
       "longitude": -122.412472,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15368",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.800037,
+          "longitude": -122.412397
+        },
+        {
+          "id": "15369",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.799974,
+          "longitude": -122.412546
+        },
         {
           "id": "16774",
           "heading": "eastbound",
@@ -41358,16 +41755,31 @@
     },
     {
       "id": "unionHyde",
-      "name": "Union & Hyde",
+      "name": "Hyde & Union",
       "kind": "streetLevel",
       "lines": [
-        "45"
+        "45",
+        "PH"
       ],
       "latitude": 37.799195,
       "longitude": -122.419053,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15088",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.799236,
+          "longitude": -122.418979
+        },
+        {
+          "id": "15089",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.799182,
+          "longitude": -122.419139
+        },
         {
           "id": "16761",
           "heading": "eastbound",
@@ -48988,6 +49400,1122 @@
       ]
     },
     {
+      "id": "californiaDavis",
+      "name": "California & Davis",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.793512,
+      "longitude": -122.397336,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13857",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.79342,
+          "longitude": -122.397749
+        },
+        {
+          "id": "17294",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.793527,
+          "longitude": -122.396797
+        },
+        {
+          "id": "13855",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793589,
+          "longitude": -122.397462
+        }
+      ]
+    },
+    {
+      "id": "californiaFront",
+      "name": "California & Front",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.793354,
+      "longitude": -122.398782,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13864",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.79327,
+          "longitude": -122.39892
+        },
+        {
+          "id": "13863",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793438,
+          "longitude": -122.398643
+        }
+      ]
+    },
+    {
+      "id": "sansomeCalifornia",
+      "name": "California & Sansome",
+      "kind": "streetLevel",
+      "lines": [
+        "CA",
+        "30X"
+      ],
+      "latitude": 37.79306,
+      "longitude": -122.401126,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13895",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792975,
+          "longitude": -122.401269
+        },
+        {
+          "id": "16327",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.79318,
+          "longitude": -122.40122
+        },
+        {
+          "id": "13894",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793145,
+          "longitude": -122.400982
+        }
+      ]
+    },
+    {
+      "id": "californiaMontgomery",
+      "name": "California & Montgomery",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.792847,
+      "longitude": -122.402765,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13882",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792762,
+          "longitude": -122.402908
+        },
+        {
+          "id": "13883",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.792931,
+          "longitude": -122.402622
+        }
+      ]
+    },
+    {
+      "id": "californiaGrant",
+      "name": "California & Grant",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.792441,
+      "longitude": -122.405946,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13866",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792379,
+          "longitude": -122.405935
+        },
+        {
+          "id": "13865",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.792504,
+          "longitude": -122.405958
+        }
+      ]
+    },
+    {
+      "id": "californiaStockton",
+      "name": "California & Stockton",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.792246,
+      "longitude": -122.40754,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13900",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792184,
+          "longitude": -122.407529
+        },
+        {
+          "id": "13899",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.792308,
+          "longitude": -122.407552
+        }
+      ]
+    },
+    {
+      "id": "californiaPowell",
+      "name": "California & Powell",
+      "kind": "streetLevel",
+      "lines": [
+        "CA",
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.79201,
+      "longitude": -122.40938,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16049",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7923,
+          "longitude": -122.409145
+        },
+        {
+          "id": "16050",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.792211,
+          "longitude": -122.409294
+        },
+        {
+          "id": "13891",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.791952,
+          "longitude": -122.40934
+        },
+        {
+          "id": "13890",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.792068,
+          "longitude": -122.40942
+        }
+      ]
+    },
+    {
+      "id": "californiaMason",
+      "name": "California & Mason",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.791809,
+      "longitude": -122.410968,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13881",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.791747,
+          "longitude": -122.410957
+        },
+        {
+          "id": "13880",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.791872,
+          "longitude": -122.41098
+        }
+      ]
+    },
+    {
+      "id": "californiaTaylor",
+      "name": "California & Taylor",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.791627,
+      "longitude": -122.412464,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13902",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.791543,
+          "longitude": -122.412608
+        },
+        {
+          "id": "13901",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.791712,
+          "longitude": -122.412321
+        }
+      ]
+    },
+    {
+      "id": "californiaJones",
+      "name": "California & Jones",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.79141,
+      "longitude": -122.414109,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13870",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.791347,
+          "longitude": -122.414098
+        },
+        {
+          "id": "13869",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.791472,
+          "longitude": -122.414121
+        }
+      ]
+    },
+    {
+      "id": "californiaLarkin",
+      "name": "California & Larkin",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.790783,
+      "longitude": -122.419025,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13874",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7907,
+          "longitude": -122.41916
+        },
+        {
+          "id": "13873",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.790866,
+          "longitude": -122.41889
+        }
+      ]
+    },
+    {
+      "id": "californiaPolk",
+      "name": "California & Polk",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.790577,
+      "longitude": -122.420684,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13889",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.790492,
+          "longitude": -122.420828
+        },
+        {
+          "id": "13888",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.790661,
+          "longitude": -122.420541
+        }
+      ]
+    },
+    {
+      "id": "californiaVanNess",
+      "name": "California & Van Ness",
+      "kind": "streetLevel",
+      "lines": [
+        "CA"
+      ],
+      "latitude": 37.790412,
+      "longitude": -122.422238,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17142",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.790412,
+          "longitude": -122.422238
+        }
+      ]
+    },
+    {
+      "id": "powellBush",
+      "name": "Powell & Bush",
+      "kind": "streetLevel",
+      "lines": [
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.790149,
+      "longitude": -122.408791,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16047",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.790158,
+          "longitude": -122.408711
+        },
+        {
+          "id": "16048",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.790141,
+          "longitude": -122.408871
+        }
+      ]
+    },
+    {
+      "id": "powellPine",
+      "name": "Powell & Pine",
+      "kind": "streetLevel",
+      "lines": [
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.791086,
+      "longitude": -122.408986,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16069",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.791095,
+          "longitude": -122.408905
+        },
+        {
+          "id": "16070",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.791078,
+          "longitude": -122.409066
+        }
+      ]
+    },
+    {
+      "id": "powellJackson",
+      "name": "Powell & Jackson",
+      "kind": "streetLevel",
+      "lines": [
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.795405,
+      "longitude": -122.409763,
+      "transferStations": [
+        "chinatownRosePak"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16059",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.795405,
+          "longitude": -122.409763
+        }
+      ]
+    },
+    {
+      "id": "masonJackson",
+      "name": "Mason & Jackson",
+      "kind": "streetLevel",
+      "lines": [
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.79545,
+      "longitude": -122.411712,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15365",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.795602,
+          "longitude": -122.411666
+        },
+        {
+          "id": "15156",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.79545,
+          "longitude": -122.411712
+        },
+        {
+          "id": "15364",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.795513,
+          "longitude": -122.41154
+        }
+      ]
+    },
+    {
+      "id": "jacksonTaylor",
+      "name": "Jackson & Taylor",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.795255,
+      "longitude": -122.413202,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15164",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.795255,
+          "longitude": -122.413202
+        }
+      ]
+    },
+    {
+      "id": "jacksonJones",
+      "name": "Jackson & Jones",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.795041,
+      "longitude": -122.414842,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15152",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.795041,
+          "longitude": -122.414842
+        }
+      ]
+    },
+    {
+      "id": "washingtonPowell",
+      "name": "Washington & Powell",
+      "kind": "streetLevel",
+      "lines": [
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.794629,
+      "longitude": -122.410038,
+      "transferStations": [
+        "chinatownRosePak"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16927",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.794629,
+          "longitude": -122.410038
+        }
+      ]
+    },
+    {
+      "id": "washingtonMason",
+      "name": "Washington & Mason",
+      "kind": "streetLevel",
+      "lines": [
+        "PH",
+        "PM"
+      ],
+      "latitude": 37.794517,
+      "longitude": -122.411209,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15372",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.794504,
+          "longitude": -122.411059
+        },
+        {
+          "id": "16924",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.79453,
+          "longitude": -122.41136
+        },
+        {
+          "id": "16925",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.794442,
+          "longitude": -122.411529
+        }
+      ]
+    },
+    {
+      "id": "washingtonTaylor",
+      "name": "Washington & Taylor",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.794255,
+      "longitude": -122.413008,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16929",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.794255,
+          "longitude": -122.413008
+        }
+      ]
+    },
+    {
+      "id": "washingtonJones",
+      "name": "Washington & Jones",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.794042,
+      "longitude": -122.414693,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16920",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.794042,
+          "longitude": -122.414693
+        }
+      ]
+    },
+    {
+      "id": "washingtonLeavenworth",
+      "name": "Washington & Leavenworth",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.793828,
+      "longitude": -122.416287,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16922",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.793828,
+          "longitude": -122.416287
+        }
+      ]
+    },
+    {
+      "id": "hydeBroadway",
+      "name": "Hyde & Broadway",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.79642,
+      "longitude": -122.418487,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15062",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.796345,
+          "longitude": -122.418395
+        },
+        {
+          "id": "15061",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.796496,
+          "longitude": -122.418578
+        }
+      ]
+    },
+    {
+      "id": "hydeVallejo",
+      "name": "Hyde & Vallejo",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.797423,
+      "longitude": -122.418701,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15090",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.79744,
+          "longitude": -122.41863
+        },
+        {
+          "id": "15091",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.797406,
+          "longitude": -122.418773
+        }
+      ]
+    },
+    {
+      "id": "hydeGreen",
+      "name": "Hyde & Green",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.798326,
+      "longitude": -122.41887,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15074",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.798308,
+          "longitude": -122.418784
+        },
+        {
+          "id": "15075",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.798343,
+          "longitude": -122.418956
+        }
+      ]
+    },
+    {
+      "id": "hydeFilbert",
+      "name": "Hyde & Filbert",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.80019,
+      "longitude": -122.419248,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15069",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.800173,
+          "longitude": -122.419162
+        },
+        {
+          "id": "15070",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.800208,
+          "longitude": -122.419334
+        }
+      ]
+    },
+    {
+      "id": "hydeGreenwich",
+      "name": "Hyde & Greenwich",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.801002,
+      "longitude": -122.419408,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15073",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.800993,
+          "longitude": -122.419322
+        },
+        {
+          "id": "15072",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.801011,
+          "longitude": -122.419494
+        }
+      ]
+    },
+    {
+      "id": "hydeLombard",
+      "name": "Hyde & Lombard",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.801885,
+      "longitude": -122.419613,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15077",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.801912,
+          "longitude": -122.419562
+        },
+        {
+          "id": "15078",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.801859,
+          "longitude": -122.419665
+        }
+      ]
+    },
+    {
+      "id": "hydeChestnut",
+      "name": "Hyde & Chestnut",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.802876,
+      "longitude": -122.419792,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15066",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.80284,
+          "longitude": -122.4197
+        },
+        {
+          "id": "15067",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.802912,
+          "longitude": -122.419883
+        }
+      ]
+    },
+    {
+      "id": "hydeBay",
+      "name": "Hyde & Bay",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.804786,
+      "longitude": -122.420181,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15059",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.804795,
+          "longitude": -122.4201
+        },
+        {
+          "id": "15060",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.804777,
+          "longitude": -122.420261
+        }
+      ]
+    },
+    {
+      "id": "hydeBeach",
+      "name": "Hyde & Beach",
+      "kind": "streetLevel",
+      "lines": [
+        "PH"
+      ],
+      "latitude": 37.806771,
+      "longitude": -122.4208,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15064",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.806642,
+          "longitude": -122.420535
+        },
+        {
+          "id": "15063",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.806901,
+          "longitude": -122.421066
+        }
+      ]
+    },
+    {
+      "id": "masonBroadway",
+      "name": "Mason & Broadway",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.79728,
+      "longitude": -122.411917,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15355",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.797208,
+          "longitude": -122.411825
+        },
+        {
+          "id": "15356",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.797351,
+          "longitude": -122.412009
+        }
+      ]
+    },
+    {
+      "id": "masonVallejo",
+      "name": "Mason & Vallejo",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.798221,
+      "longitude": -122.412106,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15370",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.798199,
+          "longitude": -122.41202
+        },
+        {
+          "id": "15371",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.798243,
+          "longitude": -122.412192
+        }
+      ]
+    },
+    {
+      "id": "masonGreen",
+      "name": "Mason & Green",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.79906,
+      "longitude": -122.412278,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15362",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7991,
+          "longitude": -122.412203
+        },
+        {
+          "id": "15363",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.79902,
+          "longitude": -122.412352
+        }
+      ]
+    },
+    {
+      "id": "masonFilbert",
+      "name": "Mason & Filbert",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.800933,
+      "longitude": -122.412655,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15358",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.800965,
+          "longitude": -122.41258
+        },
+        {
+          "id": "15359",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.800902,
+          "longitude": -122.412729
+        }
+      ]
+    },
+    {
+      "id": "masonGreenwich",
+      "name": "Mason & Greenwich",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.801879,
+      "longitude": -122.412849,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15360",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.801929,
+          "longitude": -122.412775
+        },
+        {
+          "id": "15361",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.80183,
+          "longitude": -122.412924
+        }
+      ]
+    },
+    {
+      "id": "taylorFrancisco",
+      "name": "Taylor & Francisco",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.804383,
+      "longitude": -122.414952,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16646",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.804383,
+          "longitude": -122.414952
+        }
+      ]
+    },
+    {
+      "id": "taylorBay",
+      "name": "Taylor & Bay",
+      "kind": "streetLevel",
+      "lines": [
+        "PM"
+      ],
+      "latitude": 37.805244,
+      "longitude": -122.41525,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16642",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.805231,
+          "longitude": -122.415192
+        },
+        {
+          "id": "16644",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.805257,
+          "longitude": -122.415307
+        }
+      ]
+    },
+    {
       "id": "morseLowell",
       "name": "Morse & Lowell",
       "kind": "streetLevel",
@@ -49047,27 +50575,6 @@
           "name": null,
           "latitude": 37.791339,
           "longitude": -122.392408
-        }
-      ]
-    },
-    {
-      "id": "sansomeCalifornia",
-      "name": "Sansome & California",
-      "kind": "streetLevel",
-      "lines": [
-        "30X"
-      ],
-      "latitude": 37.79318,
-      "longitude": -122.40122,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "16327",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.79318,
-          "longitude": -122.40122
         }
       ]
     },

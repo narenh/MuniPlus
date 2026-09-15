@@ -206,7 +206,7 @@
     },
     {
       "id": "leavenworthCalifornia",
-      "name": "Leavenworth & California",
+      "name": "California & Leavenworth",
       "kind": "streetLevel",
       "lines": [
         "27"
@@ -367,7 +367,7 @@
     },
     {
       "id": "hydeCalifornia",
-      "name": "Hyde & California",
+      "name": "California & Hyde",
       "kind": "streetLevel",
       "lines": [
         "27"

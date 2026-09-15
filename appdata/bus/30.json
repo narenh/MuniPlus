@@ -696,7 +696,7 @@
     },
     {
       "id": "northPointHyde",
-      "name": "North Point & Hyde",
+      "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [
         "30"

@@ -191,7 +191,7 @@
     },
     {
       "id": "postPowell",
-      "name": "Post & Powell",
+      "name": "Powell & Post",
       "kind": "streetLevel",
       "lines": [
         "2"
@@ -556,7 +556,7 @@
     },
     {
       "id": "sutterPowell",
-      "name": "Sutter & Powell",
+      "name": "Powell & Sutter",
       "kind": "streetLevel",
       "lines": [
         "2"

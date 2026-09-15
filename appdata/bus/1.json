@@ -231,7 +231,7 @@
     },
     {
       "id": "clayPowell",
-      "name": "Clay & Powell",
+      "name": "Powell & Clay",
       "kind": "streetLevel",
       "lines": [
         "1"
@@ -594,7 +594,7 @@
     },
     {
       "id": "sacramentoPowell",
-      "name": "Sacramento & Powell",
+      "name": "Powell & Sacramento",
       "kind": "streetLevel",
       "lines": [
         "1"

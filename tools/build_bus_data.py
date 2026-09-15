@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Generate Muni+ bus station data from the official SFMTA GTFS feed.
+"""Generate Muni+ bus and cable car station data from the official SFMTA GTFS feed.
 
     python3 tools/build_bus_data.py [--gtfs PATH_OR_URL]
 
 Writes appdata/bus/<route>.json (one file per route, for readable diffs) and
 appdata/bus.json (every route merged, for the app to load), using the same
-schema as appdata/data.json.
+schema as appdata/data.json. Covers every surface route the metro file does not:
+all 58 bus routes plus the 3 cable car lines.
 
 Station identity is one namespace shared with the metro file:
 
@@ -18,7 +19,7 @@ Station identity is one namespace shared with the metro file:
   * Every id ever minted is frozen in tools/station-ids.json and reused on
     later builds, because a shipped id lives in people's favourites.
 
-Bus files carry only the platforms and lines their own routes serve; the loader
+Route files carry only the platforms and lines their own route serves; the loader
 unions platforms by stop code and unions lines, so a station served by the J and
 the 22 ends up with one record and both lines.
 """
@@ -32,7 +33,7 @@ ID_MAP = os.path.join(ROOT, 'tools', 'station-ids.json')
 OUT_DIR = os.path.join(ROOT, 'appdata', 'bus')
 OUT_ALL = os.path.join(ROOT, 'appdata', 'bus.json')
 
-BUS = '3'                       # GTFS route_type for bus
+ROUTE_TYPES = {'3', '5'}        # GTFS route_type: 3 bus, 5 cable car
 MERGE_RADIUS = 75               # m: bus stop <-> street-level metro station
 TRANSFER_RADIUS = 200           # m: bus station -> nearby metro station link
 CLUSTER_RADIUS = 250            # m: two stops at one intersection
@@ -151,7 +152,7 @@ def read_gtfs(src):
     def table(name):
         with zf.open(name) as f:
             return list(csv.DictReader(io.TextIOWrapper(f, 'utf-8-sig')))
-    routes = {r['route_id']: r for r in table('routes.txt') if r['route_type'] == BUS}
+    routes = {r['route_id']: r for r in table('routes.txt') if r['route_type'] in ROUTE_TYPES}
     stops = {s['stop_id']: s for s in table('stops.txt')}
     trips = {t['trip_id']: t for t in table('trips.txt') if t['route_id'] in routes}
     order = collections.defaultdict(list)

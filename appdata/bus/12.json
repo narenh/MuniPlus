@@ -179,7 +179,7 @@
     },
     {
       "id": "pacificHyde",
-      "name": "Pacific & Hyde",
+      "name": "Hyde & Pacific",
       "kind": "streetLevel",
       "lines": [
         "12"
@@ -291,7 +291,7 @@
     },
     {
       "id": "pacificMason",
-      "name": "Pacific & Mason",
+      "name": "Mason & Pacific",
       "kind": "streetLevel",
       "lines": [
         "12"
@@ -538,7 +538,7 @@
     },
     {
       "id": "drummCalifornia",
-      "name": "Drumm & California",
+      "name": "California & Drumm",
       "kind": "streetLevel",
       "lines": [
         "12"
