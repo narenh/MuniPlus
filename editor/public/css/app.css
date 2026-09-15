@@ -451,6 +451,29 @@ select.inp { appearance: none; cursor: pointer;
 .tchip .x { width: 16px; height: 16px; border-radius: 4px; display: grid; place-items: center; color: var(--ink-faint); }
 .tchip .x:hover { background: rgba(251,113,133,.2); color: var(--bad); }
 .tchip.add { border-style: dashed; padding-right: 9px; cursor: pointer; }
+.tchip.agency-on { border-style: solid; color: var(--ink); background: rgba(255,255,255,.1); }
+
+/* a transfer link chip: direction glyph, name, walking distance, action */
+.tchip.link {
+  height: auto; min-height: 27px; padding: 4px 4px 4px 8px;
+  gap: 7px; max-width: 100%; cursor: default;
+  transition: background .15s, border-color .15s;
+}
+.tchip.link:hover { background: rgba(255,255,255,.1); border-color: var(--line); }
+.tchip.link .dir { display: grid; place-items: center; flex: none; line-height: 0; }
+.tchip.link .nm {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: var(--ink);
+}
+.tchip.link em {
+  font-style: normal; font-family: var(--mono); font-size: 10px;
+  color: var(--ink-faint); flex: none;
+}
+.tchip.link.both .dir { color: var(--ok); }
+.tchip.link.out  .dir { color: var(--info); }
+.tchip.link.in   .dir { color: var(--warn); }
+.tchip.link.in { border-color: rgba(251,191,36,.28); background: rgba(251,191,36,.07); }
+.tchip.link .x.mk:hover { background: rgba(52,211,153,.2); color: var(--ok); }
 
 .empty { color: var(--ink-faint); font-size: 11.5px; padding: 3px 0; }
 

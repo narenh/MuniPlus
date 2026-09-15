@@ -110,6 +110,24 @@ Unsaved edits are mirrored into `localStorage` and offered back after a reload.
 The draft is dropped if the file has been committed from elsewhere in the
 meantime, so it can never silently revert someone else's work.
 
+### Transfers
+
+`transferStations` is one-way: a link from A to B says nothing about B to A, and
+that asymmetry is deliberate, so Atlas never symmetrises anything on its own.
+
+On the map a transfer is a dotted walking path with a chevron at each end it
+actually points to — one chevron for a one-way link, two for a mutual one. The
+paths only appear once you are zoomed in far enough for the walk to mean
+anything (about z13.6), and they are straight: data.json records that a walk
+exists, never its route, so drawing a path through the streets would be a claim
+the file does not make.
+
+The inspector groups a station's links into **both ways**, **one way out** and
+**one way in**. That last group is links pointing *at* this station, which are
+invisible in the raw file and are exactly what you need when deciding whether a
+link should be mutual — each one has a **+** to add the reciprocal, always as an
+explicit click. Hovering a link lights its path on the map.
+
 ### The feed check
 
 "Check feed" pulls the live SFMTA GTFS feed and compares every platform against

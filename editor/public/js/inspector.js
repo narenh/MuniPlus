@@ -4,7 +4,7 @@
 import {
   store, edit, select, stationById, linesOf, esc, metresBetween,
 } from './store.js';
-import { flyToStation, refresh, hint, map } from './map.js';
+import { flyToStation, refresh, hint, map, highlightLink } from './map.js';
 
 const HEADINGS = ['northbound', 'southbound', 'eastbound', 'westbound'];
 const AGENCIES = ['bart', 'caltrain'];
@@ -170,36 +170,88 @@ function sectionPlatforms(st) {
   </div>`;
 }
 
-function sectionTransfers(st) {
-  const t = (st.transferStations || []).map(id => {
-    const to = stationById(id);
-    return `<span class="tchip" title="${esc(id)}">${esc(to ? to.name : id)}
-      <button class="x" data-act="untransfer" data-id="${esc(id)}">
-        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      </button></span>`;
-  }).join('');
+const ICON = {
+  out:  '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M10.5 1.8L14 5l-3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  both: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M3 5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M10.5 1.8L14 5l-3.5 3.2M5.5 1.8L2 5l3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  in:   '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M3 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M5.5 1.8L2 5l3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
 
-  const a = AGENCIES.map(ag => {
+/**
+ * Transfers, both directions.
+ *
+ * transferStations is one-way by design and 248 of the links in the merged data
+ * are asymmetric on purpose, so this never symmetrises anything. What it does do
+ * is show the direction of each link, and show the links pointing AT this
+ * station - which are invisible in the raw file and are the thing you need when
+ * deciding whether a link should be mutual.
+ */
+function sectionTransfers(st) {
+  const outgoing = st.transferStations || [];
+  const incoming = store.doc.stations
+    .filter(s => s.id !== st.id && (s.transferStations || []).includes(st.id))
+    .map(s => s.id);
+
+  const mutual = outgoing.filter(id => incoming.includes(id));
+  const outOnly = outgoing.filter(id => !incoming.includes(id));
+  const inOnly = incoming.filter(id => !outgoing.includes(id));
+
+  const label = id => esc(stationById(id)?.name || id);
+  const away = id => {
+    const to = stationById(id);
+    return to ? `${metresBetween(st, to)} m` : '?';
+  };
+
+  const chip = (id, kind) => `
+    <span class="tchip link ${kind}" data-act="hover-link" data-id="${esc(id)}" title="${esc(id)} · ${away(id)}">
+      <i class="dir">${ICON[kind]}</i>
+      <span class="nm">${label(id)}</span>
+      <em>${away(id)}</em>
+      ${kind === 'in'
+        ? `<button class="x mk" data-act="reciprocate" data-id="${esc(id)}" title="Also link this station back">
+             <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+           </button>`
+        : `<button class="x" data-act="untransfer" data-id="${esc(id)}" title="Remove this link">
+             <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+           </button>`}
+    </span>`;
+
+  const group = (title, note, ids, kind) => ids.length ? `
+    <div class="field">
+      <label class="micro">${title}
+        <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— ${note}</span>
+      </label>
+      <div class="chips">${ids.map(id => chip(id, kind)).join('')}</div>
+    </div>` : '';
+
+  const agencies = AGENCIES.map(ag => {
     const on = (st.transferAgencies || []).includes(ag);
-    return `<button class="tchip ${on ? '' : 'add'}" data-act="agency" data-ag="${ag}"
-      style="${on ? 'border-style:solid;color:var(--ink)' : ''}">${ag.toUpperCase()}</button>`;
+    return `<button class="tchip ${on ? 'agency-on' : 'add'}" data-act="agency" data-ag="${ag}">${ag.toUpperCase()}</button>`;
   }).join('');
 
   return `
   <div class="sect">
-    <div class="sect-head"><div class="micro">Transfers</div></div>
-    <div class="field">
-      <label class="micro">To other stations <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— one-way by design</span></label>
-      <div class="chips">${t}
-        <button class="tchip add" data-act="add-transfer">
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          Link a station
-        </button>
-      </div>
+    <div class="sect-head">
+      <div class="micro">Transfers</div>
+      <span class="micro" style="color:var(--ink-faint)">${outgoing.length} out · ${incoming.length} in</span>
     </div>
+
+    ${group('Both ways', 'each station lists the other', mutual, 'both')}
+    ${group('One way out', 'this station only', outOnly, 'out')}
+    ${group('One way in', 'they link here; this station does not link back', inOnly, 'in')}
+
+    ${!outgoing.length && !incoming.length
+      ? '<div class="empty" style="margin-bottom:10px">No transfer links.</div>' : ''}
+
     <div class="field">
+      <button class="tchip add" data-act="add-transfer" style="width:100%;justify-content:center;height:29px">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Link a station
+      </button>
+    </div>
+
+    <div class="field" style="margin-top:12px">
       <label class="micro">Other agencies</label>
-      <div class="chips">${a}</div>
+      <div class="chips">${agencies}</div>
     </div>
   </div>`;
 }
@@ -301,6 +353,11 @@ function wire(st) {
     });
   });
 
+  body.querySelectorAll('[data-act="hover-link"]').forEach(chip => {
+    chip.onmouseenter = () => highlightLink(sid, chip.dataset.id);
+    chip.onmouseleave = () => highlightLink(null, null);
+  });
+
   body.querySelectorAll('[data-act]').forEach(b => {
     b.onclick = ev => {
       ev.stopPropagation();
@@ -334,6 +391,17 @@ function wire(st) {
         commit(`Unlink ${b.dataset.id}`, s => {
           s.transferStations = (s.transferStations || []).filter(x => x !== b.dataset.id);
         });
+      }
+
+      // Make an inbound-only link mutual. Never automatic: the asymmetry in
+      // data.json is deliberate, so this is always one explicit click.
+      if (act === 'reciprocate') {
+        const other = b.dataset.id;
+        commit(`Link ${sid} back to ${other}`, s => {
+          const list = s.transferStations || (s.transferStations = []);
+          if (!list.includes(other)) list.push(other);
+        });
+        hint(`${st.name} now links back — the walk is mutual`);
       }
 
       if (act === 'agency') {
