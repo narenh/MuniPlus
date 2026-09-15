@@ -139,10 +139,16 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
    the live API, not of the feed, so that one is unverified — check a stop id against
    the worker before dropping them.
 
-1. An id already in `tools/station-ids.json` wins. **Ids are frozen on first mint
+1. A stop code `data.json` lists belongs to that station, full stop. This outranks
+   the frozen map, because otherwise curating `data.json` could not move a stop:
+   merging two stations there would leave the old id frozen onto the bus side, and
+   the next build would fail with the same stop code under two stations. That is
+   exactly what happened when the F's Market St pairs were merged — 18 station ids
+   survived only in `bus.json` until this rule was put ahead of the frozen map.
+2. An id already in `tools/station-ids.json` wins. **Ids are frozen on first mint
    and never change** — a shipped id lives in people's favourites, and a feed
-   update must not rename a station someone has saved.
-2. A stop sharing a stop code with a metro platform is filed under that station.
+   update must not rename a station someone has saved. The rule above is the one
+   thing that overrides it, and only ever toward what `data.json` already says.
 3. A stop at a street-level metro station joins it, but only if it names **the same
    corner** — every street in one name must appear in the other. One shared street is
    not enough: the 37's poles at `14th St & Church St` are a signalled crossing away

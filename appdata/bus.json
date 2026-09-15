@@ -99,7 +99,7 @@
         "postOctavia",
         "postLaguna",
         "marketSteuart",
-        "marketDrumm",
+        "marketEmbarcaderoSubway",
         "marketFront",
         "sutterSansome",
         "kearnySutter",
@@ -144,7 +144,7 @@
         "fremontMarket",
         "marketSansome",
         "marketMontgomery",
-        "fourthMarket",
+        "market4",
         "marketGrant",
         "powellMarket",
         "marketMason",
@@ -255,24 +255,18 @@
       "stationIds": [
         "transitCenterBayE",
         "bealeMission",
+        "fremontMarket",
         "market1",
+        "market2",
         "market3",
         "marketStBetween4th3",
         "marketStBetween5th4",
-        "fremontMarket",
-        "marketBattery",
-        "market2",
-        "marketKearny",
-        "marketStockton",
+        "market4",
         "market5",
         "market6",
-        "marketTaylor",
         "market7",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketSouthVanNess",
-        "marketHyde",
-        "marketLarkin",
         "marketVanNess",
         "haightGough",
         "haightLaguna",
@@ -371,7 +365,7 @@
         "sacramentoStockton",
         "stocktonSutter",
         "gearyStockton",
-        "fourthMarket",
+        "market4",
         "mission4",
         "fourthFolsom",
         "harrison4",
@@ -429,23 +423,16 @@
         "marketSteuart",
         "spearMarket",
         "marketBeale",
+        "marketEmbarcaderoSubway",
         "market1",
-        "marketNewMontgomery",
-        "market3",
-        "fourthMarket",
-        "marketDrumm",
-        "marketBattery",
         "market2",
-        "marketKearny",
-        "marketStockton",
+        "market3",
+        "market4",
         "market5",
         "market6",
-        "marketTaylor",
         "market7",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketHyde",
-        "marketLarkin",
         "eleventhMarket",
         "mission11",
         "eleventhHoward",
@@ -535,7 +522,7 @@
         "sacramentoBattery",
         "sacramentoDavis",
         "californiaDrumm",
-        "mainMarket",
+        "marketEmbarcaderoSubway",
         "howardMain",
         "mainFolsom",
         "folsom1",
@@ -593,7 +580,7 @@
       "stationIds": [
         "steuartMission",
         "marketSteuart",
-        "mainMarket",
+        "marketEmbarcaderoSubway",
         "fremontMission",
         "missionSpear",
         "bealeMission",
@@ -664,7 +651,7 @@
         "thirdBrannan",
         "thirdWarriorsWay",
         "gearyStockton",
-        "fourthMarket",
+        "market4",
         "mission4",
         "fourthTownsend",
         "thirdGeneFriendWay",
@@ -778,7 +765,10 @@
         "hydeTurk",
         "mcallisterHyde",
         "hydeGrove",
-        "eighthMarket",
+        "larkinGoldenGate",
+        "mcallisterLarkin",
+        "larkinGrove",
+        "market8",
         "mission8",
         "eighthHoward",
         "eighthFolsom",
@@ -786,10 +776,6 @@
         "eighthBryant",
         "eighthBrannan",
         "divisionRhodeIsland",
-        "larkinGoldenGate",
-        "mcallisterLarkin",
-        "larkinGrove",
-        "marketHyde",
         "market7",
         "mission7",
         "seventhHoward",
@@ -1075,7 +1061,7 @@
         "castro15",
         "castro16",
         "marketCastro",
-        "seventeenthCastro",
+        "castroPlaza",
         "eighteenthCastro",
         "castro19",
         "castro20",
@@ -1176,7 +1162,7 @@
         "turkJones",
         "mcallisterJones",
         "hydeGrove",
-        "eighthMarket",
+        "market8",
         "mission8",
         "eighthHoward",
         "leavenworthSutter",
@@ -1394,7 +1380,7 @@
         "fourthTownsend",
         "fourthFolsom",
         "mission4",
-        "fourthMarket",
+        "market4",
         "gearyStockton",
         "stocktonSutter",
         "sacramentoStockton",
@@ -1862,7 +1848,7 @@
       "color": "#005B95",
       "stationIds": [
         "northPointStockton",
-        "embarcaderoStockton",
+        "pier39",
         "powellBeach",
         "powellNorthPoint",
         "powellBay",
@@ -2107,7 +2093,7 @@
         "harrison4",
         "fourthFolsom",
         "mission4",
-        "fourthMarket",
+        "market4",
         "gearyStockton",
         "stocktonSutter",
         "clayStockton",
@@ -2250,9 +2236,8 @@
         "ofarrellVanNess",
         "eddyVanNess",
         "mcallisterVanNess",
-        "marketSouthVanNess",
-        "mission13",
         "marketVanNess",
+        "mission13",
         "otis12",
         "otisMccoppin",
         "mission14",
@@ -2767,7 +2752,6 @@
         "ofarrellVanNess",
         "eddyVanNess",
         "mcallisterVanNess",
-        "marketSouthVanNess",
         "marketVanNess",
         "mission11",
         "eleventhHoward",
@@ -2871,7 +2855,7 @@
         "thirdBrannan",
         "fourthKingT",
         "gearyStockton",
-        "fourthMarket",
+        "market4",
         "mission4",
         "fourthFolsom",
         "fourthBrannan",
@@ -2949,23 +2933,16 @@
       "color": "#BF2B45",
       "stationIds": [
         "mainMission",
-        "marketBattery",
-        "market2",
-        "marketKearny",
-        "marketStockton",
         "spearMarket",
         "marketBeale",
         "market1",
-        "marketNewMontgomery",
+        "market2",
         "market3",
-        "fourthMarket",
+        "market4",
         "market5",
-        "marketTaylor",
         "market6",
         "market7",
-        "marketHyde",
-        "marketLarkin",
-        "eighthMarket",
+        "market8",
         "market9",
         "eleventhMarket",
         "eleventhHarrison",
@@ -3118,7 +3095,7 @@
         "mission1",
         "steuartMission",
         "marketSteuart",
-        "mainMarket",
+        "marketEmbarcaderoSubway",
         "fremontMission",
         "mission2",
         "mission3",
@@ -3269,7 +3246,7 @@
         "sacramentoStockton",
         "stocktonSutter",
         "gearyStockton",
-        "fourthMarket",
+        "market4",
         "mission4",
         "fourthFolsom",
         "harrison4",
@@ -3343,7 +3320,7 @@
         "sacramentoStockton",
         "stocktonSutter",
         "gearyStockton",
-        "fourthMarket",
+        "market4",
         "mission4",
         "fourthFolsom",
         "harrison4",
@@ -3387,10 +3364,9 @@
       "stationIds": [
         "jonesBeach",
         "beachMason",
-        "beachStockton",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "embarcaderoStockton",
+        "pier39",
         "embarcaderoBay",
         "embarcaderoSansome",
         "embarcaderoGreenwich",
@@ -3398,36 +3374,25 @@
         "embarcaderoBroadway",
         "embarcaderoWashington",
         "embarcaderoFerryBuilding",
-        "donCheeWaysteuart",
-        "marketDrumm",
-        "marketBattery",
-        "market2",
-        "marketKearny",
-        "marketStockton",
-        "mainMarket",
+        "donCheeWaySteuart",
+        "marketEmbarcaderoSubway",
         "market1",
-        "marketNewMontgomery",
+        "market2",
         "market3",
-        "fourthMarket",
+        "market4",
         "market5",
-        "marketTaylor",
         "market6",
         "market7",
-        "marketHyde",
-        "marketLarkin",
-        "marketVanNess",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketSouthVanNess",
+        "marketVanNess",
         "marketGough",
-        "marketLaguna",
-        "marketBuchanan",
         "marketGuerrero",
         "marketDolores",
         "churchMarket",
         "marketSanchez",
         "marketNoe",
-        "seventeenthCastro"
+        "castroPlaza"
       ]
     },
     {
@@ -3439,31 +3404,21 @@
         "steuartMission",
         "spearMarket",
         "marketBeale",
-        "market1",
-        "marketNewMontgomery",
-        "market3",
-        "fourthMarket",
         "marketSteuart",
-        "marketDrumm",
-        "marketBattery",
+        "marketEmbarcaderoSubway",
+        "market1",
         "market2",
-        "marketKearny",
-        "marketStockton",
+        "market3",
+        "market4",
         "market5",
         "market6",
-        "marketTaylor",
         "market7",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketSouthVanNess",
-        "marketHyde",
-        "marketLarkin",
         "marketVanNess",
         "marketGough",
         "marketGuerrero",
         "marketDolores",
-        "marketLaguna",
-        "marketBuchanan",
         "churchMarket",
         "marketSanchez",
         "marketNoe",
@@ -3501,9 +3456,8 @@
         "jonesBeach",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "embarcaderoStockton",
         "beachMason",
-        "beachStockton",
+        "pier39",
         "embarcaderoBay",
         "embarcaderoSansome",
         "embarcaderoGreenwich",
@@ -3511,33 +3465,23 @@
         "embarcaderoBroadway",
         "embarcaderoWashington",
         "embarcaderoFerryBuilding",
-        "donCheeWaysteuart",
+        "donCheeWaySteuart",
         "marketBeale",
-        "market1",
-        "marketNewMontgomery",
-        "market3",
-        "fourthMarket",
         "marketSteuart",
-        "marketDrumm",
-        "marketBattery",
+        "marketEmbarcaderoSubway",
+        "market1",
         "market2",
-        "marketKearny",
-        "marketStockton",
+        "market3",
+        "market4",
         "market5",
         "market6",
-        "marketTaylor",
         "market7",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketSouthVanNess",
-        "marketHyde",
-        "marketLarkin",
         "marketVanNess",
         "marketGough",
         "marketGuerrero",
         "marketDolores",
-        "marketLaguna",
-        "marketBuchanan",
         "churchMarket",
         "marketSanchez",
         "marketNoe",
@@ -3588,30 +3532,20 @@
         "embarcaderoFolsom",
         "marketSteuart",
         "marketBeale",
+        "marketEmbarcaderoSubway",
         "market1",
-        "marketNewMontgomery",
-        "market3",
-        "fourthMarket",
-        "marketDrumm",
-        "marketBattery",
         "market2",
-        "marketKearny",
-        "marketStockton",
+        "market3",
+        "market4",
         "market5",
         "market6",
-        "marketTaylor",
         "market7",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketSouthVanNess",
-        "marketHyde",
-        "marketLarkin",
         "marketVanNess",
         "marketGough",
         "marketGuerrero",
         "marketDolores",
-        "marketLaguna",
-        "marketBuchanan",
         "duboceChurchN",
         "duboceNoe",
         "carlCole",
@@ -3652,32 +3586,23 @@
         "embarcaderoFolsom",
         "embarcaderoHoward",
         "steuartMission",
-        "donCheeWaysteuart",
+        "donCheeWaySteuart",
         "marketSteuart",
         "marketBeale",
+        "marketEmbarcaderoSubway",
         "market1",
-        "marketNewMontgomery",
-        "market3",
-        "fourthMarket",
-        "marketDrumm",
-        "marketBattery",
         "market2",
-        "marketKearny",
-        "marketStockton",
+        "market3",
+        "market4",
         "market5",
         "market6",
-        "marketTaylor",
         "market7",
-        "eighthMarket",
+        "market8",
         "market9",
-        "marketSouthVanNess",
-        "marketHyde",
         "marketVanNess",
         "marketGough",
         "marketGuerrero",
         "marketDolores",
-        "marketLaguna",
-        "marketBuchanan",
         "churchDuboceJ",
         "hermannFillmore",
         "haightFillmore",
@@ -3748,7 +3673,7 @@
         "fourthBerry",
         "fourthBrannan",
         "fourthFolsom",
-        "fourthMarket",
+        "market4",
         "gearyStockton",
         "fourthKingT",
         "thirdBrannan",
@@ -4210,8 +4135,7 @@
       "longitude": -122.3976,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5729,7 +5653,7 @@
       "latitude": 37.794275,
       "longitude": -122.394424,
       "transferStations": [
-        "donCheeWaysteuart",
+        "donCheeWaySteuart",
         "embarcaderoFerryBuilding"
       ],
       "transferAgencies": [],
@@ -5764,10 +5688,9 @@
       "latitude": 37.7934,
       "longitude": -122.39528,
       "transferStations": [
-        "donCheeWaysteuart",
+        "donCheeWaySteuart",
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5797,8 +5720,7 @@
       "longitude": -122.397016,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5813,7 +5735,7 @@
     },
     {
       "id": "market1",
-      "name": "Market & 1st",
+      "name": "Market & 1st/Battery",
       "kind": "streetLevel",
       "lines": [
         "2",
@@ -5830,8 +5752,8 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.79094,
-      "longitude": -122.399195,
+      "latitude": 37.791025,
+      "longitude": -122.399132,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -5848,6 +5770,13 @@
           "name": null,
           "latitude": 37.79094,
           "longitude": -122.399195
+        },
+        {
+          "id": "15657",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.79111,
+          "longitude": -122.399069
         }
       ]
     },
@@ -5863,8 +5792,6 @@
       "transferStations": [
         "market2",
         "market3",
-        "marketKearny",
-        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -6191,9 +6118,9 @@
       "latitude": 37.794409,
       "longitude": -122.394538,
       "transferStations": [
-        "donCheeWaysteuart",
+        "donCheeWaySteuart",
         "embarcaderoFerryBuilding",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -6221,23 +6148,40 @@
       ]
     },
     {
-      "id": "marketDrumm",
-      "name": "Market & Drumm",
+      "id": "marketEmbarcaderoSubway",
+      "name": "Market & Embarcadero Subway",
       "kind": "streetLevel",
       "lines": [
         "2",
         "9",
+        "12",
+        "14",
+        "14R",
         "FBUS",
         "KBUS",
         "LOWL",
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.793473,
-      "longitude": -122.396178,
+      "latitude": 37.793228,
+      "longitude": -122.396402,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15336",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.79253,
+          "longitude": -122.39567
+        },
+        {
+          "id": "15682",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792984,
+          "longitude": -122.396627
+        },
         {
           "id": "15669",
           "heading": "westbound",
@@ -6258,9 +6202,7 @@
       "longitude": -122.39815,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "market1",
-        "marketBattery"
+        "market1"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -6285,7 +6227,6 @@
       "longitude": -122.401338,
       "transferStations": [
         "market2",
-        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -6957,7 +6898,7 @@
       "longitude": -122.396879,
       "transferStations": [
         "embarcadero",
-        "mainMarket"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -6995,8 +6936,8 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.787667,
-      "longitude": -122.403359,
+      "latitude": 37.787627,
+      "longitude": -122.403445,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -7013,6 +6954,13 @@
           "name": null,
           "latitude": 37.787667,
           "longitude": -122.403359
+        },
+        {
+          "id": "15678",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78773,
+          "longitude": -122.40337
         }
       ]
     },
@@ -7028,10 +6976,8 @@
       "latitude": 37.786597,
       "longitude": -122.404586,
       "transferStations": [
-        "fourthMarket",
         "market3",
-        "marketKearny",
-        "marketStockton",
+        "market4",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -7057,8 +7003,7 @@
       "latitude": 37.78484,
       "longitude": -122.406834,
       "transferStations": [
-        "fourthMarket",
-        "marketStockton",
+        "market4",
         "powell"
       ],
       "transferAgencies": [],
@@ -7156,9 +7101,7 @@
       "longitude": -122.398151,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "market1",
-        "marketBattery"
+        "market1"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7186,7 +7129,6 @@
       "transferStations": [
         "market1",
         "market2",
-        "marketBattery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -7215,8 +7157,6 @@
       "transferStations": [
         "market2",
         "market3",
-        "marketKearny",
-        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -7231,11 +7171,12 @@
       ]
     },
     {
-      "id": "fourthMarket",
-      "name": "4th & Market",
+      "id": "market4",
+      "name": "Market & 4th",
       "kind": "streetLevel",
       "lines": [
         "5",
+        "7",
         "8",
         "9",
         "15",
@@ -7252,8 +7193,8 @@
         "NOWL",
         "TBUS"
       ],
-      "latitude": 37.785411,
-      "longitude": -122.405531,
+      "latitude": 37.785741,
+      "longitude": -122.405853,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -7270,6 +7211,13 @@
           "name": null,
           "latitude": 37.785705,
           "longitude": -122.405847
+        },
+        {
+          "id": "15694",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785777,
+          "longitude": -122.405859
         }
       ]
     },
@@ -7284,8 +7232,7 @@
       "latitude": 37.78639,
       "longitude": -122.40516,
       "transferStations": [
-        "fourthMarket",
-        "marketStockton",
+        "market4",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -7352,7 +7299,7 @@
       "longitude": -122.40964,
       "transferStations": [
         "market5",
-        "marketTaylor"
+        "market6"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7377,7 +7324,6 @@
       "latitude": 37.781166,
       "longitude": -122.412189,
       "transferStations": [
-        "market6",
         "market7"
       ],
       "transferAgencies": [],
@@ -8550,8 +8496,7 @@
       "longitude": -122.415158,
       "transferStations": [
         "civicCenter",
-        "eighthMarket",
-        "marketHyde"
+        "market8"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -8574,8 +8519,7 @@
       "latitude": 37.777709,
       "longitude": -122.416852,
       "transferStations": [
-        "market9",
-        "marketLarkin"
+        "market9"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -10014,8 +9958,8 @@
       ]
     },
     {
-      "id": "marketBattery",
-      "name": "Market & Battery",
+      "id": "market2",
+      "name": "Market & 2nd/Montgomery",
       "kind": "streetLevel",
       "lines": [
         "7",
@@ -10027,39 +9971,18 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.79111,
-      "longitude": -122.399069,
+      "latitude": 37.788983,
+      "longitude": -122.401735,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15657",
-          "heading": "westbound",
+          "id": "15685",
+          "heading": "eastbound",
           "name": null,
-          "latitude": 37.79111,
-          "longitude": -122.399069
-        }
-      ]
-    },
-    {
-      "id": "market2",
-      "name": "Market & 2nd",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "9",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.789353,
-      "longitude": -122.401306,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+          "latitude": 37.788613,
+          "longitude": -122.402163
+        },
         {
           "id": "15639",
           "heading": "westbound",
@@ -10070,64 +9993,8 @@
       ]
     },
     {
-      "id": "marketKearny",
-      "name": "Market & Kearny",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "9",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.78773,
-      "longitude": -122.40337,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15678",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.78773,
-          "longitude": -122.40337
-        }
-      ]
-    },
-    {
-      "id": "marketStockton",
-      "name": "Market & Stockton",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "9",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.785777,
-      "longitude": -122.405859,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15694",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.785777,
-          "longitude": -122.405859
-        }
-      ]
-    },
-    {
       "id": "market6",
-      "name": "Market & 6th",
+      "name": "Market & 6th/Taylor",
       "kind": "streetLevel",
       "lines": [
         "7",
@@ -10139,8 +10006,8 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.78129,
-      "longitude": -122.411329,
+      "latitude": 37.782209,
+      "longitude": -122.410314,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -10157,28 +10024,7 @@
           "name": null,
           "latitude": 37.78129,
           "longitude": -122.411329
-        }
-      ]
-    },
-    {
-      "id": "marketTaylor",
-      "name": "Market & Taylor",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "9",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.782316,
-      "longitude": -122.410228,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+        },
         {
           "id": "15695",
           "heading": "westbound",
@@ -10247,8 +10093,8 @@
       ]
     },
     {
-      "id": "eighthMarket",
-      "name": "8th & Market",
+      "id": "market8",
+      "name": "Market & 8th/Hyde",
       "kind": "streetLevel",
       "lines": [
         "7",
@@ -10262,8 +10108,8 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.778606,
-      "longitude": -122.414826,
+      "latitude": 37.778856,
+      "longitude": -122.414603,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -10280,92 +10126,7 @@
           "name": null,
           "latitude": 37.778606,
           "longitude": -122.414826
-        }
-      ]
-    },
-    {
-      "id": "market9",
-      "name": "Market & 9th",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "9",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.77741,
-      "longitude": -122.41634,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15652",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.77741,
-          "longitude": -122.41634
-        }
-      ]
-    },
-    {
-      "id": "marketSouthVanNess",
-      "name": "Market & South Van Ness",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "49",
-        "90",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.775056,
-      "longitude": -122.419321,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "18088",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.7751,
-          "longitude": -122.41924
         },
-        {
-          "id": "15692",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.775056,
-          "longitude": -122.419321
-        }
-      ]
-    },
-    {
-      "id": "marketHyde",
-      "name": "Market & Hyde",
-      "kind": "streetLevel",
-      "lines": [
-        "7",
-        "9",
-        "19",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.779105,
-      "longitude": -122.414379,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
         {
           "id": "15676",
           "heading": "westbound",
@@ -10383,8 +10144,8 @@
       ]
     },
     {
-      "id": "marketLarkin",
-      "name": "Market & Larkin",
+      "id": "market9",
+      "name": "Market & 9th/Larkin",
       "kind": "streetLevel",
       "lines": [
         "7",
@@ -10393,13 +10154,21 @@
         "FBUS",
         "KBUS",
         "LOWL",
-        "NBUS"
+        "NBUS",
+        "NOWL"
       ],
-      "latitude": 37.777598,
-      "longitude": -122.416236,
+      "latitude": 37.777504,
+      "longitude": -122.416288,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15652",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.77741,
+          "longitude": -122.41634
+        },
         {
           "id": "15680",
           "heading": "southbound",
@@ -10423,17 +10192,31 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.775198,
-      "longitude": -122.419252,
+      "latitude": 37.775127,
+      "longitude": -122.419286,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "18088",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7751,
+          "longitude": -122.41924
+        },
         {
           "id": "18105",
           "heading": "southbound",
           "name": null,
           "latitude": 37.775172,
           "longitude": -122.419309
+        },
+        {
+          "id": "15692",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775056,
+          "longitude": -122.419321
         },
         {
           "id": "15696",
@@ -11961,8 +11744,7 @@
       "latitude": 37.80704,
       "longitude": -122.41038,
       "transferStations": [
-        "beachStockton",
-        "embarcaderoStockton"
+        "pier39"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -11994,8 +11776,7 @@
       "latitude": 37.806497,
       "longitude": -122.412176,
       "transferStations": [
-        "beachMason",
-        "beachStockton"
+        "beachMason"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -12321,9 +12102,8 @@
       "latitude": 37.788051,
       "longitude": -122.403461,
       "transferStations": [
+        "market2",
         "market3",
-        "marketKearny",
-        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -12362,8 +12142,7 @@
       "latitude": 37.786373,
       "longitude": -122.40211,
       "transferStations": [
-        "market3",
-        "marketKearny"
+        "market3"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -12765,9 +12544,7 @@
       ],
       "latitude": 37.784259,
       "longitude": -122.404117,
-      "transferStations": [
-        "fourthMarket"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -14173,33 +13950,6 @@
       ]
     },
     {
-      "id": "marketNewMontgomery",
-      "name": "Market & New Montgomery",
-      "kind": "streetLevel",
-      "lines": [
-        "9",
-        "9R",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.788613,
-      "longitude": -122.402163,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15685",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.788613,
-          "longitude": -122.402163
-        }
-      ]
-    },
-    {
       "id": "eleventhMarket",
       "name": "11th & Market",
       "kind": "streetLevel",
@@ -14210,7 +13960,6 @@
       "latitude": 37.775434,
       "longitude": -122.418548,
       "transferStations": [
-        "marketSouthVanNess",
         "marketVanNess",
         "vanNess"
       ],
@@ -15858,8 +15607,7 @@
       "longitude": -122.39635,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -15876,37 +15624,6 @@
           "name": null,
           "latitude": 37.793678,
           "longitude": -122.396373
-        }
-      ]
-    },
-    {
-      "id": "mainMarket",
-      "name": "Main & Market",
-      "kind": "streetLevel",
-      "lines": [
-        "12",
-        "14",
-        "14R",
-        "FBUS"
-      ],
-      "latitude": 37.792984,
-      "longitude": -122.396627,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15336",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.79253,
-          "longitude": -122.39567
-        },
-        {
-          "id": "15682",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.792984,
-          "longitude": -122.396627
         }
       ]
     },
@@ -16242,7 +15959,7 @@
       "latitude": 37.792437,
       "longitude": -122.394047,
       "transferStations": [
-        "donCheeWaysteuart"
+        "donCheeWaySteuart"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -16906,8 +16623,7 @@
       "latitude": 37.78992,
       "longitude": -122.39749,
       "transferStations": [
-        "market1",
-        "marketBattery"
+        "market1"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -16931,6 +16647,7 @@
       "latitude": 37.78781,
       "longitude": -122.400045,
       "transferStations": [
+        "market2",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -16992,7 +16709,9 @@
       ],
       "latitude": 37.78097,
       "longitude": -122.408705,
-      "transferStations": [],
+      "transferStations": [
+        "market6"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -20831,6 +20550,51 @@
       ]
     },
     {
+      "id": "larkinGoldenGate",
+      "name": "Larkin & Golden Gate",
+      "kind": "streetLevel",
+      "lines": [
+        "19"
+      ],
+      "latitude": 37.781693,
+      "longitude": -122.417106,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14847",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.781693,
+          "longitude": -122.417106
+        }
+      ]
+    },
+    {
+      "id": "larkinGrove",
+      "name": "Larkin & Grove",
+      "kind": "streetLevel",
+      "lines": [
+        "19"
+      ],
+      "latitude": 37.778901,
+      "longitude": -122.416545,
+      "transferStations": [
+        "market8",
+        "market9"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14848",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.778901,
+          "longitude": -122.416545
+        }
+      ]
+    },
+    {
       "id": "eighthHoward",
       "name": "8th & Howard",
       "kind": "streetLevel",
@@ -20912,53 +20676,6 @@
           "name": null,
           "latitude": 37.76976,
           "longitude": -122.403152
-        }
-      ]
-    },
-    {
-      "id": "larkinGoldenGate",
-      "name": "Larkin & Golden Gate",
-      "kind": "streetLevel",
-      "lines": [
-        "19"
-      ],
-      "latitude": 37.781693,
-      "longitude": -122.417106,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14847",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.781693,
-          "longitude": -122.417106
-        }
-      ]
-    },
-    {
-      "id": "larkinGrove",
-      "name": "Larkin & Grove",
-      "kind": "streetLevel",
-      "lines": [
-        "19"
-      ],
-      "latitude": 37.778901,
-      "longitude": -122.416545,
-      "transferStations": [
-        "eighthMarket",
-        "market9",
-        "marketHyde",
-        "marketLarkin"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14848",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.778901,
-          "longitude": -122.416545
         }
       ]
     },
@@ -22501,8 +22218,7 @@
       "longitude": -122.397532,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -22562,8 +22278,7 @@
       "latitude": 37.79202,
       "longitude": -122.40086,
       "transferStations": [
-        "market1",
-        "marketBattery"
+        "market1"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -22585,9 +22300,7 @@
       ],
       "latitude": 37.790924,
       "longitude": -122.402118,
-      "transferStations": [
-        "market2"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -25874,7 +25587,7 @@
       "longitude": -122.435347,
       "transferStations": [
         "castro",
-        "seventeenthCastro"
+        "castroPlaza"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -25909,7 +25622,7 @@
       "longitude": -122.435266,
       "transferStations": [
         "castro",
-        "seventeenthCastro"
+        "castroPlaza"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -25937,8 +25650,8 @@
       ]
     },
     {
-      "id": "seventeenthCastro",
-      "name": "17th & Castro",
+      "id": "castroPlaza",
+      "name": "Castro Plaza",
       "kind": "streetLevel",
       "lines": [
         "24",
@@ -25978,7 +25691,7 @@
       "longitude": -122.434991,
       "transferStations": [
         "castro",
-        "seventeenthCastro"
+        "castroPlaza"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -28134,9 +27847,8 @@
       "longitude": -122.412141,
       "transferStations": [
         "beachMason",
-        "beachStockton",
-        "embarcaderoStockton",
-        "jeffersonPowell"
+        "jeffersonPowell",
+        "pier39"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -32311,7 +32023,7 @@
       "longitude": -122.409379,
       "transferStations": [
         "market5",
-        "marketTaylor"
+        "market6"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -37189,8 +36901,8 @@
       "longitude": -122.43366,
       "transferStations": [
         "castro",
+        "castroPlaza",
         "marketNoe",
-        "seventeenthCastro",
         "seventeenthNoe"
       ],
       "transferAgencies": [],
@@ -37217,7 +36929,7 @@
       "longitude": -122.434979,
       "transferStations": [
         "castro",
-        "seventeenthCastro",
+        "castroPlaza",
         "seventeenthNoe"
       ],
       "transferAgencies": [],
@@ -37938,8 +37650,7 @@
       "latitude": 37.786642,
       "longitude": -122.405629,
       "transferStations": [
-        "fourthMarket",
-        "marketStockton",
+        "market4",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -38965,19 +38676,26 @@
       ]
     },
     {
-      "id": "embarcaderoStockton",
-      "name": "Embarcadero & Stockton",
+      "id": "pier39",
+      "name": "Pier 39",
       "kind": "streetLevel",
       "lines": [
         "39",
         "FBUS",
         "LOWL"
       ],
-      "latitude": 37.808351,
-      "longitude": -122.410287,
+      "latitude": 37.808096,
+      "longitude": -122.410549,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "13095",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.807841,
+          "longitude": -122.41081
+        },
         {
           "id": "14530",
           "heading": "westbound",
@@ -49467,8 +49185,7 @@
       "longitude": -122.395033,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -49499,8 +49216,7 @@
       "longitude": -122.397336,
       "transferStations": [
         "embarcadero",
-        "mainMarket",
-        "marketDrumm"
+        "marketEmbarcaderoSubway"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -49537,8 +49253,7 @@
       "latitude": 37.793354,
       "longitude": -122.398782,
       "transferStations": [
-        "embarcadero",
-        "mainMarket"
+        "embarcadero"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -50790,28 +50505,6 @@
       ]
     },
     {
-      "id": "beachStockton",
-      "name": "Beach & Stockton",
-      "kind": "streetLevel",
-      "lines": [
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.807841,
-      "longitude": -122.41081,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13095",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.807841,
-          "longitude": -122.41081
-        }
-      ]
-    },
-    {
       "id": "jeffersonTaylor",
       "name": "Jefferson & Taylor",
       "kind": "streetLevel",
@@ -51059,7 +50752,7 @@
       ]
     },
     {
-      "id": "donCheeWaysteuart",
+      "id": "donCheeWaySteuart",
       "name": "Don Chee Way/Steuart",
       "kind": "streetLevel",
       "lines": [
@@ -51121,8 +50814,8 @@
       ]
     },
     {
-      "id": "marketLaguna",
-      "name": "Market & Laguna",
+      "id": "marketGuerrero",
+      "name": "Market & Guerrero/Laguna",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -51131,11 +50824,18 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.770953,
-      "longitude": -122.424666,
+      "latitude": 37.770761,
+      "longitude": -122.424819,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15675",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77057,
+          "longitude": -122.424971
+        },
         {
           "id": "15681",
           "heading": "westbound",
@@ -51146,58 +50846,8 @@
       ]
     },
     {
-      "id": "marketBuchanan",
-      "name": "Market & Buchanan",
-      "kind": "streetLevel",
-      "lines": [
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.769786,
-      "longitude": -122.426149,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15659",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.769786,
-          "longitude": -122.426149
-        }
-      ]
-    },
-    {
-      "id": "marketGuerrero",
-      "name": "Market & Guerrero",
-      "kind": "streetLevel",
-      "lines": [
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.77057,
-      "longitude": -122.424971,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15675",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.77057,
-          "longitude": -122.424971
-        }
-      ]
-    },
-    {
       "id": "marketDolores",
-      "name": "Market & Dolores",
+      "name": "Market & Dolores/Buchanan",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -51206,8 +50856,8 @@
         "NBUS",
         "NOWL"
       ],
-      "latitude": 37.76888,
-      "longitude": -122.427103,
+      "latitude": 37.769333,
+      "longitude": -122.426626,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -51217,6 +50867,13 @@
           "name": null,
           "latitude": 37.76888,
           "longitude": -122.427103
+        },
+        {
+          "id": "15659",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.769786,
+          "longitude": -122.426149
         }
       ]
     },
