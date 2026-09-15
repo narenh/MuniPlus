@@ -8,6 +8,8 @@ const STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 // A walking path is meaningless at city zoom; it only means something once the
 // blocks it crosses are on screen.
 const TRANSFER_MINZOOM = 13.6;
+// Where poles stop being a cluster of dots and become individually editable.
+const POLE_MINZOOM = 15;
 const SF = { center: [-122.4355, 37.7605], zoom: 11.9 };
 
 export let map = null;
@@ -180,6 +182,40 @@ function platformFeatures() {
   return { type: 'FeatureCollection', features: feats };
 }
 
+/**
+ * A short leader from each station's centre to each of its poles.
+ *
+ * An underground station puts every pole within metres of the centre, so
+ * without these the poles are an indistinguishable pile on top of the station
+ * dot. They also make it obvious which station a pole belongs to once you drag
+ * it away from the centre - which is the point of moving an underground
+ * platform out onto its real street entrance.
+ */
+function leaderFeatures() {
+  const active = store.activeLine;
+  const feats = [];
+  for (const s of store.doc.stations) {
+    const ls = linesOf(s.id);
+    const on = !active || ls.some(l => l.id === active);
+    const primary = (active && on ? ls.find(l => l.id === active) : ls[0]) || null;
+    for (const p of s.platforms) {
+      feats.push({
+        type: 'Feature',
+        properties: {
+          color: primary?.color || '#7c8598',
+          selected: store.selStation === s.id ? 1 : 0,
+          active: on ? 1 : 0,
+        },
+        geometry: {
+          type: 'LineString',
+          coordinates: [[s.longitude, s.latitude], [p.longitude, p.latitude]],
+        },
+      });
+    }
+  }
+  return { type: 'FeatureCollection', features: feats };
+}
+
 /** Stable small int id, because MapLibre feature-state needs numeric ids. */
 const idCache = new Map();
 let idSeq = 1;
@@ -269,6 +305,7 @@ function addSources() {
   map.addSource('transfer-heads', { type: 'geojson', data: tf.heads });
   map.addSource('stations', { type: 'geojson', data: stationFeatures() });
   map.addSource('platforms', { type: 'geojson', data: platformFeatures() });
+  map.addSource('leaders', { type: 'geojson', data: leaderFeatures() });
 }
 
 const dimmed = (on, a, b) => ['case', ['==', ['get', 'active'], 1], a, b];
@@ -365,6 +402,54 @@ function addLayers() {
     },
   });
 
+  // --- station nodes
+  map.addLayer({
+    id: 'muni-station-glow', type: 'circle', source: 'stations',
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 7, 15, 17, 18, 26],
+      'circle-color': ['get', 'color'],
+      'circle-opacity': ['case', ['==', ['get', 'selected'], 1], 0.5, 0],
+      'circle-blur': 0.6,
+    },
+  });
+  map.addLayer({
+    id: 'muni-station', type: 'circle', source: 'stations',
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'],
+        11, ['case', ['==', ['get', 'kind'], 'underground'], 5, 3.4],
+        14, ['case', ['==', ['get', 'kind'], 'underground'], 7.5, 5.4],
+        18, ['case', ['==', ['get', 'kind'], 'underground'], 13, 9.5]],
+      'circle-color': ['case',
+        ['==', ['get', 'kind'], 'underground'], '#ffffff',
+        ['==', ['get', 'interchange'], 1], '#e9edf6',
+        '#0a0c12'],
+      'circle-stroke-width': ['case',
+        ['==', ['get', 'selected'], 1], 3.5,
+        ['boolean', ['feature-state', 'hover'], false], 3, 2.4],
+      'circle-stroke-color': ['case',
+        ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
+      'circle-opacity': dimmed(true, 1, 0.3),
+      'circle-stroke-opacity': dimmed(true, 1, 0.28),
+    },
+  });
+
+  // --- leaders from a station to each of its poles
+  map.addLayer({
+    id: 'muni-leader', type: 'line', source: 'leaders',
+    minzoom: POLE_MINZOOM,
+    layout: { 'line-cap': 'round' },
+    paint: {
+      'line-color': ['get', 'color'],
+      'line-width': ['interpolate', ['linear'], ['zoom'], 15, 1, 19, 2],
+      'line-opacity': ['interpolate', ['linear'], ['zoom'],
+        POLE_MINZOOM, 0,
+        POLE_MINZOOM + 0.8, ['case',
+          ['==', ['get', 'selected'], 1], 0.9,
+          ['==', ['get', 'active'], 1], 0.32, 0.08]],
+      'line-dasharray': [1.5, 1.5],
+    },
+  });
+
   // --- platform poles
   map.addLayer({
     id: 'muni-platform-halo', type: 'circle', source: 'platforms',
@@ -414,38 +499,28 @@ function addLayers() {
     },
   });
 
-  // --- station nodes
+  // --- labels
+  // --- the stop code, which is the thing you actually need to read off a pole
   map.addLayer({
-    id: 'muni-station-glow', type: 'circle', source: 'stations',
-    paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 7, 15, 17, 18, 26],
-      'circle-color': ['get', 'color'],
-      'circle-opacity': ['case', ['==', ['get', 'selected'], 1], 0.5, 0],
-      'circle-blur': 0.6,
+    id: 'muni-platform-label', type: 'symbol', source: 'platforms',
+    minzoom: 15.6,
+    layout: {
+      'text-field': ['get', 'code'],
+      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      'text-size': ['interpolate', ['linear'], ['zoom'], 15.6, 9.5, 19, 12.5],
+      'text-offset': [0, -1.4],
+      'text-anchor': 'bottom',
+      'text-padding': 2,
+      'text-optional': true,
     },
-  });
-  map.addLayer({
-    id: 'muni-station', type: 'circle', source: 'stations',
     paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'],
-        11, ['case', ['==', ['get', 'kind'], 'underground'], 5, 3.4],
-        14, ['case', ['==', ['get', 'kind'], 'underground'], 7.5, 5.4],
-        18, ['case', ['==', ['get', 'kind'], 'underground'], 13, 9.5]],
-      'circle-color': ['case',
-        ['==', ['get', 'kind'], 'underground'], '#ffffff',
-        ['==', ['get', 'interchange'], 1], '#e9edf6',
-        '#0a0c12'],
-      'circle-stroke-width': ['case',
-        ['==', ['get', 'selected'], 1], 3.5,
-        ['boolean', ['feature-state', 'hover'], false], 3, 2.4],
-      'circle-stroke-color': ['case',
-        ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
-      'circle-opacity': dimmed(true, 1, 0.3),
-      'circle-stroke-opacity': dimmed(true, 1, 0.28),
+      'text-color': ['case', ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
+      'text-halo-color': '#05060a',
+      'text-halo-width': 1.8,
+      'text-opacity': dimmed(true, 1, 0.2),
     },
   });
 
-  // --- labels
   map.addLayer({
     id: 'muni-label', type: 'symbol', source: 'stations',
     minzoom: 12.2,
@@ -592,13 +667,17 @@ export function refresh(which = 'all') {
     map.getSource('transfer-heads').setData(tf.heads);
   }
   if (which === 'all' || which === 'stations') map.getSource('stations').setData(stationFeatures());
-  if (which === 'all' || which === 'platforms') map.getSource('platforms').setData(platformFeatures());
+  if (which === 'all' || which === 'platforms') {
+    map.getSource('platforms').setData(platformFeatures());
+    map.getSource('leaders').setData(leaderFeatures());
+  }
 }
 
 export function applyLayerToggles() {
   if (!map?.getLayer('muni-platform')) return;
   const L = store.layers;
-  for (const id of ['muni-platform', 'muni-platform-halo', 'muni-platform-arrow']) {
+  for (const id of ['muni-platform', 'muni-platform-halo', 'muni-platform-arrow',
+                    'muni-platform-label', 'muni-leader']) {
     map.setLayoutProperty(id, 'visibility', L.platforms ? 'visible' : 'none');
   }
   map.setLayoutProperty('muni-label', 'visibility', L.labels ? 'visible' : 'none');

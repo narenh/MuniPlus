@@ -97,6 +97,17 @@ Keys: `⌘K` find anything · `⌘S` save · `⌘Z` / `⇧⌘Z` undo, redo · `�
 focused line · `F` fit line · `A` all lines · `P` `L` `T` toggle poles, labels,
 transfers · `N` reset bearing · `Esc` deselect.
 
+### Stations and their platforms
+
+A station and its poles are drawn as separate things. From about z15 each pole
+is tied to its station by a dashed leader, and from z15.6 it carries its stop
+code, so you can tell two poles apart and see which station each belongs to.
+
+Poles are drawn **above** station dots, which matters underground: Powell's two
+platforms sit 38 m from the station centre, so under the station dot they were
+neither visible nor clickable. Now you can grab one and drag it out to the real
+street entrance, and the leader keeps showing what it belongs to.
+
 ### Saving
 
 **Write only** writes the file and leaves it uncommitted, so you can inspect it
