@@ -13,7 +13,7 @@
         "clayKearny",
         "clayGrant",
         "clayStockton",
-        "clayPowell",
+        "powellClay",
         "clayMason",
         "clayTaylor",
         "clayJones",
@@ -30,7 +30,7 @@
         "sacramentoKearny",
         "sacramentoGrant",
         "sacramentoStockton",
-        "sacramentoPowell",
+        "powellSacramento",
         "sacramentoSprouleLn",
         "sacramentoJones",
         "leavenworthSacramento",
@@ -87,7 +87,7 @@
         "market1",
         "postKearny",
         "postGrant",
-        "postPowell",
+        "powellPost",
         "postTaylor",
         "jonesPost",
         "leavenworthPost",
@@ -104,7 +104,7 @@
         "sutterSansome",
         "kearnySutter",
         "stocktonSutter",
-        "sutterPowell",
+        "powellSutter",
         "sutterMason",
         "sutterTaylor",
         "jonesSutter",
@@ -146,7 +146,7 @@
         "marketMontgomery",
         "fourthMarket",
         "marketGrant",
-        "marketPowell",
+        "powellMarket",
         "marketMason",
         "mcallisterJones",
         "mcallisterHyde",
@@ -353,7 +353,7 @@
         "columbusKearny",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -415,7 +415,6 @@
         "genevaMadrid",
         "genevaMission",
         "genevaCayuga",
-        "cayugaOnondaga",
         "genevaAvebalboaParkBart",
         "genevaHowth",
         "cityCollegeTerminal"
@@ -520,11 +519,11 @@
         "pacificVanNess",
         "pacificPolk",
         "pacificLarkin",
-        "pacificHyde",
+        "hydePacific",
         "pacificLeavenworth",
         "pacificJones",
         "pacificTaylor",
-        "pacificMason",
+        "masonPacific",
         "pacificPowell",
         "stocktonPacific",
         "pacificGrant",
@@ -535,7 +534,7 @@
         "sacramentoSansome",
         "sacramentoBattery",
         "sacramentoDavis",
-        "drummCalifornia",
+        "californiaDrumm",
         "mainMarket",
         "howardMain",
         "mainFolsom",
@@ -839,6 +838,7 @@
         "evansMarin",
         "evansSelby",
         "evansQuint",
+        "evansPhelps",
         "thirdEvans",
         "evansNewhall",
         "evansMendell",
@@ -1023,7 +1023,7 @@
         "santaClaraSaintFrancis",
         "saintFrancisSantaAna",
         "saintFrancisSanFernandoWay",
-        "sloatStFrancis",
+        "sloatWestPortal",
         "nineteenthSloat",
         "sloat21",
         "sloatCrestlake",
@@ -1092,7 +1092,7 @@
         "noe29",
         "thirtiethNoe",
         "thirtiethSanchez",
-        "churchDay",
+        "thirtiethChurch",
         "dolores30",
         "thirtiethMission",
         "cortlandMission",
@@ -1157,14 +1157,14 @@
         "leavenworthJackson",
         "clayLeavenworth",
         "leavenworthSacramento",
-        "leavenworthCalifornia",
+        "californiaLeavenworth",
         "leavenworthPine",
         "pacificVanNess",
         "pacificVanNess",
         "polkWashington",
         "washingtonLarkin",
         "clayHyde",
-        "hydeCalifornia",
+        "californiaHyde",
         "hydePine",
         "bushHyde",
         "bushLeavenworth",
@@ -1229,14 +1229,13 @@
         "powellBeach",
         "northPointMason",
         "northPointJones",
-        "northPointHyde",
+        "hydeNorthPoint",
         "northPointPolk",
         "vanNessNorthPoint",
         "vanNessBay",
         "vanNessChestnut",
         "lombardGough",
         "lombardLaguna",
-        "polkFrancisco",
         "fillmoreLombard",
         "lombardPierce",
         "lombardDivisadero",
@@ -1308,7 +1307,6 @@
         "sunsetLawton",
         "noriegaSunset",
         "sunsetOrtega",
-        "thirtySeventhOrtega",
         "sunsetQuintara",
         "sunsetRivera",
         "taravalSunset",
@@ -1343,7 +1341,6 @@
         "sanJoseOcean",
         "oceanOtsego",
         "oceanCayuga",
-        "cayugaOnondaga",
         "persiaMission",
         "persiaParis",
         "persiaMadrid",
@@ -1414,7 +1411,7 @@
         "columbusFrancisco",
         "columbusBay",
         "columbusNorthPoint",
-        "northPointHyde",
+        "hydeNorthPoint",
         "northPointPolk",
         "vanNessNorthPoint",
         "vanNessBay",
@@ -1746,7 +1743,7 @@
         "fourteenthCastro",
         "fourteenthNoe",
         "fourteenthSanchez",
-        "churchMarket",
+        "fourteenthChurch",
         "marketSanchez",
         "marketNoe",
         "marketCastro",
@@ -1797,7 +1794,7 @@
         "market1",
         "market3",
         "ofarrellGrant",
-        "ofarrellPowell",
+        "powellOfarrell",
         "ofarrellTaylor",
         "leavenworthOfarrell",
         "larkinOfarrell",
@@ -1808,7 +1805,7 @@
         "marketMontgomery",
         "gearyKearny",
         "gearyStockton",
-        "gearyPowell",
+        "powellGeary",
         "gearyTaylor",
         "gearyJones",
         "gearyLeavenworth",
@@ -1833,7 +1830,6 @@
         "sixthGeary",
         "geary9",
         "gearyParkPresidio",
-        "thirtySecondAnza",
         "geary17",
         "geary20",
         "geary23",
@@ -1866,7 +1862,7 @@
       "color": "#005B95",
       "stationIds": [
         "northPointStockton",
-        "theEmbarcaderoStockton",
+        "embarcaderoStockton",
         "powellBeach",
         "powellNorthPoint",
         "powellBay",
@@ -2057,7 +2053,6 @@
         "silverHolyoke",
         "silverBoylston",
         "silverMerrill",
-        "girardBurrows",
         "sanBrunoSilver",
         "bayshoreSilver",
         "silverSantaFe",
@@ -2121,11 +2116,11 @@
         "stocktonPacific",
         "stocktonColumbus",
         "columbusUnion",
-        "unionMason",
+        "masonUnion",
         "unionTaylor",
         "unionJones",
         "unionLeavenworth",
-        "unionHyde",
+        "hydeUnion",
         "unionLarkin",
         "polkUnion",
         "unionVanNess",
@@ -2178,7 +2173,6 @@
         "twentyFourthDolores",
         "church24",
         "twentyFourthSanchez",
-        "twentyFifthNoe",
         "twentyFourthNoe",
         "twentyFourthCastro",
         "castro25",
@@ -2316,10 +2310,9 @@
         "diamondHeightsGoldMine",
         "diamondHeightsDiamond",
         "addisonDiamondHeights",
+        "diamondHeightsGoldMine2",
         "diamondHeightsBerkeley",
         "diamondDiamondHeights",
-        "diamondHeightsGoldMine2",
-        "diamondHeightsBerkeleyWay",
         "diamondStSouthdiamondHts",
         "diamondConrad",
         "diamondMoffitt",
@@ -2404,7 +2397,6 @@
         "phelpsEgbert",
         "phelpsDonner",
         "baconSanBruno",
-        "girardBurrows",
         "baconGirard",
         "baconGoettingen",
         "baconSomerset",
@@ -2556,9 +2548,10 @@
         "westPortalVicente",
         "westPortal14",
         "fifteenthWestPortal",
-        "sloatStFrancis",
+        "juniperoSerraSloat",
+        "sloatWestPortal",
         "juniperoSerraOcean",
-        "juniperoSerraOcean",
+        "eucalyptusJuniperoSerra",
         "nineteenthEucalyptus",
         "20thAvestonestownMall",
         "20thAvstonestownMall",
@@ -2642,7 +2635,7 @@
         "marketSansome",
         "marketMontgomery",
         "marketGrant",
-        "marketPowell",
+        "powellMarket",
         "marketMason",
         "mcallisterJones",
         "mcallisterVanNess",
@@ -2854,7 +2847,7 @@
         "vanNessBay",
         "vanNessNorthPoint",
         "northPointPolk",
-        "northPointHyde",
+        "hydeNorthPoint",
         "columbusNorthPoint",
         "columbusBay",
         "columbusFrancisco",
@@ -2876,14 +2869,15 @@
         "thirdFolsom",
         "thirdBryant",
         "thirdBrannan",
+        "fourthKingT",
         "gearyStockton",
         "fourthMarket",
         "mission4",
         "fourthFolsom",
         "fourthBrannan",
         "fourthTownsend",
-        "fourthKingT",
-        "thirdMissionRock",
+        "fourthBerry",
+        "third4",
         "thirdWarriorsWay",
         "thirdGeneFriendWay",
         "thirdMariposa",
@@ -2901,6 +2895,7 @@
         "thirdKirkwoodLaSalle",
         "thirdOakdalePalou",
         "thirdRevereShafter",
+        "thirdBayview",
         "thirdWilliams",
         "thirdCarroll",
         "thirdFitzgerald",
@@ -2942,6 +2937,7 @@
         "oceanSanLeandro",
         "juniperoSerraOcean",
         "sloatStFrancis",
+        "sloatWestPortal",
         "westPortal14",
         "ulloaWestPortal"
       ]
@@ -3014,22 +3010,22 @@
       "shortName": "CA",
       "color": "#B49A36",
       "stationIds": [
-        "drummCalifornia",
+        "californiaDrumm",
         "californiaDavis",
         "californiaDavis",
         "californiaFront",
         "californiaBattery",
-        "sansomeCalifornia",
+        "californiaSansome",
         "californiaMontgomery",
-        "kearnyCalifornia",
+        "californiaKearny",
         "californiaGrant",
         "californiaStockton",
         "californiaPowell",
         "californiaMason",
         "californiaTaylor",
         "californiaJones",
-        "leavenworthCalifornia",
-        "hydeCalifornia",
+        "californiaLeavenworth",
+        "californiaHyde",
         "californiaLarkin",
         "californiaPolk",
         "californiaVanNess"
@@ -3041,16 +3037,16 @@
       "shortName": "PH",
       "color": "#B49A36",
       "stationIds": [
-        "marketPowell",
-        "ofarrellPowell",
-        "gearyPowell",
-        "postPowell",
-        "sutterPowell",
+        "powellMarket",
+        "powellOfarrell",
+        "powellGeary",
+        "powellPost",
+        "powellSutter",
         "powellBush",
         "powellPine",
         "californiaPowell",
-        "sacramentoPowell",
-        "clayPowell",
+        "powellSacramento",
+        "powellClay",
         "powellJackson",
         "masonJackson",
         "jacksonTaylor",
@@ -3063,17 +3059,17 @@
         "washingtonJones",
         "washingtonLeavenworth",
         "jacksonHyde",
-        "pacificHyde",
+        "hydePacific",
         "hydeBroadway",
         "hydeVallejo",
         "hydeGreen",
-        "unionHyde",
+        "hydeUnion",
         "hydeFilbert",
         "hydeGreenwich",
         "hydeLombard",
         "hydeChestnut",
         "hydeBay",
-        "northPointHyde",
+        "hydeNorthPoint",
         "hydeBeach"
       ]
     },
@@ -3083,25 +3079,25 @@
       "shortName": "PM",
       "color": "#B49A36",
       "stationIds": [
-        "marketPowell",
-        "ofarrellPowell",
-        "gearyPowell",
-        "postPowell",
-        "sutterPowell",
+        "powellMarket",
+        "powellOfarrell",
+        "powellGeary",
+        "powellPost",
+        "powellSutter",
         "powellBush",
         "powellPine",
         "californiaPowell",
-        "sacramentoPowell",
-        "clayPowell",
+        "powellSacramento",
+        "powellClay",
         "washingtonPowell",
         "washingtonMason",
         "powellJackson",
         "masonJackson",
-        "pacificMason",
+        "masonPacific",
         "masonBroadway",
         "masonVallejo",
         "masonGreen",
-        "unionMason",
+        "masonUnion",
         "masonFilbert",
         "masonGreenwich",
         "columbusLombard",
@@ -3183,7 +3179,7 @@
         "bealeMission",
         "davisPine",
         "californiaBattery",
-        "sansomeCalifornia",
+        "californiaSansome",
         "claySansome",
         "clayMontgomery",
         "vanNessChestnut",
@@ -3211,7 +3207,7 @@
         "market1",
         "market3",
         "ofarrellGrant",
-        "ofarrellPowell",
+        "powellOfarrell",
         "ofarrellTaylor",
         "ofarrellVanNess",
         "fremontMarket",
@@ -3219,7 +3215,7 @@
         "marketMontgomery",
         "gearyKearny",
         "gearyStockton",
-        "gearyPowell",
+        "powellGeary",
         "gearyLeavenworth",
         "gearyVanNess",
         "gearyLaguna",
@@ -3282,7 +3278,7 @@
         "sanBrunoFelton",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -3331,7 +3327,7 @@
         "columbusKearny",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -3394,15 +3390,14 @@
         "beachStockton",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "theEmbarcaderoStockton",
-        "theEmbarcaderoBay",
-        "theEmbarcaderoSansome",
+        "embarcaderoStockton",
+        "embarcaderoBay",
         "embarcaderoSansome",
-        "theEmbarcaderoGreenwich",
-        "theEmbarcaderoGreen",
-        "theEmbarcaderoBroadway",
-        "theEmbarcaderoWashington",
-        "theEmbarcaderoFerryBuilding",
+        "embarcaderoGreenwich",
+        "embarcaderoGreen",
+        "embarcaderoBroadway",
+        "embarcaderoWashington",
+        "embarcaderoFerryBuilding",
         "donCheeWaysteuart",
         "marketDrumm",
         "marketBattery",
@@ -3483,8 +3478,9 @@
         "woodsidePortola",
         "ulloaClaremont",
         "westPortal14",
+        "sloatWestPortal",
         "sloatStFrancis",
-        "sloatStFrancis",
+        "juniperoSerraSloat",
         "juniperoSerraOcean",
         "oceanSanLeandro",
         "oceanAptos",
@@ -3505,17 +3501,16 @@
         "jonesBeach",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "theEmbarcaderoStockton",
+        "embarcaderoStockton",
         "beachMason",
         "beachStockton",
-        "theEmbarcaderoBay",
+        "embarcaderoBay",
         "embarcaderoSansome",
-        "theEmbarcaderoSansome",
-        "theEmbarcaderoGreenwich",
-        "theEmbarcaderoGreen",
-        "theEmbarcaderoBroadway",
-        "theEmbarcaderoWashington",
-        "theEmbarcaderoFerryBuilding",
+        "embarcaderoGreenwich",
+        "embarcaderoGreen",
+        "embarcaderoBroadway",
+        "embarcaderoWashington",
+        "embarcaderoFerryBuilding",
         "donCheeWaysteuart",
         "marketBeale",
         "market1",
@@ -3588,7 +3583,7 @@
         "townsend5",
         "fourthTownsend",
         "secondKing",
-        "theEmbarcaderoTownsend",
+        "embarcaderoTownsend",
         "embarcaderoBrannan",
         "embarcaderoFolsom",
         "marketSteuart",
@@ -3652,10 +3647,10 @@
         "townsend5",
         "fourthTownsend",
         "secondKing",
-        "theEmbarcaderoTownsend",
+        "embarcaderoTownsend",
         "embarcaderoBrannan",
         "embarcaderoFolsom",
-        "theEmbarcaderoHoward",
+        "embarcaderoHoward",
         "steuartMission",
         "donCheeWaysteuart",
         "marketSteuart",
@@ -3737,6 +3732,7 @@
         "thirdCarroll",
         "thirdUnderwood",
         "thirdWilliams",
+        "thirdBayview",
         "thirdRevereShafter",
         "thirdOakdalePalou",
         "thirdKirkwoodLaSalle",
@@ -3748,12 +3744,13 @@
         "thirdMariposa",
         "thirdGeneFriendWay",
         "thirdWarriorsWay",
-        "thirdMissionRock",
-        "fourthKingT",
+        "third4",
+        "fourthBerry",
         "fourthBrannan",
         "fourthFolsom",
         "fourthMarket",
         "gearyStockton",
+        "fourthKingT",
         "thirdBrannan",
         "thirdFolsom",
         "gearyKearny",
@@ -3779,7 +3776,7 @@
       "platforms": [
         {
           "id": "14015",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.79532,
           "longitude": -122.397473
@@ -3823,18 +3820,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "16328",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.79447,
+          "longitude": -122.40149
+        },
+        {
           "id": "14028",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.794778,
           "longitude": -122.401325
-        },
-        {
-          "id": "16328",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.79447,
-          "longitude": -122.40149
         }
       ]
     },
@@ -3948,7 +3945,7 @@
       ]
     },
     {
-      "id": "clayPowell",
+      "id": "powellClay",
       "name": "Powell & Clay",
       "kind": "streetLevel",
       "lines": [
@@ -4212,7 +4209,9 @@
       "latitude": 37.79455,
       "longitude": -122.3976,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -4377,7 +4376,7 @@
       ]
     },
     {
-      "id": "sacramentoPowell",
+      "id": "powellSacramento",
       "name": "Powell & Sacramento",
       "kind": "streetLevel",
       "lines": [
@@ -4810,7 +4809,7 @@
       "platforms": [
         {
           "id": "16489",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.789329,
           "longitude": -122.435556
@@ -4831,7 +4830,7 @@
       "platforms": [
         {
           "id": "16486",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.78884,
           "longitude": -122.43561
@@ -5180,13 +5179,6 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "17844",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.785007,
-          "longitude": -122.464275
-        },
-        {
           "id": "13825",
           "heading": "eastbound",
           "name": null,
@@ -5199,6 +5191,13 @@
           "name": null,
           "latitude": 37.785069,
           "longitude": -122.464641
+        },
+        {
+          "id": "17844",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785007,
+          "longitude": -122.464275
         }
       ]
     },
@@ -5546,18 +5545,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13546",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.783419,
+          "longitude": -122.492442
+        },
+        {
           "id": "13547",
           "heading": "southbound",
           "name": null,
           "latitude": 37.783429,
           "longitude": -122.492553
-        },
-        {
-          "id": "13546",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.783419,
-          "longitude": -122.492442
         }
       ]
     },
@@ -5680,18 +5679,18 @@
           "longitude": -122.493215
         },
         {
-          "id": "14277",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.779735,
-          "longitude": -122.493112
-        },
-        {
           "id": "13558",
           "heading": "southbound",
           "name": null,
           "latitude": 37.779815,
           "longitude": -122.493388
+        },
+        {
+          "id": "13560",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.779566,
+          "longitude": -122.493376
         },
         {
           "id": "14279",
@@ -5701,11 +5700,11 @@
           "longitude": -122.493399
         },
         {
-          "id": "13560",
+          "id": "14277",
           "heading": "westbound",
           "name": null,
-          "latitude": 37.779566,
-          "longitude": -122.493376
+          "latitude": 37.779735,
+          "longitude": -122.493112
         },
         {
           "id": "14278",
@@ -5729,7 +5728,10 @@
       ],
       "latitude": 37.794275,
       "longitude": -122.394424,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -5762,7 +5764,10 @@
       "latitude": 37.7934,
       "longitude": -122.39528,
       "transferStations": [
-        "embarcadero"
+        "donCheeWaysteuart",
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5791,7 +5796,9 @@
       "latitude": 37.792572,
       "longitude": -122.397016,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5854,6 +5861,10 @@
       "latitude": 37.78896,
       "longitude": -122.402739,
       "transferStations": [
+        "market2",
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -5891,7 +5902,7 @@
       ]
     },
     {
-      "id": "postPowell",
+      "id": "powellPost",
       "name": "Powell & Post",
       "kind": "streetLevel",
       "lines": [
@@ -6179,7 +6190,11 @@
       ],
       "latitude": 37.794409,
       "longitude": -122.394538,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding",
+        "marketDrumm"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -6220,9 +6235,7 @@
       ],
       "latitude": 37.793473,
       "longitude": -122.396178,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -6244,7 +6257,10 @@
       "latitude": 37.79192,
       "longitude": -122.39815,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -6268,6 +6284,8 @@
       "latitude": 37.790214,
       "longitude": -122.401338,
       "transferStations": [
+        "market2",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -6358,7 +6376,7 @@
       ]
     },
     {
-      "id": "sutterPowell",
+      "id": "powellSutter",
       "name": "Powell & Sutter",
       "kind": "streetLevel",
       "lines": [
@@ -6938,7 +6956,8 @@
       "latitude": 37.791939,
       "longitude": -122.396879,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7009,6 +7028,10 @@
       "latitude": 37.786597,
       "longitude": -122.404586,
       "transferStations": [
+        "fourthMarket",
+        "market3",
+        "marketKearny",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -7034,6 +7057,8 @@
       "latitude": 37.78484,
       "longitude": -122.406834,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "powell"
       ],
       "transferAgencies": [],
@@ -7065,9 +7090,7 @@
       ],
       "latitude": 37.783395,
       "longitude": -122.408657,
-      "transferStations": [
-        "powell"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7104,7 +7127,8 @@
       "latitude": 37.780889,
       "longitude": -122.413587,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "market7"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7131,7 +7155,10 @@
       "latitude": 37.791645,
       "longitude": -122.398151,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7157,6 +7184,9 @@
       "latitude": 37.790013,
       "longitude": -122.400491,
       "transferStations": [
+        "market1",
+        "market2",
+        "marketBattery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -7183,6 +7213,10 @@
       "latitude": 37.78849,
       "longitude": -122.40248,
       "transferStations": [
+        "market2",
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -7220,10 +7254,7 @@
       ],
       "latitude": 37.785411,
       "longitude": -122.405531,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7253,6 +7284,8 @@
       "latitude": 37.78639,
       "longitude": -122.40516,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -7267,7 +7300,7 @@
       ]
     },
     {
-      "id": "marketPowell",
+      "id": "powellMarket",
       "name": "Powell & Market",
       "kind": "streetLevel",
       "lines": [
@@ -7279,6 +7312,7 @@
       "latitude": 37.784474,
       "longitude": -122.407544,
       "transferStations": [
+        "market5",
         "powell"
       ],
       "transferAgencies": [],
@@ -7316,7 +7350,10 @@
       ],
       "latitude": 37.78285,
       "longitude": -122.40964,
-      "transferStations": [],
+      "transferStations": [
+        "market5",
+        "marketTaylor"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7339,7 +7376,10 @@
       ],
       "latitude": 37.781166,
       "longitude": -122.412189,
-      "transferStations": [],
+      "transferStations": [
+        "market6",
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7771,18 +7811,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "16479",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.774604,
+          "longitude": -122.454714
+        },
+        {
           "id": "14235",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.774756,
           "longitude": -122.454519
-        },
-        {
-          "id": "16479",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.774604,
-          "longitude": -122.454714
         }
       ]
     },
@@ -7909,18 +7949,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13183",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.773809,
+          "longitude": -122.463745
+        },
+        {
           "id": "14733",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.773532,
           "longitude": -122.463837
-        },
-        {
-          "id": "13183",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.773809,
-          "longitude": -122.463745
         },
         {
           "id": "14732",
@@ -8437,18 +8477,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "14844",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.77169,
+          "longitude": -122.50984
+        },
+        {
           "id": "14228",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.77134,
           "longitude": -122.50939
-        },
-        {
-          "id": "14844",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.77169,
-          "longitude": -122.50984
         }
       ]
     },
@@ -8509,7 +8549,9 @@
       "latitude": 37.779346,
       "longitude": -122.415158,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "eighthMarket",
+        "marketHyde"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -8531,7 +8573,10 @@
       ],
       "latitude": 37.777709,
       "longitude": -122.416852,
-      "transferStations": [],
+      "transferStations": [
+        "market9",
+        "marketLarkin"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -8958,13 +9003,6 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15002",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.773926,
-          "longitude": -122.446003
-        },
-        {
           "id": "15714",
           "heading": "northbound",
           "name": null,
@@ -8972,18 +9010,25 @@
           "longitude": -122.446049
         },
         {
-          "id": "15001",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.773979,
-          "longitude": -122.445991
-        },
-        {
           "id": "15715",
           "heading": "southbound",
           "name": null,
           "latitude": 37.77402,
           "longitude": -122.44624
+        },
+        {
+          "id": "15002",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773926,
+          "longitude": -122.446003
+        },
+        {
+          "id": "15001",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773979,
+          "longitude": -122.445991
         }
       ]
     },
@@ -9040,6 +9085,20 @@
           "longitude": -122.445304
         },
         {
+          "id": "15711",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.770152,
+          "longitude": -122.445384
+        },
+        {
+          "id": "15712",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.77031,
+          "longitude": -122.44542
+        },
+        {
           "id": "14958",
           "heading": "eastbound",
           "name": null,
@@ -9052,20 +9111,6 @@
           "name": null,
           "latitude": 37.770232,
           "longitude": -122.445476
-        },
-        {
-          "id": "15711",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.770152,
-          "longitude": -122.445384
-        },
-        {
-          "id": "15712",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.77031,
-          "longitude": -122.44542
         }
       ]
     },
@@ -9082,18 +9127,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "17025",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.76735,
-          "longitude": -122.444823
-        },
-        {
           "id": "15704",
           "heading": "southbound",
           "name": null,
           "latitude": 37.767511,
           "longitude": -122.444846
+        },
+        {
+          "id": "17025",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76735,
+          "longitude": -122.444823
         }
       ]
     },
@@ -9153,17 +9198,17 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "14717",
-          "heading": "southbound",
+          "id": "14078",
+          "heading": "northbound",
           "name": null,
-          "latitude": 37.7671,
+          "latitude": 37.76694,
           "longitude": -122.447917
         },
         {
-          "id": "14078",
-          "heading": "eastbound",
+          "id": "14717",
+          "heading": "westbound",
           "name": null,
-          "latitude": 37.76694,
+          "latitude": 37.7671,
           "longitude": -122.447917
         }
       ]
@@ -9212,14 +9257,14 @@
       "platforms": [
         {
           "id": "14081",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.765405,
           "longitude": -122.447608
         },
         {
           "id": "14082",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.765226,
           "longitude": -122.447757
@@ -9651,25 +9696,25 @@
           "longitude": -122.465827
         },
         {
-          "id": "14854",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.758524,
-          "longitude": -122.465804
-        },
-        {
-          "id": "14855",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.75839,
-          "longitude": -122.46605
-        },
-        {
           "id": "13218",
           "heading": "southbound",
           "name": null,
           "latitude": 37.758533,
           "longitude": -122.466022
+        },
+        {
+          "id": "14855",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.75839,
+          "longitude": -122.46605
+        },
+        {
+          "id": "14854",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.758524,
+          "longitude": -122.465804
         }
       ]
     },
@@ -9742,17 +9787,17 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15826",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.752778,
-          "longitude": -122.465631
-        },
-        {
           "id": "13226",
           "heading": "southbound",
           "name": null,
           "latitude": 37.752939,
+          "longitude": -122.465631
+        },
+        {
+          "id": "15826",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.752778,
           "longitude": -122.465631
         }
       ]
@@ -9778,7 +9823,7 @@
         },
         {
           "id": "15827",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.752885,
           "longitude": -122.466479
@@ -9939,7 +9984,7 @@
       "platforms": [
         {
           "id": "13247",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.748878,
           "longitude": -122.470706
@@ -10012,9 +10057,7 @@
       ],
       "latitude": 37.789353,
       "longitude": -122.401306,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10070,9 +10113,7 @@
       ],
       "latitude": 37.785777,
       "longitude": -122.405859,
-      "transferStations": [
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10165,9 +10206,7 @@
       ],
       "latitude": 37.780189,
       "longitude": -122.412813,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10225,9 +10264,7 @@
       ],
       "latitude": 37.778606,
       "longitude": -122.414826,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10290,9 +10327,7 @@
       ],
       "latitude": 37.775056,
       "longitude": -122.419321,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10328,9 +10363,7 @@
       ],
       "latitude": 37.779105,
       "longitude": -122.414379,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10392,9 +10425,7 @@
       ],
       "latitude": 37.775198,
       "longitude": -122.419252,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10422,7 +10453,9 @@
       ],
       "latitude": 37.773134,
       "longitude": -122.422427,
-      "transferStations": [],
+      "transferStations": [
+        "marketGough"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10763,7 +10796,7 @@
         },
         {
           "id": "14718",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.766413,
           "longitude": -122.453257
@@ -11048,18 +11081,18 @@
           "longitude": -122.477404
         },
         {
-          "id": "15309",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.765526,
-          "longitude": -122.47761
-        },
-        {
           "id": "17186",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.765437,
           "longitude": -122.477209
+        },
+        {
+          "id": "15309",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.765526,
+          "longitude": -122.47761
         }
       ]
     },
@@ -11299,7 +11332,7 @@
       "platforms": [
         {
           "id": "13431",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.754337,
           "longitude": -122.479611
@@ -11812,7 +11845,7 @@
       "platforms": [
         {
           "id": "15763",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.752934,
           "longitude": -122.507854
@@ -11850,7 +11883,9 @@
       ],
       "latitude": 37.807266,
       "longitude": -122.407556,
-      "transferStations": [],
+      "transferStations": [
+        "embarcaderoBay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -11925,12 +11960,15 @@
       ],
       "latitude": 37.80704,
       "longitude": -122.41038,
-      "transferStations": [],
+      "transferStations": [
+        "beachStockton",
+        "embarcaderoStockton"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
           "id": "15471",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.80688,
           "longitude": -122.410594
@@ -11955,7 +11993,10 @@
       ],
       "latitude": 37.806497,
       "longitude": -122.412176,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason",
+        "beachStockton"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -12202,7 +12243,7 @@
       ]
     },
     {
-      "id": "kearnyCalifornia",
+      "id": "californiaKearny",
       "name": "California & Kearny",
       "kind": "streetLevel",
       "lines": [
@@ -12280,6 +12321,9 @@
       "latitude": 37.788051,
       "longitude": -122.403461,
       "transferStations": [
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -12317,7 +12361,10 @@
       ],
       "latitude": 37.786373,
       "longitude": -122.40211,
-      "transferStations": [],
+      "transferStations": [
+        "market3",
+        "marketKearny"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -12718,7 +12765,9 @@
       ],
       "latitude": 37.784259,
       "longitude": -122.404117,
-      "transferStations": [],
+      "transferStations": [
+        "fourthMarket"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -12982,7 +13031,7 @@
         },
         {
           "id": "15904",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.723879,
           "longitude": -122.401576
@@ -13031,13 +13080,6 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15349",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.721443,
-          "longitude": -122.401154
-        },
-        {
           "id": "16360",
           "heading": "northbound",
           "name": null,
@@ -13045,18 +13087,25 @@
           "longitude": -122.40083
         },
         {
-          "id": "15350",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.721541,
-          "longitude": -122.401394
-        },
-        {
           "id": "16361",
           "heading": "southbound",
           "name": null,
           "latitude": 37.72175,
           "longitude": -122.40127
+        },
+        {
+          "id": "15349",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.721443,
+          "longitude": -122.401154
+        },
+        {
+          "id": "15350",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.721541,
+          "longitude": -122.401394
         }
       ]
     },
@@ -13326,18 +13375,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13793",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71062,
+          "longitude": -122.40389
+        },
+        {
           "id": "17520",
           "heading": "northbound",
           "name": null,
           "latitude": 37.709622,
           "longitude": -122.404654
-        },
-        {
-          "id": "13793",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.71062,
-          "longitude": -122.40389
         },
         {
           "id": "16847",
@@ -13524,7 +13573,7 @@
       "platforms": [
         {
           "id": "17026",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.713301,
           "longitude": -122.415486
@@ -13547,18 +13596,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "14937",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71201,
+          "longitude": -122.4159
+        },
+        {
           "id": "14938",
           "heading": "southbound",
           "name": null,
           "latitude": 37.712025,
           "longitude": -122.416047
-        },
-        {
-          "id": "14937",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.71201,
-          "longitude": -122.4159
         }
       ]
     },
@@ -13626,10 +13675,17 @@
       "platforms": [
         {
           "id": "16386",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.71049,
           "longitude": -122.41136
+        },
+        {
+          "id": "16387",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.71034,
+          "longitude": -122.4116
         },
         {
           "id": "16582",
@@ -13637,13 +13693,6 @@
           "name": null,
           "latitude": 37.71059,
           "longitude": -122.4115
-        },
-        {
-          "id": "16387",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.71034,
-          "longitude": -122.4116
         }
       ]
     },
@@ -13664,18 +13713,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "14899",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.708371,
-          "longitude": -122.419887
-        },
-        {
           "id": "14901",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.708207,
           "longitude": -122.420022
+        },
+        {
+          "id": "14899",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.708371,
+          "longitude": -122.419887
         },
         {
           "id": "14900",
@@ -14021,28 +14070,6 @@
       ]
     },
     {
-      "id": "cayugaOnondaga",
-      "name": "Cayuga & Onondaga",
-      "kind": "streetLevel",
-      "lines": [
-        "8",
-        "29"
-      ],
-      "latitude": 37.722076,
-      "longitude": -122.439957,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17067",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.722076,
-          "longitude": -122.439957
-        }
-      ]
-    },
-    {
       "id": "genevaAvebalboaParkBart",
       "name": "Geneva Ave/Balboa Park BART",
       "kind": "streetLevel",
@@ -14160,9 +14187,7 @@
       ],
       "latitude": 37.788613,
       "longitude": -122.402163,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -14185,6 +14210,8 @@
       "latitude": 37.775434,
       "longitude": -122.418548,
       "transferStations": [
+        "marketSouthVanNess",
+        "marketVanNess",
         "vanNess"
       ],
       "transferAgencies": [],
@@ -15054,7 +15081,7 @@
       "platforms": [
         {
           "id": "17044",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.7099,
           "longitude": -122.408536
@@ -15171,7 +15198,7 @@
       "platforms": [
         {
           "id": "16385",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.7069,
           "longitude": -122.41294
@@ -15193,18 +15220,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "16384",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.70657,
+          "longitude": -122.41326
+        },
+        {
           "id": "17522",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.706296,
           "longitude": -122.413084
-        },
-        {
-          "id": "16384",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.70657,
-          "longitude": -122.41326
         }
       ]
     },
@@ -15384,18 +15411,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15165",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.793999,
-          "longitude": -122.422867
-        },
-        {
           "id": "18099",
           "heading": "southbound",
           "name": null,
           "latitude": 37.793963,
           "longitude": -122.423096
+        },
+        {
+          "id": "15165",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793999,
+          "longitude": -122.422867
         },
         {
           "id": "15166",
@@ -15501,7 +15528,7 @@
       ]
     },
     {
-      "id": "pacificHyde",
+      "id": "hydePacific",
       "name": "Hyde & Pacific",
       "kind": "streetLevel",
       "lines": [
@@ -15628,7 +15655,7 @@
       ]
     },
     {
-      "id": "pacificMason",
+      "id": "masonPacific",
       "name": "Mason & Pacific",
       "kind": "streetLevel",
       "lines": [
@@ -15684,18 +15711,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "18118",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.796619,
-          "longitude": -122.409372
-        },
-        {
           "id": "15853",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.796405,
           "longitude": -122.410175
+        },
+        {
+          "id": "18118",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.796619,
+          "longitude": -122.409372
         },
         {
           "id": "15852",
@@ -15742,7 +15769,7 @@
       "platforms": [
         {
           "id": "14824",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.797331,
           "longitude": -122.405267
@@ -15820,7 +15847,7 @@
       ]
     },
     {
-      "id": "drummCalifornia",
+      "id": "californiaDrumm",
       "name": "California & Drumm",
       "kind": "streetLevel",
       "lines": [
@@ -15830,7 +15857,9 @@
       "latitude": 37.79398,
       "longitude": -122.39635,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -15860,11 +15889,9 @@
         "14R",
         "FBUS"
       ],
-      "latitude": 37.79253,
-      "longitude": -122.39567,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "latitude": 37.792984,
+      "longitude": -122.396627,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -16214,7 +16241,9 @@
       ],
       "latitude": 37.792437,
       "longitude": -122.394047,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -16821,18 +16850,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "17592",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.748056,
-          "longitude": -122.420064
-        },
-        {
           "id": "16882",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.746664,
           "longitude": -122.420248
+        },
+        {
+          "id": "17592",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.748056,
+          "longitude": -122.420064
         }
       ]
     },
@@ -16876,7 +16905,10 @@
       ],
       "latitude": 37.78992,
       "longitude": -122.39749,
-      "transferStations": [],
+      "transferStations": [
+        "market1",
+        "marketBattery"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -16930,7 +16962,9 @@
       ],
       "latitude": 37.78272,
       "longitude": -122.406582,
-      "transferStations": [],
+      "transferStations": [
+        "market5"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -16988,7 +17022,9 @@
       ],
       "latitude": 37.779162,
       "longitude": -122.410927,
-      "transferStations": [],
+      "transferStations": [
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -17062,7 +17098,9 @@
       ],
       "latitude": 37.776195,
       "longitude": -122.414745,
-      "transferStations": [],
+      "transferStations": [
+        "market9"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -17274,18 +17312,18 @@
           "longitude": -122.419348
         },
         {
-          "id": "13338",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.761895,
-          "longitude": -122.419509
-        },
-        {
           "id": "15554",
           "heading": "southbound",
           "name": null,
           "latitude": 37.761761,
           "longitude": -122.419463
+        },
+        {
+          "id": "13338",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.761895,
+          "longitude": -122.419509
         }
       ]
     },
@@ -17534,18 +17572,18 @@
           "longitude": -122.422759
         },
         {
-          "id": "14157",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.74085,
-          "longitude": -122.42251
-        },
-        {
           "id": "15584",
           "heading": "southbound",
           "name": null,
           "latitude": 37.741079,
           "longitude": -122.422874
+        },
+        {
+          "id": "14157",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74085,
+          "longitude": -122.42251
         }
       ]
     },
@@ -17767,18 +17805,18 @@
           "longitude": -122.43132
         },
         {
-          "id": "16413",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.728901,
-          "longitude": -122.4314
-        },
-        {
           "id": "15621",
           "heading": "southbound",
           "name": null,
           "latitude": 37.728723,
           "longitude": -122.431354
+        },
+        {
+          "id": "16413",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.728901,
+          "longitude": -122.4314
         },
         {
           "id": "16415",
@@ -18449,7 +18487,7 @@
         },
         {
           "id": "13410",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.760536,
           "longitude": -122.388707
@@ -18522,20 +18560,6 @@
           "name": null,
           "latitude": 37.742628,
           "longitude": -122.387862
-        },
-        {
-          "id": "14560",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.742977,
-          "longitude": -122.388595
-        },
-        {
-          "id": "14559",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.742994,
-          "longitude": -122.388309
         }
       ]
     },
@@ -18649,13 +18673,6 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13920",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.73573,
-          "longitude": -122.38354
-        },
-        {
           "id": "18147",
           "heading": "northbound",
           "name": null,
@@ -18668,6 +18685,13 @@
           "name": null,
           "latitude": 37.735958,
           "longitude": -122.383545
+        },
+        {
+          "id": "13920",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.73573,
+          "longitude": -122.38354
         }
       ]
     },
@@ -19365,14 +19389,14 @@
       "platforms": [
         {
           "id": "13570",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.775242,
           "longitude": -122.505798
         },
         {
           "id": "13571",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.775206,
           "longitude": -122.505958
@@ -19394,14 +19418,14 @@
       "platforms": [
         {
           "id": "13572",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.773573,
           "longitude": -122.50567
         },
         {
           "id": "13573",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.773538,
           "longitude": -122.505831
@@ -19451,7 +19475,7 @@
       "platforms": [
         {
           "id": "14227",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.771421,
           "longitude": -122.510792
@@ -19500,7 +19524,7 @@
       "platforms": [
         {
           "id": "15328",
-          "heading": "northbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.764148,
           "longitude": -122.509296
@@ -19542,7 +19566,7 @@
       "platforms": [
         {
           "id": "15329",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.763926,
           "longitude": -122.50957
@@ -19570,7 +19594,7 @@
         },
         {
           "id": "13583",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.764053,
           "longitude": -122.50627
@@ -19846,18 +19870,18 @@
           "longitude": -122.504801
         },
         {
-          "id": "16246",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.74543,
-          "longitude": -122.50504
-        },
-        {
           "id": "13594",
           "heading": "southbound",
           "name": null,
           "latitude": 37.745592,
           "longitude": -122.504973
+        },
+        {
+          "id": "16246",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74543,
+          "longitude": -122.50504
         }
       ]
     },
@@ -20214,18 +20238,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "14839",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.729441,
-          "longitude": -122.48629
-        },
-        {
           "id": "14838",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.729628,
           "longitude": -122.486404
+        },
+        {
+          "id": "14839",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.729441,
+          "longitude": -122.48629
         }
       ]
     },
@@ -20369,7 +20393,7 @@
       "platforms": [
         {
           "id": "13352",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.725901,
           "longitude": -122.475235
@@ -20461,8 +20485,7 @@
       "name": "Polk & Francisco",
       "kind": "streetLevel",
       "lines": [
-        "19",
-        "28"
+        "19"
       ],
       "latitude": 37.803591,
       "longitude": -122.423321,
@@ -20482,13 +20505,6 @@
           "name": null,
           "latitude": 37.80353,
           "longitude": -122.42341
-        },
-        {
-          "id": "17529",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.803484,
-          "longitude": -122.423368
         }
       ]
     },
@@ -20929,12 +20945,17 @@
       ],
       "latitude": 37.778901,
       "longitude": -122.416545,
-      "transferStations": [],
+      "transferStations": [
+        "eighthMarket",
+        "market9",
+        "marketHyde",
+        "marketLarkin"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
           "id": "14848",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.778901,
           "longitude": -122.416545
@@ -21665,7 +21686,7 @@
       "platforms": [
         {
           "id": "16200",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.750727,
           "longitude": -122.401342
@@ -21744,18 +21765,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13513",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.752038,
+          "longitude": -122.398388
+        },
+        {
           "id": "16961",
           "heading": "southbound",
           "name": null,
           "latitude": 37.752287,
           "longitude": -122.398556
-        },
-        {
-          "id": "13513",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.752038,
-          "longitude": -122.398388
         },
         {
           "id": "13512",
@@ -21995,6 +22016,36 @@
           "name": null,
           "latitude": 37.744245,
           "longitude": -122.390531
+        }
+      ]
+    },
+    {
+      "id": "evansPhelps",
+      "name": "Evans & Phelps",
+      "kind": "streetLevel",
+      "lines": [
+        "19"
+      ],
+      "latitude": 37.742986,
+      "longitude": -122.388452,
+      "transferStations": [
+        "thirdEvans"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14560",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.742977,
+          "longitude": -122.388595
+        },
+        {
+          "id": "14559",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.742994,
+          "longitude": -122.388309
         }
       ]
     },
@@ -22449,7 +22500,9 @@
       "latitude": 37.792608,
       "longitude": -122.397532,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -22508,12 +22561,15 @@
       ],
       "latitude": 37.79202,
       "longitude": -122.40086,
-      "transferStations": [],
+      "transferStations": [
+        "market1",
+        "marketBattery"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
           "id": "16332",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.79202,
           "longitude": -122.40086
@@ -22529,7 +22585,9 @@
       ],
       "latitude": 37.790924,
       "longitude": -122.402118,
-      "transferStations": [],
+      "transferStations": [
+        "market2"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -22777,18 +22835,18 @@
           "longitude": -122.435489
         },
         {
-          "id": "16754",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.797124,
-          "longitude": -122.435661
-        },
-        {
           "id": "16755",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.797043,
           "longitude": -122.435328
+        },
+        {
+          "id": "16754",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.797124,
+          "longitude": -122.435661
         }
       ]
     },
@@ -23276,7 +23334,6 @@
       "kind": "streetLevel",
       "lines": [
         "22",
-        "37",
         "FBUS",
         "KBUS",
         "LOWL"
@@ -23287,25 +23344,11 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13254",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.767768,
-          "longitude": -122.429088
-        },
-        {
           "id": "17073",
           "heading": "northbound",
           "name": null,
           "latitude": 37.767509,
           "longitude": -122.428927
-        },
-        {
-          "id": "13255",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.76767,
-          "longitude": -122.42913
         },
         {
           "id": "18059",
@@ -23350,18 +23393,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13283",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.764579,
-          "longitude": -122.428523
-        },
-        {
           "id": "13984",
           "heading": "southbound",
           "name": null,
           "latitude": 37.764621,
           "longitude": -122.428722
+        },
+        {
+          "id": "13283",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.764579,
+          "longitude": -122.428523
         }
       ]
     },
@@ -23462,6 +23505,13 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13730",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76549,
+          "longitude": -122.4104
+        },
+        {
           "id": "13731",
           "heading": "southbound",
           "name": null,
@@ -23481,13 +23531,6 @@
           "name": null,
           "latitude": 37.765658,
           "longitude": -122.410294
-        },
-        {
-          "id": "13730",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.76549,
-          "longitude": -122.4104
         }
       ]
     },
@@ -24029,7 +24072,7 @@
       "platforms": [
         {
           "id": "14202",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.734911,
           "longitude": -122.411283
@@ -24422,18 +24465,25 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13696",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.733488,
-          "longitude": -122.43408
-        },
-        {
           "id": "14386",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.733506,
           "longitude": -122.434148
+        },
+        {
+          "id": "14387",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.733452,
+          "longitude": -122.434217
+        },
+        {
+          "id": "13696",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.733488,
+          "longitude": -122.43408
         },
         {
           "id": "13695",
@@ -24441,13 +24491,6 @@
           "name": null,
           "latitude": 37.733595,
           "longitude": -122.434011
-        },
-        {
-          "id": "14387",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.733452,
-          "longitude": -122.434217
         }
       ]
     },
@@ -24604,6 +24647,13 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "17528",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.731695,
+          "longitude": -122.448753
+        },
+        {
           "id": "15433",
           "heading": "eastbound",
           "name": null,
@@ -24616,13 +24666,6 @@
           "name": null,
           "latitude": 37.731615,
           "longitude": -122.449166
-        },
-        {
-          "id": "17528",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.731695,
-          "longitude": -122.448753
         }
       ]
     },
@@ -24727,18 +24770,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "15973",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.73111,
+          "longitude": -122.45753
+        },
+        {
           "id": "15438",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.730874,
           "longitude": -122.457654
-        },
-        {
-          "id": "15973",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.73111,
-          "longitude": -122.45753
         },
         {
           "id": "15437",
@@ -24930,18 +24973,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "16375",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.734861,
+          "longitude": -122.466154
+        },
+        {
           "id": "16504",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.734861,
           "longitude": -122.46636
-        },
-        {
-          "id": "16375",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.734861,
-          "longitude": -122.466154
         }
       ]
     },
@@ -25004,8 +25047,8 @@
       ]
     },
     {
-      "id": "sloatStFrancis",
-      "name": "Sloat & St Francis",
+      "id": "sloatWestPortal",
+      "name": "Sloat & West Portal",
       "kind": "streetLevel",
       "lines": [
         "23",
@@ -25013,9 +25056,11 @@
         "91",
         "KBUS"
       ],
-      "latitude": 37.734816,
-      "longitude": -122.471532,
-      "transferStations": [],
+      "latitude": 37.734678,
+      "longitude": -122.471875,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -25024,20 +25069,6 @@
           "name": null,
           "latitude": 37.735039,
           "longitude": -122.471343
-        },
-        {
-          "id": "15141",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734307,
-          "longitude": -122.471675
-        },
-        {
-          "id": "16503",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734807,
-          "longitude": -122.471618
         },
         {
           "id": "16465",
@@ -25548,7 +25579,7 @@
         },
         {
           "id": "15145",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.791724,
           "longitude": -122.440888
@@ -25842,7 +25873,8 @@
       "latitude": 37.764217,
       "longitude": -122.435347,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -25876,7 +25908,8 @@
       "latitude": 37.762397,
       "longitude": -122.435266,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -25911,26 +25944,24 @@
         "24",
         "FBUS"
       ],
-      "latitude": 37.76237,
-      "longitude": -122.43508,
-      "transferStations": [
-        "castro"
-      ],
+      "latitude": 37.762576,
+      "longitude": -122.434979,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "13311",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.762576,
-          "longitude": -122.434979
-        },
         {
           "id": "14313",
           "heading": "northbound",
           "name": null,
           "latitude": 37.76237,
           "longitude": -122.43508
+        },
+        {
+          "id": "13311",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.762576,
+          "longitude": -122.434979
         }
       ]
     },
@@ -25946,7 +25977,8 @@
       "latitude": 37.760849,
       "longitude": -122.434991,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -26235,18 +26267,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13514",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.74815,
-          "longitude": -122.43363
-        },
-        {
           "id": "17290",
           "heading": "southbound",
           "name": null,
           "latitude": 37.748201,
           "longitude": -122.433893
+        },
+        {
+          "id": "13514",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74815,
+          "longitude": -122.43363
         }
       ]
     },
@@ -26263,18 +26295,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13520",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.74827,
-          "longitude": -122.43177
-        },
-        {
           "id": "13521",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.748174,
           "longitude": -122.431636
+        },
+        {
+          "id": "13520",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74827,
+          "longitude": -122.43177
         }
       ]
     },
@@ -26376,7 +26408,7 @@
       "platforms": [
         {
           "id": "15738",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.74201,
           "longitude": -122.43101
@@ -26419,15 +26451,18 @@
       ]
     },
     {
-      "id": "churchDay",
-      "name": "Church & Day",
+      "id": "thirtiethChurch",
+      "name": "30th & Church",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
-      "latitude": 37.742517,
-      "longitude": -122.426557,
-      "transferStations": [],
+      "latitude": 37.7421,
+      "longitude": -122.426564,
+      "transferStations": [
+        "church29",
+        "churchDay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -27201,7 +27236,7 @@
       "platforms": [
         {
           "id": "15076",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.794542,
           "longitude": -122.418189
@@ -27237,7 +27272,7 @@
       "platforms": [
         {
           "id": "14866",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.79465,
           "longitude": -122.41638
@@ -27252,7 +27287,7 @@
       ]
     },
     {
-      "id": "leavenworthCalifornia",
+      "id": "californiaLeavenworth",
       "name": "California & Leavenworth",
       "kind": "streetLevel",
       "lines": [
@@ -27330,7 +27365,7 @@
       ]
     },
     {
-      "id": "hydeCalifornia",
+      "id": "californiaHyde",
       "name": "California & Hyde",
       "kind": "streetLevel",
       "lines": [
@@ -28097,7 +28132,12 @@
       ],
       "latitude": 37.807639,
       "longitude": -122.412141,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason",
+        "beachStockton",
+        "embarcaderoStockton",
+        "jeffersonPowell"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -28109,7 +28149,7 @@
         },
         {
           "id": "17038",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.807639,
           "longitude": -122.412141
@@ -28125,7 +28165,9 @@
       ],
       "latitude": 37.806542,
       "longitude": -122.41385,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -28153,7 +28195,9 @@
       ],
       "latitude": 37.80611,
       "longitude": -122.417291,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -28173,7 +28217,7 @@
       ]
     },
     {
-      "id": "northPointHyde",
+      "id": "hydeNorthPoint",
       "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [
@@ -29806,27 +29850,6 @@
       ]
     },
     {
-      "id": "thirtySeventhOrtega",
-      "name": "37th & Ortega",
-      "kind": "streetLevel",
-      "lines": [
-        "29"
-      ],
-      "latitude": 37.751298,
-      "longitude": -122.495559,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17835",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.751298,
-          "longitude": -122.495559
-        }
-      ]
-    },
-    {
       "id": "sunsetQuintara",
       "name": "Sunset & Quintara",
       "kind": "streetLevel",
@@ -29876,18 +29899,18 @@
           "longitude": -122.494576
         },
         {
+          "id": "16549",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74607,
+          "longitude": -122.494822
+        },
+        {
           "id": "18159",
           "heading": "southbound",
           "name": null,
           "latitude": 37.745838,
           "longitude": -122.49481
-        },
-        {
-          "id": "16549",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.74607,
-          "longitude": -122.494822
         }
       ]
     },
@@ -30005,18 +30028,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "16541",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.731709,
-          "longitude": -122.493874
-        },
-        {
           "id": "16542",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.73183,
           "longitude": -122.493622
+        },
+        {
+          "id": "16541",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.731709,
+          "longitude": -122.493874
         }
       ]
     },
@@ -30085,7 +30108,7 @@
       "platforms": [
         {
           "id": "15034",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.72161,
           "longitude": -122.471797
@@ -30323,11 +30346,11 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "14915",
+          "id": "15958",
           "heading": "northbound",
           "name": null,
-          "latitude": 37.719962,
-          "longitude": -122.456232
+          "latitude": 37.719881,
+          "longitude": -122.456015
         },
         {
           "id": "15960",
@@ -30337,11 +30360,11 @@
           "longitude": -122.456221
         },
         {
-          "id": "15958",
+          "id": "14915",
           "heading": "eastbound",
           "name": null,
-          "latitude": 37.719881,
-          "longitude": -122.456015
+          "latitude": 37.719962,
+          "longitude": -122.456232
         },
         {
           "id": "17193",
@@ -30404,7 +30427,7 @@
         },
         {
           "id": "15975",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.723638,
           "longitude": -122.456233
@@ -31642,7 +31665,9 @@
       ],
       "latitude": 37.80551,
       "longitude": -122.41784,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -31664,7 +31689,9 @@
       ],
       "latitude": 37.80549,
       "longitude": -122.417589,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -31822,7 +31849,7 @@
       "platforms": [
         {
           "id": "14411",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.800087,
           "longitude": -122.442964
@@ -31850,7 +31877,7 @@
       "platforms": [
         {
           "id": "13075",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.800622,
           "longitude": -122.444603
@@ -31934,7 +31961,7 @@
       "platforms": [
         {
           "id": "13076",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.804343,
           "longitude": -122.44536
@@ -32090,7 +32117,7 @@
       "platforms": [
         {
           "id": "14407",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.803772,
           "longitude": -122.443697
@@ -32173,6 +32200,7 @@
       "latitude": 37.784011,
       "longitude": -122.40821,
       "transferStations": [
+        "market5",
         "powell"
       ],
       "transferAgencies": [],
@@ -32195,7 +32223,9 @@
       ],
       "latitude": 37.784172,
       "longitude": -122.410135,
-      "transferStations": [],
+      "transferStations": [
+        "market5"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -32279,7 +32309,10 @@
       ],
       "latitude": 37.783476,
       "longitude": -122.409379,
-      "transferStations": [],
+      "transferStations": [
+        "market5",
+        "marketTaylor"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -33302,13 +33335,6 @@
           "longitude": -122.458955
         },
         {
-          "id": "17839",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.781867,
-          "longitude": -122.458806
-        },
-        {
           "id": "14288",
           "heading": "eastbound",
           "name": null,
@@ -33388,7 +33414,7 @@
       "platforms": [
         {
           "id": "13662",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.769937,
           "longitude": -122.446851
@@ -33650,7 +33676,7 @@
       "platforms": [
         {
           "id": "13339",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.759792,
           "longitude": -122.444445
@@ -33772,7 +33798,9 @@
       ],
       "latitude": 37.761027,
       "longitude": -122.432796,
-      "transferStations": [],
+      "transferStations": [
+        "seventeenthNoe"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -34040,7 +34068,7 @@
         },
         {
           "id": "13415",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.757561,
           "longitude": -122.437868
@@ -34272,7 +34300,7 @@
         },
         {
           "id": "13465",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.751092,
           "longitude": -122.436402
@@ -34577,7 +34605,7 @@
         },
         {
           "id": "13615",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.740037,
           "longitude": -122.435716
@@ -34598,7 +34626,7 @@
       "platforms": [
         {
           "id": "13618",
-          "heading": "southbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.740055,
           "longitude": -122.434433
@@ -34689,7 +34717,7 @@
       "platforms": [
         {
           "id": "13616",
-          "heading": "northbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.740001,
           "longitude": -122.433609
@@ -35103,25 +35131,25 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "14852",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.758605,
-          "longitude": -122.464086
-        },
-        {
-          "id": "14853",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.758471,
-          "longitude": -122.463879
-        },
-        {
           "id": "17308",
           "heading": "southbound",
           "name": null,
           "latitude": 37.758426,
           "longitude": -122.463856
+        },
+        {
+          "id": "14853",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.758471,
+          "longitude": -122.463879
+        },
+        {
+          "id": "14852",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.758605,
+          "longitude": -122.464086
         }
       ]
     },
@@ -35139,7 +35167,7 @@
       "platforms": [
         {
           "id": "16913",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.758694,
           "longitude": -122.463135
@@ -35369,18 +35397,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15821",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.751494,
-          "longitude": -122.456224
-        },
-        {
           "id": "14035",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.751628,
           "longitude": -122.456178
+        },
+        {
+          "id": "15821",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.751494,
+          "longitude": -122.456224
         }
       ]
     },
@@ -35426,7 +35454,7 @@
       "platforms": [
         {
           "id": "15824",
-          "heading": "northbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.751298,
           "longitude": -122.452271
@@ -35573,7 +35601,7 @@
       "platforms": [
         {
           "id": "15981",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.753457,
           "longitude": -122.452626
@@ -36279,7 +36307,7 @@
       "platforms": [
         {
           "id": "14654",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.734194,
           "longitude": -122.448799
@@ -36421,18 +36449,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "14095",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.769456,
+          "longitude": -122.45061
+        },
+        {
           "id": "14096",
           "heading": "southbound",
           "name": null,
           "latitude": 37.769447,
           "longitude": -122.450771
-        },
-        {
-          "id": "14095",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.769456,
-          "longitude": -122.45061
         }
       ]
     },
@@ -36514,18 +36542,18 @@
           "longitude": -122.44996
         },
         {
+          "id": "17282",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.765914,
+          "longitude": -122.450066
+        },
+        {
           "id": "13911",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.765745,
           "longitude": -122.450131
-        },
-        {
-          "id": "17282",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.765914,
-          "longitude": -122.450066
         }
       ]
     },
@@ -36570,18 +36598,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13310",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.76168,
-          "longitude": -122.44898
-        },
-        {
           "id": "14088",
           "heading": "southbound",
           "name": null,
           "latitude": 37.761711,
           "longitude": -122.449212
+        },
+        {
+          "id": "13310",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76168,
+          "longitude": -122.44898
         }
       ]
     },
@@ -36641,7 +36669,7 @@
       "platforms": [
         {
           "id": "14093",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.760926,
           "longitude": -122.449052
@@ -36988,7 +37016,8 @@
       "longitude": -122.431191,
       "transferStations": [
         "church",
-        "churchMarket"
+        "churchMarket",
+        "marketSanchez"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -37009,6 +37038,39 @@
       ]
     },
     {
+      "id": "fourteenthChurch",
+      "name": "14th & Church",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767719,
+      "longitude": -122.429109,
+      "transferStations": [
+        "church",
+        "churchDuboceJ",
+        "churchMarket",
+        "duboceChurchN"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13254",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.767768,
+          "longitude": -122.429088
+        },
+        {
+          "id": "13255",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76767,
+          "longitude": -122.42913
+        }
+      ]
+    },
+    {
       "id": "marketSanchez",
       "name": "Market & Sanchez",
       "kind": "streetLevel",
@@ -37018,8 +37080,8 @@
         "KBUS",
         "LOWL"
       ],
-      "latitude": 37.765689,
-      "longitude": -122.43114,
+      "latitude": 37.765908,
+      "longitude": -122.430961,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -37032,7 +37094,7 @@
         },
         {
           "id": "15690",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.766185,
           "longitude": -122.430707
@@ -37049,8 +37111,8 @@
         "KBUS",
         "LOWL"
       ],
-      "latitude": 37.763958,
-      "longitude": -122.433323,
+      "latitude": 37.764223,
+      "longitude": -122.433067,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -37100,7 +37162,9 @@
       ],
       "latitude": 37.76569,
       "longitude": -122.4314,
-      "transferStations": [],
+      "transferStations": [
+        "marketSanchez"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -37124,7 +37188,10 @@
       "latitude": 37.76391,
       "longitude": -122.43366,
       "transferStations": [
-        "castro"
+        "castro",
+        "marketNoe",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -37149,7 +37216,9 @@
       "latitude": 37.763022,
       "longitude": -122.434979,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -37552,18 +37621,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "16012",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.74715,
-          "longitude": -122.4442
-        },
-        {
           "id": "14072",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.7467,
           "longitude": -122.445
+        },
+        {
+          "id": "16012",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74715,
+          "longitude": -122.4442
         }
       ]
     },
@@ -37869,6 +37938,8 @@
       "latitude": 37.786642,
       "longitude": -122.405629,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -37883,7 +37954,7 @@
       ]
     },
     {
-      "id": "ofarrellPowell",
+      "id": "powellOfarrell",
       "name": "Powell & O'Farrell",
       "kind": "streetLevel",
       "lines": [
@@ -37997,7 +38068,7 @@
       ]
     },
     {
-      "id": "gearyPowell",
+      "id": "powellGeary",
       "name": "Powell & Geary",
       "kind": "streetLevel",
       "lines": [
@@ -38465,27 +38536,6 @@
       ]
     },
     {
-      "id": "thirtySecondAnza",
-      "name": "32nd & Anza",
-      "kind": "streetLevel",
-      "lines": [
-        "38"
-      ],
-      "latitude": 37.777737,
-      "longitude": -122.491999,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17837",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.777737,
-          "longitude": -122.491999
-        }
-      ]
-    },
-    {
       "id": "geary17",
       "name": "Geary & 17th",
       "kind": "streetLevel",
@@ -38619,18 +38669,11 @@
       "lines": [
         "38"
       ],
-      "latitude": 37.780152,
-      "longitude": -122.490075,
+      "latitude": 37.779843,
+      "longitude": -122.490081,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17836",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.780771,
-          "longitude": -122.490064
-        },
         {
           "id": "14274",
           "heading": "eastbound",
@@ -38922,8 +38965,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoStockton",
-      "name": "The Embarcadero & Stockton",
+      "id": "embarcaderoStockton",
+      "name": "Embarcadero & Stockton",
       "kind": "streetLevel",
       "lines": [
         "39",
@@ -39041,18 +39084,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "16782",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.800366,
-          "longitude": -122.409267
-        },
-        {
           "id": "16525",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.80054,
           "longitude": -122.40928
+        },
+        {
+          "id": "16782",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.800366,
+          "longitude": -122.409267
         }
       ]
     },
@@ -40491,7 +40534,7 @@
         },
         {
           "id": "14138",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.709638,
           "longitude": -122.434828
@@ -41242,28 +41285,6 @@
       ]
     },
     {
-      "id": "girardBurrows",
-      "name": "Girard & Burrows",
-      "kind": "streetLevel",
-      "lines": [
-        "44",
-        "54"
-      ],
-      "latitude": 37.727994,
-      "longitude": -122.404941,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17838",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.727994,
-          "longitude": -122.404941
-        }
-      ]
-    },
-    {
       "id": "silverSantaFe",
       "name": "Silver & Santa Fe",
       "kind": "streetLevel",
@@ -41583,6 +41604,13 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13127",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74012,
+          "longitude": -122.3887
+        },
+        {
           "id": "15041",
           "heading": "northbound",
           "name": null,
@@ -41595,13 +41623,6 @@
           "name": null,
           "latitude": 37.73932,
           "longitude": -122.38926
-        },
-        {
-          "id": "13127",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.74012,
-          "longitude": -122.3887
         }
       ]
     },
@@ -41627,7 +41648,7 @@
       ]
     },
     {
-      "id": "unionMason",
+      "id": "masonUnion",
       "name": "Mason & Union",
       "kind": "streetLevel",
       "lines": [
@@ -41754,7 +41775,7 @@
       ]
     },
     {
-      "id": "unionHyde",
+      "id": "hydeUnion",
       "name": "Hyde & Union",
       "kind": "streetLevel",
       "lines": [
@@ -42071,7 +42092,7 @@
       "platforms": [
         {
           "id": "18012",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.795724,
           "longitude": -122.446965
@@ -42113,18 +42134,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13435",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.757754,
-          "longitude": -122.392273
-        },
-        {
           "id": "13439",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.757674,
           "longitude": -122.392308
+        },
+        {
+          "id": "13435",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.757754,
+          "longitude": -122.392273
         }
       ]
     },
@@ -42508,27 +42529,6 @@
       ]
     },
     {
-      "id": "twentyFifthNoe",
-      "name": "25th & Noe",
-      "kind": "streetLevel",
-      "lines": [
-        "48"
-      ],
-      "latitude": 37.749727,
-      "longitude": -122.431624,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13510",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.749727,
-          "longitude": -122.431624
-        }
-      ]
-    },
-    {
       "id": "twentyFourthNoe",
       "name": "24th & Noe",
       "kind": "streetLevel",
@@ -42799,18 +42799,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "16744",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.741009,
-          "longitude": -122.466167
-        },
-        {
           "id": "17976",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.740733,
           "longitude": -122.46564
+        },
+        {
+          "id": "16744",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.741009,
+          "longitude": -122.466167
         }
       ]
     },
@@ -42917,18 +42917,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13248",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74503,
+          "longitude": -122.4703
+        },
+        {
           "id": "16467",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.74508,
           "longitude": -122.47049
-        },
-        {
-          "id": "13248",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.74503,
-          "longitude": -122.4703
         }
       ]
     },
@@ -42946,7 +42946,7 @@
       "platforms": [
         {
           "id": "13306",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.74511,
           "longitude": -122.47374
@@ -43337,18 +43337,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13565",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.74596,
-          "longitude": -122.49747
-        },
-        {
           "id": "13564",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.745962,
           "longitude": -122.497308
+        },
+        {
+          "id": "13565",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74596,
+          "longitude": -122.49747
         }
       ]
     },
@@ -43365,18 +43365,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "13563",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.747621,
+          "longitude": -122.497424
+        },
+        {
           "id": "16161",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.74763,
           "longitude": -122.49763
-        },
-        {
-          "id": "13563",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.747621,
-          "longitude": -122.497424
         }
       ]
     },
@@ -43754,48 +43754,6 @@
       ]
     },
     {
-      "id": "diamondHeightsBerkeley",
-      "name": "Diamond Heights & Berkeley",
-      "kind": "streetLevel",
-      "lines": [
-        "52"
-      ],
-      "latitude": 37.73867,
-      "longitude": -122.43668,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14361",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.73867,
-          "longitude": -122.43668
-        }
-      ]
-    },
-    {
-      "id": "diamondDiamondHeights",
-      "name": "Diamond & Diamond Heights",
-      "kind": "streetLevel",
-      "lines": [
-        "52"
-      ],
-      "latitude": 37.73822,
-      "longitude": -122.43726,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14395",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.73822,
-          "longitude": -122.43726
-        }
-      ]
-    },
-    {
       "id": "diamondHeightsGoldMine2",
       "name": "Diamond Heights & Gold Mine",
       "kind": "streetLevel",
@@ -43817,23 +43775,51 @@
       ]
     },
     {
-      "id": "diamondHeightsBerkeleyWay",
-      "name": "Diamond Heights & Berkeley Way",
+      "id": "diamondHeightsBerkeley",
+      "name": "Diamond Heights & Berkeley",
       "kind": "streetLevel",
       "lines": [
         "52"
       ],
-      "latitude": 37.7386,
-      "longitude": -122.4369,
+      "latitude": 37.738635,
+      "longitude": -122.43679,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14361",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73867,
+          "longitude": -122.43668
+        },
         {
           "id": "14362",
           "heading": "southbound",
           "name": null,
           "latitude": 37.7386,
           "longitude": -122.4369
+        }
+      ]
+    },
+    {
+      "id": "diamondDiamondHeights",
+      "name": "Diamond & Diamond Heights",
+      "kind": "streetLevel",
+      "lines": [
+        "52"
+      ],
+      "latitude": 37.73822,
+      "longitude": -122.43726,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14395",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.73822,
+          "longitude": -122.43726
         }
       ]
     },
@@ -43927,18 +43913,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "14382",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.738681,
-          "longitude": -122.434468
-        },
-        {
           "id": "14383",
           "heading": "southbound",
           "name": null,
           "latitude": 37.738262,
           "longitude": -122.434674
+        },
+        {
+          "id": "14382",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.738681,
+          "longitude": -122.434468
         }
       ]
     },
@@ -44328,7 +44314,7 @@
       "platforms": [
         {
           "id": "13921",
-          "heading": "northbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.73585,
           "longitude": -122.38695
@@ -44476,13 +44462,6 @@
           "name": null,
           "latitude": 37.73241,
           "longitude": -122.39135
-        },
-        {
-          "id": "13113",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.7322,
-          "longitude": -122.391731
         },
         {
           "id": "16249",
@@ -44749,7 +44728,7 @@
       "platforms": [
         {
           "id": "16185",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.72979,
           "longitude": -122.3954
@@ -45099,14 +45078,14 @@
       "platforms": [
         {
           "id": "13021",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.72654,
           "longitude": -122.40766
         },
         {
           "id": "13020",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.72667,
           "longitude": -122.40746
@@ -45155,14 +45134,14 @@
       "platforms": [
         {
           "id": "16979",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.72362,
           "longitude": -122.40864
         },
         {
           "id": "16978",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.72374,
           "longitude": -122.40841
@@ -45211,7 +45190,7 @@
       "platforms": [
         {
           "id": "16793",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.72273,
           "longitude": -122.41253
@@ -45266,18 +45245,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "16792",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72739,
+          "longitude": -122.41439
+        },
+        {
           "id": "14596",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.7274,
           "longitude": -122.41457
-        },
-        {
-          "id": "16792",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.72739,
-          "longitude": -122.41439
         }
       ]
     },
@@ -45957,14 +45936,14 @@
       "platforms": [
         {
           "id": "15976",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.7117,
           "longitude": -122.45599
         },
         {
           "id": "15977",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.71155,
           "longitude": -122.45608
@@ -46670,7 +46649,7 @@
       "platforms": [
         {
           "id": "16946",
-          "heading": "northbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.716615,
           "longitude": -122.400252
@@ -46691,7 +46670,7 @@
       "platforms": [
         {
           "id": "16243",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.712451,
           "longitude": -122.407389
@@ -47011,6 +46990,30 @@
       ]
     },
     {
+      "id": "juniperoSerraSloat",
+      "name": "Junipero Serra & Sloat",
+      "kind": "streetLevel",
+      "lines": [
+        "57",
+        "KBUS"
+      ],
+      "latitude": 37.734307,
+      "longitude": -122.471675,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15141",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.734307,
+          "longitude": -122.471675
+        }
+      ]
+    },
+    {
       "id": "juniperoSerraOcean",
       "name": "Junipero Serra & Ocean",
       "kind": "streetLevel",
@@ -47044,7 +47047,25 @@
           "name": null,
           "latitude": 37.730952,
           "longitude": -122.471686
-        },
+        }
+      ]
+    },
+    {
+      "id": "eucalyptusJuniperoSerra",
+      "name": "Eucalyptus & Junipero Serra",
+      "kind": "streetLevel",
+      "lines": [
+        "57"
+      ],
+      "latitude": 37.730988,
+      "longitude": -122.472442,
+      "transferStations": [
+        "juniperoSerraOcean",
+        "rightOfWayEucalyptus",
+        "rightOfWayOcean"
+      ],
+      "transferAgencies": [],
+      "platforms": [
         {
           "id": "14546",
           "heading": "eastbound",
@@ -47554,7 +47575,7 @@
       "platforms": [
         {
           "id": "13979",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.7131,
           "longitude": -122.47278
@@ -47764,7 +47785,7 @@
       "platforms": [
         {
           "id": "14828",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.708219,
           "longitude": -122.485533
@@ -47792,14 +47813,14 @@
       "platforms": [
         {
           "id": "14836",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.711872,
           "longitude": -122.485238
         },
         {
           "id": "14837",
-          "heading": "westbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.711081,
           "longitude": -122.485506
@@ -48011,18 +48032,18 @@
           "longitude": -122.47367
         },
         {
+          "id": "13273",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7593,
+          "longitude": -122.4737
+        },
+        {
           "id": "17231",
           "heading": "southbound",
           "name": null,
           "latitude": 37.758023,
           "longitude": -122.473791
-        },
-        {
-          "id": "13273",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.7593,
-          "longitude": -122.4737
         }
       ]
     },
@@ -48159,7 +48180,7 @@
       "platforms": [
         {
           "id": "16137",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.74872,
           "longitude": -122.47298
@@ -48533,7 +48554,7 @@
       "platforms": [
         {
           "id": "17923",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.744258,
           "longitude": -122.41339
@@ -48609,18 +48630,18 @@
           "longitude": -122.4094
         },
         {
-          "id": "13690",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.74183,
-          "longitude": -122.40978
-        },
-        {
           "id": "17924",
           "heading": "southbound",
           "name": null,
           "latitude": 37.742972,
           "longitude": -122.409498
+        },
+        {
+          "id": "13690",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74183,
+          "longitude": -122.40978
         }
       ]
     },
@@ -48842,6 +48863,28 @@
       ]
     },
     {
+      "id": "fourthKingT",
+      "name": "4th & King",
+      "kind": "streetLevel",
+      "lines": [
+        "91",
+        "TBUS"
+      ],
+      "latitude": 37.776207,
+      "longitude": -122.393846,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17405",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.776251,
+          "longitude": -122.393933
+        }
+      ]
+    },
+    {
       "id": "fourthBrannan",
       "name": "4th & Brannan",
       "kind": "streetLevel",
@@ -48864,25 +48907,21 @@
       ]
     },
     {
-      "id": "fourthKingT",
-      "name": "4th & King",
+      "id": "fourthBerry",
+      "name": "4th & Berry",
       "kind": "streetLevel",
       "lines": [
         "91",
         "TBUS"
       ],
-      "latitude": 37.776207,
-      "longitude": -122.393846,
-      "transferStations": [],
+      "latitude": 37.775825,
+      "longitude": -122.393607,
+      "transferStations": [
+        "fourthKingN",
+        "fourthKingT"
+      ],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17405",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.776251,
-          "longitude": -122.393933
-        },
         {
           "id": "17366",
           "heading": "southbound",
@@ -48893,16 +48932,18 @@
       ]
     },
     {
-      "id": "thirdMissionRock",
-      "name": "3rd St & Mission Rock",
+      "id": "third4",
+      "name": "3rd & 4th",
       "kind": "streetLevel",
       "lines": [
         "91",
         "TBUS"
       ],
-      "latitude": 37.772908,
-      "longitude": -122.3897,
-      "transferStations": [],
+      "latitude": 37.772792,
+      "longitude": -122.38974,
+      "transferStations": [
+        "thirdMissionRock"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -49075,6 +49116,30 @@
           "name": null,
           "latitude": 37.741056,
           "longitude": -122.384679
+        }
+      ]
+    },
+    {
+      "id": "thirdBayview",
+      "name": "3rd & Bayview",
+      "kind": "streetLevel",
+      "lines": [
+        "91",
+        "TBUS"
+      ],
+      "latitude": 37.7322,
+      "longitude": -122.391731,
+      "transferStations": [
+        "thirdRevereShafter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13113",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7322,
+          "longitude": -122.391731
         }
       ]
     },
@@ -49369,6 +49434,28 @@
       ]
     },
     {
+      "id": "sloatStFrancis",
+      "name": "Sloat & St Francis",
+      "kind": "streetLevel",
+      "lines": [
+        "91",
+        "KBUS"
+      ],
+      "latitude": 37.734816,
+      "longitude": -122.471532,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16503",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.734807,
+          "longitude": -122.471618
+        }
+      ]
+    },
+    {
       "id": "mainMission",
       "name": "Main & Mission",
       "kind": "streetLevel",
@@ -49379,7 +49466,9 @@
       "latitude": 37.791991,
       "longitude": -122.395033,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -49409,7 +49498,9 @@
       "latitude": 37.793512,
       "longitude": -122.397336,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -49446,7 +49537,8 @@
       "latitude": 37.793354,
       "longitude": -122.398782,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -49467,7 +49559,7 @@
       ]
     },
     {
-      "id": "sansomeCalifornia",
+      "id": "californiaSansome",
       "name": "California & Sansome",
       "kind": "streetLevel",
       "lines": [
@@ -49480,18 +49572,18 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "16327",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.79318,
+          "longitude": -122.40122
+        },
+        {
           "id": "13895",
           "heading": "eastbound",
           "name": null,
           "latitude": 37.792975,
           "longitude": -122.401269
-        },
-        {
-          "id": "16327",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.79318,
-          "longitude": -122.40122
         },
         {
           "id": "13894",
@@ -49887,6 +49979,13 @@
       "transferAgencies": [],
       "platforms": [
         {
+          "id": "15364",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.795513,
+          "longitude": -122.41154
+        },
+        {
           "id": "15365",
           "heading": "southbound",
           "name": null,
@@ -49899,13 +49998,6 @@
           "name": null,
           "latitude": 37.79545,
           "longitude": -122.411712
-        },
-        {
-          "id": "15364",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.795513,
-          "longitude": -122.41154
         }
       ]
     },
@@ -49990,7 +50082,7 @@
       "platforms": [
         {
           "id": "15372",
-          "heading": "eastbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.794504,
           "longitude": -122.411059
@@ -50764,8 +50856,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoBay",
-      "name": "The Embarcadero & Bay",
+      "id": "embarcaderoBay",
+      "name": "Embarcadero & Bay",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50793,15 +50885,15 @@
       ]
     },
     {
-      "id": "theEmbarcaderoSansome",
-      "name": "The Embarcadero & Sansome",
+      "id": "embarcaderoSansome",
+      "name": "Embarcadero & Sansome",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
         "LOWL"
       ],
-      "latitude": 37.805022,
-      "longitude": -122.403314,
+      "latitude": 37.805084,
+      "longitude": -122.403273,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -50811,22 +50903,7 @@
           "name": null,
           "latitude": 37.805022,
           "longitude": -122.403314
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoSansome",
-      "name": "Embarcadero & Sansome",
-      "kind": "streetLevel",
-      "lines": [
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.805146,
-      "longitude": -122.403233,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+        },
         {
           "id": "17281",
           "heading": "westbound",
@@ -50837,8 +50914,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoGreenwich",
-      "name": "The Embarcadero & Greenwich",
+      "id": "embarcaderoGreenwich",
+      "name": "Embarcadero & Greenwich",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50866,8 +50943,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoGreen",
-      "name": "The Embarcadero & Green",
+      "id": "embarcaderoGreen",
+      "name": "Embarcadero & Green",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50895,8 +50972,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoBroadway",
-      "name": "The Embarcadero & Broadway",
+      "id": "embarcaderoBroadway",
+      "name": "Embarcadero & Broadway",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50924,8 +51001,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoWashington",
-      "name": "The Embarcadero & Washington",
+      "id": "embarcaderoWashington",
+      "name": "Embarcadero & Washington",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50953,8 +51030,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoFerryBuilding",
-      "name": "The Embarcadero & Ferry Building",
+      "id": "embarcaderoFerryBuilding",
+      "name": "Embarcadero & Ferry Building",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -51131,9 +51208,7 @@
       ],
       "latitude": 37.76888,
       "longitude": -122.427103,
-      "transferStations": [
-        "churchDuboceJ"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -51444,8 +51519,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoTownsend",
-      "name": "The Embarcadero & Townsend",
+      "id": "embarcaderoTownsend",
+      "name": "Embarcadero & Townsend",
       "kind": "streetLevel",
       "lines": [
         "NBUS",
@@ -51981,8 +52056,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoHoward",
-      "name": "The Embarcadero & Howard",
+      "id": "embarcaderoHoward",
+      "name": "Embarcadero & Howard",
       "kind": "streetLevel",
       "lines": [
         "NOWL"

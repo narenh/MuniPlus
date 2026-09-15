@@ -3,9 +3,8 @@
 
     python3 tools/build_bus_data.py [--gtfs PATH_OR_URL]
 
-Writes appdata/bus/<route>.json (one file per route, for readable diffs) and
-appdata/bus.json (every route merged, for the app to load), using the same
-schema as appdata/data.json. Covers every surface route the metro file does not:
+Writes appdata/bus.json - every route merged, the one file the app loads -
+using the same schema as appdata/data.json. Covers every surface route the metro file does not:
 all 58 bus routes plus the 3 cable car lines.
 
 Station identity is one namespace shared with the metro file:
@@ -19,9 +18,10 @@ Station identity is one namespace shared with the metro file:
   * Every id ever minted is frozen in tools/station-ids.json and reused on
     later builds, because a shipped id lives in people's favourites.
 
-Route files carry only the platforms and lines their own route serves; the loader
-unions platforms by stop code and unions lines, so a station served by the J and
-the 22 ends up with one record and both lines.
+Internally each route is still built as its own document carrying only the platforms
+and lines that route serves; they are then merged by unioning platforms on stop code
+and unioning lines, so a station served by the J and the 22 ends up with one record
+and both lines. The app performs that same union across data.json and bus.json.
 """
 
 import argparse, collections, csv, io, json, math, os, re, sys, urllib.request, zipfile
@@ -30,14 +30,19 @@ GTFS_URL = 'https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 METRO = os.path.join(ROOT, 'appdata', 'data.json')
 ID_MAP = os.path.join(ROOT, 'tools', 'station-ids.json')
-OUT_DIR = os.path.join(ROOT, 'appdata', 'bus')
+OVERRIDES = os.path.join(ROOT, 'tools', 'station-overrides.json')
 OUT_ALL = os.path.join(ROOT, 'appdata', 'bus.json')
 
-ROUTE_TYPES = {'3', '5'}        # GTFS route_type: 3 bus, 5 cable car
+# Which routes we cover: every one data.json does not already have a line for. That
+# is all 58 buses, the 3 cable cars, and the F Market & Wharves - which is route_type
+# 0 like the metro, but has never been in data.json. Self-maintaining: add the F to
+# data.json one day and this drops it automatically.
 MERGE_RADIUS = 75               # m: bus stop <-> street-level metro station
 TRANSFER_RADIUS = 200           # m: bus station -> nearby metro station link
 CLUSTER_RADIUS = 250            # m: two stops at one intersection
 TERMINAL_SHARE = 0.25           # a stop is a terminal if this share of trips start there
+AXIS_RADIUS = 600               # m: how far to look for the run of a stop's own street
+AXIS_DOMINANCE = 2.0            # how lopsided that run must be to count as axis-aligned
 
 M_PER_DEG_LAT = 110540.0
 M_PER_DEG_LON = 111320.0 * math.cos(math.radians(37.76))    # fixed reference latitude for SF
@@ -57,12 +62,49 @@ ORDINAL = re.compile(r'\d+(st|nd|rd|th)$')
 ORD_SUFFIX = re.compile(r'(st|nd|rd|th)$')
 
 
+# Matching needs a harsher normalisation than display does. SFMTA and data.json spell
+# the same street several ways: "Third St" / "3rd St", "The Embarcadero" / "Embarcadero",
+# "San Leandro Way" / "San Leandro", plus two typos in data.json we must not edit.
+MATCH_SUFFIX = SUFFIX | {'way', 'ter', 'terrace', 'cir', 'circle', 'ln', 'lane', 'pl',
+                         'place', 'ct', 'court', 'hwy', 'highway', 'plz', 'plaza', 'path'}
+MATCH_ALIAS = {'third': '3rd', 'fourth': '4th', 'fifth': '5th', 'sixth': '6th',
+               'seventh': '7th', 'eighth': '8th', 'ninth': '9th', 'tenth': '10th',
+               'vincente': 'vicente',       # data.json spells Vicente St with an n
+               '42th': '42nd',              # and 42nd Ave as 42th
+               'bay shore': 'bayshore'}
+
+
+def match_key(name):
+    """Street set for comparing two names for the same corner. '/' counts as either:
+    a stop at 'Ocean & Dorado' belongs to data.json's 'Ocean & Jules/Dorado'."""
+    name = re.sub(r'\([^)]*\)', ' ', name)              # drop "(SF State)" etc.
+    out = set()
+    for part in re.split(r'[&/]', name):
+        toks = [t for t in re.split(r'[\s.]+', part.strip().lower()) if t]
+        if toks and toks[0] == 'the':
+            toks = toks[1:]
+        while len(toks) > 1 and toks[-1] in MATCH_SUFFIX:
+            toks.pop()
+        if toks:
+            joined = ' '.join(toks)
+            out.add(MATCH_ALIAS.get(joined, joined))
+    return out
+
+
+def same_corner(a, b):
+    """True if two names denote the same intersection."""
+    ka, kb = match_key(a), match_key(b)
+    return bool(ka) and bool(kb) and (ka <= kb or kb <= ka)
+
+
 def streets(name):
     """'16th St& Rhode Island St' -> ['16th', 'rhode island']"""
     name = re.sub(r'\s*(SE|NE|SW|NW)-(FS|NS|MB)\s*/?\s*BZ\s*$', '', name).strip()
     out = []
     for part in name.split('&'):
         toks = [t for t in re.split(r'[\s.]+', part.strip().lower()) if t]
+        if len(toks) > 1 and toks[0] == 'the':      # "The Embarcadero" -> Embarcadero
+            toks = toks[1:]
         while len(toks) > 1 and toks[-1] in SUFFIX:
             toks.pop()
         if toks:
@@ -141,7 +183,7 @@ def heading_of(dx, dy):
 
 
 # ---------------------------------------------------------------------- input
-def read_gtfs(src):
+def read_gtfs(src, covered=frozenset()):
     if src.startswith(('http://', 'https://')):
         sys.stderr.write(f'fetching {src}\n')
         with urllib.request.urlopen(src) as r:
@@ -152,7 +194,8 @@ def read_gtfs(src):
     def table(name):
         with zf.open(name) as f:
             return list(csv.DictReader(io.TextIOWrapper(f, 'utf-8-sig')))
-    routes = {r['route_id']: r for r in table('routes.txt') if r['route_type'] in ROUTE_TYPES}
+    routes = {r['route_id']: r for r in table('routes.txt')
+              if r['route_id'] not in covered}
     stops = {s['stop_id']: s for s in table('stops.txt')}
     trips = {t['trip_id']: t for t in table('trips.txt') if t['route_id'] in routes}
     order = collections.defaultdict(list)
@@ -168,8 +211,18 @@ def read_gtfs(src):
     return routes, stops, patterns
 
 
+def drop_excluded(patterns, stops, excluded):
+    """Remove stops that will never return a prediction, before clustering sees them."""
+    out = collections.Counter()
+    for (route, direction, seq), trips in patterns.items():
+        kept = tuple(s for s in seq if stops[s]['stop_code'] not in excluded)
+        if len(kept) > 1:
+            out[(route, direction, kept)] += trips
+    return out
+
+
 # ------------------------------------------------------------------ headings
-def compute_headings(patterns, stops, metro):
+def compute_headings(patterns, stops, metro, head_overrides):
     """One heading per stop code, from travel through it across every route.
 
     Where data.json already describes a stop, its heading wins: those are
@@ -202,24 +255,69 @@ def compute_headings(patterns, stops, metro):
         if last > 0 and (seq[0] not in start or start[seq[0]][0] < trips):
             start[seq[0]] = (trips, unit(pts[0], pts[1]))
 
-    head = {}
+    # The direction of travel alone mislabels a stop just before a turn: the 22
+    # at 16th & Church is still running west on 16th, and only turns onto Church
+    # after leaving. So snap each heading to the axis of the street the stop is
+    # named for, using nearby stops on that same street to find which way it runs.
+    # Only stops NAMED FOR a street tell you how it runs. 'Market St & 3rd St' is a
+    # stop on Market, and counting it as a 3rd St stop drags 3rd's axis east-west.
+    on_street = collections.defaultdict(list)
+    for s in vec:
+        named = streets(stops[s]['stop_name'])
+        if named:
+            on_street[named[0]].append((frozenset(named), xy(s)))
+
+    def street_axis(s):
+        """'x' if this stop's own street clearly runs east-west here, 'y' if clearly
+        north-south, None if it runs diagonally - SoMa and Mission Bay sit on a grid
+        rotated about 45 degrees, where neither answer is more right than the other."""
+        named = streets(stops[s]['stop_name'])
+        if not named:
+            return None
+        here, pt = frozenset(named), xy(s)
+        near = sorted(((metres(pt, p), p) for k, p in on_street[named[0]] if k != here),
+                      key=lambda t: t[0])[:3]
+        near = [p for d, p in near if d <= AXIS_RADIUS]
+        if not near:
+            return None
+        run_x = sum(abs(p[0] - pt[0]) for p in near) * M_PER_DEG_LON
+        run_y = sum(abs(p[1] - pt[1]) for p in near) * M_PER_DEG_LAT
+        lo, hi = sorted((run_x, run_y))
+        if hi < lo * AXIS_DOMINANCE:
+            return None
+        return 'x' if run_x > run_y else 'y'
+
+    head, snapped = {}, {}
     for s in vec:
         # label a terminal by where the bus leaves for, but only when a real share
         # of the service starts there - a rare short-line origin is not a terminal
         if s in start and start[s][0] >= TERMINAL_SHARE * total[s]:
-            head[s] = heading_of(*start[s][1])
+            dx, dy = start[s][1]
         else:
-            head[s] = heading_of(*vec[s])
+            dx, dy = vec[s]
+        plain = heading_of(dx, dy)
+        axis = street_axis(s)
+        if axis == 'x' and dx:
+            head[s] = 'eastbound' if dx > 0 else 'westbound'
+        elif axis == 'y' and dy:
+            head[s] = 'northbound' if dy > 0 else 'southbound'
+        else:
+            head[s] = plain
+        if head[s] != plain:
+            snapped[s] = plain
 
     curated = {p['id']: p['heading'] for st in metro['stations'] for p in st['platforms']}
     for s in head:
         if stops[s]['stop_code'] in curated:
             head[s] = curated[stops[s]['stop_code']]
-    return head
+    for s in head:                               # hand-verified corrections win outright
+        if stops[s]['stop_code'] in head_overrides:
+            head[s] = head_overrides[stops[s]['stop_code']]
+    return head, snapped
 
 
 # ------------------------------------------------------------------ identity
-def resolve_stations(patterns, stops, metro, frozen):
+def resolve_stations(patterns, stops, metro, frozen, overrides):
     """Assign every bus stop to a station in the shared namespace."""
     served = {s for _, _, seq in patterns for s in seq}
     pt_of = {s: (float(stops[s]['stop_lon']), float(stops[s]['stop_lat'])) for s in served}
@@ -238,9 +336,9 @@ def resolve_stations(patterns, stops, metro, frozen):
             hit = metro_by_code.get(stops[s]['stop_code'])
             if hit:
                 out[hit['id']] = hit
-            ours = set(streets(stops[s]['stop_name']))
             for st in metro['stations']:
-                if st['kind'] == 'streetLevel' and set(streets(st['name'])) & ours \
+                if st['kind'] == 'streetLevel' \
+                        and same_corner(st['name'], stops[s]['stop_name']) \
                         and min(metres(pt_of[s], mp) for mp in platforms_of(st)) <= MERGE_RADIUS:
                     out[st['id']] = st
         return out
@@ -253,7 +351,7 @@ def resolve_stations(patterns, stops, metro, frozen):
     # group stops into intersections: same cross streets, then within CLUSTER_RADIUS
     groups = collections.defaultdict(list)
     for s in served:
-        groups[frozenset(streets(stops[s]['stop_name']))].append(s)
+        groups[frozenset(match_key(stops[s]['stop_name']))].append(s)
     clusters = []
     for key, members in groups.items():
         members.sort(key=lambda s: int(stops[s]['stop_id']))
@@ -273,6 +371,15 @@ def resolve_stations(patterns, stops, metro, frozen):
     # is named for first, then by distance.
     split = []
     for members in clusters:
+        pinned = collections.defaultdict(list)
+        for s in list(members):
+            sid = overrides.get(stops[s]['stop_code'])
+            if sid:
+                pinned[sid].append(s)
+                members = [m for m in members if m != s]
+        split.extend((ms, sid) for sid, ms in pinned.items())
+        if not members:
+            continue
         cands = candidates(members)
         if len(cands) < 2:
             split.append((members, next(iter(cands), None)))
@@ -283,9 +390,9 @@ def resolve_stations(patterns, stops, metro, frozen):
             if pin and pin['id'] in cands:
                 buckets[pin['id']].append(s)
                 continue
-            ours = streets(stops[s]['stop_name'])[:1]
+            ours = [next(iter(match_key(streets(stops[s]['stop_name'])[0])), '')]
             best = min(cands.values(), key=lambda st: (
-                0 if streets(st['name'])[:1] == ours else 1,
+                0 if [next(iter(match_key(streets(st['name'])[0])), '')] == ours else 1,
                 min(metres(pt_of[s], mp) for mp in platforms_of(st))))
             buckets[best['id']].append(s)
         split.extend((ms, sid) for sid, ms in buckets.items())
@@ -294,10 +401,15 @@ def resolve_stations(patterns, stops, metro, frozen):
     notes = collections.Counter()
     for members, forced in sorted(split, key=lambda c: int(stops[c[0][0]]['stop_id'])):
         primary = primary_of(members)
-        # an id frozen by an earlier build always wins - it is in people's favourites
-        sid = next((frozen[stops[s]['stop_code']] for s in members
-                    if stops[s]['stop_code'] in frozen), None)
+        # a hand-verified override beats everything, the frozen map included
+        sid = next((overrides[stops[s]['stop_code']] for s in members
+                    if stops[s]['stop_code'] in overrides), None)
         if sid:
+            notes['hand-verified override'] += 1
+        # then an id frozen by an earlier build - it is in people's favourites
+        elif (was := next((frozen[stops[s]['stop_code']] for s in members
+                           if stops[s]['stop_code'] in frozen), None)):
+            sid = was
             notes['frozen'] += 1
         elif forced:
             sid = forced
@@ -453,9 +565,16 @@ def main():
 
     metro = json.load(open(METRO))
     frozen = json.load(open(ID_MAP)) if os.path.exists(ID_MAP) else {}
-    routes, stops, patterns = read_gtfs(args.gtfs)
-    head = compute_headings(patterns, stops, metro)
-    station_of, records, notes = resolve_stations(patterns, stops, metro, frozen)
+    ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
+    real = lambda m: {k: v for k, v in m.items() if not k.startswith('//')}   # skip comments
+    overrides = {k: v['station'] for k, v in real(ov.get('stations', {})).items()}
+    head_overrides = {k: v['heading'] for k, v in real(ov.get('headings', {})).items()}
+    excluded = real(ov.get('exclude', {}))
+    routes, stops, patterns = read_gtfs(args.gtfs, {l['id'] for l in metro['lines']})
+    served_before = {stops[s]['stop_code'] for _, _, seq in patterns for s in seq}
+    patterns = drop_excluded(patterns, stops, excluded)
+    head, snapped = compute_headings(patterns, stops, metro, head_overrides)
+    station_of, records, notes = resolve_stations(patterns, stops, metro, frozen, overrides)
 
     route_stations = {r: route_order(r, patterns, station_of) for r in routes}
     station_lines = collections.defaultdict(list)
@@ -474,7 +593,6 @@ def main():
             'stations': [station_record(sid, records[sid], stops, head, codes, [route])
                          for sid in order],
         }
-        write(os.path.join(OUT_DIR, f'{route}.json'), doc)
         docs.append(doc)
 
     # merged document: every route, stations unioned
@@ -498,20 +616,37 @@ def main():
     }
     write(OUT_ALL, merged)
 
-    for sid, rec in records.items():
-        for s in rec['members']:
-            frozen[stops[s]['stop_code']] = sid
-    write(ID_MAP, dict(sorted(frozen.items())))
-
     problems = validate(docs + [merged], metro, stops, head)
+    known = {stops[s]['stop_code'] for s in station_of}
+    for code in list(overrides) + list(head_overrides):
+        if code not in known:
+            problems.append(f'override names stop {code}, which no route serves')
+    for code in excluded:
+        if code not in served_before:
+            problems.append(f'exclude names stop {code}, which no route serves anyway')
+        elif code in known:
+            problems.append(f'excluded stop {code} is still in the output')
+    for code, sid in overrides.items():
+        if code in station_of and station_of.get(
+                next(s for s in station_of if stops[s]['stop_code'] == code)) != sid:
+            problems.append(f'override for stop {code} did not take effect')
     print(f'{len(routes)} routes, {len(merged_stations)} stations, '
-          f'{sum(len(s["platforms"]) for s in merged_stations.values())} stops')
+          f'{sum(len(s["platforms"]) for s in merged_stations.values())} stops'
+          + (f', {len(excluded)} stops excluded' if excluded else ''))
     print('station identity: ' + ', '.join(f'{v} {k}' for k, v in sorted(notes.items())))
     if problems:
         print(f'\n{len(problems)} PROBLEM(S):')
         for p in problems[:40]:
             print('  ' + p)
+        print('\ntools/station-ids.json NOT updated - a frozen id is permanent, so a '
+              'build that fails validation must not add to it.')
         return 1
+
+    # only now, once everything checks out, freeze the ids
+    for sid, rec in records.items():
+        for s in rec['members']:
+            frozen[stops[s]['stop_code']] = sid
+    write(ID_MAP, dict(sorted(frozen.items())))
     print('validation: ok')
     return 0
 
