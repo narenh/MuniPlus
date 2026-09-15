@@ -1,0 +1,1165 @@
+{
+  "lines": [
+    {
+      "id": "35",
+      "name": "35 Eureka",
+      "shortName": "35",
+      "color": "#005B95",
+      "stationIds": [
+        "marketCastro",
+        "eighteenthCastro",
+        "castro19",
+        "castro20",
+        "twentiethCollingwood",
+        "eurekaMarket",
+        "eighteenthEureka",
+        "eureka19",
+        "twentiethEureka",
+        "eureka21",
+        "eureka22",
+        "douglassAlvarado",
+        "twentyFirstDouglass",
+        "grandView21",
+        "hoffman22",
+        "hoffman23",
+        "twentyFourthHoffman",
+        "twentyFourthDouglass",
+        "twentyFourthDiamond",
+        "diamond25",
+        "diamondClipper",
+        "diamond26",
+        "diamondCesarChavez",
+        "diamond27",
+        "diamondDuncan",
+        "diamond28",
+        "diamond29",
+        "diamondHeightsDiamond",
+        "addisonDiamondHeights",
+        "addisonFarnum",
+        "farnumMoffitt",
+        "33Moffitt",
+        "bemisMoffitt",
+        "addisonDigby",
+        "164Addison",
+        "46Addison",
+        "bemisAddison",
+        "miguelLaidley",
+        "cheneryMiguel",
+        "cheneryMateo",
+        "cheneryRoanoke",
+        "cheneryCastro",
+        "cheneryNatick",
+        "diamondChenery",
+        "bosworthDiamond"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "marketCastro",
+      "name": "Market & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.762357,
+      "longitude": -122.435502,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14334",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.762397,
+          "longitude": -122.435266
+        },
+        {
+          "id": "17253",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.762317,
+          "longitude": -122.435739
+        }
+      ]
+    },
+    {
+      "id": "eighteenthCastro",
+      "name": "18th & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.760863,
+      "longitude": -122.435048,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14315",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.760863,
+          "longitude": -122.435048
+        }
+      ]
+    },
+    {
+      "id": "castro19",
+      "name": "Castro & 19th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75939,
+      "longitude": -122.43491,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14316",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75939,
+          "longitude": -122.43491
+        }
+      ]
+    },
+    {
+      "id": "castro20",
+      "name": "Castro & 20th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75778,
+      "longitude": -122.43477,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14318",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75778,
+          "longitude": -122.43477
+        }
+      ]
+    },
+    {
+      "id": "twentiethCollingwood",
+      "name": "20th & Collingwood",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.757677,
+      "longitude": -122.435966,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13414",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.757677,
+          "longitude": -122.435966
+        }
+      ]
+    },
+    {
+      "id": "eurekaMarket",
+      "name": "Eureka & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.761594,
+      "longitude": -122.43828,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14543",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.761594,
+          "longitude": -122.43828
+        }
+      ]
+    },
+    {
+      "id": "eighteenthEureka",
+      "name": "18th & Eureka",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.760631,
+      "longitude": -122.438188,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14535",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.760631,
+          "longitude": -122.438188
+        }
+      ]
+    },
+    {
+      "id": "eureka19",
+      "name": "Eureka & 19th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.759034,
+      "longitude": -122.438039,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14536",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.759034,
+          "longitude": -122.438039
+        }
+      ]
+    },
+    {
+      "id": "twentiethEureka",
+      "name": "20th & Eureka",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.757486,
+      "longitude": -122.437873,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14537",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75741,
+          "longitude": -122.437879
+        },
+        {
+          "id": "13415",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.757561,
+          "longitude": -122.437868
+        }
+      ]
+    },
+    {
+      "id": "eureka21",
+      "name": "Eureka & 21st",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.755893,
+      "longitude": -122.437816,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14539",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.755813,
+          "longitude": -122.43773
+        },
+        {
+          "id": "14538",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.755973,
+          "longitude": -122.437902
+        }
+      ]
+    },
+    {
+      "id": "eureka22",
+      "name": "Eureka & 22nd",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.754367,
+      "longitude": -122.437742,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14540",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.754367,
+          "longitude": -122.437742
+        }
+      ]
+    },
+    {
+      "id": "douglassAlvarado",
+      "name": "Douglass & Alvarado",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75352,
+      "longitude": -122.43875,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14444",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75352,
+          "longitude": -122.43875
+        }
+      ]
+    },
+    {
+      "id": "twentyFirstDouglass",
+      "name": "21st & Douglass",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75536,
+      "longitude": -122.43901,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13424",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.75536,
+          "longitude": -122.43901
+        }
+      ]
+    },
+    {
+      "id": "grandView21",
+      "name": "Grand View & 21st",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75504,
+      "longitude": -122.44043,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14924",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75504,
+          "longitude": -122.44043
+        }
+      ]
+    },
+    {
+      "id": "hoffman22",
+      "name": "Hoffman & 22nd",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75401,
+      "longitude": -122.44089,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15031",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75401,
+          "longitude": -122.44089
+        }
+      ]
+    },
+    {
+      "id": "hoffman23",
+      "name": "Hoffman & 23rd",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.75241,
+      "longitude": -122.44074,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15032",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75241,
+          "longitude": -122.44074
+        }
+      ]
+    },
+    {
+      "id": "twentyFourthHoffman",
+      "name": "24th & Hoffman",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.750977,
+      "longitude": -122.440504,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13475",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.750977,
+          "longitude": -122.440504
+        }
+      ]
+    },
+    {
+      "id": "twentyFourthDouglass",
+      "name": "24th & Douglass",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.751111,
+      "longitude": -122.438451,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14443",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75112,
+          "longitude": -122.43854
+        },
+        {
+          "id": "13468",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.751102,
+          "longitude": -122.438361
+        }
+      ]
+    },
+    {
+      "id": "twentyFourthDiamond",
+      "name": "24th & Diamond",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.751084,
+      "longitude": -122.43631,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14371",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.751075,
+          "longitude": -122.436219
+        },
+        {
+          "id": "13465",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.751092,
+          "longitude": -122.436402
+        }
+      ]
+    },
+    {
+      "id": "diamond25",
+      "name": "Diamond & 25th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.749568,
+      "longitude": -122.436135,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14373",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.749486,
+          "longitude": -122.436059
+        },
+        {
+          "id": "14372",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74965,
+          "longitude": -122.43621
+        }
+      ]
+    },
+    {
+      "id": "diamondClipper",
+      "name": "Diamond & Clipper",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.748768,
+      "longitude": -122.436076,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14391",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.748683,
+          "longitude": -122.43599
+        },
+        {
+          "id": "14390",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.748853,
+          "longitude": -122.436162
+        }
+      ]
+    },
+    {
+      "id": "diamond26",
+      "name": "Diamond & 26th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.747871,
+      "longitude": -122.43599,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14374",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.747889,
+          "longitude": -122.43591
+        },
+        {
+          "id": "14375",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.747853,
+          "longitude": -122.43607
+        }
+      ]
+    },
+    {
+      "id": "diamondCesarChavez",
+      "name": "Diamond & Cesar Chavez",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.747086,
+      "longitude": -122.435915,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14384",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.747104,
+          "longitude": -122.435841
+        },
+        {
+          "id": "14385",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.747068,
+          "longitude": -122.43599
+        }
+      ]
+    },
+    {
+      "id": "diamond27",
+      "name": "Diamond & 27th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.746274,
+      "longitude": -122.435842,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14376",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.746292,
+          "longitude": -122.435761
+        },
+        {
+          "id": "14377",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.746256,
+          "longitude": -122.435922
+        }
+      ]
+    },
+    {
+      "id": "diamondDuncan",
+      "name": "Diamond & Duncan",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.745556,
+      "longitude": -122.435778,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14399",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.745471,
+          "longitude": -122.435693
+        },
+        {
+          "id": "14398",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.745641,
+          "longitude": -122.435864
+        }
+      ]
+    },
+    {
+      "id": "diamond28",
+      "name": "Diamond & 28th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.744668,
+      "longitude": -122.435682,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14378",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.744686,
+          "longitude": -122.435601
+        },
+        {
+          "id": "14379",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74465,
+          "longitude": -122.435762
+        }
+      ]
+    },
+    {
+      "id": "diamond29",
+      "name": "Diamond & 29th",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.743164,
+      "longitude": -122.435573,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14381",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74308,
+          "longitude": -122.435487
+        },
+        {
+          "id": "14380",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.743249,
+          "longitude": -122.435659
+        }
+      ]
+    },
+    {
+      "id": "diamondHeightsDiamond",
+      "name": "Diamond Heights & Diamond",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.74176,
+      "longitude": -122.435413,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14394",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.741599,
+          "longitude": -122.43535
+        },
+        {
+          "id": "14397",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74192,
+          "longitude": -122.435476
+        }
+      ]
+    },
+    {
+      "id": "addisonDiamondHeights",
+      "name": "Addison & Diamond Heights",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.740117,
+      "longitude": -122.435739,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14360",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.740198,
+          "longitude": -122.435762
+        },
+        {
+          "id": "13615",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.740037,
+          "longitude": -122.435716
+        }
+      ]
+    },
+    {
+      "id": "addisonFarnum",
+      "name": "Addison & Farnum",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.740122,
+      "longitude": -122.434325,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13618",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.740055,
+          "longitude": -122.434433
+        },
+        {
+          "id": "13617",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.740189,
+          "longitude": -122.434216
+        }
+      ]
+    },
+    {
+      "id": "farnumMoffitt",
+      "name": "Farnum & Moffitt",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.738333,
+      "longitude": -122.434067,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14579",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.738333,
+          "longitude": -122.434067
+        }
+      ]
+    },
+    {
+      "id": "33Moffitt",
+      "name": "33 Moffitt",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.736834,
+      "longitude": -122.432189,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15634",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.736834,
+          "longitude": -122.432189
+        }
+      ]
+    },
+    {
+      "id": "bemisMoffitt",
+      "name": "Bemis & Moffitt",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.736655,
+      "longitude": -122.431181,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13096",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.736655,
+          "longitude": -122.431181
+        }
+      ]
+    },
+    {
+      "id": "addisonDigby",
+      "name": "Addison & Digby",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.740001,
+      "longitude": -122.433609,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13616",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.740001,
+          "longitude": -122.433609
+        }
+      ]
+    },
+    {
+      "id": "164Addison",
+      "name": "164 Addison",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.738172,
+      "longitude": -122.432807,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13614",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.738172,
+          "longitude": -122.432807
+        }
+      ]
+    },
+    {
+      "id": "46Addison",
+      "name": "46 Addison",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.737735,
+      "longitude": -122.431009,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13613",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.737735,
+          "longitude": -122.431009
+        }
+      ]
+    },
+    {
+      "id": "bemisAddison",
+      "name": "Bemis & Addison",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.737828,
+      "longitude": -122.429496,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13693",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.737725,
+          "longitude": -122.429531
+        },
+        {
+          "id": "17843",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.737931,
+          "longitude": -122.429462
+        }
+      ]
+    },
+    {
+      "id": "miguelLaidley",
+      "name": "Miguel & Laidley",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.737757,
+      "longitude": -122.428271,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17867",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.737761,
+          "longitude": -122.428294
+        },
+        {
+          "id": "17868",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.737752,
+          "longitude": -122.428248
+        }
+      ]
+    },
+    {
+      "id": "cheneryMiguel",
+      "name": "Chenery & Miguel",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.737125,
+      "longitude": -122.427835,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13971",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73714,
+          "longitude": -122.42775
+        },
+        {
+          "id": "13972",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.73711,
+          "longitude": -122.42792
+        }
+      ]
+    },
+    {
+      "id": "cheneryMateo",
+      "name": "Chenery & Mateo",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.736395,
+      "longitude": -122.42897,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13970",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.73633,
+          "longitude": -122.429
+        },
+        {
+          "id": "13969",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.73646,
+          "longitude": -122.42894
+        }
+      ]
+    },
+    {
+      "id": "cheneryRoanoke",
+      "name": "Chenery & Roanoke",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.735555,
+      "longitude": -122.43024,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13977",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.73548,
+          "longitude": -122.43028
+        },
+        {
+          "id": "13976",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.73563,
+          "longitude": -122.4302
+        }
+      ]
+    },
+    {
+      "id": "cheneryCastro",
+      "name": "Chenery & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.7346,
+      "longitude": -122.43233,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13967",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7346,
+          "longitude": -122.43233
+        }
+      ]
+    },
+    {
+      "id": "cheneryNatick",
+      "name": "Chenery & Natick",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.73458,
+      "longitude": -122.43191,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13973",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.73458,
+          "longitude": -122.43191
+        }
+      ]
+    },
+    {
+      "id": "diamondChenery",
+      "name": "Diamond & Chenery",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.734465,
+      "longitude": -122.433896,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14388",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73446,
+          "longitude": -122.433839
+        },
+        {
+          "id": "14389",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.734469,
+          "longitude": -122.433953
+        }
+      ]
+    },
+    {
+      "id": "bosworthDiamond",
+      "name": "Bosworth & Diamond",
+      "kind": "streetLevel",
+      "lines": [
+        "35"
+      ],
+      "latitude": 37.733488,
+      "longitude": -122.43408,
+      "transferStations": [
+        "glenPark"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13696",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.733488,
+          "longitude": -122.43408
+        }
+      ]
+    }
+  ]
+}

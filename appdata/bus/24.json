@@ -8,44 +8,45 @@
       "stationIds": [
         "jacksonWebster",
         "washingtonWebster",
-        "jacksonFillmore",
+        "fillmoreJackson",
         "jacksonSteiner",
         "jacksonScott",
-        "jacksonDivisadero",
+        "divisaderoJackson",
         "divisaderoClay",
-        "divisaderoCalifornia",
+        "californiaDivisadero",
         "divisaderoPine",
         "divisaderoBush",
         "divisaderoSutter",
-        "divisaderoGeary",
+        "gearyDivisadero",
         "divisaderoEddy",
         "divisaderoMcallister",
         "divisaderoHayes",
         "divisaderoOak",
         "divisaderoHaight",
         "castroDuboce",
-        "castro14",
+        "fourteenthCastro",
         "castro15",
         "castro16",
-        "castroMarket",
-        "castro18",
+        "marketCastro",
+        "seventeenthCastro",
+        "eighteenthCastro",
         "castro19",
         "castro20",
         "castro21",
         "castro22",
         "castro23",
         "castroElizabeth",
-        "castro24",
+        "twentyFourthCastro",
         "castro25",
-        "castro26",
+        "twentySixthCastro",
         "twentySixthNoe",
         "noe27",
         "noe28",
         "noe29",
-        "noe30",
+        "thirtiethNoe",
         "thirtiethSanchez",
-        "thirtiethChurch",
-        "thirtiethDolores",
+        "churchDay",
+        "dolores30",
         "thirtiethMission",
         "cortlandMission",
         "cortlandProspect",
@@ -58,7 +59,7 @@
         "cortlandBronte",
         "cortlandBradford",
         "cortlandHilton",
-        "cortlandBayshore",
+        "bayshoreCortland",
         "industrialBayshore",
         "industrialElmira",
         "industrialRevere",
@@ -69,7 +70,7 @@
         "palouNewhall",
         "newhallOakdale",
         "newcombNewhall",
-        "thirdPalou"
+        "thirdOakdalePalou"
       ]
     }
   ],
@@ -118,8 +119,8 @@
       ]
     },
     {
-      "id": "jacksonFillmore",
-      "name": "Jackson & Fillmore",
+      "id": "fillmoreJackson",
+      "name": "Fillmore & Jackson",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -131,7 +132,7 @@
       "platforms": [
         {
           "id": "14624",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.792386,
           "longitude": -122.434607
@@ -202,8 +203,8 @@
       ]
     },
     {
-      "id": "jacksonDivisadero",
-      "name": "Jackson & Divisadero",
+      "id": "divisaderoJackson",
+      "name": "Divisadero & Jackson",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -258,8 +259,8 @@
       ]
     },
     {
-      "id": "divisaderoCalifornia",
-      "name": "Divisadero & California",
+      "id": "californiaDivisadero",
+      "name": "California & Divisadero",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -356,8 +357,8 @@
       ]
     },
     {
-      "id": "divisaderoGeary",
-      "name": "Divisadero & Geary",
+      "id": "gearyDivisadero",
+      "name": "Geary & Divisadero",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -552,8 +553,8 @@
       ]
     },
     {
-      "id": "castro14",
-      "name": "Castro & 14th",
+      "id": "fourteenthCastro",
+      "name": "14th & Castro",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -616,7 +617,9 @@
       ],
       "latitude": 37.764217,
       "longitude": -122.435347,
-      "transferStations": [],
+      "transferStations": [
+        "castro"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -636,24 +639,19 @@
       ]
     },
     {
-      "id": "castroMarket",
-      "name": "Castro & Market",
+      "id": "marketCastro",
+      "name": "Market & Castro",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
-      "latitude": 37.762383,
-      "longitude": -122.435173,
-      "transferStations": [],
+      "latitude": 37.762397,
+      "longitude": -122.435266,
+      "transferStations": [
+        "castro"
+      ],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "14313",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.76237,
-          "longitude": -122.43508
-        },
         {
           "id": "14334",
           "heading": "southbound",
@@ -664,15 +662,40 @@
       ]
     },
     {
-      "id": "castro18",
-      "name": "Castro & 18th",
+      "id": "seventeenthCastro",
+      "name": "17th & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "24"
+      ],
+      "latitude": 37.76237,
+      "longitude": -122.43508,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14313",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76237,
+          "longitude": -122.43508
+        }
+      ]
+    },
+    {
+      "id": "eighteenthCastro",
+      "name": "18th & Castro",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
       "latitude": 37.760849,
       "longitude": -122.434991,
-      "transferStations": [],
+      "transferStations": [
+        "castro"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -860,8 +883,8 @@
       ]
     },
     {
-      "id": "castro24",
-      "name": "Castro & 24th",
+      "id": "twentyFourthCastro",
+      "name": "24th & Castro",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -916,8 +939,8 @@
       ]
     },
     {
-      "id": "castro26",
-      "name": "Castro & 26th",
+      "id": "twentySixthCastro",
+      "name": "26th & Castro",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -1056,8 +1079,8 @@
       ]
     },
     {
-      "id": "noe30",
-      "name": "Noe & 30th",
+      "id": "thirtiethNoe",
+      "name": "30th & Noe",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -1112,14 +1135,14 @@
       ]
     },
     {
-      "id": "thirtiethChurch",
-      "name": "30th & Church",
+      "id": "churchDay",
+      "name": "Church & Day",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
-      "latitude": 37.7421,
-      "longitude": -122.426564,
+      "latitude": 37.742517,
+      "longitude": -122.426557,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -1140,8 +1163,8 @@
       ]
     },
     {
-      "id": "thirtiethDolores",
-      "name": "30th & Dolores",
+      "id": "dolores30",
+      "name": "Dolores & 30th",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -1152,18 +1175,18 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "13538",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.74217,
-          "longitude": -122.424457
-        },
-        {
           "id": "13537",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.742304,
           "longitude": -122.424026
+        },
+        {
+          "id": "13538",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74217,
+          "longitude": -122.424457
         }
       ]
     },
@@ -1176,7 +1199,9 @@
       ],
       "latitude": 37.742359,
       "longitude": -122.422103,
-      "transferStations": [],
+      "transferStations": [
+        "dolores30"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1204,7 +1229,9 @@
       ],
       "latitude": 37.74093,
       "longitude": -122.42259,
-      "transferStations": [],
+      "transferStations": [
+        "dolores30"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1483,8 +1510,8 @@
       ]
     },
     {
-      "id": "cortlandBayshore",
-      "name": "Cortland & Bayshore",
+      "id": "bayshoreCortland",
+      "name": "Bayshore & Cortland",
       "kind": "streetLevel",
       "lines": [
         "24"
@@ -1701,7 +1728,9 @@
       ],
       "latitude": 37.735095,
       "longitude": -122.392903,
-      "transferStations": [],
+      "transferStations": [
+        "thirdOakdalePalou"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1729,7 +1758,9 @@
       ],
       "latitude": 37.735796,
       "longitude": -122.392175,
-      "transferStations": [],
+      "transferStations": [
+        "thirdOakdalePalou"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1763,14 +1794,14 @@
       ]
     },
     {
-      "id": "thirdPalou",
-      "name": "3rd & Palou",
+      "id": "thirdOakdalePalou",
+      "name": "3rd & Oakdale/Palou",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
-      "latitude": 37.734091,
-      "longitude": -122.390928,
+      "latitude": 37.734354,
+      "longitude": -122.390864,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [

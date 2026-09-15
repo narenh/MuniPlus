@@ -1,0 +1,1458 @@
+{
+  "lines": [
+    {
+      "id": "18",
+      "name": "18 46th Avenue",
+      "shortName": "18",
+      "color": "#005B95",
+      "stationIds": [
+        "thirtyThirdGeary",
+        "thirtyThirdClement",
+        "clementLegionOfHonor",
+        "legionOfHonor",
+        "legionOfHonor",
+        "clementLegionOfHonor",
+        "thirtyThirdClement",
+        "thirtyThirdGeary",
+        "thirtyThirdAnza",
+        "thirtyThirdBalboa",
+        "balboa34",
+        "balboa35",
+        "balboa37",
+        "balboa40",
+        "balboa43",
+        "fortyFifthBalboa",
+        "fortyFifthCabrillo",
+        "cabrillo47",
+        "cabrilloLaPlaya",
+        "fultonLaPlaya",
+        "fultonGreatHwy",
+        "greatHwyNearBeachChalet",
+        "lincolnWayMartinLutherKingJr",
+        "lincolnWay47",
+        "lincolnWayLaPlaya",
+        "fortySixthLincolnWay",
+        "fortySixthIrving",
+        "judah46",
+        "fortySixthKirkham",
+        "fortySixthLawton",
+        "fortySixthMoraga",
+        "fortySixthNoriega",
+        "fortySixthOrtega",
+        "fortySixthPacheco",
+        "fortySixthQuintara",
+        "fortySixthRivera",
+        "fortySixthSantiago",
+        "taraval46",
+        "ulloa46",
+        "vincente46",
+        "fortySixthWawona",
+        "fortySeventhWawona",
+        "sloat47",
+        "sloat45",
+        "sloat41",
+        "skylineSloat",
+        "lakeMercedLakeshore",
+        "lakeMercedMiddlefield",
+        "winstonLakeMerced",
+        "buckinghamWayWinston",
+        "twentiethWinston",
+        "nineteenthBuckinghamWay"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "thirtyThirdGeary",
+      "name": "33rd & Geary",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.779681,
+      "longitude": -122.493302,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13559",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.779548,
+          "longitude": -122.493215
+        },
+        {
+          "id": "13558",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.779815,
+          "longitude": -122.493388
+        }
+      ]
+    },
+    {
+      "id": "thirtyThirdClement",
+      "name": "33rd & Clement",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.78152,
+      "longitude": -122.493435,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13555",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.781537,
+          "longitude": -122.493354
+        },
+        {
+          "id": "13556",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.781502,
+          "longitude": -122.493515
+        }
+      ]
+    },
+    {
+      "id": "clementLegionOfHonor",
+      "name": "Clement & Legion of Honor",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.781649,
+      "longitude": -122.494506,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15261",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.781653,
+          "longitude": -122.494615
+        },
+        {
+          "id": "14069",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.781644,
+          "longitude": -122.494397
+        }
+      ]
+    },
+    {
+      "id": "legionOfHonor",
+      "name": "Legion of Honor",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.784998,
+      "longitude": -122.499641,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14874",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.78498,
+          "longitude": -122.49969
+        },
+        {
+          "id": "14873",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785015,
+          "longitude": -122.499592
+        }
+      ]
+    },
+    {
+      "id": "legionOfHonor",
+      "name": "Legion of Honor",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.784998,
+      "longitude": -122.499641,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14874",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.78498,
+          "longitude": -122.49969
+        },
+        {
+          "id": "14873",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785015,
+          "longitude": -122.499592
+        }
+      ]
+    },
+    {
+      "id": "clementLegionOfHonor",
+      "name": "Clement & Legion of Honor",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.781649,
+      "longitude": -122.494506,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15261",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.781653,
+          "longitude": -122.494615
+        },
+        {
+          "id": "14069",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.781644,
+          "longitude": -122.494397
+        }
+      ]
+    },
+    {
+      "id": "thirtyThirdClement",
+      "name": "33rd & Clement",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.78152,
+      "longitude": -122.493435,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13555",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.781537,
+          "longitude": -122.493354
+        },
+        {
+          "id": "13556",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.781502,
+          "longitude": -122.493515
+        }
+      ]
+    },
+    {
+      "id": "thirtyThirdGeary",
+      "name": "33rd & Geary",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.779681,
+      "longitude": -122.493302,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13559",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.779548,
+          "longitude": -122.493215
+        },
+        {
+          "id": "13558",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.779815,
+          "longitude": -122.493388
+        }
+      ]
+    },
+    {
+      "id": "thirtyThirdAnza",
+      "name": "33rd & Anza",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.777777,
+      "longitude": -122.493163,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13552",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.777692,
+          "longitude": -122.493077
+        },
+        {
+          "id": "13551",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.777861,
+          "longitude": -122.493249
+        }
+      ]
+    },
+    {
+      "id": "thirtyThirdBalboa",
+      "name": "33rd & Balboa",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.776015,
+      "longitude": -122.493053,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13553",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.776032,
+          "longitude": -122.492973
+        },
+        {
+          "id": "13554",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.775997,
+          "longitude": -122.493133
+        }
+      ]
+    },
+    {
+      "id": "balboa34",
+      "name": "Balboa & 34th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.775791,
+      "longitude": -122.494199,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13059",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775791,
+          "longitude": -122.494199
+        }
+      ]
+    },
+    {
+      "id": "balboa35",
+      "name": "Balboa & 35th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.775898,
+      "longitude": -122.494577,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13060",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775898,
+          "longitude": -122.494577
+        }
+      ]
+    },
+    {
+      "id": "balboa37",
+      "name": "Balboa & 37th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.775714,
+      "longitude": -122.49731,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13062",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775647,
+          "longitude": -122.497419
+        },
+        {
+          "id": "13061",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775781,
+          "longitude": -122.497202
+        }
+      ]
+    },
+    {
+      "id": "balboa40",
+      "name": "Balboa & 40th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.77557,
+      "longitude": -122.500508,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13064",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775503,
+          "longitude": -122.500617
+        },
+        {
+          "id": "13063",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775637,
+          "longitude": -122.500399
+        }
+      ]
+    },
+    {
+      "id": "balboa43",
+      "name": "Balboa & 43rd",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.775417,
+      "longitude": -122.503729,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13066",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77535,
+          "longitude": -122.503838
+        },
+        {
+          "id": "13065",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775484,
+          "longitude": -122.50362
+        }
+      ]
+    },
+    {
+      "id": "fortyFifthBalboa",
+      "name": "45th & Balboa",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.775224,
+      "longitude": -122.505878,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13570",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775242,
+          "longitude": -122.505798
+        },
+        {
+          "id": "13571",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775206,
+          "longitude": -122.505958
+        }
+      ]
+    },
+    {
+      "id": "fortyFifthCabrillo",
+      "name": "45th & Cabrillo",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.773556,
+      "longitude": -122.505751,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13572",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773573,
+          "longitude": -122.50567
+        },
+        {
+          "id": "13573",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773538,
+          "longitude": -122.505831
+        }
+      ]
+    },
+    {
+      "id": "cabrillo47",
+      "name": "Cabrillo & 47th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.773354,
+      "longitude": -122.507876,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13925",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773287,
+          "longitude": -122.507985
+        },
+        {
+          "id": "13924",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773421,
+          "longitude": -122.507767
+        }
+      ]
+    },
+    {
+      "id": "cabrilloLaPlaya",
+      "name": "Cabrillo & La Playa",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.77321,
+      "longitude": -122.509968,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14843",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.773214,
+          "longitude": -122.51006
+        },
+        {
+          "id": "17204",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773206,
+          "longitude": -122.509876
+        }
+      ]
+    },
+    {
+      "id": "fultonLaPlaya",
+      "name": "Fulton & La Playa",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.77169,
+      "longitude": -122.50984,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14844",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77169,
+          "longitude": -122.50984
+        }
+      ]
+    },
+    {
+      "id": "fultonGreatHwy",
+      "name": "Fulton & Great Hwy",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.771421,
+      "longitude": -122.510792,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14227",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.771421,
+          "longitude": -122.510792
+        }
+      ]
+    },
+    {
+      "id": "greatHwyNearBeachChalet",
+      "name": "Great Hwy Near Beach Chalet",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.767624,
+      "longitude": -122.51037,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14779",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.767879,
+          "longitude": -122.510284
+        },
+        {
+          "id": "14780",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76737,
+          "longitude": -122.510456
+        }
+      ]
+    },
+    {
+      "id": "lincolnWayMartinLutherKingJr",
+      "name": "Lincoln Way & Martin Luther King Jr",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.764148,
+      "longitude": -122.509296,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15328",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.764148,
+          "longitude": -122.509296
+        }
+      ]
+    },
+    {
+      "id": "lincolnWay47",
+      "name": "Lincoln Way & 47th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.764186,
+      "longitude": -122.507405,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15324",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.764186,
+          "longitude": -122.507405
+        }
+      ]
+    },
+    {
+      "id": "lincolnWayLaPlaya",
+      "name": "Lincoln Way & La Playa",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.763926,
+      "longitude": -122.50957,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15329",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.763926,
+          "longitude": -122.50957
+        }
+      ]
+    },
+    {
+      "id": "fortySixthLincolnWay",
+      "name": "46th & Lincoln Way",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.764044,
+      "longitude": -122.50619,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13582",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.764035,
+          "longitude": -122.50611
+        },
+        {
+          "id": "13583",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.764053,
+          "longitude": -122.50627
+        }
+      ]
+    },
+    {
+      "id": "fortySixthIrving",
+      "name": "46th & Irving",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.76229,
+      "longitude": -122.506057,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13575",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.762206,
+          "longitude": -122.505971
+        },
+        {
+          "id": "13574",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.762375,
+          "longitude": -122.506143
+        }
+      ]
+    },
+    {
+      "id": "judah46",
+      "name": "Judah & 46th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.760442,
+      "longitude": -122.505948,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13577",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.760395,
+          "longitude": -122.505901
+        },
+        {
+          "id": "13576",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.760519,
+          "longitude": -122.506015
+        }
+      ]
+    },
+    {
+      "id": "fortySixthKirkham",
+      "name": "46th & Kirkham",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.75857,
+      "longitude": -122.505802,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13579",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.758485,
+          "longitude": -122.505716
+        },
+        {
+          "id": "13578",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.758655,
+          "longitude": -122.505888
+        }
+      ]
+    },
+    {
+      "id": "fortySixthLawton",
+      "name": "46th & Lawton",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.756696,
+      "longitude": -122.505663,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13581",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.756612,
+          "longitude": -122.505577
+        },
+        {
+          "id": "13580",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.756781,
+          "longitude": -122.505749
+        }
+      ]
+    },
+    {
+      "id": "fortySixthMoraga",
+      "name": "46th & Moraga",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.754841,
+      "longitude": -122.505535,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13585",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.754756,
+          "longitude": -122.505449
+        },
+        {
+          "id": "13584",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.754925,
+          "longitude": -122.505621
+        }
+      ]
+    },
+    {
+      "id": "fortySixthNoriega",
+      "name": "46th & Noriega",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.752833,
+      "longitude": -122.505402,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13586",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.752829,
+          "longitude": -122.505322
+        },
+        {
+          "id": "13587",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.752837,
+          "longitude": -122.505482
+        }
+      ]
+    },
+    {
+      "id": "fortySixthOrtega",
+      "name": "46th & Ortega",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.751102,
+      "longitude": -122.50528,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13589",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.751017,
+          "longitude": -122.505194
+        },
+        {
+          "id": "13588",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.751187,
+          "longitude": -122.505366
+        }
+      ]
+    },
+    {
+      "id": "fortySixthPacheco",
+      "name": "46th & Pacheco",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.749246,
+      "longitude": -122.505153,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13591",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.749161,
+          "longitude": -122.505067
+        },
+        {
+          "id": "13590",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.749331,
+          "longitude": -122.505239
+        }
+      ]
+    },
+    {
+      "id": "fortySixthQuintara",
+      "name": "46th & Quintara",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.747372,
+      "longitude": -122.505014,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13593",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.747288,
+          "longitude": -122.504928
+        },
+        {
+          "id": "13592",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.747457,
+          "longitude": -122.5051
+        }
+      ]
+    },
+    {
+      "id": "fortySixthRivera",
+      "name": "46th & Rivera",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.745508,
+      "longitude": -122.504887,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13595",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.745423,
+          "longitude": -122.504801
+        },
+        {
+          "id": "13594",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.745592,
+          "longitude": -122.504973
+        }
+      ]
+    },
+    {
+      "id": "fortySixthSantiago",
+      "name": "46th & Santiago",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.743652,
+      "longitude": -122.504748,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13597",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.743567,
+          "longitude": -122.504662
+        },
+        {
+          "id": "13596",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.743737,
+          "longitude": -122.504834
+        }
+      ]
+    },
+    {
+      "id": "taraval46",
+      "name": "46th Ave & Taraval St",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.741754,
+      "longitude": -122.504512,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13598",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.741854,
+          "longitude": -122.504706
+        },
+        {
+          "id": "13599",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.741685,
+          "longitude": -122.504534
+        }
+      ]
+    },
+    {
+      "id": "ulloa46",
+      "name": "Ulloa St & 46th Ave",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.739914,
+      "longitude": -122.504493,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13601",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.739829,
+          "longitude": -122.504407
+        },
+        {
+          "id": "13600",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.739998,
+          "longitude": -122.504579
+        }
+      ]
+    },
+    {
+      "id": "vincente46",
+      "name": "Vincente St & 46th Ave",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.738057,
+      "longitude": -122.504354,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13603",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.737973,
+          "longitude": -122.504268
+        },
+        {
+          "id": "13602",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.738142,
+          "longitude": -122.50444
+        }
+      ]
+    },
+    {
+      "id": "fortySixthWawona",
+      "name": "46th & Wawona",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.736108,
+      "longitude": -122.504141,
+      "transferStations": [
+        "sfZoo"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13604",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.736108,
+          "longitude": -122.504141
+        }
+      ]
+    },
+    {
+      "id": "fortySeventhWawona",
+      "name": "47th & Wawona",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.736018,
+      "longitude": -122.505366,
+      "transferStations": [
+        "sfZoo"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13606",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.736018,
+          "longitude": -122.505366
+        }
+      ]
+    },
+    {
+      "id": "sloat47",
+      "name": "Sloat & 47th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.735394,
+      "longitude": -122.50493,
+      "transferStations": [
+        "sfZoo"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17208",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.735394,
+          "longitude": -122.50493
+        }
+      ]
+    },
+    {
+      "id": "sloat45",
+      "name": "Sloat & 45th",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.735484,
+      "longitude": -122.503092,
+      "transferStations": [
+        "sfZoo"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16451",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.735368,
+          "longitude": -122.502777
+        },
+        {
+          "id": "16450",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7356,
+          "longitude": -122.503407
+        }
+      ]
+    },
+    {
+      "id": "sloat41",
+      "name": "Sloat & 41st",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.734348,
+      "longitude": -122.499128,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16447",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.73413,
+          "longitude": -122.498961
+        },
+        {
+          "id": "16446",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.734567,
+          "longitude": -122.499294
+        }
+      ]
+    },
+    {
+      "id": "skylineSloat",
+      "name": "Skyline & Sloat",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.733411,
+      "longitude": -122.497096,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16434",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.733128,
+          "longitude": -122.497522
+        },
+        {
+          "id": "16433",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.733693,
+          "longitude": -122.49667
+        }
+      ]
+    },
+    {
+      "id": "lakeMercedLakeshore",
+      "name": "Lake Merced & Lakeshore",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.729456,
+      "longitude": -122.494073,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17851",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.72942,
+          "longitude": -122.494056
+        },
+        {
+          "id": "17852",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.729492,
+          "longitude": -122.49409
+        }
+      ]
+    },
+    {
+      "id": "lakeMercedMiddlefield",
+      "name": "Lake Merced & Middlefield",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.729534,
+      "longitude": -122.486347,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14839",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.729441,
+          "longitude": -122.48629
+        },
+        {
+          "id": "14838",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.729628,
+          "longitude": -122.486404
+        }
+      ]
+    },
+    {
+      "id": "winstonLakeMerced",
+      "name": "Winston & Lake Merced",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.727051,
+      "longitude": -122.483305,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16955",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.726979,
+          "longitude": -122.48331
+        },
+        {
+          "id": "16954",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.727122,
+          "longitude": -122.483299
+        }
+      ]
+    },
+    {
+      "id": "buckinghamWayWinston",
+      "name": "Buckingham Way & Winston",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.728177,
+      "longitude": -122.478708,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16953",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.728294,
+          "longitude": -122.478929
+        },
+        {
+          "id": "16952",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.72806,
+          "longitude": -122.478488
+        }
+      ]
+    },
+    {
+      "id": "twentiethWinston",
+      "name": "20th & Winston",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.726878,
+      "longitude": -122.475842,
+      "transferStations": [
+        "winston19"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13408",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.726874,
+          "longitude": -122.475945
+        },
+        {
+          "id": "16951",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.726883,
+          "longitude": -122.475739
+        }
+      ]
+    },
+    {
+      "id": "nineteenthBuckinghamWay",
+      "name": "19th & Buckingham Way",
+      "kind": "streetLevel",
+      "lines": [
+        "18"
+      ],
+      "latitude": 37.725901,
+      "longitude": -122.475235,
+      "transferStations": [
+        "winston19"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13352",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.725901,
+          "longitude": -122.475235
+        }
+      ]
+    }
+  ]
+}

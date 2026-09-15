@@ -1,0 +1,2028 @@
+{
+  "lines": [
+    {
+      "id": "9",
+      "name": "9 San Bruno",
+      "shortName": "9",
+      "color": "#005B95",
+      "stationIds": [
+        "marketSteuart",
+        "spearMarket",
+        "marketBeale",
+        "market1",
+        "marketNewMontgomery",
+        "market3",
+        "fourthMarket",
+        "marketDrumm",
+        "marketBattery",
+        "market2",
+        "marketKearny",
+        "marketStockton",
+        "market5",
+        "market6",
+        "marketTaylor",
+        "market7",
+        "eighthMarket",
+        "market9",
+        "marketHyde",
+        "marketLarkin",
+        "eleventhMarket",
+        "mission11",
+        "eleventhHoward",
+        "eleventhHarrison",
+        "eleventhBryant",
+        "potrero15",
+        "divisionBryant",
+        "potreroAlameda",
+        "sixteenthPotrero",
+        "potreroMariposa",
+        "potrero19",
+        "potrero21",
+        "potreroAveAtSfGeneralHospital",
+        "potrero23",
+        "potrero24",
+        "twentyFifthPotrero",
+        "201BayshoreBlvdE",
+        "bayshoreFlower",
+        "240Bayshore",
+        "bayshoreOakdale",
+        "bayshoreCortland",
+        "bayshoreBoutwell",
+        "bayshoreAlemany",
+        "bayshoreAugusta",
+        "bayshoreSilver",
+        "sanBrunoSilver",
+        "sanBrunoThornton",
+        "sanBrunoFelton",
+        "baconSanBruno",
+        "sanBrunoWayland",
+        "sanBrunoPaul",
+        "mansellSomerset",
+        "sanBrunoWoolsey",
+        "sanBrunoDwight",
+        "mansellSanBruno",
+        "sanBrunoHarkness",
+        "3801SanBruno",
+        "sanBrunoWard",
+        "sanBrunoWilde",
+        "3800SanBruno",
+        "sanBrunoSomerset",
+        "sanBrunoArleta",
+        "bayshoreVisitacion",
+        "bayshoreArletaBlanken",
+        "bayshoreLeland",
+        "sunnydale",
+        "sunnydaleTalbert",
+        "sunnydaleRutland",
+        "sunnydaleCora",
+        "schwerinSunnydale",
+        "schwerinGarrison",
+        "schwerinVelasco",
+        "schwerinMacdonald",
+        "schwerinGeneva",
+        "genevaRioVerde",
+        "genevaCastillo",
+        "genevaSantos",
+        "brookdaleBlythdale",
+        "sunnyvaleWAccess",
+        "westernAccessSunnyvale",
+        "sunnydaleAveMclarenSchool"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "marketSteuart",
+      "name": "Market & Steuart",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.794454,
+      "longitude": -122.394917,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17227",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.794454,
+          "longitude": -122.394917
+        }
+      ]
+    },
+    {
+      "id": "spearMarket",
+      "name": "Spear & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.7934,
+      "longitude": -122.39528,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16475",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7934,
+          "longitude": -122.39528
+        }
+      ]
+    },
+    {
+      "id": "marketBeale",
+      "name": "Market & Beale",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.792572,
+      "longitude": -122.397016,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15658",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792572,
+          "longitude": -122.397016
+        }
+      ]
+    },
+    {
+      "id": "market1",
+      "name": "Market & 1st",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.79094,
+      "longitude": -122.399195,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17264",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.79094,
+          "longitude": -122.399195
+        }
+      ]
+    },
+    {
+      "id": "marketNewMontgomery",
+      "name": "Market & New Montgomery",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.788613,
+      "longitude": -122.402163,
+      "transferStations": [
+        "mongomery"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15685",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.788613,
+          "longitude": -122.402163
+        }
+      ]
+    },
+    {
+      "id": "market3",
+      "name": "Market & 3rd",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.787525,
+      "longitude": -122.403519,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15640",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.787525,
+          "longitude": -122.403519
+        }
+      ]
+    },
+    {
+      "id": "fourthMarket",
+      "name": "4th & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.785705,
+      "longitude": -122.405847,
+      "transferStations": [
+        "powell",
+        "unionSquare"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15643",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.785705,
+          "longitude": -122.405847
+        }
+      ]
+    },
+    {
+      "id": "marketDrumm",
+      "name": "Market & Drumm",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.793473,
+      "longitude": -122.396178,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15669",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793473,
+          "longitude": -122.396178
+        }
+      ]
+    },
+    {
+      "id": "marketBattery",
+      "name": "Market & Battery",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.79111,
+      "longitude": -122.399069,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15657",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.79111,
+          "longitude": -122.399069
+        }
+      ]
+    },
+    {
+      "id": "market2",
+      "name": "Market & 2nd",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.789353,
+      "longitude": -122.401306,
+      "transferStations": [
+        "mongomery"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15639",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.789353,
+          "longitude": -122.401306
+        }
+      ]
+    },
+    {
+      "id": "marketKearny",
+      "name": "Market & Kearny",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.78773,
+      "longitude": -122.40337,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15678",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78773,
+          "longitude": -122.40337
+        }
+      ]
+    },
+    {
+      "id": "marketStockton",
+      "name": "Market & Stockton",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.785777,
+      "longitude": -122.405859,
+      "transferStations": [
+        "unionSquare"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15694",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785777,
+          "longitude": -122.405859
+        }
+      ]
+    },
+    {
+      "id": "market5",
+      "name": "Market & 5th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.783984,
+      "longitude": -122.408066,
+      "transferStations": [
+        "powell"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15645",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.783886,
+          "longitude": -122.408141
+        },
+        {
+          "id": "15655",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.784082,
+          "longitude": -122.407992
+        }
+      ]
+    },
+    {
+      "id": "market6",
+      "name": "Market & 6th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.782102,
+      "longitude": -122.4104,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15647",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.782102,
+          "longitude": -122.4104
+        }
+      ]
+    },
+    {
+      "id": "marketTaylor",
+      "name": "Market & Taylor",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.782316,
+      "longitude": -122.410228,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15695",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.782316,
+          "longitude": -122.410228
+        }
+      ]
+    },
+    {
+      "id": "market7",
+      "name": "Market & 7th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.780466,
+      "longitude": -122.412527,
+      "transferStations": [
+        "civicCenter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15650",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.780363,
+          "longitude": -122.412613
+        },
+        {
+          "id": "15656",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.780568,
+          "longitude": -122.412441
+        }
+      ]
+    },
+    {
+      "id": "eighthMarket",
+      "name": "8th & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.778606,
+      "longitude": -122.414826,
+      "transferStations": [
+        "civicCenter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15651",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.778606,
+          "longitude": -122.414826
+        }
+      ]
+    },
+    {
+      "id": "market9",
+      "name": "Market & 9th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.77741,
+      "longitude": -122.41634,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15652",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.77741,
+          "longitude": -122.41634
+        }
+      ]
+    },
+    {
+      "id": "marketHyde",
+      "name": "Market & Hyde",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.779105,
+      "longitude": -122.414379,
+      "transferStations": [
+        "civicCenter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15676",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.779105,
+          "longitude": -122.414379
+        }
+      ]
+    },
+    {
+      "id": "marketLarkin",
+      "name": "Market & Larkin",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.777598,
+      "longitude": -122.416236,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15680",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.777598,
+          "longitude": -122.416236
+        }
+      ]
+    },
+    {
+      "id": "eleventhMarket",
+      "name": "11th & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.775434,
+      "longitude": -122.418548,
+      "transferStations": [
+        "vanNess"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13244",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7755,
+          "longitude": -122.41852
+        },
+        {
+          "id": "13245",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.775368,
+          "longitude": -122.418575
+        }
+      ]
+    },
+    {
+      "id": "mission11",
+      "name": "Mission & 11th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.774038,
+      "longitude": -122.416891,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13243",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.774038,
+          "longitude": -122.416891
+        }
+      ]
+    },
+    {
+      "id": "eleventhHoward",
+      "name": "11th & Howard",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.77308,
+      "longitude": -122.415555,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13240",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.77333,
+          "longitude": -122.41573
+        },
+        {
+          "id": "13241",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77283,
+          "longitude": -122.41538
+        }
+      ]
+    },
+    {
+      "id": "eleventhHarrison",
+      "name": "11th & Harrison",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.770624,
+      "longitude": -122.412509,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13239",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.770557,
+          "longitude": -122.412492
+        },
+        {
+          "id": "13238",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.770691,
+          "longitude": -122.412526
+        }
+      ]
+    },
+    {
+      "id": "eleventhBryant",
+      "name": "11th & Bryant",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.769807,
+      "longitude": -122.4113,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13235",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.769807,
+          "longitude": -122.4113
+        }
+      ]
+    },
+    {
+      "id": "potrero15",
+      "name": "Potrero & 15th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.767334,
+      "longitude": -122.407623,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17298",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.767334,
+          "longitude": -122.407623
+        }
+      ]
+    },
+    {
+      "id": "divisionBryant",
+      "name": "Division & Bryant",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.76934,
+      "longitude": -122.41074,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14436",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76934,
+          "longitude": -122.41074
+        }
+      ]
+    },
+    {
+      "id": "potreroAlameda",
+      "name": "Potrero & Alameda",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.76826,
+      "longitude": -122.40797,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16043",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76826,
+          "longitude": -122.40797
+        }
+      ]
+    },
+    {
+      "id": "sixteenthPotrero",
+      "name": "16th & Potrero",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.76576,
+      "longitude": -122.407582,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16026",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.766031,
+          "longitude": -122.407474
+        },
+        {
+          "id": "16027",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76549,
+          "longitude": -122.40769
+        }
+      ]
+    },
+    {
+      "id": "potreroMariposa",
+      "name": "Potrero & Mariposa",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.763208,
+      "longitude": -122.407332,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17910",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.763283,
+          "longitude": -122.407258
+        },
+        {
+          "id": "17911",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.763132,
+          "longitude": -122.407407
+        }
+      ]
+    },
+    {
+      "id": "potrero19",
+      "name": "Potrero & 19th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.760673,
+      "longitude": -122.407094,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17909",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76074,
+          "longitude": -122.407019
+        },
+        {
+          "id": "17912",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.760606,
+          "longitude": -122.407168
+        }
+      ]
+    },
+    {
+      "id": "potrero21",
+      "name": "Potrero & 21st",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.757679,
+      "longitude": -122.406832,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17908",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.757858,
+          "longitude": -122.406723
+        },
+        {
+          "id": "16034",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7575,
+          "longitude": -122.40694
+        }
+      ]
+    },
+    {
+      "id": "potreroAveAtSfGeneralHospital",
+      "name": "Potrero Ave at SF General Hospital",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.755413,
+      "longitude": -122.406472,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16119",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.755413,
+          "longitude": -122.406472
+        }
+      ]
+    },
+    {
+      "id": "potrero23",
+      "name": "Potrero & 23rd",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.75506,
+      "longitude": -122.4067,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16037",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75506,
+          "longitude": -122.4067
+        }
+      ]
+    },
+    {
+      "id": "potrero24",
+      "name": "Potrero & 24th",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.753045,
+      "longitude": -122.40637,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16038",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75342,
+          "longitude": -122.40625
+        },
+        {
+          "id": "16039",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75267,
+          "longitude": -122.40649
+        }
+      ]
+    },
+    {
+      "id": "twentyFifthPotrero",
+      "name": "25th & Potrero",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.75164,
+      "longitude": -122.40608,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16040",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75164,
+          "longitude": -122.40608
+        }
+      ]
+    },
+    {
+      "id": "201BayshoreBlvdE",
+      "name": "201 Bayshore Blvd E",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.744616,
+      "longitude": -122.404187,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17887",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.744616,
+          "longitude": -122.404187
+        }
+      ]
+    },
+    {
+      "id": "bayshoreFlower",
+      "name": "Bayshore & Flower",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.742377,
+      "longitude": -122.405609,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17886",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.742377,
+          "longitude": -122.405609
+        }
+      ]
+    },
+    {
+      "id": "240Bayshore",
+      "name": "240 Bayshore",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.74435,
+      "longitude": -122.40458,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13768",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74435,
+          "longitude": -122.40458
+        }
+      ]
+    },
+    {
+      "id": "bayshoreOakdale",
+      "name": "Bayshore & Oakdale",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.743046,
+      "longitude": -122.405402,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17888",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.743046,
+          "longitude": -122.405402
+        }
+      ]
+    },
+    {
+      "id": "bayshoreCortland",
+      "name": "Bayshore & Cortland",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.73966,
+      "longitude": -122.406946,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13778",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73986,
+          "longitude": -122.40677
+        },
+        {
+          "id": "13779",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.73946,
+          "longitude": -122.407122
+        }
+      ]
+    },
+    {
+      "id": "bayshoreBoutwell",
+      "name": "Bayshore & Boutwell",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.73488,
+      "longitude": -122.40588,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13775",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73488,
+          "longitude": -122.40588
+        }
+      ]
+    },
+    {
+      "id": "bayshoreAlemany",
+      "name": "Bayshore & Alemany",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.737729,
+      "longitude": -122.406997,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13771",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.737729,
+          "longitude": -122.406997
+        }
+      ]
+    },
+    {
+      "id": "bayshoreAugusta",
+      "name": "Bayshore & Augusta",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.73425,
+      "longitude": -122.40558,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13773",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.73425,
+          "longitude": -122.40558
+        }
+      ]
+    },
+    {
+      "id": "bayshoreSilver",
+      "name": "Bayshore & Silver",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.733088,
+      "longitude": -122.404754,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13788",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.733213,
+          "longitude": -122.40472
+        },
+        {
+          "id": "13789",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.732963,
+          "longitude": -122.404789
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoSilver",
+      "name": "San Bruno & Silver",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.732125,
+      "longitude": -122.40549,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16364",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73202,
+          "longitude": -122.40535
+        },
+        {
+          "id": "16365",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.73223,
+          "longitude": -122.40563
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoThornton",
+      "name": "San Bruno & Thornton",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.73026,
+      "longitude": -122.40462,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16367",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73026,
+          "longitude": -122.40462
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoFelton",
+      "name": "San Bruno & Felton",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.729912,
+      "longitude": -122.404631,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17900",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.729912,
+          "longitude": -122.404631
+        }
+      ]
+    },
+    {
+      "id": "baconSanBruno",
+      "name": "Bacon & San Bruno",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.727755,
+      "longitude": -122.403675,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16355",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72797,
+          "longitude": -122.40367
+        },
+        {
+          "id": "16357",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.72754,
+          "longitude": -122.40368
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoWayland",
+      "name": "San Bruno & Wayland",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.72637,
+      "longitude": -122.40301,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16373",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72637,
+          "longitude": -122.40301
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoPaul",
+      "name": "San Bruno & Paul",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.72418,
+      "longitude": -122.4021,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16362",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72418,
+          "longitude": -122.4021
+        }
+      ]
+    },
+    {
+      "id": "mansellSomerset",
+      "name": "Mansell & Somerset",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.720418,
+      "longitude": -122.405094,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15351",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.720418,
+          "longitude": -122.405094
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoWoolsey",
+      "name": "San Bruno & Woolsey",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.72531,
+      "longitude": -122.40275,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16372",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.72531,
+          "longitude": -122.40275
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoDwight",
+      "name": "San Bruno & Dwight",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.7241,
+      "longitude": -122.40226,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16358",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7241,
+          "longitude": -122.40226
+        }
+      ]
+    },
+    {
+      "id": "mansellSanBruno",
+      "name": "Mansell & San Bruno",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.721425,
+      "longitude": -122.40105,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16360",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7211,
+          "longitude": -122.40083
+        },
+        {
+          "id": "16361",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.72175,
+          "longitude": -122.40127
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoHarkness",
+      "name": "San Bruno & Harkness",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.718043,
+      "longitude": -122.400114,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17899",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.718043,
+          "longitude": -122.400114
+        }
+      ]
+    },
+    {
+      "id": "3801SanBruno",
+      "name": "3801 San Bruno",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.71482,
+      "longitude": -122.39994,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16350",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71482,
+          "longitude": -122.39994
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoWard",
+      "name": "San Bruno & Ward",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.71907,
+      "longitude": -122.40054,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16369",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.71907,
+          "longitude": -122.40054
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoWilde",
+      "name": "San Bruno & Wilde",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.71677,
+      "longitude": -122.39995,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16371",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.71677,
+          "longitude": -122.39995
+        }
+      ]
+    },
+    {
+      "id": "3800SanBruno",
+      "name": "3800 San Bruno",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.71479,
+      "longitude": -122.40061,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16348",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.71479,
+          "longitude": -122.40061
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoSomerset",
+      "name": "San Bruno & Somerset",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.713622,
+      "longitude": -122.402077,
+      "transferStations": [
+        "bayshoreArletaBlanken"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17191",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.713395,
+          "longitude": -122.401995
+        },
+        {
+          "id": "16366",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.71385,
+          "longitude": -122.40216
+        }
+      ]
+    },
+    {
+      "id": "sanBrunoArleta",
+      "name": "San Bruno & Arleta",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.71246,
+      "longitude": -122.4023,
+      "transferStations": [
+        "bayshoreArletaBlanken"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16352",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.71246,
+          "longitude": -122.4023
+        }
+      ]
+    },
+    {
+      "id": "bayshoreVisitacion",
+      "name": "Bayshore & Visitacion",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.710121,
+      "longitude": -122.404272,
+      "transferStations": [
+        "sunnydale"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17520",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.709622,
+          "longitude": -122.404654
+        },
+        {
+          "id": "13793",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.71062,
+          "longitude": -122.40389
+        }
+      ]
+    },
+    {
+      "id": "bayshoreArletaBlanken",
+      "name": "Bayshore & Arleta/Blanken",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.712239,
+      "longitude": -122.402327,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13772",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.712125,
+          "longitude": -122.403167
+        }
+      ]
+    },
+    {
+      "id": "bayshoreLeland",
+      "name": "Bayshore & Leland",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.710991,
+      "longitude": -122.404041,
+      "transferStations": [
+        "bayshoreArletaBlanken"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13783",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.710991,
+          "longitude": -122.404041
+        }
+      ]
+    },
+    {
+      "id": "sunnydale",
+      "name": "Sunnydale",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.708944,
+      "longitude": -122.405044,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17297",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.708801,
+          "longitude": -122.40525
+        },
+        {
+          "id": "16569",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70901,
+          "longitude": -122.40545
+        }
+      ]
+    },
+    {
+      "id": "sunnydaleTalbert",
+      "name": "Sunnydale & Talbert",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.70935,
+      "longitude": -122.406845,
+      "transferStations": [
+        "sunnydale"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16584",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.70935,
+          "longitude": -122.407
+        },
+        {
+          "id": "16583",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70935,
+          "longitude": -122.40669
+        }
+      ]
+    },
+    {
+      "id": "sunnydaleRutland",
+      "name": "Sunnydale & Rutland",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.70986,
+      "longitude": -122.40851,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16576",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70986,
+          "longitude": -122.40851
+        }
+      ]
+    },
+    {
+      "id": "sunnydaleCora",
+      "name": "Sunnydale & Cora",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.710082,
+      "longitude": -122.409491,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16570",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.70996,
+          "longitude": -122.40937
+        },
+        {
+          "id": "16571",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.710203,
+          "longitude": -122.409612
+        }
+      ]
+    },
+    {
+      "id": "schwerinSunnydale",
+      "name": "Schwerin & Sunnydale",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.710415,
+      "longitude": -122.41148,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16386",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.71049,
+          "longitude": -122.41136
+        },
+        {
+          "id": "16387",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.71034,
+          "longitude": -122.4116
+        }
+      ]
+    },
+    {
+      "id": "schwerinGarrison",
+      "name": "Schwerin & Garrison",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.70925,
+      "longitude": -122.411985,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16383",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.70916,
+          "longitude": -122.41193
+        },
+        {
+          "id": "16382",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.70934,
+          "longitude": -122.41204
+        }
+      ]
+    },
+    {
+      "id": "schwerinVelasco",
+      "name": "Schwerin & Velasco",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.708205,
+      "longitude": -122.412455,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16388",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.70826,
+          "longitude": -122.41234
+        },
+        {
+          "id": "16389",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.70815,
+          "longitude": -122.41257
+        }
+      ]
+    },
+    {
+      "id": "schwerinMacdonald",
+      "name": "Schwerin & Macdonald",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.7069,
+      "longitude": -122.41294,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16385",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7069,
+          "longitude": -122.41294
+        }
+      ]
+    },
+    {
+      "id": "schwerinGeneva",
+      "name": "Schwerin & Geneva",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.70657,
+      "longitude": -122.41326,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16384",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70657,
+          "longitude": -122.41326
+        }
+      ]
+    },
+    {
+      "id": "genevaRioVerde",
+      "name": "Geneva & Rio Verde",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.707037,
+      "longitude": -122.41562,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14895",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.706939,
+          "longitude": -122.415534
+        },
+        {
+          "id": "17127",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.707136,
+          "longitude": -122.415706
+        }
+      ]
+    },
+    {
+      "id": "genevaCastillo",
+      "name": "Geneva & Castillo",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.707822,
+      "longitude": -122.41834,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14809",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7077,
+          "longitude": -122.418409
+        },
+        {
+          "id": "14808",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.707944,
+          "longitude": -122.41827
+        }
+      ]
+    },
+    {
+      "id": "genevaSantos",
+      "name": "Geneva & Santos",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.708289,
+      "longitude": -122.419955,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14899",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.708371,
+          "longitude": -122.419887
+        },
+        {
+          "id": "14901",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.708207,
+          "longitude": -122.420022
+        }
+      ]
+    },
+    {
+      "id": "brookdaleBlythdale",
+      "name": "Brookdale & Blythdale",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.711317,
+      "longitude": -122.42226,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "18162",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.711304,
+          "longitude": -122.422231
+        },
+        {
+          "id": "18161",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.711331,
+          "longitude": -122.422289
+        }
+      ]
+    },
+    {
+      "id": "sunnyvaleWAccess",
+      "name": "Sunnyvale & W Access",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.713588,
+      "longitude": -122.42215,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "18160",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.713588,
+          "longitude": -122.42215
+        }
+      ]
+    },
+    {
+      "id": "westernAccessSunnyvale",
+      "name": "Western Access & Sunnyvale",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.713461,
+      "longitude": -122.421912,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "18163",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.713461,
+          "longitude": -122.421912
+        }
+      ]
+    },
+    {
+      "id": "sunnydaleAveMclarenSchool",
+      "name": "Sunnydale Ave / Mclaren School",
+      "kind": "streetLevel",
+      "lines": [
+        "9"
+      ],
+      "latitude": 37.714117,
+      "longitude": -122.423886,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16575",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7141,
+          "longitude": -122.4241
+        },
+        {
+          "id": "16574",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.714133,
+          "longitude": -122.423673
+        }
+      ]
+    }
+  ]
+}

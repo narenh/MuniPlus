@@ -1,0 +1,1429 @@
+{
+  "lines": [
+    {
+      "id": "5",
+      "name": "5 Fulton",
+      "shortName": "5",
+      "color": "#005B95",
+      "stationIds": [
+        "transitCenterBayB",
+        "bealeMission",
+        "market1",
+        "market3",
+        "marketStBetween4th3",
+        "marketStBetween5th4",
+        "market5",
+        "mcallisterLeavenworth",
+        "fremontMarket",
+        "marketSansome",
+        "marketMontgomery",
+        "fourthMarket",
+        "marketGrant",
+        "marketPowell",
+        "marketMason",
+        "mcallisterJones",
+        "mcallisterHyde",
+        "mcallisterLarkin",
+        "mcallisterVanNess",
+        "mcallisterGough",
+        "mcallisterLaguna",
+        "fillmoreMcallister",
+        "mcallisterPierce",
+        "divisaderoMcallister",
+        "mcallisterBaker",
+        "fultonMasonic",
+        "fultonClayton",
+        "fultonShrader",
+        "fultonStanyan",
+        "fultonParker",
+        "fultonStanyanStw",
+        "fultonArguello",
+        "fulton4",
+        "fulton6",
+        "cabrillo7",
+        "eighthFulton",
+        "fulton10",
+        "fultonParkPresidio",
+        "fulton18",
+        "fulton22",
+        "fulton25",
+        "fulton28",
+        "fulton30",
+        "fultonST28",
+        "fultonST30",
+        "fulton33",
+        "fulton37",
+        "fulton36",
+        "fulton40",
+        "fulton43",
+        "fulton46",
+        "fultonLaPlaya",
+        "cabrilloLaPlaya",
+        "cabrilloLaPlaya"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "transitCenterBayB",
+      "name": "Transit Center Bay B",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.790091,
+      "longitude": -122.395688,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17914",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.790091,
+          "longitude": -122.395688
+        }
+      ]
+    },
+    {
+      "id": "bealeMission",
+      "name": "Beale & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.791939,
+      "longitude": -122.396879,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13089",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.791939,
+          "longitude": -122.396879
+        }
+      ]
+    },
+    {
+      "id": "market1",
+      "name": "Market & 1st",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.790485,
+      "longitude": -122.399723,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15638",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.790485,
+          "longitude": -122.399723
+        }
+      ]
+    },
+    {
+      "id": "market3",
+      "name": "Market & 3rd",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.787667,
+      "longitude": -122.403359,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15641",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.787667,
+          "longitude": -122.403359
+        }
+      ]
+    },
+    {
+      "id": "marketStBetween4th3",
+      "name": "Market St Between 4th & 3rd",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.786597,
+      "longitude": -122.404586,
+      "transferStations": [
+        "unionSquare"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15642",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.786597,
+          "longitude": -122.404586
+        }
+      ]
+    },
+    {
+      "id": "marketStBetween5th4",
+      "name": "Market St Between 5th & 4th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.78484,
+      "longitude": -122.406834,
+      "transferStations": [
+        "powell"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15644",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.78484,
+          "longitude": -122.406834
+        }
+      ]
+    },
+    {
+      "id": "market5",
+      "name": "Market & 5th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.783395,
+      "longitude": -122.408657,
+      "transferStations": [
+        "powell"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15646",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.783395,
+          "longitude": -122.408657
+        }
+      ]
+    },
+    {
+      "id": "mcallisterLeavenworth",
+      "name": "McAllister & Leavenworth",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.780889,
+      "longitude": -122.413587,
+      "transferStations": [
+        "civicCenter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17635",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.780889,
+          "longitude": -122.413587
+        }
+      ]
+    },
+    {
+      "id": "fremontMarket",
+      "name": "Fremont & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.791645,
+      "longitude": -122.398151,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14725",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.791645,
+          "longitude": -122.398151
+        }
+      ]
+    },
+    {
+      "id": "marketSansome",
+      "name": "Market & Sansome",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.790013,
+      "longitude": -122.400491,
+      "transferStations": [
+        "mongomery"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15689",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.790013,
+          "longitude": -122.400491
+        }
+      ]
+    },
+    {
+      "id": "marketMontgomery",
+      "name": "Market & Montgomery",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.78849,
+      "longitude": -122.40248,
+      "transferStations": [
+        "mongomery"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15684",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78849,
+          "longitude": -122.40248
+        }
+      ]
+    },
+    {
+      "id": "fourthMarket",
+      "name": "4th & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.785411,
+      "longitude": -122.405531,
+      "transferStations": [
+        "powell",
+        "unionSquare"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13161",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.785411,
+          "longitude": -122.405531
+        }
+      ]
+    },
+    {
+      "id": "marketGrant",
+      "name": "Market & Grant",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.78639,
+      "longitude": -122.40516,
+      "transferStations": [
+        "unionSquare"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15674",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78639,
+          "longitude": -122.40516
+        }
+      ]
+    },
+    {
+      "id": "marketPowell",
+      "name": "Market & Powell",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.784474,
+      "longitude": -122.407544,
+      "transferStations": [
+        "powell"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15688",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.784474,
+          "longitude": -122.407544
+        }
+      ]
+    },
+    {
+      "id": "marketMason",
+      "name": "Market & Mason",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.78285,
+      "longitude": -122.40964,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15683",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78285,
+          "longitude": -122.40964
+        }
+      ]
+    },
+    {
+      "id": "mcallisterJones",
+      "name": "McAllister & Jones",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.781166,
+      "longitude": -122.412189,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17563",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.781166,
+          "longitude": -122.412189
+        }
+      ]
+    },
+    {
+      "id": "mcallisterHyde",
+      "name": "McAllister & Hyde",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.78067,
+      "longitude": -122.41578,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15396",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.78061,
+          "longitude": -122.41587
+        },
+        {
+          "id": "15395",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78073,
+          "longitude": -122.41569
+        }
+      ]
+    },
+    {
+      "id": "mcallisterLarkin",
+      "name": "McAllister & Larkin",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.78051,
+      "longitude": -122.41741,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15397",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78051,
+          "longitude": -122.41741
+        }
+      ]
+    },
+    {
+      "id": "mcallisterVanNess",
+      "name": "McAllister & Van Ness",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.780071,
+      "longitude": -122.420444,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15405",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.780052,
+          "longitude": -122.420178
+        },
+        {
+          "id": "15404",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78009,
+          "longitude": -122.42071
+        }
+      ]
+    },
+    {
+      "id": "mcallisterGough",
+      "name": "McAllister & Gough",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.779674,
+      "longitude": -122.423565,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15394",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.779634,
+          "longitude": -122.42325
+        },
+        {
+          "id": "15393",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.779714,
+          "longitude": -122.423881
+        }
+      ]
+    },
+    {
+      "id": "mcallisterLaguna",
+      "name": "McAllister & Laguna",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.779255,
+      "longitude": -122.42709,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15399",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.779206,
+          "longitude": -122.42701
+        },
+        {
+          "id": "15398",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.779304,
+          "longitude": -122.42717
+        }
+      ]
+    },
+    {
+      "id": "fillmoreMcallister",
+      "name": "Fillmore & McAllister",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.778629,
+      "longitude": -122.431907,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15392",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.778618,
+          "longitude": -122.431744
+        },
+        {
+          "id": "15391",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77864,
+          "longitude": -122.43207
+        }
+      ]
+    },
+    {
+      "id": "mcallisterPierce",
+      "name": "McAllister & Pierce",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.778197,
+      "longitude": -122.435118,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15401",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77815,
+          "longitude": -122.43519
+        },
+        {
+          "id": "15400",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.778244,
+          "longitude": -122.435045
+        }
+      ]
+    },
+    {
+      "id": "divisaderoMcallister",
+      "name": "Divisadero & McAllister",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.777777,
+      "longitude": -122.4384,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15390",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77773,
+          "longitude": -122.43851
+        },
+        {
+          "id": "15389",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.777825,
+          "longitude": -122.438289
+        }
+      ]
+    },
+    {
+      "id": "mcallisterBaker",
+      "name": "McAllister & Baker",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.777354,
+      "longitude": -122.441755,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15385",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77731,
+          "longitude": -122.44185
+        },
+        {
+          "id": "15384",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.777397,
+          "longitude": -122.441659
+        }
+      ]
+    },
+    {
+      "id": "fultonMasonic",
+      "name": "Fulton & Masonic",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.775808,
+      "longitude": -122.446347,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14230",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775773,
+          "longitude": -122.446289
+        },
+        {
+          "id": "14229",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775844,
+          "longitude": -122.446404
+        }
+      ]
+    },
+    {
+      "id": "fultonClayton",
+      "name": "Fulton & Clayton",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.775389,
+      "longitude": -122.449532,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14226",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77537,
+          "longitude": -122.44929
+        },
+        {
+          "id": "14225",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775407,
+          "longitude": -122.449774
+        }
+      ]
+    },
+    {
+      "id": "fultonShrader",
+      "name": "Fulton & Shrader",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77499,
+      "longitude": -122.45238,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14234",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77499,
+          "longitude": -122.45238
+        }
+      ]
+    },
+    {
+      "id": "fultonStanyan",
+      "name": "Fulton & Stanyan",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.774756,
+      "longitude": -122.454519,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14235",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.774756,
+          "longitude": -122.454519
+        }
+      ]
+    },
+    {
+      "id": "fultonParker",
+      "name": "Fulton & Parker",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.775014,
+      "longitude": -122.452868,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14233",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.775014,
+          "longitude": -122.452868
+        }
+      ]
+    },
+    {
+      "id": "fultonStanyanStw",
+      "name": "Fulton & Stanyan Stw",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.774773,
+      "longitude": -122.454737,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14236",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.774773,
+          "longitude": -122.454737
+        }
+      ]
+    },
+    {
+      "id": "fultonArguello",
+      "name": "Fulton & Arguello",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.774318,
+      "longitude": -122.45821,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14224",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.774282,
+          "longitude": -122.458003
+        },
+        {
+          "id": "14223",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.774354,
+          "longitude": -122.458416
+        }
+      ]
+    },
+    {
+      "id": "fulton4",
+      "name": "Fulton & 4th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.773896,
+      "longitude": -122.461455,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14731",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77384,
+          "longitude": -122.46125
+        },
+        {
+          "id": "14730",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773952,
+          "longitude": -122.461659
+        }
+      ]
+    },
+    {
+      "id": "fulton6",
+      "name": "Fulton & 6th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77366,
+      "longitude": -122.46381,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14733",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773532,
+          "longitude": -122.463837
+        },
+        {
+          "id": "13183",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773809,
+          "longitude": -122.463745
+        },
+        {
+          "id": "14732",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773639,
+          "longitude": -122.463848
+        }
+      ]
+    },
+    {
+      "id": "cabrillo7",
+      "name": "Cabrillo & 7th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.775379,
+      "longitude": -122.464834,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17538",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.775379,
+          "longitude": -122.464834
+        }
+      ]
+    },
+    {
+      "id": "eighthFulton",
+      "name": "8th & Fulton",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.773394,
+      "longitude": -122.465894,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14735",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773318,
+          "longitude": -122.465739
+        },
+        {
+          "id": "14734",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77347,
+          "longitude": -122.466049
+        }
+      ]
+    },
+    {
+      "id": "fulton10",
+      "name": "Fulton & 10th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.7733,
+      "longitude": -122.468,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14737",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77325,
+          "longitude": -122.46761
+        },
+        {
+          "id": "14736",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77335,
+          "longitude": -122.46839
+        }
+      ]
+    },
+    {
+      "id": "fultonParkPresidio",
+      "name": "Fulton & Park Presidio",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.773128,
+      "longitude": -122.471939,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14232",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.773067,
+          "longitude": -122.471699
+        },
+        {
+          "id": "14231",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77319,
+          "longitude": -122.47218
+        }
+      ]
+    },
+    {
+      "id": "fulton18",
+      "name": "Fulton & 18th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.772897,
+      "longitude": -122.47665,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17721",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.772834,
+          "longitude": -122.476524
+        },
+        {
+          "id": "14742",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.772959,
+          "longitude": -122.476776
+        }
+      ]
+    },
+    {
+      "id": "fulton22",
+      "name": "Fulton & 22nd",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77271,
+      "longitude": -122.480975,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14747",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77266,
+          "longitude": -122.48061
+        },
+        {
+          "id": "14746",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77276,
+          "longitude": -122.48134
+        }
+      ]
+    },
+    {
+      "id": "fulton25",
+      "name": "Fulton & 25th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.772569,
+      "longitude": -122.484203,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14749",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.772547,
+          "longitude": -122.4841
+        },
+        {
+          "id": "14748",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.772591,
+          "longitude": -122.484306
+        }
+      ]
+    },
+    {
+      "id": "fulton28",
+      "name": "Fulton & 28th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77235,
+      "longitude": -122.48717,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14751",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77235,
+          "longitude": -122.48717
+        }
+      ]
+    },
+    {
+      "id": "fulton30",
+      "name": "Fulton & 30th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77224,
+      "longitude": -122.48919,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14753",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77224,
+          "longitude": -122.48919
+        }
+      ]
+    },
+    {
+      "id": "fultonST28",
+      "name": "Fulton S T & 28th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.772474,
+      "longitude": -122.487504,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17727",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.772474,
+          "longitude": -122.487504
+        }
+      ]
+    },
+    {
+      "id": "fultonST30",
+      "name": "Fulton S T & 30th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.772375,
+      "longitude": -122.489624,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17728",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.772375,
+          "longitude": -122.489624
+        }
+      ]
+    },
+    {
+      "id": "fulton33",
+      "name": "Fulton & 33rd",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.772165,
+      "longitude": -122.49303,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14212",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7721,
+          "longitude": -122.49288
+        },
+        {
+          "id": "14211",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77223,
+          "longitude": -122.49318
+        }
+      ]
+    },
+    {
+      "id": "fulton37",
+      "name": "Fulton & 37th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77192,
+      "longitude": -122.49679,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14215",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77192,
+          "longitude": -122.49679
+        }
+      ]
+    },
+    {
+      "id": "fulton36",
+      "name": "Fulton & 36th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77208,
+      "longitude": -122.49634,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14213",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77208,
+          "longitude": -122.49634
+        }
+      ]
+    },
+    {
+      "id": "fulton40",
+      "name": "Fulton & 40th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.771835,
+      "longitude": -122.500125,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14218",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77179,
+          "longitude": -122.49991
+        },
+        {
+          "id": "17729",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77188,
+          "longitude": -122.50034
+        }
+      ]
+    },
+    {
+      "id": "fulton43",
+      "name": "Fulton & 43rd",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.771674,
+      "longitude": -122.503417,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17720",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.771612,
+          "longitude": -122.503296
+        },
+        {
+          "id": "17730",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.771736,
+          "longitude": -122.503537
+        }
+      ]
+    },
+    {
+      "id": "fulton46",
+      "name": "Fulton & 46th",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.771535,
+      "longitude": -122.506675,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14222",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77148,
+          "longitude": -122.50631
+        },
+        {
+          "id": "14221",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77159,
+          "longitude": -122.50704
+        }
+      ]
+    },
+    {
+      "id": "fultonLaPlaya",
+      "name": "Fulton & La Playa",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.771515,
+      "longitude": -122.509615,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14228",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77134,
+          "longitude": -122.50939
+        },
+        {
+          "id": "14844",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.77169,
+          "longitude": -122.50984
+        }
+      ]
+    },
+    {
+      "id": "cabrilloLaPlaya",
+      "name": "Cabrillo & La Playa",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77333,
+      "longitude": -122.51001,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14842",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.773214,
+          "longitude": -122.509991
+        },
+        {
+          "id": "14843",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.773214,
+          "longitude": -122.51006
+        },
+        {
+          "id": "13927",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773562,
+          "longitude": -122.50998
+        }
+      ]
+    },
+    {
+      "id": "cabrilloLaPlaya",
+      "name": "Cabrillo & La Playa",
+      "kind": "streetLevel",
+      "lines": [
+        "5"
+      ],
+      "latitude": 37.77333,
+      "longitude": -122.51001,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14842",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.773214,
+          "longitude": -122.509991
+        },
+        {
+          "id": "14843",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.773214,
+          "longitude": -122.51006
+        },
+        {
+          "id": "13927",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773562,
+          "longitude": -122.50998
+        }
+      ]
+    }
+  ]
+}

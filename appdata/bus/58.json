@@ -1,0 +1,703 @@
+{
+  "lines": [
+    {
+      "id": "58",
+      "name": "58 Lake Merced",
+      "shortName": "58",
+      "color": "#005B95",
+      "stationIds": [
+        "nineteenthBuckinghamWay",
+        "twentiethWinston",
+        "buckinghamWayWinston",
+        "winstonLakeMerced",
+        "lakeMercedMiddlefield",
+        "sunsetOcean",
+        "sunsetYorba",
+        "sloat36",
+        "skylineSloat",
+        "skylineLakeMerced",
+        "zooAmory",
+        "skylineZoo",
+        "skylineHarding",
+        "johnMuirSkyline",
+        "655JohnMuir",
+        "515JohnMuir",
+        "lakeMercedJohnMuir",
+        "lakeMercedLakeMercedHills",
+        "brotherhoodWayGraceCommunityChurch",
+        "brotherhoodWayChurchAccess",
+        "brotherhoodWaySummitWay",
+        "brotherhoodWayChumasero",
+        "alemanyArch",
+        "alemanyStCharles",
+        "dalyCityBartStation",
+        "missionFlournoy"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "nineteenthBuckinghamWay",
+      "name": "19th & Buckingham Way",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.725901,
+      "longitude": -122.475235,
+      "transferStations": [
+        "winston19"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13352",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.725901,
+          "longitude": -122.475235
+        }
+      ]
+    },
+    {
+      "id": "twentiethWinston",
+      "name": "20th & Winston",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.726878,
+      "longitude": -122.475842,
+      "transferStations": [
+        "winston19"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13408",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.726874,
+          "longitude": -122.475945
+        },
+        {
+          "id": "16951",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.726883,
+          "longitude": -122.475739
+        }
+      ]
+    },
+    {
+      "id": "buckinghamWayWinston",
+      "name": "Buckingham Way & Winston",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.728177,
+      "longitude": -122.478708,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16953",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.728294,
+          "longitude": -122.478929
+        },
+        {
+          "id": "16952",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.72806,
+          "longitude": -122.478488
+        }
+      ]
+    },
+    {
+      "id": "winstonLakeMerced",
+      "name": "Winston & Lake Merced",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.727051,
+      "longitude": -122.483305,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16955",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.726979,
+          "longitude": -122.48331
+        },
+        {
+          "id": "16954",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.727122,
+          "longitude": -122.483299
+        }
+      ]
+    },
+    {
+      "id": "lakeMercedMiddlefield",
+      "name": "Lake Merced & Middlefield",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.729534,
+      "longitude": -122.486347,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14839",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.729441,
+          "longitude": -122.48629
+        },
+        {
+          "id": "14838",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.729628,
+          "longitude": -122.486404
+        }
+      ]
+    },
+    {
+      "id": "sunsetOcean",
+      "name": "Sunset & Ocean",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.731769,
+      "longitude": -122.493748,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16541",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.731709,
+          "longitude": -122.493874
+        },
+        {
+          "id": "16542",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.73183,
+          "longitude": -122.493622
+        }
+      ]
+    },
+    {
+      "id": "sunsetYorba",
+      "name": "Sunset & Yorba",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.734854,
+      "longitude": -122.493784,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16563",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.734854,
+          "longitude": -122.493784
+        }
+      ]
+    },
+    {
+      "id": "sloat36",
+      "name": "Sloat & 36th",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.734051,
+      "longitude": -122.493417,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16442",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.734051,
+          "longitude": -122.493417
+        }
+      ]
+    },
+    {
+      "id": "skylineSloat",
+      "name": "Skyline & Sloat",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.733322,
+      "longitude": -122.497004,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16434",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.733128,
+          "longitude": -122.497522
+        },
+        {
+          "id": "17815",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.733515,
+          "longitude": -122.496485
+        }
+      ]
+    },
+    {
+      "id": "skylineLakeMerced",
+      "name": "Skyline & Lake Merced",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.731149,
+      "longitude": -122.499223,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16432",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.731149,
+          "longitude": -122.499223
+        }
+      ]
+    },
+    {
+      "id": "zooAmory",
+      "name": "Zoo & Amory",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.730704,
+      "longitude": -122.50159,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17624",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.730704,
+          "longitude": -122.50159
+        }
+      ]
+    },
+    {
+      "id": "skylineZoo",
+      "name": "Skyline & Zoo",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.728395,
+      "longitude": -122.501774,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16429",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.728222,
+          "longitude": -122.501695
+        },
+        {
+          "id": "17951",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.728567,
+          "longitude": -122.501853
+        }
+      ]
+    },
+    {
+      "id": "skylineHarding",
+      "name": "Skyline & Harding",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.726392,
+      "longitude": -122.502449,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16431",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.726392,
+          "longitude": -122.502449
+        }
+      ]
+    },
+    {
+      "id": "johnMuirSkyline",
+      "name": "John Muir & Skyline",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.718867,
+      "longitude": -122.499971,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15131",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.718996,
+          "longitude": -122.500028
+        },
+        {
+          "id": "15132",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.718738,
+          "longitude": -122.499913
+        }
+      ]
+    },
+    {
+      "id": "655JohnMuir",
+      "name": "655 John Muir",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.716888,
+      "longitude": -122.497715,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15130",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.71677,
+          "longitude": -122.49766
+        },
+        {
+          "id": "15129",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.717007,
+          "longitude": -122.49777
+        }
+      ]
+    },
+    {
+      "id": "515JohnMuir",
+      "name": "515 John Muir",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.716155,
+      "longitude": -122.495366,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15126",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.71607,
+          "longitude": -122.49539
+        },
+        {
+          "id": "15125",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.716241,
+          "longitude": -122.495342
+        }
+      ]
+    },
+    {
+      "id": "lakeMercedJohnMuir",
+      "name": "Lake Merced & John Muir",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.70838,
+      "longitude": -122.485669,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14828",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.708219,
+          "longitude": -122.485533
+        },
+        {
+          "id": "14829",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.708541,
+          "longitude": -122.485805
+        }
+      ]
+    },
+    {
+      "id": "lakeMercedLakeMercedHills",
+      "name": "Lake Merced & Lake Merced Hills",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.711477,
+      "longitude": -122.485372,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14836",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.711872,
+          "longitude": -122.485238
+        },
+        {
+          "id": "14837",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.711081,
+          "longitude": -122.485506
+        }
+      ]
+    },
+    {
+      "id": "brotherhoodWayGraceCommunityChurch",
+      "name": "Brotherhood Way & Grace Community Church",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.714542,
+      "longitude": -122.480207,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17796",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.714488,
+          "longitude": -122.480224
+        },
+        {
+          "id": "17801",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.714595,
+          "longitude": -122.480189
+        }
+      ]
+    },
+    {
+      "id": "brotherhoodWayChurchAccess",
+      "name": "Brotherhood Way & Church Access",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.714132,
+      "longitude": -122.475574,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17797",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.714132,
+          "longitude": -122.475574
+        }
+      ]
+    },
+    {
+      "id": "brotherhoodWaySummitWay",
+      "name": "Brotherhood Way & Summit Way",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.713673,
+      "longitude": -122.47452,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17798",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.713588,
+          "longitude": -122.474474
+        },
+        {
+          "id": "17793",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.713758,
+          "longitude": -122.474566
+        }
+      ]
+    },
+    {
+      "id": "brotherhoodWayChumasero",
+      "name": "Brotherhood Way & Chumasero",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.713,
+      "longitude": -122.472779,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17792",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.713,
+          "longitude": -122.472779
+        }
+      ]
+    },
+    {
+      "id": "alemanyArch",
+      "name": "Alemany & Arch",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.711625,
+      "longitude": -122.467053,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17820",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.711591,
+          "longitude": -122.466996
+        },
+        {
+          "id": "13641",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.71166,
+          "longitude": -122.46711
+        }
+      ]
+    },
+    {
+      "id": "alemanyStCharles",
+      "name": "Alemany & St Charles",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.710359,
+      "longitude": -122.469458,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13628",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.710359,
+          "longitude": -122.469458
+        }
+      ]
+    },
+    {
+      "id": "dalyCityBartStation",
+      "name": "Daly City BART Station",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.706119,
+      "longitude": -122.468828,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14341",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.705964,
+          "longitude": -122.469023
+        },
+        {
+          "id": "17842",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.706273,
+          "longitude": -122.468632
+        }
+      ]
+    },
+    {
+      "id": "missionFlournoy",
+      "name": "Mission & Flournoy",
+      "kind": "streetLevel",
+      "lines": [
+        "58"
+      ],
+      "latitude": 37.706622,
+      "longitude": -122.459265,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17554",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.706622,
+          "longitude": -122.459265
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,951 @@
+{
+  "lines": [
+    {
+      "id": "66",
+      "name": "66 Quintara",
+      "shortName": "66",
+      "color": "#005B95",
+      "stationIds": [
+        "judah9",
+        "eighthJudah",
+        "ninthKirkham",
+        "ninthLawton",
+        "lawton11",
+        "lawtonFunston",
+        "lawtonLomita",
+        "sixteenthLawton",
+        "sixteenthLawton",
+        "sixteenthLomita",
+        "sixteenthMoraga",
+        "sixteenthNoriega",
+        "sixteenthOrtega",
+        "sixteenthPacheco",
+        "quintara16",
+        "fourteenthSantiago",
+        "fifteenthNoriega",
+        "fifteenthOrtega",
+        "fifteenthPacheco",
+        "fifteenthQuintara",
+        "quintara17",
+        "nineteenthQuintara",
+        "quintara22",
+        "quintara24",
+        "quintara26",
+        "quintara27",
+        "quintara28",
+        "quintara29",
+        "thirtiethQuintara",
+        "thirtiethRivera",
+        "thirtiethSantiago",
+        "taraval30",
+        "thirtiethUlloa",
+        "twentyNinthVicente",
+        "vicente30"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "judah9",
+      "name": "Judah & 9th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.762183,
+      "longitude": -122.4665,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13215",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76204,
+          "longitude": -122.466241
+        }
+      ]
+    },
+    {
+      "id": "eighthJudah",
+      "name": "8th & Judah",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.762147,
+      "longitude": -122.465049,
+      "transferStations": [
+        "irving8",
+        "judah9"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17926",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.762147,
+          "longitude": -122.465049
+        }
+      ]
+    },
+    {
+      "id": "ninthKirkham",
+      "name": "9th & Kirkham",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.760407,
+      "longitude": -122.466149,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13216",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.760407,
+          "longitude": -122.466149
+        }
+      ]
+    },
+    {
+      "id": "ninthLawton",
+      "name": "9th & Lawton",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.758461,
+      "longitude": -122.466036,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14855",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75839,
+          "longitude": -122.46605
+        },
+        {
+          "id": "13218",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.758533,
+          "longitude": -122.466022
+        }
+      ]
+    },
+    {
+      "id": "lawton11",
+      "name": "Lawton & 11th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75832,
+      "longitude": -122.468025,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14857",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.75824,
+          "longitude": -122.46812
+        },
+        {
+          "id": "14856",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7584,
+          "longitude": -122.46793
+        }
+      ]
+    },
+    {
+      "id": "lawtonFunston",
+      "name": "Lawton & Funston",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75825,
+      "longitude": -122.470055,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14859",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7582,
+          "longitude": -122.47003
+        },
+        {
+          "id": "14858",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7583,
+          "longitude": -122.47008
+        }
+      ]
+    },
+    {
+      "id": "lawtonLomita",
+      "name": "Lawton & Lomita",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.759145,
+      "longitude": -122.47248,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14861",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.75916,
+          "longitude": -122.47269
+        },
+        {
+          "id": "14860",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.75913,
+          "longitude": -122.47227
+        }
+      ]
+    },
+    {
+      "id": "sixteenthLawton",
+      "name": "16th & Lawton",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.758478,
+      "longitude": -122.47372,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13272",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75811,
+          "longitude": -122.47367
+        },
+        {
+          "id": "17231",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.758023,
+          "longitude": -122.473791
+        },
+        {
+          "id": "13273",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7593,
+          "longitude": -122.4737
+        }
+      ]
+    },
+    {
+      "id": "sixteenthLawton",
+      "name": "16th & Lawton",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.758478,
+      "longitude": -122.47372,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13272",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75811,
+          "longitude": -122.47367
+        },
+        {
+          "id": "17231",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.758023,
+          "longitude": -122.473791
+        },
+        {
+          "id": "13273",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7593,
+          "longitude": -122.4737
+        }
+      ]
+    },
+    {
+      "id": "sixteenthLomita",
+      "name": "16th & Lomita",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75697,
+      "longitude": -122.47351,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13275",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75697,
+          "longitude": -122.47351
+        }
+      ]
+    },
+    {
+      "id": "sixteenthMoraga",
+      "name": "16th & Moraga",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75633,
+      "longitude": -122.473645,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13276",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7563,
+          "longitude": -122.47361
+        },
+        {
+          "id": "13277",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75636,
+          "longitude": -122.47368
+        }
+      ]
+    },
+    {
+      "id": "sixteenthNoriega",
+      "name": "16th & Noriega",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.754755,
+      "longitude": -122.473165,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13278",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75425,
+          "longitude": -122.47321
+        },
+        {
+          "id": "15739",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75526,
+          "longitude": -122.47312
+        }
+      ]
+    },
+    {
+      "id": "sixteenthOrtega",
+      "name": "16th & Ortega",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.7524,
+      "longitude": -122.47309,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13279",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7524,
+          "longitude": -122.47309
+        }
+      ]
+    },
+    {
+      "id": "sixteenthPacheco",
+      "name": "16th & Pacheco",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75054,
+      "longitude": -122.47295,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13280",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75054,
+          "longitude": -122.47295
+        }
+      ]
+    },
+    {
+      "id": "quintara16",
+      "name": "Quintara & 16th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74872,
+      "longitude": -122.47298,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16137",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74872,
+          "longitude": -122.47298
+        }
+      ]
+    },
+    {
+      "id": "fourteenthSantiago",
+      "name": "14th & Santiago",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74503,
+      "longitude": -122.4703,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13248",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74503,
+          "longitude": -122.4703
+        }
+      ]
+    },
+    {
+      "id": "fifteenthNoriega",
+      "name": "15th & Noriega",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75411,
+      "longitude": -122.47217,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13262",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75411,
+          "longitude": -122.47217
+        }
+      ]
+    },
+    {
+      "id": "fifteenthOrtega",
+      "name": "15th & Ortega",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75268,
+      "longitude": -122.47206,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13263",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75268,
+          "longitude": -122.47206
+        }
+      ]
+    },
+    {
+      "id": "fifteenthPacheco",
+      "name": "15th & Pacheco",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.75081,
+      "longitude": -122.47196,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13264",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75081,
+          "longitude": -122.47196
+        }
+      ]
+    },
+    {
+      "id": "fifteenthQuintara",
+      "name": "15th & Quintara",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74891,
+      "longitude": -122.47183,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13265",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74891,
+          "longitude": -122.47183
+        }
+      ]
+    },
+    {
+      "id": "quintara17",
+      "name": "Quintara & 17th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.748751,
+      "longitude": -122.47394,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16139",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74867,
+          "longitude": -122.47408
+        },
+        {
+          "id": "17573",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.748833,
+          "longitude": -122.473799
+        }
+      ]
+    },
+    {
+      "id": "nineteenthQuintara",
+      "name": "19th & Quintara",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.748645,
+      "longitude": -122.47603,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16141",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74858,
+          "longitude": -122.47622
+        },
+        {
+          "id": "16140",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74871,
+          "longitude": -122.47584
+        }
+      ]
+    },
+    {
+      "id": "quintara22",
+      "name": "Quintara & 22nd",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.7485,
+      "longitude": -122.4793,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16143",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74845,
+          "longitude": -122.47943
+        },
+        {
+          "id": "16142",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74855,
+          "longitude": -122.47917
+        }
+      ]
+    },
+    {
+      "id": "quintara24",
+      "name": "Quintara & 24th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74841,
+      "longitude": -122.48144,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16145",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74836,
+          "longitude": -122.48157
+        },
+        {
+          "id": "16144",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74846,
+          "longitude": -122.48131
+        }
+      ]
+    },
+    {
+      "id": "quintara26",
+      "name": "Quintara & 26th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.748328,
+      "longitude": -122.48346,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16147",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.748277,
+          "longitude": -122.483469
+        },
+        {
+          "id": "16146",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74838,
+          "longitude": -122.48345
+        }
+      ]
+    },
+    {
+      "id": "quintara27",
+      "name": "Quintara & 27th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74827,
+      "longitude": -122.484675,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16149",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74822,
+          "longitude": -122.48477
+        },
+        {
+          "id": "16148",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74832,
+          "longitude": -122.48458
+        }
+      ]
+    },
+    {
+      "id": "quintara28",
+      "name": "Quintara & 28th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.748215,
+      "longitude": -122.48573,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16151",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74816,
+          "longitude": -122.48586
+        },
+        {
+          "id": "16150",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74827,
+          "longitude": -122.4856
+        }
+      ]
+    },
+    {
+      "id": "quintara29",
+      "name": "Quintara & 29th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74817,
+      "longitude": -122.48679,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16153",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.74812,
+          "longitude": -122.48692
+        },
+        {
+          "id": "16152",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.74822,
+          "longitude": -122.48666
+        }
+      ]
+    },
+    {
+      "id": "thirtiethQuintara",
+      "name": "30th & Quintara",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.748035,
+      "longitude": -122.487863,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13526",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74799,
+          "longitude": -122.4878
+        },
+        {
+          "id": "13527",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74808,
+          "longitude": -122.487926
+        }
+      ]
+    },
+    {
+      "id": "thirtiethRivera",
+      "name": "30th & Rivera",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74626,
+      "longitude": -122.487735,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13529",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74616,
+          "longitude": -122.48767
+        },
+        {
+          "id": "13528",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74636,
+          "longitude": -122.4878
+        }
+      ]
+    },
+    {
+      "id": "thirtiethSantiago",
+      "name": "30th & Santiago",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.74439,
+      "longitude": -122.487605,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13531",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74427,
+          "longitude": -122.48756
+        },
+        {
+          "id": "13530",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74451,
+          "longitude": -122.48765
+        }
+      ]
+    },
+    {
+      "id": "taraval30",
+      "name": "30th Ave & Taraval St",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.742541,
+      "longitude": -122.487509,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13533",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74241,
+          "longitude": -122.48743
+        },
+        {
+          "id": "13532",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.742646,
+          "longitude": -122.487545
+        }
+      ]
+    },
+    {
+      "id": "thirtiethUlloa",
+      "name": "30th & Ulloa",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.740745,
+      "longitude": -122.487305,
+      "transferStations": [
+        "taraval30"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16735",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74072,
+          "longitude": -122.48722
+        },
+        {
+          "id": "13534",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74077,
+          "longitude": -122.48739
+        }
+      ]
+    },
+    {
+      "id": "twentyNinthVicente",
+      "name": "29th & Vicente",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.73896,
+      "longitude": -122.48611,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13525",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73896,
+          "longitude": -122.48611
+        }
+      ]
+    },
+    {
+      "id": "vicente30",
+      "name": "Vicente & 30th",
+      "kind": "streetLevel",
+      "lines": [
+        "66"
+      ],
+      "latitude": 37.738765,
+      "longitude": -122.487131,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16835",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.738765,
+          "longitude": -122.487131
+        }
+      ]
+    }
+  ]
+}

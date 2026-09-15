@@ -1,0 +1,775 @@
+{
+  "lines": [
+    {
+      "id": "14R",
+      "name": "14R Mission Rapid",
+      "shortName": "14R",
+      "color": "#BF2B45",
+      "stationIds": [
+        "mainMission",
+        "bealeMission",
+        "mission1",
+        "steuartMission",
+        "marketSteuart",
+        "mainMarket",
+        "fremontMission",
+        "mission2",
+        "mission3",
+        "mission4",
+        "mission5",
+        "mission8",
+        "mission11",
+        "sixteenthMission",
+        "mission20",
+        "twentyFourthMission",
+        "thirtiethMission",
+        "missionRichland",
+        "silverMission",
+        "persiaMission",
+        "genevaMission",
+        "missionLowell",
+        "morseLowell",
+        "missionSickles",
+        "missionGoethe",
+        "missionActon",
+        "missionEvergreen",
+        "missionFlournoy",
+        "dalyCityBartStation"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "mainMission",
+      "name": "Main & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.791965,
+      "longitude": -122.39493,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15603",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.791965,
+          "longitude": -122.39493
+        }
+      ]
+    },
+    {
+      "id": "bealeMission",
+      "name": "Beale & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.791144,
+      "longitude": -122.395916,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15579",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.791144,
+          "longitude": -122.395916
+        }
+      ]
+    },
+    {
+      "id": "mission1",
+      "name": "Mission & 1st",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.78992,
+      "longitude": -122.39749,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15528",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78992,
+          "longitude": -122.39749
+        }
+      ]
+    },
+    {
+      "id": "steuartMission",
+      "name": "Steuart & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.7933,
+      "longitude": -122.39344,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16498",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7933,
+          "longitude": -122.39344
+        }
+      ]
+    },
+    {
+      "id": "marketSteuart",
+      "name": "Market & Steuart",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.79426,
+      "longitude": -122.39491,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15693",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.79426,
+          "longitude": -122.39491
+        }
+      ]
+    },
+    {
+      "id": "mainMarket",
+      "name": "Main & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.79253,
+      "longitude": -122.39567,
+      "transferStations": [
+        "embarcadero"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15336",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.79253,
+          "longitude": -122.39567
+        }
+      ]
+    },
+    {
+      "id": "fremontMission",
+      "name": "Fremont & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.790261,
+      "longitude": -122.396788,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17945",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.790261,
+          "longitude": -122.396788
+        }
+      ]
+    },
+    {
+      "id": "mission2",
+      "name": "Mission & 2nd",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.78781,
+      "longitude": -122.400045,
+      "transferStations": [
+        "mongomery"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15530",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.78787,
+          "longitude": -122.39985
+        },
+        {
+          "id": "15529",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78775,
+          "longitude": -122.40024
+        }
+      ]
+    },
+    {
+      "id": "mission3",
+      "name": "Mission & 3rd",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.78624,
+      "longitude": -122.40203,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15531",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.78651,
+          "longitude": -122.40157
+        },
+        {
+          "id": "15532",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78597,
+          "longitude": -122.40249
+        }
+      ]
+    },
+    {
+      "id": "mission4",
+      "name": "Mission & 4th",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.7845,
+      "longitude": -122.404225,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15533",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.78464,
+          "longitude": -122.40393
+        },
+        {
+          "id": "15534",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78436,
+          "longitude": -122.40452
+        }
+      ]
+    },
+    {
+      "id": "mission5",
+      "name": "Mission & 5th",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.78272,
+      "longitude": -122.406582,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15535",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.782716,
+          "longitude": -122.406525
+        },
+        {
+          "id": "15536",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.782725,
+          "longitude": -122.40664
+        }
+      ]
+    },
+    {
+      "id": "mission8",
+      "name": "Mission & 8th",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.777465,
+      "longitude": -122.41314,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15541",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7777,
+          "longitude": -122.41273
+        },
+        {
+          "id": "15540",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.77723,
+          "longitude": -122.41355
+        }
+      ]
+    },
+    {
+      "id": "mission11",
+      "name": "Mission & 11th",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.774609,
+      "longitude": -122.416787,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15544",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.774912,
+          "longitude": -122.416283
+        },
+        {
+          "id": "15545",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.774306,
+          "longitude": -122.417292
+        }
+      ]
+    },
+    {
+      "id": "sixteenthMission",
+      "name": "16th & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.764964,
+      "longitude": -122.419702,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15551",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.765125,
+          "longitude": -122.419668
+        },
+        {
+          "id": "15552",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.764804,
+          "longitude": -122.419737
+        }
+      ]
+    },
+    {
+      "id": "mission20",
+      "name": "Mission & 20th",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.75864,
+      "longitude": -122.419055,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15557",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75911,
+          "longitude": -122.41902
+        },
+        {
+          "id": "15558",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75817,
+          "longitude": -122.41909
+        }
+      ]
+    },
+    {
+      "id": "twentyFourthMission",
+      "name": "24th & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.75216,
+      "longitude": -122.418464,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15565",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.752356,
+          "longitude": -122.418401
+        },
+        {
+          "id": "15566",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.751964,
+          "longitude": -122.418528
+        }
+      ]
+    },
+    {
+      "id": "thirtiethMission",
+      "name": "30th & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.742413,
+      "longitude": -122.421968,
+      "transferStations": [
+        "dolores30"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15571",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.742408,
+          "longitude": -122.421945
+        },
+        {
+          "id": "15572",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.742417,
+          "longitude": -122.421991
+        }
+      ]
+    },
+    {
+      "id": "missionRichland",
+      "name": "Mission & Richland",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.735765,
+      "longitude": -122.42456,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15613",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73591,
+          "longitude": -122.42442
+        },
+        {
+          "id": "15614",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.73562,
+          "longitude": -122.4247
+        }
+      ]
+    },
+    {
+      "id": "silverMission",
+      "name": "Silver & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.728723,
+      "longitude": -122.431337,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15620",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.728723,
+          "longitude": -122.43132
+        },
+        {
+          "id": "15621",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.728723,
+          "longitude": -122.431354
+        }
+      ]
+    },
+    {
+      "id": "persiaMission",
+      "name": "Persia & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.723321,
+      "longitude": -122.435825,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15610",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72338,
+          "longitude": -122.43568
+        },
+        {
+          "id": "15616",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.723263,
+          "longitude": -122.435971
+        }
+      ]
+    },
+    {
+      "id": "genevaMission",
+      "name": "Geneva & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.716549,
+      "longitude": -122.440966,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15593",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.716642,
+          "longitude": -122.440782
+        },
+        {
+          "id": "15592",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.716455,
+          "longitude": -122.441149
+        }
+      ]
+    },
+    {
+      "id": "missionLowell",
+      "name": "Mission & Lowell",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.71145,
+      "longitude": -122.446388,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15601",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.711468,
+          "longitude": -122.446291
+        },
+        {
+          "id": "15602",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.711432,
+          "longitude": -122.446486
+        }
+      ]
+    },
+    {
+      "id": "morseLowell",
+      "name": "Morse & Lowell",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.711021,
+      "longitude": -122.446211,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17742",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.711021,
+          "longitude": -122.446211
+        }
+      ]
+    },
+    {
+      "id": "missionSickles",
+      "name": "Mission & Sickles",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.70866,
+      "longitude": -122.45332,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15619",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70866,
+          "longitude": -122.45332
+        }
+      ]
+    },
+    {
+      "id": "missionGoethe",
+      "name": "Mission & Goethe",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.70736,
+      "longitude": -122.45708,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15594",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70736,
+          "longitude": -122.45708
+        }
+      ]
+    },
+    {
+      "id": "missionActon",
+      "name": "Mission & Acton",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.708808,
+      "longitude": -122.452578,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15574",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.708808,
+          "longitude": -122.452578
+        }
+      ]
+    },
+    {
+      "id": "missionEvergreen",
+      "name": "Mission & Evergreen",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.70741,
+      "longitude": -122.45653,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15585",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.70741,
+          "longitude": -122.45653
+        }
+      ]
+    },
+    {
+      "id": "missionFlournoy",
+      "name": "Mission & Flournoy",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.706721,
+      "longitude": -122.459162,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17554",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.706622,
+          "longitude": -122.459265
+        },
+        {
+          "id": "15588",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.70682,
+          "longitude": -122.45906
+        }
+      ]
+    },
+    {
+      "id": "dalyCityBartStation",
+      "name": "Daly City BART Station",
+      "kind": "streetLevel",
+      "lines": [
+        "14R"
+      ],
+      "latitude": 37.706273,
+      "longitude": -122.468632,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17842",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.706273,
+          "longitude": -122.468632
+        }
+      ]
+    }
+  ]
+}

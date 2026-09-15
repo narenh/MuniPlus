@@ -11,7 +11,7 @@
         "fillmoreJefferson",
         "fillmoreBeach",
         "fillmoreCervantes",
-        "fillmoreChestnut",
+        "chestnutFillmore",
         "fillmoreLombard",
         "unionFillmore",
         "steinerUnion",
@@ -23,28 +23,28 @@
         "fillmoreSacramento",
         "fillmorePine",
         "fillmoreSutter",
-        "fillmoreGeary",
+        "gearyFillmore",
         "fillmoreOfarrell",
-        "fillmoreEddy",
+        "eddyFillmore",
         "fillmoreGoldenGate",
         "fillmoreTurk",
         "fillmoreMcallister",
         "fillmoreGrove",
         "fillmoreHayes",
         "fillmoreOak",
-        "fillmoreHaight",
+        "haightFillmore",
         "hermannFillmore",
-        "churchDuboce",
+        "churchDuboceJ",
         "churchMarket",
         "church16",
         "sixteenthDolores",
         "sixteenthValencia",
         "sixteenthMission",
-        "sixteenthFolsom",
+        "folsom16",
         "sixteenthShotwell",
         "sixteenthBryant",
         "sixteenthPotrero",
-        "sixteenthRhodeIsland",
+        "rhodeIsland16",
         "sixteenthWisconsin",
         "sixteenthMissouri",
         "sixteenthOwen",
@@ -164,8 +164,8 @@
       ]
     },
     {
-      "id": "fillmoreChestnut",
-      "name": "Fillmore & Chestnut",
+      "id": "chestnutFillmore",
+      "name": "Chestnut & Fillmore",
       "kind": "streetLevel",
       "lines": [
         "22"
@@ -500,8 +500,8 @@
       ]
     },
     {
-      "id": "fillmoreGeary",
-      "name": "Fillmore & Geary",
+      "id": "gearyFillmore",
+      "name": "Geary & Fillmore",
       "kind": "streetLevel",
       "lines": [
         "22"
@@ -556,8 +556,8 @@
       ]
     },
     {
-      "id": "fillmoreEddy",
-      "name": "Fillmore & Eddy",
+      "id": "eddyFillmore",
+      "name": "Eddy & Fillmore",
       "kind": "streetLevel",
       "lines": [
         "22"
@@ -738,8 +738,8 @@
       ]
     },
     {
-      "id": "fillmoreHaight",
-      "name": "Fillmore & Haight",
+      "id": "haightFillmore",
+      "name": "Haight & Fillmore",
       "kind": "streetLevel",
       "lines": [
         "22"
@@ -774,7 +774,10 @@
       ],
       "latitude": 37.770278,
       "longitude": -122.429815,
-      "transferStations": [],
+      "transferStations": [
+        "churchDuboceJ",
+        "duboceChurchN"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -794,14 +797,14 @@
       ]
     },
     {
-      "id": "churchDuboce",
+      "id": "churchDuboceJ",
       "name": "Church & Duboce",
       "kind": "streetLevel",
       "lines": [
         "22"
       ],
-      "latitude": 37.76941,
-      "longitude": -122.429099,
+      "latitude": 37.769302,
+      "longitude": -122.429087,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -856,8 +859,8 @@
       "lines": [
         "22"
       ],
-      "latitude": 37.7646,
-      "longitude": -122.428622,
+      "latitude": 37.764501,
+      "longitude": -122.428665,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -886,7 +889,9 @@
       ],
       "latitude": 37.764658,
       "longitude": -122.426406,
-      "transferStations": [],
+      "transferStations": [
+        "church16"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -943,9 +948,7 @@
       "latitude": 37.765068,
       "longitude": -122.419723,
       "transferStations": [],
-      "transferAgencies": [
-        "bart"
-      ],
+      "transferAgencies": [],
       "platforms": [
         {
           "id": "13293",
@@ -964,8 +967,8 @@
       ]
     },
     {
-      "id": "sixteenthFolsom",
-      "name": "16th & Folsom",
+      "id": "folsom16",
+      "name": "Folsom & 16th",
       "kind": "streetLevel",
       "lines": [
         "22"
@@ -1062,8 +1065,8 @@
       ]
     },
     {
-      "id": "sixteenthRhodeIsland",
-      "name": "16th & Rhode Island",
+      "id": "rhodeIsland16",
+      "name": "Rhode Island & 16th",
       "kind": "streetLevel",
       "lines": [
         "22"
@@ -1210,7 +1213,9 @@
       ],
       "latitude": 37.76871,
       "longitude": -122.389377,
-      "transferStations": [],
+      "transferStations": [
+        "ucsfChaseCenter"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1252,7 +1257,9 @@
       ],
       "latitude": 37.769049,
       "longitude": -122.389228,
-      "transferStations": [],
+      "transferStations": [
+        "ucsfChaseCenter"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

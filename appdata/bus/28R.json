@@ -1,0 +1,425 @@
+{
+  "lines": [
+    {
+      "id": "28R",
+      "name": "28R 19th Avenue Rapid",
+      "shortName": "28R",
+      "color": "#BF2B45",
+      "stationIds": [
+        "california7",
+        "california6",
+        "californiaParkPresidio",
+        "california12",
+        "gearyParkPresidio",
+        "fultonParkPresidio",
+        "lincolnWay19",
+        "crossoverLincoln",
+        "judah19",
+        "nineteenthNoriega",
+        "nineteenthQuintara",
+        "taraval19",
+        "nineteenthWinston",
+        "holloway19",
+        "dalyCityBartStation",
+        "dalyCityBartParkingLotE"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "california7",
+      "name": "California & 7th",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.784819,
+      "longitude": -122.465432,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13826",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.784819,
+          "longitude": -122.465432
+        }
+      ]
+    },
+    {
+      "id": "california6",
+      "name": "California & 6th",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.785069,
+      "longitude": -122.464641,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13824",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785069,
+          "longitude": -122.464641
+        }
+      ]
+    },
+    {
+      "id": "californiaParkPresidio",
+      "name": "California & Park Presidio",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.7841,
+      "longitude": -122.47274,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15948",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7841,
+          "longitude": -122.47274
+        }
+      ]
+    },
+    {
+      "id": "california12",
+      "name": "California & 12th",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.784454,
+      "longitude": -122.471103,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13832",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.784454,
+          "longitude": -122.471103
+        }
+      ]
+    },
+    {
+      "id": "gearyParkPresidio",
+      "name": "Geary & Park Presidio",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.780523,
+      "longitude": -122.472349,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15953",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.780776,
+          "longitude": -122.472217
+        },
+        {
+          "id": "15952",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.78027,
+          "longitude": -122.47248
+        }
+      ]
+    },
+    {
+      "id": "fultonParkPresidio",
+      "name": "Fulton & Park Presidio",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.773244,
+      "longitude": -122.471781,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15950",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.773219,
+          "longitude": -122.471653
+        },
+        {
+          "id": "15951",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.77327,
+          "longitude": -122.47191
+        }
+      ]
+    },
+    {
+      "id": "lincolnWay19",
+      "name": "Lincoln Way & 19th",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.765375,
+      "longitude": -122.477404,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13371",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.765375,
+          "longitude": -122.477404
+        }
+      ]
+    },
+    {
+      "id": "crossoverLincoln",
+      "name": "Crossover & Lincoln",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.765544,
+      "longitude": -122.477243,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17758",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.765544,
+          "longitude": -122.477243
+        }
+      ]
+    },
+    {
+      "id": "judah19",
+      "name": "Judah & 19th",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.761699,
+      "longitude": -122.477058,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13364",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76177,
+          "longitude": -122.476955
+        },
+        {
+          "id": "13365",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7614,
+          "longitude": -122.47711
+        }
+      ]
+    },
+    {
+      "id": "nineteenthNoriega",
+      "name": "19th & Noriega",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.75412,
+      "longitude": -122.476449,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13374",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75432,
+          "longitude": -122.476368
+        },
+        {
+          "id": "13375",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75392,
+          "longitude": -122.47653
+        }
+      ]
+    },
+    {
+      "id": "nineteenthQuintara",
+      "name": "19th & Quintara",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.748415,
+      "longitude": -122.47602,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13383",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74853,
+          "longitude": -122.4759
+        },
+        {
+          "id": "13384",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7483,
+          "longitude": -122.47614
+        }
+      ]
+    },
+    {
+      "id": "taraval19",
+      "name": "19th Ave & Taraval St",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.74304,
+      "longitude": -122.475632,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13394",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74331,
+          "longitude": -122.47554
+        },
+        {
+          "id": "13395",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.742586,
+          "longitude": -122.475737
+        }
+      ]
+    },
+    {
+      "id": "nineteenthWinston",
+      "name": "19th & Winston",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.727224,
+      "longitude": -122.474889,
+      "transferStations": [
+        "winston19"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13402",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72719,
+          "longitude": -122.47468
+        },
+        {
+          "id": "17448",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.727258,
+          "longitude": -122.475098
+        }
+      ]
+    },
+    {
+      "id": "holloway19",
+      "name": "19th Ave & Holloway Ave (SF State)",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.721342,
+      "longitude": -122.475211,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "10390",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.72119,
+          "longitude": -122.475153
+        },
+        {
+          "id": "13356",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.72111,
+          "longitude": -122.475302
+        }
+      ]
+    },
+    {
+      "id": "dalyCityBartStation",
+      "name": "Daly City BART Station",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.705964,
+      "longitude": -122.469023,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14341",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.705964,
+          "longitude": -122.469023
+        }
+      ]
+    },
+    {
+      "id": "dalyCityBartParkingLotE",
+      "name": "Daly City BART Parking Lot E",
+      "kind": "streetLevel",
+      "lines": [
+        "28R"
+      ],
+      "latitude": 37.705879,
+      "longitude": -122.468763,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17925",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.705879,
+          "longitude": -122.468763
+        }
+      ]
+    }
+  ]
+}

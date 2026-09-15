@@ -1,0 +1,256 @@
+{
+  "lines": [
+    {
+      "id": "714",
+      "name": "714 BART Early Bird",
+      "shortName": "714",
+      "color": "#005B95",
+      "stationIds": [
+        "transitCenterBayC",
+        "mission5",
+        "mission8",
+        "sixteenthMission",
+        "twentyFourthMission",
+        "bosworthDiamond",
+        "sanJoseGeneva2",
+        "genevaAvebalboaParkBart",
+        "dalyCityBartStation"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "transitCenterBayC",
+      "name": "Transit Center Bay C",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.789957,
+      "longitude": -122.395493,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17915",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.789957,
+          "longitude": -122.395493
+        }
+      ]
+    },
+    {
+      "id": "mission5",
+      "name": "Mission & 5th",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.78272,
+      "longitude": -122.406582,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15535",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.782716,
+          "longitude": -122.406525
+        },
+        {
+          "id": "15536",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.782725,
+          "longitude": -122.40664
+        }
+      ]
+    },
+    {
+      "id": "mission8",
+      "name": "Mission & 8th",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.777465,
+      "longitude": -122.41314,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15541",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7777,
+          "longitude": -122.41273
+        },
+        {
+          "id": "15540",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.77723,
+          "longitude": -122.41355
+        }
+      ]
+    },
+    {
+      "id": "sixteenthMission",
+      "name": "16th & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.764964,
+      "longitude": -122.419702,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15551",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.765125,
+          "longitude": -122.419668
+        },
+        {
+          "id": "15552",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.764804,
+          "longitude": -122.419737
+        }
+      ]
+    },
+    {
+      "id": "twentyFourthMission",
+      "name": "24th & Mission",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.75216,
+      "longitude": -122.418464,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15565",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.752356,
+          "longitude": -122.418401
+        },
+        {
+          "id": "15566",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.751964,
+          "longitude": -122.418528
+        }
+      ]
+    },
+    {
+      "id": "bosworthDiamond",
+      "name": "Bosworth & Diamond",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.733479,
+      "longitude": -122.434182,
+      "transferStations": [
+        "glenPark"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14386",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.733506,
+          "longitude": -122.434148
+        },
+        {
+          "id": "14387",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.733452,
+          "longitude": -122.434217
+        }
+      ]
+    },
+    {
+      "id": "sanJoseGeneva2",
+      "name": "San Jose & Geneva",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.721024,
+      "longitude": -122.446509,
+      "transferStations": [
+        "balboaPark",
+        "sanJoseGeneva"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "18080",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.721024,
+          "longitude": -122.446509
+        }
+      ]
+    },
+    {
+      "id": "genevaAvebalboaParkBart",
+      "name": "Geneva Ave/Balboa Park BART",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.720952,
+      "longitude": -122.447379,
+      "transferStations": [
+        "balboaPark",
+        "sanJoseGeneva"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14805",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.720952,
+          "longitude": -122.447379
+        }
+      ]
+    },
+    {
+      "id": "dalyCityBartStation",
+      "name": "Daly City BART Station",
+      "kind": "streetLevel",
+      "lines": [
+        "714"
+      ],
+      "latitude": 37.705964,
+      "longitude": -122.469023,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14341",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.705964,
+          "longitude": -122.469023
+        }
+      ]
+    }
+  ]
+}

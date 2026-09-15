@@ -1,0 +1,1658 @@
+{
+  "lines": [
+    {
+      "id": "37",
+      "name": "37 Corbett",
+      "shortName": "37",
+      "color": "#005B95",
+      "stationIds": [
+        "masonicHaight",
+        "ashburyHaight",
+        "haightClayton",
+        "coleHaight",
+        "coleWaller",
+        "coleFrederick",
+        "carlCole",
+        "coleParnassus",
+        "coleAlma",
+        "seventeenthCole",
+        "seventeenthBelvedere",
+        "seventeenthClayton",
+        "coleCarmel",
+        "carmelBelvedere",
+        "carmelTwinPeaks",
+        "rooseveltWay17",
+        "rooseveltWayLowerTer",
+        "rooseveltWayCliffordTer",
+        "414RooseveltWay",
+        "rooseveltWayParkHill",
+        "415RooseveltWay",
+        "rooseveltWayMuseumWay",
+        "rooseveltWay15",
+        "buenaVistaTerRooseveltWay",
+        "fourteenthAlpineTer",
+        "rooseveltWay14",
+        "fourteenthCastro",
+        "fourteenthNoe",
+        "fourteenthSanchez",
+        "churchMarket",
+        "marketSanchez",
+        "marketNoe",
+        "marketCastro",
+        "corbettDouglass",
+        "market15",
+        "market16",
+        "market17",
+        "seventeenthDiamond",
+        "corbettOrd",
+        "corbettHattie",
+        "211Corbett",
+        "210Corbett",
+        "corbettDanvers",
+        "corbettMars",
+        "341Corbett",
+        "328Corbett",
+        "claytonCorbett",
+        "539Corbett",
+        "corbettIronAly",
+        "corbettGraystoneTer",
+        "corbettRomain",
+        "800Corbett",
+        "925Corbett",
+        "corbettCuestaCt",
+        "clipperPortola",
+        "795Corbett",
+        "corbettHopkins",
+        "956Corbett",
+        "6Portola",
+        "120Portola",
+        "portolaBurnett",
+        "burnettDawnviewWay",
+        "burnettCrestline",
+        "40Crestline",
+        "74Crestline",
+        "parkridgeCrestline",
+        "parkridgeBurnett"
+      ]
+    }
+  ],
+  "subways": [],
+  "stations": [
+    {
+      "id": "masonicHaight",
+      "name": "Masonic & Haight",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.770152,
+      "longitude": -122.445384,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15711",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.770152,
+          "longitude": -122.445384
+        }
+      ]
+    },
+    {
+      "id": "ashburyHaight",
+      "name": "Ashbury & Haight",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.769937,
+      "longitude": -122.446851,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13662",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.769937,
+          "longitude": -122.446851
+        }
+      ]
+    },
+    {
+      "id": "haightClayton",
+      "name": "Haight & Clayton",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.769808,
+      "longitude": -122.448582,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14947",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.769777,
+          "longitude": -122.448433
+        },
+        {
+          "id": "14946",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.769839,
+          "longitude": -122.448731
+        }
+      ]
+    },
+    {
+      "id": "coleHaight",
+      "name": "Cole & Haight",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.769452,
+      "longitude": -122.450691,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14096",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.769447,
+          "longitude": -122.450771
+        },
+        {
+          "id": "14095",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.769456,
+          "longitude": -122.45061
+        }
+      ]
+    },
+    {
+      "id": "coleWaller",
+      "name": "Cole & Waller",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.768528,
+      "longitude": -122.450427,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14099",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.768528,
+          "longitude": -122.450427
+        }
+      ]
+    },
+    {
+      "id": "coleFrederick",
+      "name": "Cole & Frederick",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76683,
+      "longitude": -122.4502,
+      "transferStations": [
+        "carlCole"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14094",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76683,
+          "longitude": -122.4502
+        }
+      ]
+    },
+    {
+      "id": "carlCole",
+      "name": "Carl & Cole",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.765804,
+      "longitude": -122.449967,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14091",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76594,
+          "longitude": -122.449911
+        },
+        {
+          "id": "14092",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76556,
+          "longitude": -122.44996
+        }
+      ]
+    },
+    {
+      "id": "coleParnassus",
+      "name": "Cole & Parnassus",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.764695,
+      "longitude": -122.449745,
+      "transferStations": [
+        "carlCole"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14097",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76477,
+          "longitude": -122.44971
+        },
+        {
+          "id": "14098",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76462,
+          "longitude": -122.44978
+        }
+      ]
+    },
+    {
+      "id": "coleAlma",
+      "name": "Cole & Alma",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.763196,
+      "longitude": -122.449456,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14090",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76313,
+          "longitude": -122.44938
+        },
+        {
+          "id": "14089",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.763263,
+          "longitude": -122.449533
+        }
+      ]
+    },
+    {
+      "id": "seventeenthCole",
+      "name": "17th & Cole",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.761696,
+      "longitude": -122.449096,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13310",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76168,
+          "longitude": -122.44898
+        },
+        {
+          "id": "14088",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.761711,
+          "longitude": -122.449212
+        }
+      ]
+    },
+    {
+      "id": "seventeenthBelvedere",
+      "name": "17th & Belvedere",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76176,
+      "longitude": -122.44768,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13307",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76176,
+          "longitude": -122.44768
+        }
+      ]
+    },
+    {
+      "id": "seventeenthClayton",
+      "name": "17th & Clayton",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.761854,
+      "longitude": -122.446702,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13309",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.761854,
+          "longitude": -122.446702
+        }
+      ]
+    },
+    {
+      "id": "coleCarmel",
+      "name": "Cole & Carmel",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.760926,
+      "longitude": -122.449052,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14093",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.760926,
+          "longitude": -122.449052
+        }
+      ]
+    },
+    {
+      "id": "carmelBelvedere",
+      "name": "Carmel & Belvedere",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76092,
+      "longitude": -122.447631,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14204",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76092,
+          "longitude": -122.447631
+        }
+      ]
+    },
+    {
+      "id": "carmelTwinPeaks",
+      "name": "Carmel & Twin Peaks",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.760935,
+      "longitude": -122.446634,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14205",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.760935,
+          "longitude": -122.446634
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWay17",
+      "name": "Roosevelt Way & 17th",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.761961,
+      "longitude": -122.445293,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16235",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.761952,
+          "longitude": -122.445213
+        },
+        {
+          "id": "16234",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76197,
+          "longitude": -122.445373
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWayLowerTer",
+      "name": "Roosevelt Way & Lower Ter",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.763329,
+      "longitude": -122.443746,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16239",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.763237,
+          "longitude": -122.443792
+        },
+        {
+          "id": "16238",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76342,
+          "longitude": -122.4437
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWayCliffordTer",
+      "name": "Roosevelt Way & Clifford Ter",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76373,
+      "longitude": -122.44296,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16236",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76373,
+          "longitude": -122.44291
+        },
+        {
+          "id": "16237",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76373,
+          "longitude": -122.44301
+        }
+      ]
+    },
+    {
+      "id": "414RooseveltWay",
+      "name": "414 Roosevelt Way",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.764495,
+      "longitude": -122.443299,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16230",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.764495,
+          "longitude": -122.443299
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWayParkHill",
+      "name": "Roosevelt Way & Park Hill",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.766692,
+      "longitude": -122.439358,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "18180",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7666916,
+          "longitude": -122.4393579
+        }
+      ]
+    },
+    {
+      "id": "415RooseveltWay",
+      "name": "415 Roosevelt Way",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.764495,
+      "longitude": -122.443138,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16231",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.764495,
+          "longitude": -122.443138
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWayMuseumWay",
+      "name": "Roosevelt Way & Museum Way",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76536,
+      "longitude": -122.44102,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16240",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76536,
+          "longitude": -122.44102
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWay15",
+      "name": "Roosevelt Way & 15th",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.766493,
+      "longitude": -122.439505,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16233",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.766493,
+          "longitude": -122.439505
+        }
+      ]
+    },
+    {
+      "id": "buenaVistaTerRooseveltWay",
+      "name": "Buena Vista Ter & Roosevelt Way",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.766717,
+      "longitude": -122.438181,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17310",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.766698,
+          "longitude": -122.438279
+        },
+        {
+          "id": "13820",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.766737,
+          "longitude": -122.438084
+        }
+      ]
+    },
+    {
+      "id": "fourteenthAlpineTer",
+      "name": "14th & Alpine Ter",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767296,
+      "longitude": -122.437213,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13253",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.767296,
+          "longitude": -122.437213
+        }
+      ]
+    },
+    {
+      "id": "rooseveltWay14",
+      "name": "Roosevelt Way & 14th",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767162,
+      "longitude": -122.437225,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16232",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.767162,
+          "longitude": -122.437225
+        }
+      ]
+    },
+    {
+      "id": "fourteenthCastro",
+      "name": "14th & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76733,
+      "longitude": -122.43581,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13257",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76728,
+          "longitude": -122.43578
+        },
+        {
+          "id": "13256",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76738,
+          "longitude": -122.43584
+        }
+      ]
+    },
+    {
+      "id": "fourteenthNoe",
+      "name": "14th & Noe",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767455,
+      "longitude": -122.433415,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13259",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.7674,
+          "longitude": -122.43356
+        },
+        {
+          "id": "13258",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76751,
+          "longitude": -122.43327
+        }
+      ]
+    },
+    {
+      "id": "fourteenthSanchez",
+      "name": "14th & Sanchez",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767603,
+      "longitude": -122.431191,
+      "transferStations": [
+        "church",
+        "churchMarket"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13261",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.767536,
+          "longitude": -122.431277
+        },
+        {
+          "id": "13260",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76767,
+          "longitude": -122.431105
+        }
+      ]
+    },
+    {
+      "id": "churchMarket",
+      "name": "Church & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767398,
+      "longitude": -122.42899,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13254",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.767768,
+          "longitude": -122.429088
+        },
+        {
+          "id": "13255",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76767,
+          "longitude": -122.42913
+        }
+      ]
+    },
+    {
+      "id": "marketSanchez",
+      "name": "Market & Sanchez",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.765689,
+      "longitude": -122.43114,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15691",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.765689,
+          "longitude": -122.43114
+        }
+      ]
+    },
+    {
+      "id": "marketNoe",
+      "name": "Market & Noe",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.763958,
+      "longitude": -122.433323,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15687",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.763958,
+          "longitude": -122.433323
+        }
+      ]
+    },
+    {
+      "id": "marketCastro",
+      "name": "Market & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.762594,
+      "longitude": -122.435289,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15665",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.762594,
+          "longitude": -122.435289
+        }
+      ]
+    },
+    {
+      "id": "corbettDouglass",
+      "name": "Corbett & Douglass",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76208,
+      "longitude": -122.43962,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14176",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76208,
+          "longitude": -122.43962
+        }
+      ]
+    },
+    {
+      "id": "market15",
+      "name": "Market & 15th",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76569,
+      "longitude": -122.4314,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15653",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76569,
+          "longitude": -122.4314
+        }
+      ]
+    },
+    {
+      "id": "market16",
+      "name": "Market & 16th",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76391,
+      "longitude": -122.43366,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15654",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76391,
+          "longitude": -122.43366
+        }
+      ]
+    },
+    {
+      "id": "market17",
+      "name": "Market & 17th",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.763022,
+      "longitude": -122.434979,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15667",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.763022,
+          "longitude": -122.434979
+        }
+      ]
+    },
+    {
+      "id": "seventeenthDiamond",
+      "name": "17th & Diamond",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.762415,
+      "longitude": -122.437489,
+      "transferStations": [
+        "castro"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13314",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.762415,
+          "longitude": -122.437489
+        }
+      ]
+    },
+    {
+      "id": "corbettOrd",
+      "name": "Corbett & Ord",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.761898,
+      "longitude": -122.440216,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14185",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.761898,
+          "longitude": -122.440216
+        }
+      ]
+    },
+    {
+      "id": "corbettHattie",
+      "name": "Corbett & Hattie",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.76166,
+      "longitude": -122.441121,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14180",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76161,
+          "longitude": -122.44112
+        },
+        {
+          "id": "14179",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.761711,
+          "longitude": -122.441122
+        }
+      ]
+    },
+    {
+      "id": "211Corbett",
+      "name": "211 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.761648,
+      "longitude": -122.442944,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14163",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.761648,
+          "longitude": -122.442944
+        }
+      ]
+    },
+    {
+      "id": "210Corbett",
+      "name": "210 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.7618,
+      "longitude": -122.442841,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14162",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.7618,
+          "longitude": -122.442841
+        }
+      ]
+    },
+    {
+      "id": "corbettDanvers",
+      "name": "Corbett & Danvers",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.761264,
+      "longitude": -122.444061,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14174",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.761202,
+          "longitude": -122.444044
+        },
+        {
+          "id": "14175",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.761327,
+          "longitude": -122.444078
+        }
+      ]
+    },
+    {
+      "id": "corbettMars",
+      "name": "Corbett & Mars",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.760474,
+      "longitude": -122.444434,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14183",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.760467,
+          "longitude": -122.44439
+        },
+        {
+          "id": "14184",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.76048,
+          "longitude": -122.444479
+        }
+      ]
+    },
+    {
+      "id": "341Corbett",
+      "name": "341 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.759908,
+      "longitude": -122.445075,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14165",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.759908,
+          "longitude": -122.445075
+        }
+      ]
+    },
+    {
+      "id": "328Corbett",
+      "name": "328 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.759926,
+      "longitude": -122.445327,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14164",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.759926,
+          "longitude": -122.445327
+        }
+      ]
+    },
+    {
+      "id": "claytonCorbett",
+      "name": "Clayton & Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.7588,
+      "longitude": -122.44602,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14172",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.758659,
+          "longitude": -122.4459
+        },
+        {
+          "id": "14171",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75894,
+          "longitude": -122.44614
+        }
+      ]
+    },
+    {
+      "id": "539Corbett",
+      "name": "539 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.757499,
+      "longitude": -122.444147,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14166",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.757499,
+          "longitude": -122.444147
+        }
+      ]
+    },
+    {
+      "id": "corbettIronAly",
+      "name": "Corbett & Iron Aly",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.75783,
+      "longitude": -122.444743,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14182",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75783,
+          "longitude": -122.444743
+        }
+      ]
+    },
+    {
+      "id": "corbettGraystoneTer",
+      "name": "Corbett & Graystone Ter",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.756428,
+      "longitude": -122.443353,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14177",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75641,
+          "longitude": -122.44328
+        },
+        {
+          "id": "14178",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.756446,
+          "longitude": -122.443425
+        }
+      ]
+    },
+    {
+      "id": "corbettRomain",
+      "name": "Corbett & Romain",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.755416,
+      "longitude": -122.442813,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14186",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.755483,
+          "longitude": -122.442795
+        },
+        {
+          "id": "14187",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.755349,
+          "longitude": -122.44283
+        }
+      ]
+    },
+    {
+      "id": "800Corbett",
+      "name": "800 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.75399,
+      "longitude": -122.443,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14168",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75399,
+          "longitude": -122.443
+        }
+      ]
+    },
+    {
+      "id": "925Corbett",
+      "name": "925 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.752083,
+      "longitude": -122.443414,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14169",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.752083,
+          "longitude": -122.443414
+        }
+      ]
+    },
+    {
+      "id": "corbettCuestaCt",
+      "name": "Corbett & Cuesta Ct",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.75085,
+      "longitude": -122.44396,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14173",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.75085,
+          "longitude": -122.44396
+        }
+      ]
+    },
+    {
+      "id": "clipperPortola",
+      "name": "Clipper & Portola",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.74715,
+      "longitude": -122.4442,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16012",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.74715,
+          "longitude": -122.4442
+        }
+      ]
+    },
+    {
+      "id": "795Corbett",
+      "name": "795 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.754118,
+      "longitude": -122.443013,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14167",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.754118,
+          "longitude": -122.443013
+        }
+      ]
+    },
+    {
+      "id": "corbettHopkins",
+      "name": "Corbett & Hopkins",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.752869,
+      "longitude": -122.443815,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14181",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.752869,
+          "longitude": -122.443815
+        }
+      ]
+    },
+    {
+      "id": "956Corbett",
+      "name": "956 Corbett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.751682,
+      "longitude": -122.443712,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14170",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.751682,
+          "longitude": -122.443712
+        }
+      ]
+    },
+    {
+      "id": "6Portola",
+      "name": "6 Portola",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.749951,
+      "longitude": -122.443483,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16008",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.749951,
+          "longitude": -122.443483
+        }
+      ]
+    },
+    {
+      "id": "120Portola",
+      "name": "120 Portola",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.74897,
+      "longitude": -122.44396,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16009",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.74897,
+          "longitude": -122.44396
+        }
+      ]
+    },
+    {
+      "id": "portolaBurnett",
+      "name": "Portola & Burnett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.747033,
+      "longitude": -122.44487,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16010",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.747033,
+          "longitude": -122.44487
+        }
+      ]
+    },
+    {
+      "id": "burnettDawnviewWay",
+      "name": "Burnett & Dawnview Way",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.748068,
+      "longitude": -122.444996,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17685",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.748059,
+          "longitude": -122.444904
+        },
+        {
+          "id": "13713",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.748077,
+          "longitude": -122.445087
+        }
+      ]
+    },
+    {
+      "id": "burnettCrestline",
+      "name": "Burnett & Crestline",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.749211,
+      "longitude": -122.445009,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17020",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.7493,
+          "longitude": -122.44508
+        },
+        {
+          "id": "13712",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.749121,
+          "longitude": -122.444938
+        }
+      ]
+    },
+    {
+      "id": "40Crestline",
+      "name": "40 Crestline",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.750388,
+      "longitude": -122.446577,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14209",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.750388,
+          "longitude": -122.446577
+        }
+      ]
+    },
+    {
+      "id": "74Crestline",
+      "name": "74 Crestline",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.751762,
+      "longitude": -122.446198,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14210",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.751762,
+          "longitude": -122.446198
+        }
+      ]
+    },
+    {
+      "id": "parkridgeCrestline",
+      "name": "Parkridge & Crestline",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.752351,
+      "longitude": -122.446084,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16087",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.752351,
+          "longitude": -122.446084
+        }
+      ]
+    },
+    {
+      "id": "parkridgeBurnett",
+      "name": "Parkridge & Burnett",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.75041,
+      "longitude": -122.44578,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16086",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.75041,
+          "longitude": -122.44578
+        }
+      ]
+    }
+  ]
+}
