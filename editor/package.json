@@ -1,0 +1,10 @@
+{
+  "name": "muniplus-atlas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Map-first editor for appdata/data.json",
+  "type": "commonjs",
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js" }
+}
