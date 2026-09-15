@@ -229,17 +229,16 @@
         "marketGough",
         "marketVanNess",
         "market9",
-        "eighthMarket",
+        "market8",
         "market7",
         "market6",
         "market5",
-        "fourthMarket",
+        "market4",
         "market3",
         "market2",
         "market1",
-        "mainMarket",
-        "marketDrumm",
-        "donCheeWaysteuart",
+        "marketMain",
+        "donCheeWaySteuart",
         "embarcaderoFerryBuilding",
         "embarcaderoWashington",
         "embarcaderoBroadway",
@@ -247,12 +246,11 @@
         "embarcaderoGreenwich",
         "embarcaderoSansome",
         "embarcaderoBay",
-        "embarcaderoStockton",
-        "beachStockton",
+        "pier39",
         "jeffersonPowell",
-        "beachMason",
         "jeffersonTaylor",
-        "jonesBeach"
+        "jonesBeach",
+        "beachMason"
       ]
     }
   ],
@@ -3634,27 +3632,6 @@
       ]
     },
     {
-      "id": "beachStockton",
-      "name": "Beach & Stockton",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.807841,
-      "longitude": -122.41081,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13095",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.807841,
-          "longitude": -122.41081
-        }
-      ]
-    },
-    {
       "id": "jeffersonTaylor",
       "name": "Jefferson & Taylor",
       "kind": "streetLevel",
@@ -3697,14 +3674,14 @@
       ]
     },
     {
-      "id": "embarcaderoStockton",
-      "name": "Embarcadero & Stockton",
+      "id": "pier39",
+      "name": "Pier 39",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.808351,
-      "longitude": -122.410287,
+      "latitude": 37.808096,
+      "longitude": -122.410549,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -3714,6 +3691,13 @@
           "name": null,
           "latitude": 37.808351,
           "longitude": -122.410287
+        },
+        {
+          "id": "13095",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.807841,
+          "longitude": -122.41081
         }
       ]
     },
@@ -3914,7 +3898,7 @@
       ]
     },
     {
-      "id": "donCheeWaysteuart",
+      "id": "donCheeWaySteuart",
       "name": "Don Chee Way/Steuart",
       "kind": "streetLevel",
       "lines": [
@@ -3938,29 +3922,6 @@
           "name": null,
           "latitude": 37.79398,
           "longitude": -122.393555
-        }
-      ]
-    },
-    {
-      "id": "marketDrumm",
-      "name": "Market & Drumm",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.793473,
-      "longitude": -122.396178,
-      "transferStations": [
-        "embarcadero"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15669",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.793473,
-          "longitude": -122.396178
         }
       ]
     },
@@ -3995,14 +3956,14 @@
       ]
     },
     {
-      "id": "mainMarket",
-      "name": "Main & Market",
+      "id": "marketMain",
+      "name": "Market & Main/Drumm",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.792984,
-      "longitude": -122.396627,
+      "latitude": 37.793228,
+      "longitude": -122.396402,
       "transferStations": [
         "embarcadero"
       ],
@@ -4014,6 +3975,13 @@
           "name": null,
           "latitude": 37.792984,
           "longitude": -122.396627
+        },
+        {
+          "id": "15669",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.793473,
+          "longitude": -122.396178
         }
       ]
     },
@@ -4074,7 +4042,7 @@
       ]
     },
     {
-      "id": "fourthMarket",
+      "id": "market4",
       "name": "Market & 4th",
       "kind": "streetLevel",
       "lines": [
@@ -4223,7 +4191,7 @@
       ]
     },
     {
-      "id": "eighthMarket",
+      "id": "market8",
       "name": "Market & 8th/Hyde",
       "kind": "streetLevel",
       "lines": [
@@ -4443,7 +4411,7 @@
     },
     {
       "id": "seventeenthCastro",
-      "name": "17th & Castro",
+      "name": "Castro",
       "kind": "streetLevel",
       "lines": [
         "F"
