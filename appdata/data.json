@@ -308,6 +308,7 @@
           "id": "16992",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Embarcadero",
           "latitude": 37.793134,
           "longitude": -122.396431
         },
@@ -315,8 +316,9 @@
           "id": "17217",
           "heading": "westbound",
           "name": null,
-          "latitude": 37.79259,
-          "longitude": -122.397268
+          "stopName": "Embarcadero",
+          "latitude": 37.79271,
+          "longitude": -122.39715
         }
       ]
     },
@@ -345,6 +347,7 @@
           "id": "15731",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Montgomery",
           "latitude": 37.789219,
           "longitude": -122.401351
         },
@@ -352,6 +355,7 @@
           "id": "16994",
           "heading": "westbound",
           "name": null,
+          "stopName": "Montgomery",
           "latitude": 37.788791,
           "longitude": -122.402127
         }
@@ -384,6 +388,7 @@
           "id": "15417",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Powell",
           "latitude": 37.784653,
           "longitude": -122.407086
         },
@@ -391,6 +396,7 @@
           "id": "16995",
           "heading": "westbound",
           "name": null,
+          "stopName": "Powell",
           "latitude": 37.7843,
           "longitude": -122.407822
         }
@@ -422,6 +428,7 @@
           "id": "15727",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Civic Center",
           "latitude": 37.779712,
           "longitude": -122.413347
         },
@@ -429,6 +436,7 @@
           "id": "16997",
           "heading": "westbound",
           "name": null,
+          "stopName": "Civic Center",
           "latitude": 37.77924,
           "longitude": -122.414223
         }
@@ -457,6 +465,7 @@
           "id": "15419",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Van Ness",
           "latitude": 37.775127,
           "longitude": -122.419252
         },
@@ -464,6 +473,7 @@
           "id": "16996",
           "heading": "westbound",
           "name": null,
+          "stopName": "Van Ness",
           "latitude": 37.775234,
           "longitude": -122.41934
         }
@@ -491,15 +501,17 @@
           "id": "15726",
           "heading": "eastbound",
           "name": null,
-          "latitude": 37.767814,
-          "longitude": -122.429067
+          "stopName": "Church",
+          "latitude": 37.767194,
+          "longitude": -122.429168
         },
         {
           "id": "16998",
           "heading": "westbound",
           "name": null,
-          "latitude": 37.767814,
-          "longitude": -122.429067
+          "stopName": "Church",
+          "latitude": 37.767327,
+          "longitude": -122.429321
         }
       ]
     },
@@ -524,6 +536,7 @@
           "id": "15728",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Castro",
           "latitude": 37.76262,
           "longitude": -122.435231
         },
@@ -531,6 +544,7 @@
           "id": "16991",
           "heading": "westbound",
           "name": null,
+          "stopName": "Castro",
           "latitude": 37.762683,
           "longitude": -122.435289
         }
@@ -555,6 +569,7 @@
           "id": "15730",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Forest Hill",
           "latitude": 37.748351,
           "longitude": -122.458623
         },
@@ -562,6 +577,7 @@
           "id": "16993",
           "heading": "westbound",
           "name": null,
+          "stopName": "Forest Hill",
           "latitude": 37.74817,
           "longitude": -122.459192
         }
@@ -586,6 +602,7 @@
           "id": "16740",
           "heading": "eastbound",
           "name": null,
+          "stopName": "West Portal",
           "latitude": 37.741518,
           "longitude": -122.465216
         },
@@ -593,6 +610,7 @@
           "id": "16739",
           "heading": "westbound",
           "name": null,
+          "stopName": "West Portal",
           "latitude": 37.741391,
           "longitude": -122.46553
         }
@@ -614,6 +632,7 @@
           "id": "17876",
           "heading": "southbound",
           "name": "Southbound (Terminus)",
+          "stopName": "Chinatown - Rose Pak",
           "latitude": 37.794807,
           "longitude": -122.408078
         }
@@ -638,6 +657,7 @@
           "id": "17877",
           "heading": "northbound",
           "name": null,
+          "stopName": "Union Square",
           "latitude": 37.787151,
           "longitude": -122.406477
         },
@@ -645,6 +665,7 @@
           "id": "17874",
           "heading": "southbound",
           "name": null,
+          "stopName": "Union Square",
           "latitude": 37.787133,
           "longitude": -122.406523
         }
@@ -666,6 +687,7 @@
           "id": "17878",
           "heading": "northbound",
           "name": null,
+          "stopName": "Yerba Buena - Moscone",
           "latitude": 37.782358,
           "longitude": -122.401551
         },
@@ -673,8 +695,9 @@
           "id": "17873",
           "heading": "southbound",
           "name": null,
-          "latitude": 37.782161,
-          "longitude": -122.401551
+          "stopName": "Yerba Buena - Moscone",
+          "latitude": 37.78238,
+          "longitude": -122.40173
         }
       ]
     },
@@ -694,6 +717,7 @@
           "id": "17879",
           "heading": "northbound",
           "name": null,
+          "stopName": "4th & Brannan",
           "latitude": 37.778403,
           "longitude": -122.39659
         },
@@ -701,6 +725,7 @@
           "id": "17872",
           "heading": "southbound",
           "name": null,
+          "stopName": "4th & Brannan",
           "latitude": 37.778341,
           "longitude": -122.396613
         }
@@ -726,6 +751,7 @@
           "id": "17166",
           "heading": "northbound",
           "name": null,
+          "stopName": "4th & King",
           "latitude": 37.776278,
           "longitude": -122.393864
         },
@@ -733,6 +759,7 @@
           "id": "17397",
           "heading": "southbound",
           "name": null,
+          "stopName": "4th & King",
           "latitude": 37.776135,
           "longitude": -122.393829
         }
@@ -754,6 +781,7 @@
           "id": "15223",
           "heading": "eastbound",
           "name": "To Embarcadero (Terminus)",
+          "stopName": "Ocean Beach",
           "latitude": 37.760304,
           "longitude": -122.508181
         }
@@ -775,6 +803,7 @@
           "id": "15216",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 46th",
           "latitude": 37.760392,
           "longitude": -122.506064
         },
@@ -782,6 +811,7 @@
           "id": "15215",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 46th",
           "latitude": 37.760493,
           "longitude": -122.505832
         }
@@ -803,6 +833,7 @@
           "id": "15214",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 43rd",
           "latitude": 37.760518,
           "longitude": -122.502839
         },
@@ -810,6 +841,7 @@
           "id": "15213",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 43rd",
           "latitude": 37.760598,
           "longitude": -122.502574
         }
@@ -831,6 +863,7 @@
           "id": "15212",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 40th",
           "latitude": 37.760679,
           "longitude": -122.499154
         },
@@ -838,6 +871,7 @@
           "id": "15211",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 40th",
           "latitude": 37.760743,
           "longitude": -122.499359
         }
@@ -859,6 +893,7 @@
           "id": "15225",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & Sunset",
           "latitude": 37.760845,
           "longitude": -122.495805
         },
@@ -866,6 +901,7 @@
           "id": "15224",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & Sunset",
           "latitude": 37.760917,
           "longitude": -122.495668
         }
@@ -887,6 +923,7 @@
           "id": "15210",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 34th",
           "latitude": 37.760955,
           "longitude": -122.493199
         },
@@ -894,6 +931,7 @@
           "id": "15209",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 34th",
           "latitude": 37.761028,
           "longitude": -122.49293
         }
@@ -915,6 +953,7 @@
           "id": "15208",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 31st",
           "latitude": 37.761105,
           "longitude": -122.4895
         },
@@ -922,6 +961,7 @@
           "id": "15207",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 31st",
           "latitude": 37.761172,
           "longitude": -122.489719
         }
@@ -943,6 +983,7 @@
           "id": "15206",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 28th",
           "latitude": 37.761232,
           "longitude": -122.486763
         },
@@ -950,6 +991,7 @@
           "id": "15205",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 28th",
           "latitude": 37.76131,
           "longitude": -122.48651
         }
@@ -971,6 +1013,7 @@
           "id": "15204",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 25th",
           "latitude": 37.761373,
           "longitude": -122.48356
         },
@@ -978,6 +1021,7 @@
           "id": "15203",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 25th",
           "latitude": 37.761452,
           "longitude": -122.4833
         }
@@ -999,6 +1043,7 @@
           "id": "15201",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 22nd",
           "latitude": 37.761534,
           "longitude": -122.479855
         },
@@ -1006,6 +1051,7 @@
           "id": "15202",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 22nd",
           "latitude": 37.761547,
           "longitude": -122.481164
         }
@@ -1027,6 +1073,7 @@
           "id": "15200",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 19th",
           "latitude": 37.761655,
           "longitude": -122.477194
         },
@@ -1034,6 +1081,7 @@
           "id": "15199",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 19th",
           "latitude": 37.761743,
           "longitude": -122.476921
         }
@@ -1055,6 +1103,7 @@
           "id": "15197",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 15th",
           "latitude": 37.761848,
           "longitude": -122.472777
         },
@@ -1062,6 +1111,7 @@
           "id": "15198",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 15th",
           "latitude": 37.76194,
           "longitude": -122.473632
         }
@@ -1083,6 +1133,7 @@
           "id": "15220",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & Funston",
           "latitude": 37.76195,
           "longitude": -122.470572
         },
@@ -1090,6 +1141,7 @@
           "id": "15219",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & Funston",
           "latitude": 37.762075,
           "longitude": -122.470329
         }
@@ -1111,6 +1163,7 @@
           "id": "15196",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 12th",
           "latitude": 37.761988,
           "longitude": -122.469526
         },
@@ -1118,6 +1171,7 @@
           "id": "15195",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 12th",
           "latitude": 37.762069,
           "longitude": -122.469324
         }
@@ -1139,6 +1193,7 @@
           "id": "15194",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Judah & 9th",
           "latitude": 37.762139,
           "longitude": -122.466312
         },
@@ -1146,6 +1201,7 @@
           "id": "15193",
           "heading": "westbound",
           "name": null,
+          "stopName": "Judah & 9th",
           "latitude": 37.762227,
           "longitude": -122.466688
         }
@@ -1167,6 +1223,7 @@
           "id": "17996",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Irving & 8th",
           "latitude": 37.764038,
           "longitude": -122.465428
         },
@@ -1174,6 +1231,7 @@
           "id": "17999",
           "heading": "westbound",
           "name": null,
+          "stopName": "Irving & 9th",
           "latitude": 37.763307,
           "longitude": -122.466344
         }
@@ -1195,6 +1253,7 @@
           "id": "18031",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Irving & 5th",
           "latitude": 37.764182,
           "longitude": -122.462139
         },
@@ -1202,6 +1261,7 @@
           "id": "18032",
           "heading": "westbound",
           "name": null,
+          "stopName": "Irving & 6th",
           "latitude": 37.764244,
           "longitude": -122.462987
         }
@@ -1223,6 +1283,7 @@
           "id": "15124",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Irving & Arguello",
           "latitude": 37.764366,
           "longitude": -122.458024
         },
@@ -1230,6 +1291,7 @@
           "id": "15118",
           "heading": "westbound",
           "name": null,
+          "stopName": "Irving & Arguello",
           "latitude": 37.764441,
           "longitude": -122.458643
         }
@@ -1251,6 +1313,7 @@
           "id": "13913",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Carl & Hillway",
           "latitude": 37.764932,
           "longitude": -122.456512
         },
@@ -1258,6 +1321,7 @@
           "id": "13912",
           "heading": "westbound",
           "name": null,
+          "stopName": "Carl & Hillway",
           "latitude": 37.765003,
           "longitude": -122.456561
         }
@@ -1279,6 +1343,7 @@
           "id": "13915",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Carl & Stanyan",
           "latitude": 37.765371,
           "longitude": -122.452928
         },
@@ -1286,6 +1351,7 @@
           "id": "13914",
           "heading": "westbound",
           "name": null,
+          "stopName": "Carl & Stanyan",
           "latitude": 37.765495,
           "longitude": -122.45259
         }
@@ -1307,6 +1373,7 @@
           "id": "13911",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Carl & Cole",
           "latitude": 37.765745,
           "longitude": -122.450131
         },
@@ -1314,6 +1381,7 @@
           "id": "13909",
           "heading": "westbound",
           "name": null,
+          "stopName": "Carl & Cole",
           "latitude": 37.765863,
           "longitude": -122.449804
         }
@@ -1335,6 +1403,7 @@
           "id": "17318",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Duboce & Noe (Sunset Tunnel East Portal)",
           "latitude": 37.769285,
           "longitude": -122.433511
         },
@@ -1342,6 +1411,7 @@
           "id": "17252",
           "heading": "westbound",
           "name": null,
+          "stopName": "Duboce & Noe (Sunset Tunnel East Portal)",
           "latitude": 37.769357,
           "longitude": -122.433557
         }
@@ -1366,6 +1436,7 @@
           "id": "14448",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Duboce & Church",
           "latitude": 37.769409,
           "longitude": -122.4294
         },
@@ -1373,6 +1444,7 @@
           "id": "14447",
           "heading": "westbound",
           "name": null,
+          "stopName": "Duboce & Church",
           "latitude": 37.769472,
           "longitude": -122.429408
         }
@@ -1394,6 +1466,7 @@
           "id": "14509",
           "heading": "southbound",
           "name": "To Caltrain",
+          "stopName": "Embarcadero & Folsom",
           "latitude": 37.790481,
           "longitude": -122.389692
         },
@@ -1401,6 +1474,7 @@
           "id": "14510",
           "heading": "northbound",
           "name": "To Ocean Beach",
+          "stopName": "Embarcadero & Folsom",
           "latitude": 37.790749,
           "longitude": -122.389841
         }
@@ -1422,6 +1496,7 @@
           "id": "14506",
           "heading": "southbound",
           "name": "To Caltrain",
+          "stopName": "Embarcadero & Brannan",
           "latitude": 37.784359,
           "longitude": -122.388138
         },
@@ -1429,6 +1504,7 @@
           "id": "17145",
           "heading": "northbound",
           "name": "To Ocean Beach",
+          "stopName": "Embarcadero & Brannan",
           "latitude": 37.784627,
           "longitude": -122.387977
         }
@@ -1450,6 +1526,7 @@
           "id": "15234",
           "heading": "southbound",
           "name": "To Caltrain",
+          "stopName": "2nd & King",
           "latitude": 37.77972,
           "longitude": -122.389872
         },
@@ -1457,6 +1534,7 @@
           "id": "15237",
           "heading": "northbound",
           "name": "To Ocean Beach",
+          "stopName": "2nd & King",
           "latitude": 37.779621,
           "longitude": -122.389824
         }
@@ -1482,6 +1560,7 @@
           "id": "15240",
           "heading": "northbound",
           "name": "Ocean Beach via Embarcadero (Terminus)",
+          "stopName": "4th & King",
           "latitude": 37.776269,
           "longitude": -122.394082
         }
@@ -1503,6 +1582,7 @@
           "id": "17358",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd St & Mission Rock",
           "latitude": 37.772984,
           "longitude": -122.389683
         },
@@ -1510,6 +1590,7 @@
           "id": "17359",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd St & Mission Rock",
           "latitude": 37.772832,
           "longitude": -122.389717
         }
@@ -1531,6 +1612,7 @@
           "id": "17357",
           "heading": "northbound",
           "name": null,
+          "stopName": "UCSF / Chase Center",
           "latitude": 37.768504,
           "longitude": -122.389182
         },
@@ -1538,6 +1620,7 @@
           "id": "17360",
           "heading": "southbound",
           "name": null,
+          "stopName": "UCSF / Chase Center",
           "latitude": 37.768237,
           "longitude": -122.389366
         }
@@ -1559,6 +1642,7 @@
           "id": "17356",
           "heading": "northbound",
           "name": null,
+          "stopName": "UCSF Medical Center",
           "latitude": 37.764391,
           "longitude": -122.388853
         },
@@ -1566,6 +1650,7 @@
           "id": "17361",
           "heading": "southbound",
           "name": null,
+          "stopName": "UCSF Medical Center",
           "latitude": 37.764239,
           "longitude": -122.388865
         }
@@ -1587,6 +1672,7 @@
           "id": "17355",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & 20th",
           "latitude": 37.760518,
           "longitude": -122.388558
         },
@@ -1594,6 +1680,7 @@
           "id": "17362",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & 20th",
           "latitude": 37.760367,
           "longitude": -122.388593
         }
@@ -1615,6 +1702,7 @@
           "id": "17354",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & 23rd",
           "latitude": 37.755414,
           "longitude": -122.388001
         },
@@ -1622,6 +1710,7 @@
           "id": "17363",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & 23rd",
           "latitude": 37.755263,
           "longitude": -122.388047
         }
@@ -1643,6 +1732,7 @@
           "id": "17353",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Marin",
           "latitude": 37.748999,
           "longitude": -122.387445
         },
@@ -1650,6 +1740,7 @@
           "id": "17364",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Marin",
           "latitude": 37.749097,
           "longitude": -122.387525
         }
@@ -1671,6 +1762,7 @@
           "id": "17352",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Evans",
           "latitude": 37.742726,
           "longitude": -122.38792
         },
@@ -1678,6 +1770,7 @@
           "id": "17365",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Evans",
           "latitude": 37.742727,
           "longitude": -122.388034
         }
@@ -1699,6 +1792,7 @@
           "id": "17404",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Hudson/Innes",
           "latitude": 37.739916,
           "longitude": -122.388884
         },
@@ -1706,6 +1800,7 @@
           "id": "17390",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Hudson/Innes",
           "latitude": 37.739934,
           "longitude": -122.38893
         }
@@ -1727,6 +1822,7 @@
           "id": "17403",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Kirkwood/La Salle",
           "latitude": 37.737641,
           "longitude": -122.389688
         },
@@ -1734,6 +1830,7 @@
           "id": "17391",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Kirkwood/La Salle",
           "latitude": 37.73765,
           "longitude": -122.389734
         }
@@ -1755,6 +1852,7 @@
           "id": "17402",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Oakdale/Palou",
           "latitude": 37.734358,
           "longitude": -122.390836
         },
@@ -1762,6 +1860,7 @@
           "id": "17392",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Oakdale/Palou",
           "latitude": 37.73435,
           "longitude": -122.390893
         }
@@ -1783,6 +1882,7 @@
           "id": "17401",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Revere/Shafter",
           "latitude": 37.732262,
           "longitude": -122.391502
         },
@@ -1790,6 +1890,7 @@
           "id": "17393",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Revere/Shafter",
           "latitude": 37.732289,
           "longitude": -122.391605
         }
@@ -1811,6 +1912,7 @@
           "id": "17345",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Williams",
           "latitude": 37.729291,
           "longitude": -122.392604
         },
@@ -1818,6 +1920,7 @@
           "id": "17346",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Williams",
           "latitude": 37.729211,
           "longitude": -122.392684
         }
@@ -1839,6 +1942,7 @@
           "id": "17343",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Carroll",
           "latitude": 37.725491,
           "longitude": -122.394222
         },
@@ -1846,6 +1950,7 @@
           "id": "17344",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Carroll",
           "latitude": 37.725241,
           "longitude": -122.394394
         }
@@ -1867,6 +1972,7 @@
           "id": "17347",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Gilman/Paul",
           "latitude": 37.722449,
           "longitude": -122.39561
         },
@@ -1874,6 +1980,7 @@
           "id": "17342",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Gilman/Paul",
           "latitude": 37.722199,
           "longitude": -122.395782
         }
@@ -1895,6 +2002,7 @@
           "id": "17400",
           "heading": "northbound",
           "name": null,
+          "stopName": "3rd & Le Conte",
           "latitude": 37.718809,
           "longitude": -122.397468
         },
@@ -1902,6 +2010,7 @@
           "id": "17394",
           "heading": "southbound",
           "name": null,
+          "stopName": "3rd & Le Conte",
           "latitude": 37.71864,
           "longitude": -122.397697
         }
@@ -1923,6 +2032,7 @@
           "id": "17399",
           "heading": "northbound",
           "name": null,
+          "stopName": "Bayshore & Arleta",
           "latitude": 37.712226,
           "longitude": -122.402339
         },
@@ -1930,6 +2040,7 @@
           "id": "17395",
           "heading": "southbound",
           "name": null,
+          "stopName": "Bayshore & Blanken",
           "latitude": 37.712253,
           "longitude": -122.402316
         }
@@ -1951,6 +2062,7 @@
           "id": "17398",
           "heading": "northbound",
           "name": "Northbound (Terminus)",
+          "stopName": "Sunnydale",
           "latitude": 37.708944,
           "longitude": -122.405044
         }
@@ -1974,6 +2086,7 @@
           "id": "14006",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Church & Duboce",
           "latitude": 37.769302,
           "longitude": -122.429087
         }
@@ -1998,6 +2111,7 @@
           "id": "17073",
           "heading": "northbound",
           "name": null,
+          "stopName": "Church & Market",
           "latitude": 37.767509,
           "longitude": -122.428927
         },
@@ -2005,6 +2119,7 @@
           "id": "18059",
           "heading": "southbound",
           "name": null,
+          "stopName": "Church & Market",
           "latitude": 37.767286,
           "longitude": -122.429053
         },
@@ -2012,6 +2127,7 @@
           "id": "15662",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Church & Market",
           "latitude": 37.76725,
           "longitude": -122.429214
         },
@@ -2019,6 +2135,7 @@
           "id": "15661",
           "heading": "westbound",
           "name": null,
+          "stopName": "Church & Market",
           "latitude": 37.767705,
           "longitude": -122.428778
         }
@@ -2040,6 +2157,7 @@
           "id": "13985",
           "heading": "northbound",
           "name": null,
+          "stopName": "Church & 16th",
           "latitude": 37.764382,
           "longitude": -122.428609
         },
@@ -2047,6 +2165,7 @@
           "id": "13984",
           "heading": "southbound",
           "name": null,
+          "stopName": "Church & 16th",
           "latitude": 37.764621,
           "longitude": -122.428722
         }
@@ -2068,6 +2187,7 @@
           "id": "16213",
           "heading": "northbound",
           "name": null,
+          "stopName": "Dolores Park - 18th St",
           "latitude": 37.761192,
           "longitude": -122.428184
         },
@@ -2075,6 +2195,7 @@
           "id": "13987",
           "heading": "southbound",
           "name": null,
+          "stopName": "Dolores Park - 18th St",
           "latitude": 37.761467,
           "longitude": -122.428416
         }
@@ -2096,6 +2217,7 @@
           "id": "16215",
           "heading": "northbound",
           "name": null,
+          "stopName": "Dolores Park - 20th St 🏳️‍🌈",
           "latitude": 37.758229,
           "longitude": -122.427795
         },
@@ -2103,6 +2225,7 @@
           "id": "16214",
           "heading": "southbound",
           "name": null,
+          "stopName": "Dolores Park - 20th St 🏳️‍🌈",
           "latitude": 37.758264,
           "longitude": -122.427924
         }
@@ -2124,6 +2247,7 @@
           "id": "16222",
           "heading": "northbound",
           "name": null,
+          "stopName": "Right Of Way & Liberty",
           "latitude": 37.757239,
           "longitude": -122.426867
         },
@@ -2131,6 +2255,7 @@
           "id": "16221",
           "heading": "southbound",
           "name": null,
+          "stopName": "Right Of Way & Liberty",
           "latitude": 37.757451,
           "longitude": -122.426999
         }
@@ -2152,6 +2277,7 @@
           "id": "16217",
           "heading": "northbound",
           "name": null,
+          "stopName": "Right Of Way & 21st",
           "latitude": 37.756436,
           "longitude": -122.426822
         },
@@ -2159,6 +2285,7 @@
           "id": "16216",
           "heading": "southbound",
           "name": null,
+          "stopName": "Right Of Way & 21st",
           "latitude": 37.756643,
           "longitude": -122.426922
         }
@@ -2180,6 +2307,7 @@
           "id": "13994",
           "heading": "northbound",
           "name": null,
+          "stopName": "Church & 22nd",
           "latitude": 37.754741,
           "longitude": -122.427636
         },
@@ -2187,6 +2315,7 @@
           "id": "16218",
           "heading": "southbound",
           "name": null,
+          "stopName": "Church & 22nd",
           "latitude": 37.754607,
           "longitude": -122.42775
         }
@@ -2208,6 +2337,7 @@
           "id": "13996",
           "heading": "northbound",
           "name": null,
+          "stopName": "Church & 24th",
           "latitude": 37.751591,
           "longitude": -122.42735
         },
@@ -2215,6 +2345,7 @@
           "id": "13995",
           "heading": "southbound",
           "name": null,
+          "stopName": "Church & 24th",
           "latitude": 37.7518,
           "longitude": -122.427497
         }
@@ -2236,15 +2367,17 @@
           "id": "18155",
           "heading": "northbound",
           "name": null,
-          "latitude": 37.748611,
-          "longitude": -122.427222
+          "stopName": "Church & 26th",
+          "latitude": 37.748416,
+          "longitude": -122.42706
         },
         {
           "id": "18156",
           "heading": "southbound",
           "name": null,
-          "latitude": 37.748611,
-          "longitude": -122.427222
+          "stopName": "Church & 26th",
+          "latitude": 37.748603,
+          "longitude": -122.427261
         }
       ]
     },
@@ -2264,15 +2397,17 @@
           "id": "18157",
           "heading": "northbound",
           "name": null,
-          "latitude": 37.745278,
-          "longitude": -122.426944
+          "stopName": "Church & 28th",
+          "latitude": 37.745225,
+          "longitude": -122.426737
         },
         {
           "id": "18158",
           "heading": "southbound",
           "name": null,
-          "latitude": 37.745278,
-          "longitude": -122.426944
+          "stopName": "Church & 28th",
+          "latitude": 37.745398,
+          "longitude": -122.426955
         }
       ]
     },
@@ -2292,6 +2427,7 @@
           "id": "13999",
           "heading": "northbound",
           "name": "Northbound (N Transfer Only)",
+          "stopName": "Church & 29th",
           "latitude": 37.743587,
           "longitude": -122.426585
         }
@@ -2313,6 +2449,7 @@
           "id": "14000",
           "heading": "northbound",
           "name": null,
+          "stopName": "Church & Day",
           "latitude": 37.742222,
           "longitude": -122.426459
         },
@@ -2320,6 +2457,7 @@
           "id": "14004",
           "heading": "southbound",
           "name": null,
+          "stopName": "Church & Day",
           "latitude": 37.742811,
           "longitude": -122.426654
         }
@@ -2341,6 +2479,7 @@
           "id": "13537",
           "heading": "northbound",
           "name": null,
+          "stopName": "Dolores & 30th",
           "latitude": 37.742304,
           "longitude": -122.424026
         },
@@ -2348,6 +2487,7 @@
           "id": "13538",
           "heading": "southbound",
           "name": null,
+          "stopName": "Dolores & 30th",
           "latitude": 37.74217,
           "longitude": -122.424457
         }
@@ -2369,6 +2509,7 @@
           "id": "16277",
           "heading": "northbound",
           "name": null,
+          "stopName": "San Jose & Randall",
           "latitude": 37.739741,
           "longitude": -122.424157
         },
@@ -2376,6 +2517,7 @@
           "id": "16280",
           "heading": "southbound",
           "name": null,
+          "stopName": "San Jose & Randall",
           "latitude": 37.739385,
           "longitude": -122.42432
         }
@@ -2399,6 +2541,7 @@
           "id": "14787",
           "heading": "northbound",
           "name": null,
+          "stopName": "Glen Park",
           "latitude": 37.732525,
           "longitude": -122.433416
         },
@@ -2406,6 +2549,7 @@
           "id": "14788",
           "heading": "southbound",
           "name": null,
+          "stopName": "Glen Park",
           "latitude": 37.732401,
           "longitude": -122.433855
         }
@@ -2427,6 +2571,7 @@
           "id": "16284",
           "heading": "northbound",
           "name": null,
+          "stopName": "San Jose & Santa Rosa",
           "latitude": 37.728991,
           "longitude": -122.439922
         },
@@ -2434,6 +2579,7 @@
           "id": "16285",
           "heading": "southbound",
           "name": null,
+          "stopName": "San Jose & Santa Rosa",
           "latitude": 37.728996,
           "longitude": -122.440016
         }
@@ -2455,6 +2601,7 @@
           "id": "16288",
           "heading": "northbound",
           "name": null,
+          "stopName": "San Jose & Santa Ynez",
           "latitude": 37.725681,
           "longitude": -122.442442
         },
@@ -2462,6 +2609,7 @@
           "id": "16287",
           "heading": "southbound",
           "name": null,
+          "stopName": "San Jose & Santa Ynez",
           "latitude": 37.725877,
           "longitude": -122.442359
         }
@@ -2483,6 +2631,7 @@
           "id": "16275",
           "heading": "northbound",
           "name": null,
+          "stopName": "San Jose & Ocean",
           "latitude": 37.722862,
           "longitude": -122.44479
         },
@@ -2490,6 +2639,7 @@
           "id": "16274",
           "heading": "southbound",
           "name": null,
+          "stopName": "San Jose & Ocean",
           "latitude": 37.723085,
           "longitude": -122.444699
         }
@@ -2516,6 +2666,7 @@
           "id": "17778",
           "heading": "northbound",
           "name": null,
+          "stopName": "Balboa Park Station",
           "latitude": 37.721238,
           "longitude": -122.446222
         }
@@ -2538,6 +2689,7 @@
           "id": "16898",
           "heading": "northbound",
           "name": null,
+          "stopName": "West Portal & 14th",
           "latitude": 37.737859,
           "longitude": -122.469042
         },
@@ -2545,6 +2697,7 @@
           "id": "17125",
           "heading": "southbound",
           "name": null,
+          "stopName": "West Portal & 14th",
           "latitude": 37.738064,
           "longitude": -122.468984
         }
@@ -2567,6 +2720,7 @@
           "id": "17109",
           "heading": "northbound",
           "name": null,
+          "stopName": "Sloat & St Francis",
           "latitude": 37.734825,
           "longitude": -122.471446
         },
@@ -2574,6 +2728,7 @@
           "id": "16503",
           "heading": "southbound",
           "name": null,
+          "stopName": "Sloat & St Francis",
           "latitude": 37.734807,
           "longitude": -122.471618
         }
@@ -2595,6 +2750,7 @@
           "id": "17113",
           "heading": "northbound",
           "name": null,
+          "stopName": "Junipero Serra & Ocean",
           "latitude": 37.731628,
           "longitude": -122.471707
         },
@@ -2602,6 +2758,7 @@
           "id": "17114",
           "heading": "southbound",
           "name": null,
+          "stopName": "Junipero Serra & Ocean",
           "latitude": 37.731271,
           "longitude": -122.471818
         }
@@ -2623,6 +2780,7 @@
           "id": "15806",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean & San Leandro",
           "latitude": 37.729989,
           "longitude": -122.469097
         },
@@ -2630,6 +2788,7 @@
           "id": "15807",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean & San Leandro",
           "latitude": 37.729945,
           "longitude": -122.469475
         }
@@ -2651,6 +2810,7 @@
           "id": "15779",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean & Aptos",
           "latitude": 37.728285,
           "longitude": -122.467561
         },
@@ -2658,6 +2818,7 @@
           "id": "15780",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean & Aptos",
           "latitude": 37.728383,
           "longitude": -122.467871
         }
@@ -2679,6 +2840,7 @@
           "id": "15788",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean & Fairfield",
           "latitude": 37.726008,
           "longitude": -122.464072
         },
@@ -2686,6 +2848,7 @@
           "id": "15808",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean & Victoria",
           "latitude": 37.726029,
           "longitude": -122.464337
         }
@@ -2707,6 +2870,7 @@
           "id": "15787",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean & Dorado",
           "latitude": 37.724957,
           "longitude": -122.461059
         },
@@ -2714,6 +2878,7 @@
           "id": "15793",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean & Jules",
           "latitude": 37.724955,
           "longitude": -122.46139
         }
@@ -2735,6 +2900,7 @@
           "id": "15797",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean & Miramar",
           "latitude": 37.724387,
           "longitude": -122.458077
         },
@@ -2742,6 +2908,7 @@
           "id": "15798",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean & Miramar",
           "latitude": 37.724262,
           "longitude": -122.458306
         }
@@ -2763,6 +2930,7 @@
           "id": "15794",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean & Lee",
           "latitude": 37.723459,
           "longitude": -122.453999
         },
@@ -2770,6 +2938,7 @@
           "id": "15795",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean & Lee",
           "latitude": 37.723397,
           "longitude": -122.454423
         }
@@ -2791,6 +2960,7 @@
           "id": "15784",
           "heading": "northbound",
           "name": null,
+          "stopName": "Ocean/CCSF Pedestrian Bridge",
           "latitude": 37.72304,
           "longitude": -122.451448
         },
@@ -2798,6 +2968,7 @@
           "id": "15785",
           "heading": "southbound",
           "name": null,
+          "stopName": "Ocean/CCSF Pedestrian Bridge",
           "latitude": 37.722947,
           "longitude": -122.450866
         }
@@ -2821,6 +2992,7 @@
           "id": "16262",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Balboa Park (M Platform)",
           "latitude": 37.720096,
           "longitude": -122.447196
         }
@@ -2842,6 +3014,7 @@
           "id": "16265",
           "heading": "eastbound",
           "name": null,
+          "stopName": "San Jose Ave & Lakeview Ave",
           "latitude": 37.71633,
           "longitude": -122.450368
         },
@@ -2849,6 +3022,7 @@
           "id": "16266",
           "heading": "westbound",
           "name": null,
+          "stopName": "San Jose Ave & Lakeview Ave",
           "latitude": 37.716083,
           "longitude": -122.450435
         }
@@ -2870,6 +3044,7 @@
           "id": "16257",
           "heading": "eastbound",
           "name": null,
+          "stopName": "San Jose Ave & Farallones St",
           "latitude": 37.714153,
           "longitude": -122.452148
         },
@@ -2877,6 +3052,7 @@
           "id": "16259",
           "heading": "westbound",
           "name": null,
+          "stopName": "San Jose Ave & Farallones St",
           "latitude": 37.713957,
           "longitude": -122.452281
         }
@@ -2898,6 +3074,7 @@
           "id": "13718",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Broad St & Plymouth Ave",
           "latitude": 37.713222,
           "longitude": -122.455927
         },
@@ -2905,6 +3082,7 @@
           "id": "13719",
           "heading": "westbound",
           "name": null,
+          "stopName": "Broad St & Plymouth Ave",
           "latitude": 37.713161,
           "longitude": -122.45618
         }
@@ -2926,6 +3104,7 @@
           "id": "13715",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Broad St & Capitol Ave",
           "latitude": 37.713191,
           "longitude": -122.458921
         },
@@ -2933,6 +3112,7 @@
           "id": "13716",
           "heading": "westbound",
           "name": null,
+          "stopName": "Broad St & Capitol Ave",
           "latitude": 37.713152,
           "longitude": -122.459159
         }
@@ -2954,6 +3134,7 @@
           "id": "13717",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Orizaba Ave & Broad St",
           "latitude": 37.713178,
           "longitude": -122.462331
         },
@@ -2961,6 +3142,7 @@
           "id": "15825",
           "heading": "westbound",
           "name": null,
+          "stopName": "Orizaba Ave & Broad St",
           "latitude": 37.713328,
           "longitude": -122.462585
         }
@@ -2982,6 +3164,7 @@
           "id": "16174",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Randolph St & Bright St",
           "latitude": 37.714348,
           "longitude": -122.463392
         },
@@ -2989,6 +3172,7 @@
           "id": "16175",
           "heading": "westbound",
           "name": null,
+          "stopName": "Randolph St & Bright St",
           "latitude": 37.71425,
           "longitude": -122.463675
         }
@@ -3010,6 +3194,7 @@
           "id": "16172",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Randolph St & Arch St",
           "latitude": 37.714342,
           "longitude": -122.466982
         },
@@ -3017,6 +3202,7 @@
           "id": "16173",
           "heading": "westbound",
           "name": null,
+          "stopName": "Randolph St & Arch St",
           "latitude": 37.714201,
           "longitude": -122.467218
         }
@@ -3038,6 +3224,7 @@
           "id": "13385",
           "heading": "eastbound",
           "name": null,
+          "stopName": "19th Ave & Randolph St",
           "latitude": 37.714856,
           "longitude": -122.470249
         },
@@ -3045,6 +3232,7 @@
           "id": "13387",
           "heading": "westbound",
           "name": null,
+          "stopName": "19th Ave & Randolph St",
           "latitude": 37.714443,
           "longitude": -122.469998
         }
@@ -3066,6 +3254,7 @@
           "id": "13361",
           "heading": "eastbound",
           "name": null,
+          "stopName": "19th Ave & Junipero Serra Blvd",
           "latitude": 37.716889,
           "longitude": -122.472275
         },
@@ -3073,6 +3262,7 @@
           "id": "13376",
           "heading": "westbound",
           "name": null,
+          "stopName": "19th Ave & Junipero Serra Blvd",
           "latitude": 37.7162,
           "longitude": -122.47167
         }
@@ -3094,6 +3284,7 @@
           "id": "17065",
           "heading": "eastbound",
           "name": null,
+          "stopName": "19th Ave & Holloway Ave (SF State)",
           "latitude": 37.721342,
           "longitude": -122.475176
         },
@@ -3101,6 +3292,7 @@
           "id": "13358",
           "heading": "westbound",
           "name": null,
+          "stopName": "19th Ave & Holloway Ave (SF State)",
           "latitude": 37.721342,
           "longitude": -122.475245
         }
@@ -3122,6 +3314,7 @@
           "id": "17449",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Stonestown Galleria",
           "latitude": 37.727195,
           "longitude": -122.474846
         },
@@ -3129,6 +3322,7 @@
           "id": "13403",
           "heading": "westbound",
           "name": null,
+          "stopName": "Stonestown Galleria",
           "latitude": 37.727017,
           "longitude": -122.474937
         }
@@ -3150,6 +3344,7 @@
           "id": "16220",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Right Of Way/Eucalyptus Dr",
           "latitude": 37.730987,
           "longitude": -122.474366
         },
@@ -3157,6 +3352,7 @@
           "id": "16219",
           "heading": "westbound",
           "name": null,
+          "stopName": "Right Of Way/Eucalyptus Dr",
           "latitude": 37.73119,
           "longitude": -122.47435
         }
@@ -3178,6 +3374,7 @@
           "id": "16224",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Right Of Way/Ocean Ave",
           "latitude": 37.731808,
           "longitude": -122.473815
         },
@@ -3185,6 +3382,7 @@
           "id": "16223",
           "heading": "westbound",
           "name": null,
+          "stopName": "Right Of Way/Ocean Ave",
           "latitude": 37.732022,
           "longitude": -122.473719
         }
@@ -3206,6 +3404,7 @@
           "id": "18137",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Ulloa St & 14th Ave",
           "latitude": 37.741356,
           "longitude": -122.470211
         },
@@ -3213,6 +3412,7 @@
           "id": "18136",
           "heading": "westbound",
           "name": null,
+          "stopName": "Ulloa St & 14th Ave",
           "latitude": 37.7415,
           "longitude": -122.469969
         }
@@ -3234,6 +3434,7 @@
           "id": "16615",
           "heading": "eastbound",
           "name": null,
+          "stopName": "17th Ave & Taraval St",
           "latitude": 37.743131,
           "longitude": -122.473306
         },
@@ -3241,6 +3442,7 @@
           "id": "13266",
           "heading": "westbound",
           "name": null,
+          "stopName": "15th Ave & Taraval St",
           "latitude": 37.743124,
           "longitude": -122.471297
         }
@@ -3262,6 +3464,7 @@
           "id": "16617",
           "heading": "eastbound",
           "name": null,
+          "stopName": "19th Ave & Taraval St",
           "latitude": 37.742971,
           "longitude": -122.475821
         },
@@ -3269,6 +3472,7 @@
           "id": "16616",
           "heading": "westbound",
           "name": null,
+          "stopName": "19th Ave & Taraval St",
           "latitude": 37.74311,
           "longitude": -122.475444
         }
@@ -3290,6 +3494,7 @@
           "id": "16619",
           "heading": "eastbound",
           "name": null,
+          "stopName": "22nd Ave & Taraval St",
           "latitude": 37.74289,
           "longitude": -122.478426
         },
@@ -3297,6 +3502,7 @@
           "id": "16620",
           "heading": "westbound",
           "name": null,
+          "stopName": "23rd Ave & Taraval St",
           "latitude": 37.742872,
           "longitude": -122.48045
         }
@@ -3318,6 +3524,7 @@
           "id": "16623",
           "heading": "eastbound",
           "name": null,
+          "stopName": "26th Ave & Taraval St",
           "latitude": 37.742683,
           "longitude": -122.483385
         },
@@ -3325,6 +3532,7 @@
           "id": "16622",
           "heading": "westbound",
           "name": null,
+          "stopName": "26th Ave & Taraval St",
           "latitude": 37.742777,
           "longitude": -122.483083
         }
@@ -3346,6 +3554,7 @@
           "id": "16627",
           "heading": "eastbound",
           "name": null,
+          "stopName": "30th Ave & Taraval St",
           "latitude": 37.742494,
           "longitude": -122.487681
         },
@@ -3353,6 +3562,7 @@
           "id": "16626",
           "heading": "westbound",
           "name": null,
+          "stopName": "30th Ave & Taraval St",
           "latitude": 37.742588,
           "longitude": -122.487337
         }
@@ -3374,6 +3584,7 @@
           "id": "16629",
           "heading": "eastbound",
           "name": null,
+          "stopName": "32nd Ave & Taraval St",
           "latitude": 37.742402,
           "longitude": -122.489801
         },
@@ -3381,6 +3592,7 @@
           "id": "16628",
           "heading": "westbound",
           "name": null,
+          "stopName": "32nd Ave & Taraval St",
           "latitude": 37.742491,
           "longitude": -122.489505
         }
@@ -3402,6 +3614,7 @@
           "id": "16641",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Sunset Blvd & Taraval St",
           "latitude": 37.742188,
           "longitude": -122.49451
         },
@@ -3409,6 +3622,7 @@
           "id": "16640",
           "heading": "westbound",
           "name": null,
+          "stopName": "Sunset Blvd & Taraval St",
           "latitude": 37.742287,
           "longitude": -122.494361
         }
@@ -3430,6 +3644,7 @@
           "id": "16633",
           "heading": "eastbound",
           "name": null,
+          "stopName": "40th Ave & Taraval St",
           "latitude": 37.74199,
           "longitude": -122.498316
         },
@@ -3437,6 +3652,7 @@
           "id": "16632",
           "heading": "westbound",
           "name": null,
+          "stopName": "40th Ave & Taraval St",
           "latitude": 37.742124,
           "longitude": -122.498055
         }
@@ -3458,6 +3674,7 @@
           "id": "16635",
           "heading": "eastbound",
           "name": null,
+          "stopName": "42th Ave & Taraval St",
           "latitude": 37.7419,
           "longitude": -122.500461
         },
@@ -3465,6 +3682,7 @@
           "id": "16634",
           "heading": "westbound",
           "name": null,
+          "stopName": "42th Ave & Taraval St",
           "latitude": 37.742021,
           "longitude": -122.500202
         }
@@ -3486,6 +3704,7 @@
           "id": "16637",
           "heading": "eastbound",
           "name": null,
+          "stopName": "44th Ave & Taraval St",
           "latitude": 37.741804,
           "longitude": -122.502606
         },
@@ -3493,6 +3712,7 @@
           "id": "16636",
           "heading": "westbound",
           "name": null,
+          "stopName": "44th Ave & Taraval St",
           "latitude": 37.741924,
           "longitude": -122.502346
         }
@@ -3514,6 +3734,7 @@
           "id": "13599",
           "heading": "eastbound",
           "name": null,
+          "stopName": "46th Ave & Taraval St",
           "latitude": 37.741685,
           "longitude": -122.504534
         },
@@ -3521,6 +3742,7 @@
           "id": "16638",
           "heading": "westbound",
           "name": null,
+          "stopName": "46th Ave & Taraval St",
           "latitude": 37.741823,
           "longitude": -122.50449
         }
@@ -3542,6 +3764,7 @@
           "id": "13601",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Ulloa St & 46th Ave",
           "latitude": 37.739829,
           "longitude": -122.504407
         },
@@ -3549,6 +3772,7 @@
           "id": "13600",
           "heading": "westbound",
           "name": null,
+          "stopName": "Ulloa St & 46th Ave",
           "latitude": 37.739998,
           "longitude": -122.504579
         }
@@ -3570,6 +3794,7 @@
           "id": "13603",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Vincente St & 46th Ave",
           "latitude": 37.737973,
           "longitude": -122.504268
         },
@@ -3577,6 +3802,7 @@
           "id": "13602",
           "heading": "westbound",
           "name": null,
+          "stopName": "Vincente St & 46th Ave",
           "latitude": 37.738142,
           "longitude": -122.50444
         }
@@ -3598,6 +3824,7 @@
           "id": "16932",
           "heading": "eastbound",
           "name": null,
+          "stopName": "SF Zoo",
           "latitude": 37.736125,
           "longitude": -122.504351
         }
@@ -3619,6 +3846,7 @@
           "id": "15184",
           "heading": "eastbound",
           "name": "To Castro via Wharf Loop",
+          "stopName": "Jones & Beach",
           "latitude": 37.807132,
           "longitude": -122.417324
         }
@@ -3640,6 +3868,7 @@
           "id": "13092",
           "heading": "eastbound",
           "name": "To Castro via Wharf Loop",
+          "stopName": "Beach & Mason",
           "latitude": 37.807407,
           "longitude": -122.414125
         }
@@ -3661,6 +3890,7 @@
           "id": "15175",
           "heading": "westbound",
           "name": "To Castro via Wharf Loop",
+          "stopName": "Jefferson & Taylor",
           "latitude": 37.80832,
           "longitude": -122.415514
         }
@@ -3682,6 +3912,7 @@
           "id": "15174",
           "heading": "westbound",
           "name": "To Castro via Wharf Loop",
+          "stopName": "Jefferson & Powell",
           "latitude": 37.808594,
           "longitude": -122.413357
         }
@@ -3703,6 +3934,7 @@
           "id": "14530",
           "heading": "westbound",
           "name": "Wharf Loop",
+          "stopName": "Pier 39",
           "latitude": 37.808351,
           "longitude": -122.410287
         },
@@ -3710,6 +3942,7 @@
           "id": "13095",
           "heading": "eastbound",
           "name": "To Castro",
+          "stopName": "Pier 39",
           "latitude": 37.807841,
           "longitude": -122.41081
         }
@@ -3731,6 +3964,7 @@
           "id": "14502",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Embarcadero & Bay",
           "latitude": 37.806629,
           "longitude": -122.40603
         },
@@ -3738,6 +3972,7 @@
           "id": "14501",
           "heading": "westbound",
           "name": null,
+          "stopName": "Embarcadero & Bay",
           "latitude": 37.806945,
           "longitude": -122.406278
         }
@@ -3759,6 +3994,7 @@
           "id": "14529",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Embarcadero & Sansome",
           "latitude": 37.805022,
           "longitude": -122.403314
         },
@@ -3766,6 +4002,7 @@
           "id": "17281",
           "heading": "westbound",
           "name": null,
+          "stopName": "Embarcadero & Sansome",
           "latitude": 37.805146,
           "longitude": -122.403233
         }
@@ -3787,6 +4024,7 @@
           "id": "14515",
           "heading": "northbound",
           "name": null,
+          "stopName": "Embarcadero & Greenwich",
           "latitude": 37.803263,
           "longitude": -122.401113
         },
@@ -3794,6 +4032,7 @@
           "id": "14516",
           "heading": "southbound",
           "name": null,
+          "stopName": "Embarcadero & Greenwich",
           "latitude": 37.80296,
           "longitude": -122.401029
         }
@@ -3815,6 +4054,7 @@
           "id": "14517",
           "heading": "northbound",
           "name": null,
+          "stopName": "Embarcadero & Green",
           "latitude": 37.801264,
           "longitude": -122.399369
         },
@@ -3822,6 +4062,7 @@
           "id": "14518",
           "heading": "southbound",
           "name": null,
+          "stopName": "Embarcadero & Green",
           "latitude": 37.800605,
           "longitude": -122.39892
         }
@@ -3843,6 +4084,7 @@
           "id": "14503",
           "heading": "northbound",
           "name": null,
+          "stopName": "Embarcadero & Broadway",
           "latitude": 37.799552,
           "longitude": -122.397869
         },
@@ -3850,6 +4092,7 @@
           "id": "14504",
           "heading": "southbound",
           "name": null,
+          "stopName": "Embarcadero & Broadway",
           "latitude": 37.798901,
           "longitude": -122.397434
         }
@@ -3871,6 +4114,7 @@
           "id": "14532",
           "heading": "northbound",
           "name": null,
+          "stopName": "Embarcadero & Washington",
           "latitude": 37.797085,
           "longitude": -122.39567
         },
@@ -3878,6 +4122,7 @@
           "id": "14534",
           "heading": "southbound",
           "name": null,
+          "stopName": "Embarcadero & Washington",
           "latitude": 37.796355,
           "longitude": -122.395181
         }
@@ -3899,6 +4144,7 @@
           "id": "14513",
           "heading": "northbound",
           "name": null,
+          "stopName": "Embarcadero & Ferry Building",
           "latitude": 37.79489,
           "longitude": -122.393552
         },
@@ -3906,6 +4152,7 @@
           "id": "17283",
           "heading": "southbound",
           "name": null,
+          "stopName": "Embarcadero & Ferry Building",
           "latitude": 37.794828,
           "longitude": -122.39377
         }
@@ -3927,6 +4174,7 @@
           "id": "14727",
           "heading": "northbound",
           "name": null,
+          "stopName": "Don Chee Way/Steuart",
           "latitude": 37.793918,
           "longitude": -122.393438
         },
@@ -3934,6 +4182,7 @@
           "id": "14726",
           "heading": "westbound",
           "name": null,
+          "stopName": "Don Chee Way/Steuart",
           "latitude": 37.79398,
           "longitude": -122.393555
         }
@@ -3957,6 +4206,7 @@
           "id": "15639",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & 2nd",
           "latitude": 37.789353,
           "longitude": -122.401306
         },
@@ -3964,6 +4214,7 @@
           "id": "15685",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & Montgomery",
           "latitude": 37.788613,
           "longitude": -122.402163
         }
@@ -3987,6 +4238,7 @@
           "id": "15682",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & Embarcadero Subway",
           "latitude": 37.792984,
           "longitude": -122.396627
         },
@@ -3994,6 +4246,7 @@
           "id": "15669",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Embarcadero Subway",
           "latitude": 37.793473,
           "longitude": -122.396178
         }
@@ -4015,6 +4268,7 @@
           "id": "17264",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 1st",
           "latitude": 37.79094,
           "longitude": -122.399195
         },
@@ -4022,6 +4276,7 @@
           "id": "15657",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Battery",
           "latitude": 37.79111,
           "longitude": -122.399069
         }
@@ -4043,6 +4298,7 @@
           "id": "15640",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 3rd",
           "latitude": 37.787525,
           "longitude": -122.403519
         },
@@ -4050,6 +4306,7 @@
           "id": "15678",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & 3rd",
           "latitude": 37.78773,
           "longitude": -122.40337
         }
@@ -4074,6 +4331,7 @@
           "id": "15643",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 4th",
           "latitude": 37.785705,
           "longitude": -122.405847
         },
@@ -4081,6 +4339,7 @@
           "id": "15694",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & 4th",
           "latitude": 37.785777,
           "longitude": -122.405859
         }
@@ -4104,6 +4363,7 @@
           "id": "15645",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 5th",
           "latitude": 37.783886,
           "longitude": -122.408141
         },
@@ -4111,6 +4371,7 @@
           "id": "15655",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & 5th",
           "latitude": 37.784082,
           "longitude": -122.407992
         }
@@ -4132,6 +4393,7 @@
           "id": "15647",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 6th",
           "latitude": 37.782102,
           "longitude": -122.4104
         },
@@ -4139,6 +4401,7 @@
           "id": "15695",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Taylor",
           "latitude": 37.782316,
           "longitude": -122.410228
         }
@@ -4162,6 +4425,7 @@
           "id": "15650",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 7th",
           "latitude": 37.780363,
           "longitude": -122.412613
         },
@@ -4169,6 +4433,7 @@
           "id": "15656",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & 7th",
           "latitude": 37.780568,
           "longitude": -122.412441
         }
@@ -4192,6 +4457,7 @@
           "id": "15696",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Van Ness",
           "latitude": 37.775198,
           "longitude": -122.419252
         },
@@ -4199,6 +4465,7 @@
           "id": "15692",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & Van Ness",
           "latitude": 37.775056,
           "longitude": -122.419321
         }
@@ -4222,6 +4489,7 @@
           "id": "15651",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & 8th",
           "latitude": 37.778606,
           "longitude": -122.414826
         },
@@ -4229,6 +4497,7 @@
           "id": "15676",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Hyde",
           "latitude": 37.779105,
           "longitude": -122.414379
         }
@@ -4250,6 +4519,7 @@
           "id": "15652",
           "heading": "northbound",
           "name": null,
+          "stopName": "Market & 9th",
           "latitude": 37.77741,
           "longitude": -122.41634
         },
@@ -4257,6 +4527,7 @@
           "id": "15680",
           "heading": "southbound",
           "name": null,
+          "stopName": "Market & Larkin",
           "latitude": 37.777598,
           "longitude": -122.416236
         }
@@ -4278,6 +4549,7 @@
           "id": "15673",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & Gough",
           "latitude": 37.772875,
           "longitude": -122.421991
         },
@@ -4285,6 +4557,7 @@
           "id": "15672",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Gough",
           "latitude": 37.773269,
           "longitude": -122.421768
         }
@@ -4306,6 +4579,7 @@
           "id": "15675",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & Guerrero",
           "latitude": 37.77057,
           "longitude": -122.424971
         },
@@ -4313,6 +4587,7 @@
           "id": "15681",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Laguna",
           "latitude": 37.770953,
           "longitude": -122.424666
         }
@@ -4334,6 +4609,7 @@
           "id": "15668",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Market & Dolores",
           "latitude": 37.76888,
           "longitude": -122.427103
         },
@@ -4341,6 +4617,7 @@
           "id": "15659",
           "heading": "westbound",
           "name": null,
+          "stopName": "Market & Buchanan",
           "latitude": 37.769786,
           "longitude": -122.426149
         }
@@ -4362,6 +4639,7 @@
           "id": "17123",
           "heading": "northbound",
           "name": null,
+          "stopName": "Market & Sanchez",
           "latitude": 37.765632,
           "longitude": -122.431216
         },
@@ -4369,6 +4647,7 @@
           "id": "15690",
           "heading": "southbound",
           "name": null,
+          "stopName": "Market & Sanchez",
           "latitude": 37.766185,
           "longitude": -122.430707
         }
@@ -4390,6 +4669,7 @@
           "id": "15686",
           "heading": "southbound",
           "name": "To Castro",
+          "stopName": "Market & Noe",
           "latitude": 37.764489,
           "longitude": -122.432812
         },
@@ -4397,6 +4677,7 @@
           "id": "15687",
           "heading": "eastbound",
           "name": "To Pier 39",
+          "stopName": "Market & Noe",
           "latitude": 37.763958,
           "longitude": -122.433323
         }
@@ -4418,6 +4699,7 @@
           "id": "13318",
           "heading": "westbound",
           "name": "To Castro",
+          "stopName": "17th & Noe",
           "latitude": 37.762645,
           "longitude": -122.432991
         }
@@ -4441,6 +4723,7 @@
           "id": "13311",
           "heading": "eastbound",
           "name": null,
+          "stopName": "Castro Plaza",
           "latitude": 37.762576,
           "longitude": -122.434979
         }
