@@ -37,7 +37,6 @@
         "sunsetLawton",
         "noriegaSunset",
         "sunsetOrtega",
-        "thirtySeventhOrtega",
         "sunsetQuintara",
         "sunsetRivera",
         "taravalSunset",
@@ -72,7 +71,6 @@
         "sanJoseOcean",
         "oceanOtsego",
         "oceanCayuga",
-        "cayugaOnondaga",
         "persiaMission",
         "persiaParis",
         "persiaMadrid",
@@ -887,27 +885,6 @@
           "name": null,
           "latitude": 37.751307,
           "longitude": -122.495169
-        }
-      ]
-    },
-    {
-      "id": "thirtySeventhOrtega",
-      "name": "37th & Ortega",
-      "kind": "streetLevel",
-      "lines": [
-        "29"
-      ],
-      "latitude": 37.751298,
-      "longitude": -122.495559,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17835",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.751298,
-          "longitude": -122.495559
         }
       ]
     },
@@ -1846,27 +1823,6 @@
           "name": null,
           "latitude": 37.72367,
           "longitude": -122.43867
-        }
-      ]
-    },
-    {
-      "id": "cayugaOnondaga",
-      "name": "Cayuga & Onondaga",
-      "kind": "streetLevel",
-      "lines": [
-        "29"
-      ],
-      "latitude": 37.722076,
-      "longitude": -122.439957,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17067",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.722076,
-          "longitude": -122.439957
         }
       ]
     },

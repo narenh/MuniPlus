@@ -16,7 +16,6 @@
         "vanNessChestnut",
         "lombardGough",
         "lombardLaguna",
-        "polkFrancisco",
         "fillmoreLombard",
         "lombardPierce",
         "lombardDivisadero",
@@ -310,27 +309,6 @@
           "name": null,
           "latitude": 37.800505,
           "longitude": -122.431326
-        }
-      ]
-    },
-    {
-      "id": "polkFrancisco",
-      "name": "Polk & Francisco",
-      "kind": "streetLevel",
-      "lines": [
-        "28"
-      ],
-      "latitude": 37.803484,
-      "longitude": -122.423368,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17529",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.803484,
-          "longitude": -122.423368
         }
       ]
     },

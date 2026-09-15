@@ -47,7 +47,6 @@
         "sixthGeary",
         "geary9",
         "gearyParkPresidio",
-        "thirtySecondAnza",
         "geary17",
         "geary20",
         "geary23",
@@ -899,18 +898,11 @@
       "lines": [
         "38"
       ],
-      "latitude": 37.781444,
-      "longitude": -122.458818,
+      "latitude": 37.781233,
+      "longitude": -122.458823,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17839",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.781867,
-          "longitude": -122.458806
-        },
         {
           "id": "14288",
           "heading": "eastbound",
@@ -1036,27 +1028,6 @@
           "name": null,
           "latitude": 37.780669,
           "longitude": -122.472802
-        }
-      ]
-    },
-    {
-      "id": "thirtySecondAnza",
-      "name": "32nd & Anza",
-      "kind": "streetLevel",
-      "lines": [
-        "38"
-      ],
-      "latitude": 37.777737,
-      "longitude": -122.491999,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17837",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.777737,
-          "longitude": -122.491999
         }
       ]
     },
@@ -1221,18 +1192,11 @@
       "lines": [
         "38"
       ],
-      "latitude": 37.780152,
-      "longitude": -122.490075,
+      "latitude": 37.779843,
+      "longitude": -122.490081,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17836",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.780771,
-          "longitude": -122.490064
-        },
         {
           "id": "14274",
           "heading": "eastbound",

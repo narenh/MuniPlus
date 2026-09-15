@@ -1,19 +1,26 @@
 # Surface transit data
 
-`appdata/data.json` covers Muni Metro. This directory generates everything else —
-58 bus routes and 3 cable car lines — into **one station namespace shared with the
-metro file**, so a stop served by a train and a bus is a single station.
+`appdata/data.json` covers Muni Metro. This directory generates **every route it does
+not** — 58 bus routes, the 3 cable car lines, and the F Market & Wharves — into **one
+station namespace shared with the metro file**, so a stop served by a train and a bus
+is a single station.
+
+Route selection is derived, not listed: any GTFS route whose id is missing from
+`data.json`'s `lines`. The F is `route_type 0` like the metro but has never been in
+`data.json`, so it was absent from both files until this rule replaced a hardcoded
+`{bus, cable car}` filter. Add the F to `data.json` one day and the generator drops it
+automatically.
 
 | file | what it is |
 |---|---|
 | `appdata/data.json` | Muni Metro. Hand-curated, **authoritative, never written by the generator** |
-| `appdata/bus.json` | all 61 surface routes merged — the file the app loads |
+| `appdata/bus.json` | all 62 surface routes merged — the file the app loads |
 | `appdata/bus/<route>.json` | one file per route. Source of truth for readable diffs; the app does not need these |
 | `tools/build_bus_data.py` | the generator |
 | `tools/station-ids.json` | frozen stop code → station id map |
 | `tools/station-overrides.json` | hand-verified corrections that beat every heuristic |
 
-Merged with `data.json`: **1,816 stations, 3,229 platforms, 68 lines.**
+Merged with `data.json`: **1,819 stations, 3,223 platforms, 69 lines.**
 `bus.json` is 1.17 MB (99 kB gzipped).
 
 ## Loading it
@@ -99,7 +106,9 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
    }
    ```
 
-   The three in there now, all confirmed on the ground:
+   There are three kinds of entry: `stations` reassigns a stop, `headings` relabels
+   one, and `exclude` drops one entirely. The three reassignments, all confirmed on
+   the ground:
 
    * `13149` — `3rd St & Van Dyke Ave` (91) and `Third Street & Williams Ave` (T)
      are **one pole with two SFMTA ids**, 6 m apart and both northbound. Splitting
@@ -113,6 +122,23 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
      `churchDay` is a **southbound-only** J stop at Church & Day; its northbound
      platform `14000` is confusingly named `Church St & 30th St` in the feed, so any
      rule matching on platform names merges these two wrongly.
+
+   `exclude` currently drops 8 stops that will never return a prediction. Judge these
+   by a stop's **share of the trips run by the routes serving it**, never by an
+   absolute trip count: the 1X runs only 16 trips in the whole five-week feed and the
+   30X only 6, so their stops look vanishingly rare while being perfectly normal for
+   their route. Dropping them would delete the 1X and 30X from the app. Everything
+   excluded is under 0.12% of its route's trips — a single detour trip SFMTA never
+   removed, several still carrying hand-entered names (`32ND AVE & ANZA St`).
+
+   Seven stations remain where every platform is suspect, and they are deliberately
+   kept. Four are served only by substitution and owl routes (`embarcaderoHoward`,
+   `embarcaderoTownsend`, `townsend5`, `ulloaClaremont`) — empty by day, but exactly
+   what a rider needs during a shutdown or overnight. Three are arrival-only, the last
+   stop of every trip serving them (`hwardSpear`, `thirdUnderwood`, `seventeenthNoe`,
+   the F's terminus). Whether a terminal arrival returns predictions is a property of
+   the live API, not of the feed, so that one is unverified — check a stop id against
+   the worker before dropping them.
 
 1. An id already in `tools/station-ids.json` wins. **Ids are frozen on first mint
    and never change** — a shipped id lives in people's favourites, and a feed
@@ -205,7 +231,9 @@ sfmta.com's GTFS page; the older `gtfs.sfmta.com` host no longer resolves).
 
 Output is deterministic — re-running is byte-identical. The build fails on a stop
 code under two station ids, a station id at two locations, a stop code with two
-headings, or a `stationId` that resolves to nothing. A failure means the feed
+headings, a `stationId` that resolves to nothing, or an override or exclusion naming
+a stop no route serves. **A failed build does not write `station-ids.json`**: a frozen
+id is permanent, so a run that did not check out must not add to it. A failure means the feed
 changed in a way that needs a human decision, not a retry.
 
 ## Known warts

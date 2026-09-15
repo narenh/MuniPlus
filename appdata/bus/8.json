@@ -83,7 +83,6 @@
         "genevaMadrid",
         "genevaMission",
         "genevaCayuga",
-        "cayugaOnondaga",
         "genevaAvebalboaParkBart",
         "genevaHowth",
         "cityCollegeTerminal"
@@ -1869,27 +1868,6 @@
           "name": null,
           "latitude": 37.718927,
           "longitude": -122.443554
-        }
-      ]
-    },
-    {
-      "id": "cayugaOnondaga",
-      "name": "Cayuga & Onondaga",
-      "kind": "streetLevel",
-      "lines": [
-        "8"
-      ],
-      "latitude": 37.722076,
-      "longitude": -122.439957,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17067",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.722076,
-          "longitude": -122.439957
         }
       ]
     },

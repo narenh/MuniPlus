@@ -34,7 +34,10 @@ OVERRIDES = os.path.join(ROOT, 'tools', 'station-overrides.json')
 OUT_DIR = os.path.join(ROOT, 'appdata', 'bus')
 OUT_ALL = os.path.join(ROOT, 'appdata', 'bus.json')
 
-ROUTE_TYPES = {'3', '5'}        # GTFS route_type: 3 bus, 5 cable car
+# Which routes we cover: every one data.json does not already have a line for. That
+# is all 58 buses, the 3 cable cars, and the F Market & Wharves - which is route_type
+# 0 like the metro, but has never been in data.json. Self-maintaining: add the F to
+# data.json one day and this drops it automatically.
 MERGE_RADIUS = 75               # m: bus stop <-> street-level metro station
 TRANSFER_RADIUS = 200           # m: bus station -> nearby metro station link
 CLUSTER_RADIUS = 250            # m: two stops at one intersection
@@ -181,7 +184,7 @@ def heading_of(dx, dy):
 
 
 # ---------------------------------------------------------------------- input
-def read_gtfs(src):
+def read_gtfs(src, covered=frozenset()):
     if src.startswith(('http://', 'https://')):
         sys.stderr.write(f'fetching {src}\n')
         with urllib.request.urlopen(src) as r:
@@ -192,7 +195,8 @@ def read_gtfs(src):
     def table(name):
         with zf.open(name) as f:
             return list(csv.DictReader(io.TextIOWrapper(f, 'utf-8-sig')))
-    routes = {r['route_id']: r for r in table('routes.txt') if r['route_type'] in ROUTE_TYPES}
+    routes = {r['route_id']: r for r in table('routes.txt')
+              if r['route_id'] not in covered}
     stops = {s['stop_id']: s for s in table('stops.txt')}
     trips = {t['trip_id']: t for t in table('trips.txt') if t['route_id'] in routes}
     order = collections.defaultdict(list)
@@ -206,6 +210,16 @@ def read_gtfs(src):
         t = trips[tid]
         patterns[(t['route_id'], t['direction_id'], tuple(s for _, s in seq))] += 1
     return routes, stops, patterns
+
+
+def drop_excluded(patterns, stops, excluded):
+    """Remove stops that will never return a prediction, before clustering sees them."""
+    out = collections.Counter()
+    for (route, direction, seq), trips in patterns.items():
+        kept = tuple(s for s in seq if stops[s]['stop_code'] not in excluded)
+        if len(kept) > 1:
+            out[(route, direction, kept)] += trips
+    return out
 
 
 # ------------------------------------------------------------------ headings
@@ -553,9 +567,13 @@ def main():
     metro = json.load(open(METRO))
     frozen = json.load(open(ID_MAP)) if os.path.exists(ID_MAP) else {}
     ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
-    overrides = {k: v['station'] for k, v in ov.get('stations', {}).items()}
-    head_overrides = {k: v['heading'] for k, v in ov.get('headings', {}).items()}
-    routes, stops, patterns = read_gtfs(args.gtfs)
+    real = lambda m: {k: v for k, v in m.items() if not k.startswith('//')}   # skip comments
+    overrides = {k: v['station'] for k, v in real(ov.get('stations', {})).items()}
+    head_overrides = {k: v['heading'] for k, v in real(ov.get('headings', {})).items()}
+    excluded = real(ov.get('exclude', {}))
+    routes, stops, patterns = read_gtfs(args.gtfs, {l['id'] for l in metro['lines']})
+    served_before = {stops[s]['stop_code'] for _, _, seq in patterns for s in seq}
+    patterns = drop_excluded(patterns, stops, excluded)
     head, snapped = compute_headings(patterns, stops, metro, head_overrides)
     station_of, records, notes = resolve_stations(patterns, stops, metro, frozen, overrides)
 
@@ -600,28 +618,37 @@ def main():
     }
     write(OUT_ALL, merged)
 
-    for sid, rec in records.items():
-        for s in rec['members']:
-            frozen[stops[s]['stop_code']] = sid
-    write(ID_MAP, dict(sorted(frozen.items())))
-
     problems = validate(docs + [merged], metro, stops, head)
     known = {stops[s]['stop_code'] for s in station_of}
     for code in list(overrides) + list(head_overrides):
         if code not in known:
             problems.append(f'override names stop {code}, which no route serves')
+    for code in excluded:
+        if code not in served_before:
+            problems.append(f'exclude names stop {code}, which no route serves anyway')
+        elif code in known:
+            problems.append(f'excluded stop {code} is still in the output')
     for code, sid in overrides.items():
         if code in station_of and station_of.get(
                 next(s for s in station_of if stops[s]['stop_code'] == code)) != sid:
             problems.append(f'override for stop {code} did not take effect')
     print(f'{len(routes)} routes, {len(merged_stations)} stations, '
-          f'{sum(len(s["platforms"]) for s in merged_stations.values())} stops')
+          f'{sum(len(s["platforms"]) for s in merged_stations.values())} stops'
+          + (f', {len(excluded)} stops excluded' if excluded else ''))
     print('station identity: ' + ', '.join(f'{v} {k}' for k, v in sorted(notes.items())))
     if problems:
         print(f'\n{len(problems)} PROBLEM(S):')
         for p in problems[:40]:
             print('  ' + p)
+        print('\ntools/station-ids.json NOT updated - a frozen id is permanent, so a '
+              'build that fails validation must not add to it.')
         return 1
+
+    # only now, once everything checks out, freeze the ids
+    for sid, rec in records.items():
+        for s in rec['members']:
+            frozen[stops[s]['stop_code']] = sid
+    write(ID_MAP, dict(sorted(frozen.items())))
     print('validation: ok')
     return 0
 

@@ -51,7 +51,6 @@
         "silverHolyoke",
         "silverBoylston",
         "silverMerrill",
-        "girardBurrows",
         "sanBrunoSilver",
         "bayshoreSilver",
         "silverSantaFe",
@@ -1244,27 +1243,6 @@
           "name": null,
           "latitude": 37.7315,
           "longitude": -122.40885
-        }
-      ]
-    },
-    {
-      "id": "girardBurrows",
-      "name": "Girard & Burrows",
-      "kind": "streetLevel",
-      "lines": [
-        "44"
-      ],
-      "latitude": 37.727994,
-      "longitude": -122.404941,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17838",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.727994,
-          "longitude": -122.404941
         }
       ]
     },

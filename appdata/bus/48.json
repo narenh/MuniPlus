@@ -37,7 +37,6 @@
         "twentyFourthDolores",
         "church24",
         "twentyFourthSanchez",
-        "twentyFifthNoe",
         "twentyFourthNoe",
         "twentyFourthCastro",
         "castro25",
@@ -903,27 +902,6 @@
           "name": null,
           "latitude": 37.751645,
           "longitude": -122.42955
-        }
-      ]
-    },
-    {
-      "id": "twentyFifthNoe",
-      "name": "25th & Noe",
-      "kind": "streetLevel",
-      "lines": [
-        "48"
-      ],
-      "latitude": 37.749727,
-      "longitude": -122.431624,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13510",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.749727,
-          "longitude": -122.431624
         }
       ]
     },

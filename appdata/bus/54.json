@@ -55,7 +55,6 @@
         "phelpsEgbert",
         "phelpsDonner",
         "baconSanBruno",
-        "girardBurrows",
         "baconGirard",
         "baconGoettingen",
         "baconSomerset",
@@ -1300,27 +1299,6 @@
           "name": null,
           "latitude": 37.727859,
           "longitude": -122.402994
-        }
-      ]
-    },
-    {
-      "id": "girardBurrows",
-      "name": "Girard & Burrows",
-      "kind": "streetLevel",
-      "lines": [
-        "54"
-      ],
-      "latitude": 37.727994,
-      "longitude": -122.404941,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17838",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.727994,
-          "longitude": -122.404941
         }
       ]
     },
