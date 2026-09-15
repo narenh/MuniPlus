@@ -16,7 +16,7 @@ Unlike other transit apps, Muni+ is station-based instead of trip-based, giving 
 - See nearby stations on a map, with walking estimates
 - Custom bus stops via 5-digit stop codes
 - Transfer stations displayed
-- Interactive Muni Metro map
+- Offline Muni Metro map
 
 <p>
   <img src="screenshots/home.png" alt="Home screen" width="160">
