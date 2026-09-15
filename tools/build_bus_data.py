@@ -3,9 +3,8 @@
 
     python3 tools/build_bus_data.py [--gtfs PATH_OR_URL]
 
-Writes appdata/bus/<route>.json (one file per route, for readable diffs) and
-appdata/bus.json (every route merged, for the app to load), using the same
-schema as appdata/data.json. Covers every surface route the metro file does not:
+Writes appdata/bus.json - every route merged, the one file the app loads -
+using the same schema as appdata/data.json. Covers every surface route the metro file does not:
 all 58 bus routes plus the 3 cable car lines.
 
 Station identity is one namespace shared with the metro file:
@@ -19,9 +18,10 @@ Station identity is one namespace shared with the metro file:
   * Every id ever minted is frozen in tools/station-ids.json and reused on
     later builds, because a shipped id lives in people's favourites.
 
-Route files carry only the platforms and lines their own route serves; the loader
-unions platforms by stop code and unions lines, so a station served by the J and
-the 22 ends up with one record and both lines.
+Internally each route is still built as its own document carrying only the platforms
+and lines that route serves; they are then merged by unioning platforms on stop code
+and unioning lines, so a station served by the J and the 22 ends up with one record
+and both lines. The app performs that same union across data.json and bus.json.
 """
 
 import argparse, collections, csv, io, json, math, os, re, sys, urllib.request, zipfile
@@ -31,7 +31,6 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 METRO = os.path.join(ROOT, 'appdata', 'data.json')
 ID_MAP = os.path.join(ROOT, 'tools', 'station-ids.json')
 OVERRIDES = os.path.join(ROOT, 'tools', 'station-overrides.json')
-OUT_DIR = os.path.join(ROOT, 'appdata', 'bus')
 OUT_ALL = os.path.join(ROOT, 'appdata', 'bus.json')
 
 # Which routes we cover: every one data.json does not already have a line for. That
@@ -594,7 +593,6 @@ def main():
             'stations': [station_record(sid, records[sid], stops, head, codes, [route])
                          for sid in order],
         }
-        write(os.path.join(OUT_DIR, f'{route}.json'), doc)
         docs.append(doc)
 
     # merged document: every route, stations unioned
@@ -643,12 +641,6 @@ def main():
         print('\ntools/station-ids.json NOT updated - a frozen id is permanent, so a '
               'build that fails validation must not add to it.')
         return 1
-
-    # a route that moves to data.json (as the F did) must not leave a stale file behind
-    keep = {f'{r}.json' for r in routes}
-    for stale in sorted(set(os.listdir(OUT_DIR)) - keep):
-        os.remove(os.path.join(OUT_DIR, stale))
-        print(f'removed appdata/bus/{stale} - no longer covered here')
 
     # only now, once everything checks out, freeze the ids
     for sid, rec in records.items():

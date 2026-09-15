@@ -9,13 +9,12 @@ Route selection is derived, not listed: any GTFS route whose id is missing from
 `data.json`'s `lines`. That rule has already paid for itself — the F is `route_type 0`
 like the metro, so a hardcoded `{bus, cable car}` filter left it out of both files
 entirely. Moving it into `data.json` where it belongs then dropped it from here with
-no code change, and deleted `appdata/bus/F.json` on the next run.
+no code change at all.
 
 | file | what it is |
 |---|---|
 | `appdata/data.json` | Muni Metro and the F. Hand-curated, **authoritative, never written by the generator** |
-| `appdata/bus.json` | all 61 surface routes merged — the file the app loads |
-| `appdata/bus/<route>.json` | one file per route. Source of truth for readable diffs; the app does not need these |
+| `appdata/bus.json` | all 61 surface routes merged — the one file the app loads |
 | `tools/build_bus_data.py` | the generator |
 | `tools/station-ids.json` | frozen stop code → station id map |
 | `tools/station-overrides.json` | hand-verified corrections that beat every heuristic |
@@ -44,8 +43,8 @@ That is the whole integration. There is no ordering requirement beyond loading
 
 ### Why a station appears in both files
 
-`churchMarket` is listed in `data.json` with platforms `17073`/`18059`, and in
-`bus/22.json` with *the same two stop codes* — Muni gives the J's surface stop and
+`churchMarket` is listed in `data.json` with platforms `17073`/`18059`, and the 22
+contributes *the same two stop codes* — Muni gives the J's surface stop and
 the 22's stop one pair of codes. That is why the J station already returns 22
 predictions. `church16` overlaps on one pole only (`13984`), so the merge gives it
 three platforms: the J's northbound, the 22's northbound, and the shared southbound.
@@ -238,12 +237,12 @@ changed in a way that needs a human decision, not a retry.
 
 ## Known warts
 
-* `bus.json` and `bus/` also contain the 3 cable car lines. The paths predate
-  them; renaming to `surface/` is a one-line change plus the path in the app.
+* `bus.json` also contains the 3 cable car lines. The name predates them;
+  renaming to `surface.json` is a one-line change plus the path in the app.
 * Owl and substitution routes (`NBUS`, `NOWL`, `KBUS`, `LOWL`, `FBUS`, `TBUS`)
   are included and trace the metro lines stop-for-stop. They are the main source
-  of metro/surface station overlap. Delete those files and rebuild if they are
-  noise in the UI; frozen ids make that safe.
+  of metro/surface station overlap. Filter them out in the generator and rebuild if
+  they are noise in the UI; frozen ids make that safe.
 * Station names keep SFMTA's street order, picked by majority vote across the
   stops at that intersection — so `gearyFillmore` is "Geary & Fillmore", not
   "Fillmore & Geary".
