@@ -27,8 +27,37 @@ commit to the repo. Put Coolify's proxy auth (or an access tier, or a private
 network) in front of it. That is what the subdirectory is for — the editor is a
 separate service from the Worker that serves `appdata/`.
 
-Build the image from this directory (`editor/` as the build context, with
-`Dockerfile`). Then give it a checkout to work on, either by mounting one:
+**The build context is the repository root, not `editor/`:**
+
+```sh
+docker build -f editor/Dockerfile -t atlas .
+docker run -p 8787:8787 atlas          # works, read-only, no env vars
+```
+
+In Coolify: Base Directory `/`, Dockerfile Location `/editor/Dockerfile`.
+
+### Read-only is a first-class mode
+
+With no environment variables at all the image serves a fully working, read-only
+Atlas: the whole map, the route strips, the inspector, the feed check — you just
+cannot save. That is deliberate, so a deploy succeeds before any secret exists.
+
+Atlas degrades instead of failing. It writes only when it has somewhere to write,
+and says which of these is stopping it:
+
+| situation | what happens |
+|---|---|
+| a git checkout at `REPO_ROOT` | editable; Save commits |
+| a checkout, but the file is not writable | read-only |
+| no `.git` at `REPO_ROOT` | read-only, serving the file that is there |
+| `REPO_ROOT` empty or missing | read-only, serving the copy baked into the image |
+| `READ_ONLY=1` | read-only, whatever else is true |
+| no `data.json` anywhere | the UI loads and explains where it looked |
+
+In read-only mode the editing affordances are hidden rather than left to fail,
+the branch chip turns amber and reads *Read-only*, and hovering it says why.
+
+To make it editable, give it a checkout, either by mounting one:
 
 | variable | meaning |
 |---|---|
@@ -45,6 +74,8 @@ Build the image from this directory (`editor/` as the build context, with
 | `GIT_AUTHOR_NAME` / `GIT_AUTHOR_EMAIL` | commit identity |
 | `READ_ONLY` | `1` to serve the UI but refuse every write |
 | `PORT` | default `8787` |
+
+None of these are required. Every one has a working default.
 
 A token in `GIT_REPO_URL` is written into `.git/config` inside the container, so
 use a token scoped to this one repo and rotate it like any other deployed secret.
@@ -104,6 +135,7 @@ that judgement is yours.
 
 ```
 server.js          HTTP + JSON API. No dependencies.
+entrypoint.sh      clones REPO_ROOT if asked; never fails the container
 lib/data.js        read / validate / atomic write
 lib/git.js         git CLI wrapper, scoped to the one file
 lib/gtfs.js        zip reader + CSV parser (~140 lines, no deps)

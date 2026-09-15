@@ -22,8 +22,32 @@ const PORT = Number(process.env.PORT || 8787);
 const HOST = process.env.HOST || '0.0.0.0';
 const REPO_ROOT = path.resolve(process.env.REPO_ROOT || path.join(__dirname, '..'));
 const DATA_REL = process.env.DATA_FILE || 'appdata/data.json';
-const DATA_ABS = path.join(REPO_ROOT, DATA_REL);
 const PUBLIC = path.join(__dirname, 'public');
+
+/**
+ * Find a data.json to serve, and decide whether it can be written back.
+ *
+ * With no configuration at all we still want a working, read-only Atlas, so
+ * the repo copy is preferred and a seed baked into the image is the fallback.
+ * Nothing here throws: a missing file downgrades the server, it does not stop
+ * it, and /api/state explains itself to the UI.
+ */
+const SEEDS = [
+  path.join(__dirname, 'seed', 'data.json'),
+  '/srv/seed/data.json',
+];
+
+function resolveData() {
+  const repoCopy = path.join(REPO_ROOT, DATA_REL);
+  if (fs.existsSync(repoCopy)) return { file: repoCopy, rel: DATA_REL, seed: false };
+  for (const seed of SEEDS) {
+    if (fs.existsSync(seed)) return { file: seed, rel: path.relative(REPO_ROOT, seed), seed: true };
+  }
+  return { file: null, rel: DATA_REL, seed: false };
+}
+
+const DATA = resolveData();
+const DATA_ABS = DATA.file;
 const GTFS_URL = process.env.GTFS_URL || 'https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip';
 const PUSH_BRANCH = process.env.GIT_BRANCH || '';
 const AUTO_PUSH = /^(1|true|yes)$/i.test(process.env.GIT_PUSH || '');
@@ -74,21 +98,37 @@ function readBody(req, limit = 24 * 1024 * 1024) {
   });
 }
 
+/**
+ * Why the editor cannot write, or null when it can. Read-only is a normal,
+ * fully working mode - you get the whole map, you just cannot save.
+ */
+async function writeBlock() {
+  if (READ_ONLY) return 'READ_ONLY is set';
+  if (!DATA_ABS) return 'no data.json was found to edit';
+  if (DATA.seed) return 'serving the copy baked into the image; no repo is mounted';
+  if (!(await git.available())) return `${REPO_ROOT} is not a git repository`;
+  try { fs.accessSync(DATA_ABS, fs.constants.W_OK); }
+  catch { return 'the data file is not writable'; }
+  return null;
+}
+
 async function meta() {
-  const available = await git.available();
-  if (!available) return { git: false, branch: null, head: null, dirty: false, readOnly: READ_ONLY };
+  const block = await writeBlock();
+  const hasGit = await git.available();
+  const base = {
+    git: hasGit,
+    readOnly: block !== null,
+    readOnlyReason: block,
+    file: DATA.seed ? `${DATA_REL} (bundled copy)` : DATA_REL,
+    seed: DATA.seed,
+  };
+  if (!hasGit) return { ...base, branch: null, head: null, dirty: false };
   const [branch, head, dirty] = await Promise.all([
     git.branch().catch(() => null),
     git.head().catch(() => null),
-    git.isDirty(DATA_REL).catch(() => false),
+    DATA.seed ? Promise.resolve(false) : git.isDirty(DATA_REL).catch(() => false),
   ]);
-  return {
-    git: true, branch, head, dirty,
-    pushBranch: PUSH_BRANCH || branch,
-    autoPush: AUTO_PUSH,
-    readOnly: READ_ONLY,
-    file: DATA_REL,
-  };
+  return { ...base, branch, head, dirty, pushBranch: PUSH_BRANCH || branch, autoPush: AUTO_PUSH };
 }
 
 // ------------------------------------------------------------ GTFS drift
@@ -154,6 +194,12 @@ async function api(req, res, url) {
   const route = `${req.method} ${url.pathname}`;
 
   if (route === 'GET /api/state') {
+    if (!DATA_ABS) {
+      return json(res, 503, {
+        error: `No data.json found. Looked for ${path.join(REPO_ROOT, DATA_REL)} ` +
+               `and ${SEEDS.join(', ')}. Mount the repo at REPO_ROOT, or set DATA_FILE.`,
+      });
+    }
     const doc = data.read(DATA_ABS);
     return json(res, 200, {
       doc,
@@ -174,6 +220,7 @@ async function api(req, res, url) {
   }
 
   if (route === 'GET /api/drift') {
+    if (!DATA_ABS) return json(res, 503, { error: 'no data.json to compare against' });
     const force = url.searchParams.get('force') === '1';
     if (!force && driftCache.payload && Date.now() - driftCache.at < DRIFT_TTL) {
       return json(res, 200, { ...driftCache.payload, cached: true });
@@ -193,7 +240,8 @@ async function api(req, res, url) {
   }
 
   if (route === 'PUT /api/doc' || route === 'POST /api/commit') {
-    if (READ_ONLY) return json(res, 403, { error: 'editor is running in read-only mode' });
+    const block = await writeBlock();
+    if (block) return json(res, 403, { error: `read-only: ${block}` });
 
     const body = JSON.parse(await readBody(req));
     if (!body || typeof body.doc !== 'object') return json(res, 400, { error: 'missing doc' });
@@ -224,7 +272,8 @@ async function api(req, res, url) {
   }
 
   if (route === 'POST /api/discard') {
-    if (READ_ONLY) return json(res, 403, { error: 'editor is running in read-only mode' });
+    const block = await writeBlock();
+    if (block) return json(res, 403, { error: `read-only: ${block}` });
     await git.discard(DATA_REL);
     const doc = data.read(DATA_ABS);
     return json(res, 200, { ok: true, doc, meta: await meta(), stats: data.stats(doc) });
@@ -260,10 +309,10 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, HOST, async () => {
   const m = await meta();
-  console.log(`Muni+ editor  http://${HOST}:${PORT}`);
+  console.log(`Muni+ Atlas  http://${HOST}:${PORT}`);
   console.log(`  repo    ${REPO_ROOT}`);
-  console.log(`  file    ${DATA_REL}`);
+  console.log(`  file    ${DATA_ABS || '(none found)'}`);
   console.log(`  git     ${m.git ? `${m.branch}${m.dirty ? ' (uncommitted changes)' : ''}` : 'unavailable'}`);
-  console.log(`  push    ${AUTO_PUSH ? (PUSH_BRANCH || m.branch) : 'off'}`);
-  if (READ_ONLY) console.log('  MODE    read-only');
+  console.log(`  mode    ${m.readOnly ? `read-only - ${m.readOnlyReason}` : 'editable'}`);
+  if (!m.readOnly) console.log(`  push    ${AUTO_PUSH ? (PUSH_BRANCH || m.branch) : 'off (commits stay local)'}`);
 });

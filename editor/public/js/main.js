@@ -43,9 +43,16 @@ const DRAFT_KEY = 'muniplus.atlas.draft.v1';
     onPick(() => renderAll());
     subscribe(what => { if (what !== 'render') renderAll(); });
 
-    restoreDraft();
+    store.onBlocked = () => toast(
+      `Read-only — ${esc(store.readOnlyReason || 'this file cannot be written')}`, 'info');
+
+    if (!store.readOnly) restoreDraft();
     renderAll();
     fitAll();
+
+    if (store.readOnly) {
+      toast(`Read-only: ${esc(store.readOnlyReason || 'no writable repo')}`, 'info');
+    }
 
     $('boot').classList.add('gone');
     setTimeout(() => $('boot').remove(), 600);
@@ -54,7 +61,8 @@ const DRAFT_KEY = 'muniplus.atlas.draft.v1';
   } catch (err) {
     console.error(err);
     $('boot-msg').innerHTML =
-      `<span style="color:#fb7185">Could not start: ${esc(err.message)}</span>`;
+      `<span style="color:#fb7185;max-width:560px;display:block;line-height:1.6">
+         Could not start — ${esc(err.message)}</span>`;
   }
 })();
 
@@ -81,9 +89,12 @@ function renderChrome() {
 
   const list = changes();
   $('save-count').textContent = list.length;
-  $('btn-save').disabled = list.length === 0;
-  $('btn-undo').disabled = !canUndo();
-  $('btn-redo').disabled = !canRedo();
+  $('btn-save').disabled = store.readOnly || list.length === 0;
+  $('btn-undo').disabled = store.readOnly || !canUndo();
+  $('btn-redo').disabled = store.readOnly || !canRedo();
+
+  document.body.classList.toggle('read-only', store.readOnly);
+  $('btn-save').title = store.readOnly ? `Read-only — ${store.readOnlyReason}` : 'Save (⌘S)';
 
   const { errors, warnings } = store.validation;
   const dot = $('issues-dot'), txt = $('issues-text');
@@ -94,9 +105,13 @@ function renderChrome() {
     : 'Valid';
 
   const m = store.meta;
-  $('branch-name').textContent = m.git ? (m.branch || 'detached') : 'no git';
-  $('branch-chip').querySelector('.dot').className =
-    'dot ' + (m.readOnly ? 'warn' : m.git ? 'live' : 'bad');
+  $('branch-name').textContent = m.readOnly
+    ? 'Read-only'
+    : (m.git ? (m.branch || 'detached') : 'no git');
+  $('branch-chip').querySelector('.dot').className = 'dot ' + (m.readOnly ? 'warn' : 'live');
+  $('branch-chip').title = m.readOnly
+    ? `Read-only — ${m.readOnlyReason}\nServing ${m.file}`
+    : `${m.file} on ${m.branch} — click for history`;
 
   for (const [k, id] of Object.entries({
     platforms: 'tool-platforms', labels: 'tool-labels',
@@ -158,6 +173,10 @@ function wireChrome() {
   $('drift-chip').onclick = () => checkDrift(true);
 
   $('branch-chip').onclick = async () => {
+    if (!store.meta.git) {
+      toast(`Read-only — ${esc(store.readOnlyReason || 'no git repository')}`, 'info');
+      return;
+    }
     const { commits } = await api.history();
     renderHistory(commits);
     showModal('history');
@@ -169,7 +188,7 @@ function wireChrome() {
   $('sheet-write').onclick = () => doSave(false);
 
   window.addEventListener('beforeunload', e => {
-    if (isDirty()) { e.preventDefault(); e.returnValue = ''; }
+    if (!store.readOnly && isDirty()) { e.preventDefault(); e.returnValue = ''; }
   });
 }
 
@@ -179,7 +198,12 @@ function wireKeys() {
     const mod = e.metaKey || e.ctrlKey;
 
     if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette('jump'); return; }
-    if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); if (!$('btn-save').disabled) openSave(); return; }
+    if (mod && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      if (store.readOnly) toast(`Read-only — ${esc(store.readOnlyReason || '')}`, 'info');
+      else if (!$('btn-save').disabled) openSave();
+      return;
+    }
     if (mod && e.key.toLowerCase() === 'z') {
       if (typing) return;
       e.preventDefault();

@@ -391,6 +391,7 @@ function wireInteractions() {
   // ---- drag a pole to reposition it
   map.on('mousedown', 'muni-platform', e => {
     if (e.originalEvent.button !== 0) return;
+    if (store.readOnly) return;            // selection still works, moving does not
     e.preventDefault();
     const { sid, code } = e.features[0].properties;
     dragging = { sid, code, moved: false };

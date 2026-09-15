@@ -641,6 +641,29 @@ textarea.inp { height: auto; min-height: 62px; padding: 9px; resize: vertical; l
   animation: sweep 1.3s var(--ease) infinite; }
 @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(370%); } }
 
+/* ==========================================================================
+   Read-only
+   Editing affordances are hidden rather than left to fail, so the UI never
+   invites an edit it cannot keep.
+   ========================================================================== */
+body.read-only .strip-tools,
+body.read-only .stop-side,
+body.read-only #add-plat,
+body.read-only #del-station,
+body.read-only .tchip.add,
+body.read-only .tchip .x { display: none !important; }
+
+body.read-only .inp,
+body.read-only .seg button,
+body.read-only .mini-bullet { pointer-events: none; opacity: .75; }
+body.read-only .inp { background: rgba(0,0,0,.24); border-style: dashed; }
+
+body.read-only #branch-chip {
+  background: rgba(251,191,36,.12);
+  border-color: rgba(251,191,36,.3);
+  color: #fcd34d;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }

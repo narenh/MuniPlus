@@ -19,6 +19,10 @@ export const store = {
 
   layers: { platforms: true, labels: true, transfers: true, drift: false },
 
+  readOnly: false,
+  readOnlyReason: null,
+  onBlocked: null,          // set by main.js so a blocked edit can explain itself
+
   _undo: [], _redo: [], _subs: new Set(), _max: 120,
 };
 
@@ -29,6 +33,8 @@ export function emit(what = 'all') {
 }
 
 export function load({ doc, meta, stats, validation }) {
+  store.readOnly = !!meta?.readOnly;
+  store.readOnlyReason = meta?.readOnlyReason || null;
   store.doc = doc;
   store.base = clone(doc);
   store.meta = meta || {};
@@ -43,6 +49,7 @@ export function load({ doc, meta, stats, validation }) {
  * The mutator receives the live document and edits it in place.
  */
 export function edit(label, mutate) {
+  if (store.readOnly) { store.onBlocked?.(); return false; }
   const before = clone(store.doc);
   mutate(store.doc);
   store._undo.push({ label, doc: before });
@@ -50,9 +57,11 @@ export function edit(label, mutate) {
   store._redo.length = 0;
   revalidate();
   emit('doc');
+  return true;
 }
 
 export function undo() {
+  if (store.readOnly) return null;
   const step = store._undo.pop();
   if (!step) return null;
   store._redo.push({ label: step.label, doc: clone(store.doc) });
@@ -63,6 +72,7 @@ export function undo() {
 }
 
 export function redo() {
+  if (store.readOnly) return null;
   const step = store._redo.pop();
   if (!step) return null;
   store._undo.push({ label: step.label, doc: clone(store.doc) });
