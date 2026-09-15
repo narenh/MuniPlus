@@ -219,7 +219,7 @@
       "shortName": "F",
       "color": "#B49A36",
       "stationIds": [
-        "seventeenthCastro",
+        "castroPlaza",
         "seventeenthNoe",
         "marketNoe",
         "marketSanchez",
@@ -237,7 +237,7 @@
         "market3",
         "market2",
         "market1",
-        "marketMain",
+        "marketEmbarcaderoSubway",
         "donCheeWaySteuart",
         "embarcaderoFerryBuilding",
         "embarcaderoWashington",
@@ -3956,8 +3956,8 @@
       ]
     },
     {
-      "id": "marketMain",
-      "name": "Market & Main/Drumm",
+      "id": "marketEmbarcaderoSubway",
+      "name": "Market & Embarcadero Subway",
       "kind": "streetLevel",
       "lines": [
         "F"
@@ -4410,8 +4410,8 @@
       ]
     },
     {
-      "id": "seventeenthCastro",
-      "name": "Castro",
+      "id": "castroPlaza",
+      "name": "Castro Plaza",
       "kind": "streetLevel",
       "lines": [
         "F"
