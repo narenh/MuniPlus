@@ -406,6 +406,13 @@ def resolve_stations(patterns, stops, metro, frozen, overrides):
                     if stops[s]['stop_code'] in overrides), None)
         if sid:
             notes['hand-verified override'] += 1
+        # then data.json itself: a stop code it lists belongs to that station, full stop.
+        # This has to outrank the frozen map, or curating data.json cannot move a stop -
+        # merging two stations there would leave the old id frozen onto the bus side.
+        elif (own := next((metro_by_code[stops[s]['stop_code']]['id'] for s in members
+                           if stops[s]['stop_code'] in metro_by_code), None)):
+            sid = own
+            notes['listed in data.json'] += 1
         # then an id frozen by an earlier build - it is in people's favourites
         elif (was := next((frozen[stops[s]['stop_code']] for s in members
                            if stops[s]['stop_code'] in frozen), None)):
