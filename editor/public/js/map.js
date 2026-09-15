@@ -445,14 +445,27 @@ function addLayers() {
       'line-dasharray': [0.1, 2.4],
     },
   });
+  // An in-station passage, drawn the way metro maps draw one: a solid white
+  // connector with a black casing, so it reads as structure rather than as a
+  // route or a street walk. The casing goes first so it sits underneath.
+  map.addLayer({
+    id: 'muni-transfer-indoor-case', type: 'line', source: 'transfers',
+    filter: ['==', ['get', 'indoor'], 1],
+    layout: { 'line-cap': 'round' },
+    paint: {
+      'line-color': '#05060a',
+      'line-width': ['interpolate', ['linear'], ['zoom'], 14, lit(9, 6.5), 18, lit(12, 9.5)],
+      'line-opacity': fadeIn(1, 0.7),
+    },
+  });
   map.addLayer({
     id: 'muni-transfer-indoor', type: 'line', source: 'transfers',
     filter: ['==', ['get', 'indoor'], 1],
     layout: { 'line-cap': 'round' },
     paint: {
-      'line-color': lit('#ffffff', '#b9ccf2'),
-      'line-width': ['interpolate', ['linear'], ['zoom'], 14, lit(4, 2.4), 18, lit(5, 4)],
-      'line-opacity': fadeIn(0.95, 0.5),
+      'line-color': '#ffffff',
+      'line-width': ['interpolate', ['linear'], ['zoom'], 14, lit(5, 3.2), 18, lit(7, 5)],
+      'line-opacity': fadeIn(1, 0.72),
     },
   });
   map.addLayer({
@@ -498,28 +511,33 @@ function addLayers() {
   map.addLayer({
     id: 'muni-station-glow', type: 'circle', source: 'stations',
     paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 7, 15, 17, 18, 26],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 9, 15, 21, 18, 32],
       'circle-color': ['get', 'color'],
-      'circle-opacity': ['case', ['==', ['get', 'selected'], 1], 0.5, 0],
-      'circle-blur': 0.6,
+      'circle-opacity': ['case', ['==', ['get', 'selected'], 1], 0.75, 0],
+      'circle-blur': 0.55,
     },
   });
   map.addLayer({
     id: 'muni-station', type: 'circle', source: 'stations',
     paint: {
+      // Metro convention: a station served by more than one line is a white
+      // disc with a black ring; a single-line stop is a small dot ringed in
+      // that line's colour. Interchanges are drawn larger, as on a real map.
       'circle-radius': ['interpolate', ['linear'], ['zoom'],
-        11, ['case', ['==', ['get', 'multilevel'], 1], 5, 3.4],
-        14, ['case', ['==', ['get', 'multilevel'], 1], 7.5, 5.4],
-        18, ['case', ['==', ['get', 'multilevel'], 1], 13, 9.5]],
+        11, ['case', ['==', ['get', 'interchange'], 1], 5, 3.2],
+        14, ['case', ['==', ['get', 'interchange'], 1], 8, 5.2],
+        18, ['case', ['==', ['get', 'interchange'], 1], 14, 9]],
       'circle-color': ['case',
-        ['==', ['get', 'multilevel'], 1], '#ffffff',
-        ['==', ['get', 'interchange'], 1], '#e9edf6',
-        '#0a0c12'],
+        ['==', ['get', 'interchange'], 1], '#ffffff', '#0a0c12'],
       'circle-stroke-width': ['case',
-        ['==', ['get', 'selected'], 1], 3.5,
-        ['boolean', ['feature-state', 'hover'], false], 3, 2.4],
+        ['==', ['get', 'selected'], 1], 4,
+        ['boolean', ['feature-state', 'hover'], false], 3.2, 2.4],
       'circle-stroke-color': ['case',
-        ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
+        // a white ring on a white disc would have no edge, so a selected
+        // interchange keeps its black ring and is marked by the glow beneath
+        ['==', ['get', 'interchange'], 1], '#05060a',
+        ['==', ['get', 'selected'], 1], '#ffffff',
+        ['get', 'color']],
       'circle-opacity': ['case', ['==', ['get', 'unplaced'], 1], 0.25, dimmed(true, 1, 0.3)],
       'circle-stroke-opacity': dimmed(true, 1, 0.28),
     },
@@ -858,7 +876,7 @@ export function applyLayerToggles() {
     map.setLayoutProperty(id, 'visibility', L.platforms ? 'visible' : 'none');
   }
   map.setLayoutProperty('muni-label', 'visibility', L.labels ? 'visible' : 'none');
-  for (const id of ['muni-transfer', 'muni-transfer-indoor',
+  for (const id of ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',
                     'muni-transfer-head', 'muni-transfer-label']) {
     map.setLayoutProperty(id, 'visibility', L.transfers ? 'visible' : 'none');
   }

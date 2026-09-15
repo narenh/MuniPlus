@@ -186,6 +186,21 @@ Unsaved edits are mirrored into `localStorage` and offered back after a reload.
 The draft is dropped if the file has been committed from elsewhere in the
 meantime, so it can never silently revert someone else's work.
 
+### Map conventions
+
+Two things follow the way metro maps are normally drawn, rather than anything
+particular to this editor:
+
+* A station served by **more than one line** is a white disc with a black ring,
+  drawn larger. A single-line stop is a small dot ringed in that line's colour.
+  It keys off line count, not structure — a multilevel station on one line is
+  still just a stop, which is what a real map would show.
+* An **indoor connection** is a solid white line with a black casing, so it
+  reads as structure rather than as a route or a street walk. Street transfers
+  stay dotted with chevrons.
+
+Both apply in the route strip as well as on the map.
+
 ### Transfers
 
 `transferStations` is one-way: a link from A to B says nothing about B to A, and

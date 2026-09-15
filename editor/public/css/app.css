@@ -304,8 +304,14 @@ body.no-inspector .maplibregl-ctrl-bottom-right { margin-right: 12px; }
 }
 .stop:hover .node i { transform: scale(1.22); }
 .stop.sel .node i { transform: scale(1.35); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 30%, transparent); }
-.node.multilevel i { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-width: 3px; background: var(--ink); }
-.node.interchange i { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; }
+.node.multilevel i { width: 14px; height: 14px; margin: -7px 0 0 -7px; border-width: 3px; }
+/* metro convention: a station on more than one line is a white disc with a
+   black ring, whatever line's spine it happens to be drawn on */
+.node.interchange i {
+  width: 16px; height: 16px; margin: -8px 0 0 -8px;
+  background: #fff; border-color: #05060a; border-width: 3px;
+}
+.stop.sel .node.interchange i { box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 55%, transparent); }
 .node.terminal i { border-radius: 3px; width: 14px; height: 8px; margin: -4px 0 0 -7px; background: var(--c); }
 
 .stop-main { min-width: 0; padding: 7px 0; }
