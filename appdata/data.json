@@ -225,28 +225,18 @@
         "marketSanchez",
         "churchMarket",
         "marketDolores",
-        "marketBuchanan",
         "marketGuerrero",
-        "marketLaguna",
         "marketGough",
-        "marketSouthVanNess",
         "marketVanNess",
         "market9",
-        "marketLarkin",
         "eighthMarket",
-        "marketHyde",
         "market7",
         "market6",
-        "marketTaylor",
         "market5",
         "fourthMarket",
-        "marketStockton",
         "market3",
-        "marketKearny",
-        "marketNewMontgomery",
         "market2",
         "market1",
-        "marketBattery",
         "mainMarket",
         "marketDrumm",
         "donCheeWaysteuart",
@@ -3975,35 +3965,14 @@
       ]
     },
     {
-      "id": "marketBattery",
-      "name": "Market & Battery",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.79111,
-      "longitude": -122.399069,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15657",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.79111,
-          "longitude": -122.399069
-        }
-      ]
-    },
-    {
       "id": "market2",
-      "name": "Market & 2nd",
+      "name": "Market & 2nd/Montgomery",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.789353,
-      "longitude": -122.401306,
+      "latitude": 37.788983,
+      "longitude": -122.401735,
       "transferStations": [
         "mongomery"
       ],
@@ -4015,50 +3984,13 @@
           "name": null,
           "latitude": 37.789353,
           "longitude": -122.401306
-        }
-      ]
-    },
-    {
-      "id": "marketKearny",
-      "name": "Market & Kearny",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.78773,
-      "longitude": -122.40337,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+        },
         {
-          "id": "15678",
-          "heading": "westbound",
+          "id": "15685",
+          "heading": "eastbound",
           "name": null,
-          "latitude": 37.78773,
-          "longitude": -122.40337
-        }
-      ]
-    },
-    {
-      "id": "marketStockton",
-      "name": "Market & Stockton",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.785777,
-      "longitude": -122.405859,
-      "transferStations": [
-        "unionSquare"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15694",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.785777,
-          "longitude": -122.405859
+          "latitude": 37.788613,
+          "longitude": -122.402163
         }
       ]
     },
@@ -4087,13 +4019,13 @@
     },
     {
       "id": "market1",
-      "name": "Market & 1st",
+      "name": "Market & 1st/Battery",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.79094,
-      "longitude": -122.399195,
+      "latitude": 37.791025,
+      "longitude": -122.399132,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -4103,29 +4035,13 @@
           "name": null,
           "latitude": 37.79094,
           "longitude": -122.399195
-        }
-      ]
-    },
-    {
-      "id": "marketNewMontgomery",
-      "name": "Market & New Montgomery",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.788613,
-      "longitude": -122.402163,
-      "transferStations": [
-        "mongomery"
-      ],
-      "transferAgencies": [],
-      "platforms": [
+        },
         {
-          "id": "15685",
-          "heading": "eastbound",
+          "id": "15657",
+          "heading": "westbound",
           "name": null,
-          "latitude": 37.788613,
-          "longitude": -122.402163
+          "latitude": 37.79111,
+          "longitude": -122.399069
         }
       ]
     },
@@ -4136,8 +4052,8 @@
       "lines": [
         "F"
       ],
-      "latitude": 37.787667,
-      "longitude": -122.403359,
+      "latitude": 37.787627,
+      "longitude": -122.403445,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -4147,18 +4063,25 @@
           "name": null,
           "latitude": 37.787525,
           "longitude": -122.403519
+        },
+        {
+          "id": "15678",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.78773,
+          "longitude": -122.40337
         }
       ]
     },
     {
       "id": "fourthMarket",
-      "name": "4th & Market",
+      "name": "Market & 4th",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.785411,
-      "longitude": -122.405531,
+      "latitude": 37.785741,
+      "longitude": -122.405853,
       "transferStations": [
         "powell",
         "unionSquare"
@@ -4171,6 +4094,13 @@
           "name": null,
           "latitude": 37.785705,
           "longitude": -122.405847
+        },
+        {
+          "id": "15694",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.785777,
+          "longitude": -122.405859
         }
       ]
     },
@@ -4205,35 +4135,14 @@
       ]
     },
     {
-      "id": "marketTaylor",
-      "name": "Market & Taylor",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.782316,
-      "longitude": -122.410228,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15695",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.782316,
-          "longitude": -122.410228
-        }
-      ]
-    },
-    {
       "id": "market6",
-      "name": "Market & 6th",
+      "name": "Market & 6th/Taylor",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.78129,
-      "longitude": -122.411329,
+      "latitude": 37.782209,
+      "longitude": -122.410314,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -4243,6 +4152,13 @@
           "name": null,
           "latitude": 37.782102,
           "longitude": -122.4104
+        },
+        {
+          "id": "15695",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.782316,
+          "longitude": -122.410228
         }
       ]
     },
@@ -4277,58 +4193,14 @@
       ]
     },
     {
-      "id": "marketHyde",
-      "name": "Market & Hyde",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.779105,
-      "longitude": -122.414379,
-      "transferStations": [
-        "civicCenter"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15676",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.779105,
-          "longitude": -122.414379
-        }
-      ]
-    },
-    {
-      "id": "marketLarkin",
-      "name": "Market & Larkin",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.777598,
-      "longitude": -122.416236,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15680",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.777598,
-          "longitude": -122.416236
-        }
-      ]
-    },
-    {
       "id": "marketVanNess",
       "name": "Market & Van Ness",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.775198,
-      "longitude": -122.419252,
+      "latitude": 37.775127,
+      "longitude": -122.419286,
       "transferStations": [
         "vanNess"
       ],
@@ -4340,18 +4212,25 @@
           "name": null,
           "latitude": 37.775198,
           "longitude": -122.419252
+        },
+        {
+          "id": "15692",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.775056,
+          "longitude": -122.419321
         }
       ]
     },
     {
       "id": "eighthMarket",
-      "name": "8th & Market",
+      "name": "Market & 8th/Hyde",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.778606,
-      "longitude": -122.414826,
+      "latitude": 37.778856,
+      "longitude": -122.414603,
       "transferStations": [
         "civicCenter"
       ],
@@ -4363,18 +4242,25 @@
           "name": null,
           "latitude": 37.778606,
           "longitude": -122.414826
+        },
+        {
+          "id": "15676",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.779105,
+          "longitude": -122.414379
         }
       ]
     },
     {
       "id": "market9",
-      "name": "Market & 9th",
+      "name": "Market & 9th/Larkin",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.77741,
-      "longitude": -122.41634,
+      "latitude": 37.777504,
+      "longitude": -122.416288,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -4384,29 +4270,13 @@
           "name": null,
           "latitude": 37.77741,
           "longitude": -122.41634
-        }
-      ]
-    },
-    {
-      "id": "marketSouthVanNess",
-      "name": "Market & South Van Ness",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.775056,
-      "longitude": -122.419321,
-      "transferStations": [
-        "vanNess"
-      ],
-      "transferAgencies": [],
-      "platforms": [
+        },
         {
-          "id": "15692",
-          "heading": "eastbound",
+          "id": "15680",
+          "heading": "southbound",
           "name": null,
-          "latitude": 37.775056,
-          "longitude": -122.419321
+          "latitude": 37.777598,
+          "longitude": -122.416236
         }
       ]
     },
@@ -4439,17 +4309,24 @@
       ]
     },
     {
-      "id": "marketLaguna",
-      "name": "Market & Laguna",
+      "id": "marketGuerrero",
+      "name": "Market & Guerrero/Laguna",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.770953,
-      "longitude": -122.424666,
+      "latitude": 37.770761,
+      "longitude": -122.424819,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "15675",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77057,
+          "longitude": -122.424971
+        },
         {
           "id": "15681",
           "heading": "westbound",
@@ -4460,56 +4337,14 @@
       ]
     },
     {
-      "id": "marketBuchanan",
-      "name": "Market & Buchanan",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.769786,
-      "longitude": -122.426149,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15659",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.769786,
-          "longitude": -122.426149
-        }
-      ]
-    },
-    {
-      "id": "marketGuerrero",
-      "name": "Market & Guerrero",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.77057,
-      "longitude": -122.424971,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15675",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.77057,
-          "longitude": -122.424971
-        }
-      ]
-    },
-    {
       "id": "marketDolores",
-      "name": "Market & Dolores",
+      "name": "Market & Dolores/Buchanan",
       "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.76888,
-      "longitude": -122.427103,
+      "latitude": 37.769333,
+      "longitude": -122.426626,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -4519,6 +4354,13 @@
           "name": null,
           "latitude": 37.76888,
           "longitude": -122.427103
+        },
+        {
+          "id": "15659",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.769786,
+          "longitude": -122.426149
         }
       ]
     },
