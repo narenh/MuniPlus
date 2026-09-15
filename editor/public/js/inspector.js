@@ -101,7 +101,8 @@ function sectionLevels(st) {
     return `
     <div class="level" data-level="${lv.id}">
       <div class="level-head">
-        <div class="depth mono">${lv.id}</div>
+        <div class="depth mono ${lv.id > 0 ? 'above' : lv.id === 0 ? 'street' : ''}"
+           title="${lv.id > 0 ? 'above street' : lv.id === 0 ? 'street level' : 'below street'}">${lv.id > 0 ? '+' : ''}${lv.id}</div>
         <input class="inp level-name" data-lf="name" data-level="${lv.id}" value="${esc(lv.name)}">
         <button class="icon-btn danger" data-act="del-level" data-level="${lv.id}" title="Remove this level">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -110,7 +111,7 @@ function sectionLevels(st) {
       <div class="pair" style="margin-bottom:9px">
         <div>
           <label class="micro">Depth</label>
-          <input class="inp mono" type="number" data-lf="id" data-level="${lv.id}" value="${lv.id}" max="-1" step="1">
+          <input class="inp mono" type="number" data-lf="id" data-level="${lv.id}" value="${lv.id}" step="1">
         </div>
         <div>
           <label class="micro">Agency</label>
@@ -475,7 +476,7 @@ function wire(st) {
       const id = Number(el.dataset.level), f = el.dataset.lf;
       if (f === 'id') {
         const to = Math.trunc(Number(el.value));
-        if (!Number.isInteger(to) || to >= 0) { hint('A level depth must be a negative integer'); renderInspector(); return; }
+        if (!Number.isInteger(to)) { hint('A level depth must be a whole number'); renderInspector(); return; }
         if (to !== id && (st.levels || []).some(l => l.id === to)) { hint(`Depth ${to} is already used here`); renderInspector(); return; }
         // exits reference levels by depth, so they move with it
         commit(`Level ${id} → ${to}`, s => {

@@ -106,8 +106,10 @@ function validate(doc) {
       const depths = new Set();
       for (const lv of st.levels || []) {
         const lat_ = `${at} level ${lv.id}`;
-        if (!Number.isInteger(lv.id)) E(lat_, 'a level id must be an integer depth (street is above -1)');
-        else if (lv.id >= 0) E(lat_, 'a level depth must be negative; street level is not modelled');
+        // Depth is an ordinal, signed: 0 is street, negative is below it,
+        // positive is above. Balboa Park's BART tracks are elevated, so a
+        // positive level is not a mistake.
+        if (!Number.isInteger(lv.id)) E(lat_, 'a level id must be an integer depth');
         if (depths.has(lv.id)) E(lat_, `two levels share depth ${lv.id}`);
         depths.add(lv.id);
         if (!lv.name || !String(lv.name).trim()) E(lat_, 'level has an empty name');

@@ -214,8 +214,8 @@ export function revalidate() {
       const depths = new Set();
       for (const lv of st.levels || []) {
         const la = `${at} · level ${lv.id}`;
+        // signed ordinal: 0 street, negative below, positive above (elevated)
         if (!Number.isInteger(lv.id)) E(la, 'level id must be an integer depth');
-        else if (lv.id >= 0) E(la, 'level depth must be negative');
         if (depths.has(lv.id)) E(la, `two levels share depth ${lv.id}`);
         depths.add(lv.id);
         if (!lv.name?.trim()) E(la, 'level has an empty name');

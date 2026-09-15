@@ -500,6 +500,8 @@ select.inp { appearance: none; cursor: pointer;
   font-size: 12.5px; font-weight: 650; color: var(--accent);
 }
 .level-head .level-name { height: 28px; font-weight: 550; }
+.level-head .depth.above  { color: #fcd34d; }   /* elevated */
+.level-head .depth.street { color: var(--ink); }
 .level .plat { background: rgba(255,255,255,.035); }
 
 /* --- an exit ------------------------------------------------------------- */

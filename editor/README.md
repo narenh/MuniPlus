@@ -88,8 +88,10 @@ persistent volume.
 
 A station is one of two shapes.
 
-**Underground** — platforms live on `levels`, keyed by depth (`-1`, `-2`, …;
-street is not modelled). A level carries its name, an optional `agency`, and
+**Underground** — platforms live on `levels`, keyed by depth. Depth is a signed
+ordinal, not a measurement: **0 is street, negative is below it, positive is
+above**. Elevated levels are real — Balboa Park's BART tracks are on a viaduct —
+so a positive depth is not a mistake. A level carries its name, an optional `agency`, and
 `isIsland`, which is hand-authored and legitimately `null`. A mezzanine is just
 a level with no platforms. `exits` are the doors: a name, the level each lands
 on, `stairs` / `escalator` / `elevator` / `closed` booleans, and coordinates.
