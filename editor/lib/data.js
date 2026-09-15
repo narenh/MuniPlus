@@ -34,21 +34,21 @@ const isNum = v => typeof v === 'number' && Number.isFinite(v);
  * no `kind` field to contradict it - which matters because "underground" was
  * already wrong for Balboa Park, whose BART tracks are elevated.
  */
-const hasLevels = st => Array.isArray(st?.levels);
+const isMultilevel = st => Array.isArray(st?.levels);
 
 /** Every platform of a station, whichever shape it has. */
 function platformsOf(st) {
-  return hasLevels(st) ? st.levels.flatMap(l => l.platforms || []) : (st.platforms || []);
+  return isMultilevel(st) ? st.levels.flatMap(l => l.platforms || []) : (st.platforms || []);
 }
 
 /**
- * The station coordinate is always derived and never edited: from the exits
- * underground, from the platforms on the surface. Underground platform
- * coordinates deliberately do NOT feed it - they are below ground, and what a
- * rider walks to is a door.
+ * The station coordinate is always derived and never edited: from the exits at
+ * a multilevel station, from the platforms at a street one. A multilevel
+ * station's platform coordinates deliberately do NOT feed it - they may be
+ * below street or above it, and what a rider walks to is a door.
  */
 function derivedCoord(st) {
-  const pts = hasLevels(st)
+  const pts = isMultilevel(st)
     ? (st.exits || []).filter(e => isNum(e.latitude) && isNum(e.longitude))
     : (st.platforms || []).filter(p => isNum(p.latitude) && isNum(p.longitude));
   if (!pts.length) return { latitude: null, longitude: null };
@@ -99,18 +99,18 @@ function validate(doc) {
     stationIds.add(st.id);
     if (!st.name || !String(st.name).trim()) E(at, 'station has an empty name');
     if (st.kind !== undefined) E(at, 'kind is derived from the shape and must not be stored');
-    if (hasLevels(st) && st.platforms !== undefined) {
+    if (isMultilevel(st) && st.platforms !== undefined) {
       E(at, 'a station has levels or platforms, never both');
     }
-    if (!hasLevels(st) && st.platforms === undefined) {
+    if (!isMultilevel(st) && st.platforms === undefined) {
       E(at, 'a station needs either levels or platforms');
     }
 
-    const underground = hasLevels(st);
+    const multilevel = isMultilevel(st);
 
-    if (underground) {
-      if (!st.levels.length) E(at, 'a levelled station has no levels');
-      if (!Array.isArray(st.exits)) E(at, 'a levelled station has no exits array');
+    if (multilevel) {
+      if (!st.levels.length) E(at, 'a multilevel station has no levels');
+      if (!Array.isArray(st.exits)) E(at, 'a multilevel station has no exits array');
 
       const depths = new Set();
       for (const lv of st.levels || []) {
@@ -148,7 +148,7 @@ function validate(doc) {
       else if (!open.some(e => isNum(e.latitude))) W(at, 'no open exit has coordinates yet');
     } else {
       if (!st.platforms.length) E(at, 'station has no platforms');
-      if (st.exits !== undefined) E(at, 'exits belong to a levelled station');
+      if (st.exits !== undefined) E(at, 'exits belong to a multilevel station');
     }
 
     // platforms, whichever shape holds them
@@ -170,7 +170,7 @@ function validate(doc) {
       for (const l of p.terminates || []) {
         if (!(p.lines || []).includes(l)) E(pat, `terminates lists "${l}", which does not serve this platform`);
       }
-      if (underground && p.stopName !== undefined) W(pat, 'stopName is for street-level platforms');
+      if (multilevel && p.stopName !== undefined) W(pat, 'stopName is for street-level platforms');
     }
 
     if (isNum(st.latitude) && (st.latitude < SF.minLat || st.latitude > SF.maxLat ||
@@ -227,12 +227,12 @@ function stats(doc) {
     platforms: doc.stations.reduce((n, s) => n + platformsOf(s).length, 0),
     lines: doc.lines.length,
     subways: (doc.subways || []).length,
-    levelled: doc.stations.filter(hasLevels).length,
+    multilevel: doc.stations.filter(isMultilevel).length,
     exits: doc.stations.reduce((n, s) => n + (s.exits || []).length, 0),
   };
 }
 
 module.exports = {
   read, serialise, writeAtomic, validate, stats, platformsOf, derivedCoord, applyDerived,
-  hasLevels, HEADINGS, MODES,
+  isMultilevel, HEADINGS, MODES,
 };

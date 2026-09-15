@@ -4,7 +4,7 @@
 
 import {
   store, edit, select, stationById, linesOf, emit,
-  platformsOf, anchorOf, hasCoord, hasLevels,
+  platformsOf, anchorOf, hasCoord, isMultilevel,
 } from './store.js';
 
 const STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
@@ -152,13 +152,13 @@ function stationFeatures() {
         properties: {
           sid: s.id,
           name: s.name,
-          levelled: hasLevels(s) ? 1 : 0,
+          multilevel: isMultilevel(s) ? 1 : 0,
           color: primary?.color || '#7c8598',
           active: on ? 1 : 0,
           interchange: ls.length > 1 ? 1 : 0,
           selected: store.selStation === s.id ? 1 : 0,
           nplat: platformsOf(s).length,
-          // an underground station with no exits yet has no real coordinate;
+          // a multilevel station with no exits yet has no real coordinate;
           // it is drawn at its platforms so you can still find it to author them
           unplaced: hasCoord(s) ? 0 : 1,
         },
@@ -168,12 +168,12 @@ function stationFeatures() {
   };
 }
 
-/** Exits: the doors. Underground only, draggable, and the sole input to an
- *  underground station's coordinate. */
+/** Exits: the doors. Multilevel stations only, draggable, and the sole input
+ *  to such a station's coordinate. */
 function exitFeatures() {
   const feats = [];
   for (const s of store.doc.stations) {
-    if (!hasLevels(s)) continue;
+    if (!isMultilevel(s)) continue;
     const ls = linesOf(s.id);
     const on = !store.activeLine || ls.some(l => l.id === store.activeLine);
     for (const e of s.exits || []) {
@@ -230,10 +230,10 @@ function platformFeatures() {
 /**
  * A short leader from each station's centre to each of its poles.
  *
- * An underground station puts every pole within metres of the centre, so
+ * A multilevel station puts every pole within metres of the centre, so
  * without these the poles are an indistinguishable pile on top of the station
  * dot. They also make it obvious which station a pole belongs to once you drag
- * it away from the centre - which is the point of moving an underground
+ * it away from the centre - which is the point of moving a below-ground
  * platform out onto its real street entrance.
  */
 function leaderFeatures() {
@@ -508,11 +508,11 @@ function addLayers() {
     id: 'muni-station', type: 'circle', source: 'stations',
     paint: {
       'circle-radius': ['interpolate', ['linear'], ['zoom'],
-        11, ['case', ['==', ['get', 'levelled'], 1], 5, 3.4],
-        14, ['case', ['==', ['get', 'levelled'], 1], 7.5, 5.4],
-        18, ['case', ['==', ['get', 'levelled'], 1], 13, 9.5]],
+        11, ['case', ['==', ['get', 'multilevel'], 1], 5, 3.4],
+        14, ['case', ['==', ['get', 'multilevel'], 1], 7.5, 5.4],
+        18, ['case', ['==', ['get', 'multilevel'], 1], 13, 9.5]],
       'circle-color': ['case',
-        ['==', ['get', 'levelled'], 1], '#ffffff',
+        ['==', ['get', 'multilevel'], 1], '#ffffff',
         ['==', ['get', 'interchange'], 1], '#e9edf6',
         '#0a0c12'],
       'circle-stroke-width': ['case',
@@ -592,8 +592,8 @@ function addLayers() {
   });
 
   // --- labels
-  // --- exits: the doors. Drawn above everything, because underground they are
-  // the only thing at street level and the only thing you can place.
+  // --- exits: the doors. Drawn above everything, because below ground they
+  // are the only thing at street level and the only thing you can place.
   map.addLayer({
     id: 'muni-exit-halo', type: 'circle', source: 'exits',
     minzoom: 13.5,
@@ -809,7 +809,7 @@ const round6 = n => Math.round(n * 1e6) / 1e6;
 
 /** Keep a station's derived coordinate correct mid-drag. */
 function applyDerivedLive(st) {
-  if (!hasLevels(st)) return;
+  if (!isMultilevel(st)) return;
   const pts = (st.exits || []).filter(e => Number.isFinite(e.latitude));
   if (!pts.length) { st.latitude = null; st.longitude = null; return; }
   st.latitude = round6(pts.reduce((n, e) => n + e.latitude, 0) / pts.length);

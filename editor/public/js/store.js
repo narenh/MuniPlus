@@ -93,31 +93,32 @@ export const canRedo = () => store._redo.length > 0;
  * A station is one of two shapes, and the shape is its own discriminator: it
  * either has `levels` (and `exits`) or a flat `platforms` list. There is no
  * stored `kind`, because a stored one can contradict the shape - and
- * "underground" was already wrong for stations whose levels go up.
+ * "underground" was already wrong for stations whose levels go up - Balboa
+ * Park's BART tracks are elevated - so the word for the shape is multilevel.
  */
-export const hasLevels = st => Array.isArray(st?.levels);
+export const isMultilevel = st => Array.isArray(st?.levels);
 
 /** Every platform of a station, whichever shape holds it. */
 export function platformsOf(st) {
   if (!st) return [];
-  return hasLevels(st) ? st.levels.flatMap(l => l.platforms || []) : (st.platforms || []);
+  return isMultilevel(st) ? st.levels.flatMap(l => l.platforms || []) : (st.platforms || []);
 }
 
 /** The level a platform sits on, or null on the surface. */
 export function levelOf(st, code) {
-  if (!hasLevels(st)) return null;
+  if (!isMultilevel(st)) return null;
   return st.levels.find(l => (l.platforms || []).some(p => String(p.id) === String(code))) || null;
 }
 
 const isNum = v => typeof v === 'number' && Number.isFinite(v);
 
 /**
- * Station coordinates are derived and never edited: exits underground,
- * platforms on the surface. Underground platform coordinates never feed it -
- * they are below ground, and what a rider walks to is a door.
+ * Station coordinates are derived and never edited: exits at a multilevel
+ * station, platforms at a street one. A multilevel station's platform
+ * coordinates never feed it - what a rider walks to is a door.
  */
 export function derivedCoord(st) {
-  const pts = hasLevels(st)
+  const pts = isMultilevel(st)
     ? (st.exits || []).filter(e => isNum(e.latitude) && isNum(e.longitude))
     : (st.platforms || []).filter(p => isNum(p.latitude) && isNum(p.longitude));
   if (!pts.length) return { latitude: null, longitude: null };
@@ -216,10 +217,10 @@ export function revalidate() {
     if (!st.name?.trim()) E(at, 'station has an empty name');
 
     if (st.kind !== undefined) E(at, 'kind is derived from the shape and must not be stored');
-    if (hasLevels(st) && st.platforms !== undefined) E(at, 'a station has levels or platforms, never both');
+    if (isMultilevel(st) && st.platforms !== undefined) E(at, 'a station has levels or platforms, never both');
 
-    if (hasLevels(st)) {
-      if (!st.levels.length) E(at, 'a levelled station has no levels');
+    if (isMultilevel(st)) {
+      if (!st.levels.length) E(at, 'a multilevel station has no levels');
       const depths = new Set();
       for (const lv of st.levels || []) {
         const la = `${at} · level ${lv.id}`;
@@ -311,8 +312,8 @@ export function changes() {
     if (!a) { out.push({ k: 'add', t: T, d: `New station <code>${id}</code>` }); continue; }
 
     if (a.name !== b.name) out.push({ k: 'edit', t: T, d: `Renamed from <code>${esc(a.name)}</code>` });
-    if (hasLevels(a) !== hasLevels(b)) {
-      out.push({ k: 'edit', t: T, d: hasLevels(b) ? 'Converted to levels and exits' : 'Converted to street platforms' });
+    if (isMultilevel(a) !== isMultilevel(b)) {
+      out.push({ k: 'edit', t: T, d: isMultilevel(b) ? 'Converted to levels and exits' : 'Converted to street platforms' });
     }
 
     // levels

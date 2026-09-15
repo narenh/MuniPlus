@@ -304,7 +304,7 @@ body.no-inspector .maplibregl-ctrl-bottom-right { margin-right: 12px; }
 }
 .stop:hover .node i { transform: scale(1.22); }
 .stop.sel .node i { transform: scale(1.35); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 30%, transparent); }
-.node.underground i { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-width: 3px; background: var(--ink); }
+.node.multilevel i { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-width: 3px; background: var(--ink); }
 .node.interchange i { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; }
 .node.terminal i { border-radius: 3px; width: 14px; height: 8px; margin: -4px 0 0 -7px; background: var(--c); }
 

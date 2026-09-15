@@ -1,11 +1,11 @@
-// Right-hand inspector. Two shapes: an underground station is levels and exits,
-// a surface station is a flat list of platforms. Station coordinates are shown
-// but never editable - they are derived, from exits underground and from
-// platforms on the surface.
+// Right-hand inspector. Two shapes: a multilevel station is levels and exits, a
+// street station is a flat list of platforms. Station coordinates are shown but
+// never editable - derived from exits at a multilevel station, from platforms at
+// a street one.
 
 import {
   store, edit, select, stationById, linesOf, esc, metresBetween,
-  platformsOf, levelOf, hasCoord, anchorOf, hasLevels,
+  platformsOf, levelOf, hasCoord, anchorOf, isMultilevel,
 } from './store.js';
 import { flyToStation, refresh, hint, map, highlightLink } from './map.js';
 
@@ -39,7 +39,7 @@ export function renderInspector() {
   el.style.setProperty('--accent', ls[0]?.color || '#6ea8fe');
 
   document.getElementById('insp-name').textContent = st.name;
-  document.getElementById('insp-id').textContent = hasLevels(st)
+  document.getElementById('insp-id').textContent = isMultilevel(st)
     ? `${st.id} · ${st.levels.length} level${st.levels.length === 1 ? '' : 's'} · ${(st.exits || []).length} exit${(st.exits || []).length === 1 ? '' : 's'}`
     : `${st.id} · ${st.platforms.length} platform${st.platforms.length === 1 ? '' : 's'}`;
 
@@ -58,7 +58,7 @@ export function renderInspector() {
 
   document.getElementById('insp-body').innerHTML =
     sectionStation(st) +
-    (hasLevels(st) ? sectionLevels(st) + sectionExits(st) : sectionPlatforms(st, null)) +
+    (isMultilevel(st) ? sectionLevels(st) + sectionExits(st) : sectionPlatforms(st, null)) +
     sectionTransfers(st) +
     sectionDanger(st);
   wire(st);
@@ -66,7 +66,7 @@ export function renderInspector() {
 
 // ------------------------------------------------------------------ station
 function sectionStation(st) {
-  const src = hasLevels(st) ? 'exits' : 'platforms';
+  const src = isMultilevel(st) ? 'exits' : 'platforms';
   const coord = hasCoord(st)
     ? `<code>${st.latitude}, ${st.longitude}</code>`
     : `<span style="color:var(--warn)">no ${src} with coordinates yet</span>`;
@@ -84,8 +84,8 @@ function sectionStation(st) {
     <div class="field">
       <label class="micro">Structure <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— not stored; it is whichever shape the record has</span></label>
       <div class="seg" id="f-kind">
-        <button data-v="flat"   class="${hasLevels(st) ? '' : 'on'}">Street platforms</button>
-        <button data-v="levels" class="${hasLevels(st) ? 'on' : ''}">Levels &amp; exits</button>
+        <button data-v="flat"   class="${isMultilevel(st) ? '' : 'on'}">Street platforms</button>
+        <button data-v="levels" class="${isMultilevel(st) ? 'on' : ''}">Multilevel</button>
       </div>
     </div>
     <div class="field">
@@ -303,7 +303,7 @@ function platformCards(st, level) {
         <label class="micro">Stop code</label>
         <input class="inp mono" data-pf="id" data-code="${esc(p.id)}" value="${esc(p.id)}">
       </div>
-      ${hasLevels(st) ? '' : `
+      ${isMultilevel(st) ? '' : `
       <div class="field">
         <label class="micro">Stop name</label>
         <input class="inp" data-pf="stopName" data-code="${esc(p.id)}" value="${esc(p.stopName || '')}">
@@ -450,7 +450,7 @@ function wire(st) {
   body.querySelectorAll('#f-kind button').forEach(b => {
     b.onclick = () => {
       const toLevels = b.dataset.v === 'levels';
-      if (toLevels === hasLevels(st)) return;
+      if (toLevels === isMultilevel(st)) return;
       const msg = toLevels
         ? `Give "${st.name}" levels and exits?\n\nIts ${platformsOf(st).length} platform(s) move onto a new level at depth -1, and it gains an empty exits list. Until an exit has coordinates the station has no position.`
         : `Flatten "${st.name}" to street platforms?\n\nIts levels and exits are removed and every platform moves to a flat list. Level names, agencies, isIsland and all exits are lost.`;
@@ -616,7 +616,7 @@ function wire(st) {
         latitude: anchor?.latitude ?? st.latitude ?? 37.7749,
         longitude: anchor?.longitude ?? st.longitude ?? -122.4194,
       };
-      if (!hasLevels(st)) base.stopName = st.name;
+      if (!isMultilevel(st)) base.stopName = st.name;
       const levelId = b.dataset.level !== undefined ? Number(b.dataset.level) : null;
       commit('Add platform', s => {
         if (levelId !== null) s.levels.find(l => l.id === levelId).platforms.push(base);
@@ -737,7 +737,7 @@ function wire(st) {
       if (act === 'del-plat') {
         if (platformsOf(st).length === 1) { hint('A station must keep at least one platform'); return; }
         commit(`Remove platform ${code}`, s => {
-          if (hasLevels(s)) {
+          if (isMultilevel(s)) {
             for (const l of s.levels) l.platforms = l.platforms.filter(p => String(p.id) !== String(code));
           } else s.platforms = s.platforms.filter(p => String(p.id) !== String(code));
         });

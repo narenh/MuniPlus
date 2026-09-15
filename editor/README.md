@@ -91,7 +91,7 @@ there is no `kind` field. A station either has `levels` (and `exits`), or a flat
 `platforms` list. A stored kind could contradict the shape, and "underground"
 was already wrong for a station whose levels go up.
 
-**Levelled** — platforms live on `levels`, keyed by depth. Depth is a signed
+**Multilevel** — platforms live on `levels`, keyed by depth. Depth is a signed
 ordinal, not a measurement: **0 is street, negative is below it, positive is
 above**. Elevated levels are real — Balboa Park's BART tracks are on a viaduct —
 so a positive depth is not a mistake. A level carries its name, an optional `agency`, and
@@ -116,14 +116,15 @@ reciprocal, because you cannot build a passage you can only walk one way.
 
 | field | from |
 |---|---|
-| `station.latitude` / `longitude` | **exits** underground, **platforms** on the surface |
+| `station.latitude` / `longitude` | **exits** if multilevel, **platforms** if street |
 | `station.lines` | the union of its platforms' lines |
 
-Underground platform coordinates deliberately do **not** feed the station
-coordinate — they are below ground, and what a rider walks to is a door. They
-are kept because they let you rank exits by distance to a platform.
+A multilevel station's platform coordinates deliberately do **not** feed the
+station coordinate — they may be below ground or above it, and what a rider
+walks to is a door. They are kept because they let you rank exits by distance to
+a platform.
 
-An underground station with no exits yet therefore has `latitude: null`. The
+A multilevel station with no exits yet therefore has `latitude: null`. The
 editor still shows it, anchored to its platforms so you can find it and author
 its doors; the stored value stays null until a door exists.
 
@@ -134,7 +135,7 @@ its doors; the stored value stays null until a door exists.
 | **Line rail** (left edge) | click a line to focus it; click again for all lines |
 | **Route strip** | the focused line's stops in order — drag the grip to reorder, `−` to remove |
 | **Map** | click a station or pole to select; **drag a pole** to move it |
-| **Inspector** (right) | the selected station: levels and exits underground, platforms on the surface |
+| **Inspector** (right) | the selected station: levels and exits if multilevel, platforms if street |
 | **Exits** | added from the inspector, dropped on the station, then dragged onto the real door |
 
 Keys: `⌘K` find anything · `⌘S` save · `⌘Z` / `⇧⌘Z` undo, redo · `↑` `↓` walk the
