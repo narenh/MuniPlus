@@ -1061,7 +1061,6 @@
         "castro15",
         "castro16",
         "marketCastro",
-        "castroPlaza",
         "eighteenthCastro",
         "castro19",
         "castro20",
@@ -25609,7 +25608,7 @@
     },
     {
       "id": "marketCastro",
-      "name": "Market & Castro",
+      "name": "Castro & 17th",
       "kind": "streetLevel",
       "lines": [
         "24",
@@ -25618,14 +25617,21 @@
         "KBUS",
         "LOWL"
       ],
-      "latitude": 37.762397,
-      "longitude": -122.435266,
+      "latitude": 37.762383,
+      "longitude": -122.435173,
       "transferStations": [
         "castro",
         "castroPlaza"
       ],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14313",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76237,
+          "longitude": -122.43508
+        },
         {
           "id": "14334",
           "heading": "southbound",
@@ -25646,35 +25652,6 @@
           "name": null,
           "latitude": 37.762317,
           "longitude": -122.435739
-        }
-      ]
-    },
-    {
-      "id": "castroPlaza",
-      "name": "Castro Plaza",
-      "kind": "streetLevel",
-      "lines": [
-        "24",
-        "FBUS"
-      ],
-      "latitude": 37.762576,
-      "longitude": -122.434979,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14313",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.76237,
-          "longitude": -122.43508
-        },
-        {
-          "id": "13311",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.762576,
-          "longitude": -122.434979
         }
       ]
     },
@@ -50874,6 +50851,27 @@
           "name": null,
           "latitude": 37.769786,
           "longitude": -122.426149
+        }
+      ]
+    },
+    {
+      "id": "castroPlaza",
+      "name": "Castro Plaza",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS"
+      ],
+      "latitude": 37.762576,
+      "longitude": -122.434979,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13311",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.762576,
+          "longitude": -122.434979
         }
       ]
     },

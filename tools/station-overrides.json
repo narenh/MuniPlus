@@ -20,6 +20,10 @@
     "13536": {
       "station": "thirtiethChurch",
       "why": "See 13535 - the eastbound half of the same pair."
+    },
+    "14313": {
+      "station": "marketCastro",
+      "why": "The 24's two poles at the Castro/17th/Market junction are one stop: 14313 'Castro St & 17th St' northbound and 14334 'Castro St & Market St' southbound, 17m apart. Without this 14313 clusters with the F's terminus pole 13311 (24m away, '17th St & Castro St'), which data.json lists under castroPlaza, and the 24's two directions land in different stations."
     }
   },
   "headings": {},
