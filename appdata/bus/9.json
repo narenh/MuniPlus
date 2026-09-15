@@ -101,7 +101,11 @@
       ],
       "latitude": 37.794454,
       "longitude": -122.394917,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding",
+        "marketDrumm"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -123,7 +127,10 @@
       "latitude": 37.7934,
       "longitude": -122.39528,
       "transferStations": [
-        "embarcadero"
+        "donCheeWaysteuart",
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -146,7 +153,9 @@
       "latitude": 37.792572,
       "longitude": -122.397016,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -189,9 +198,7 @@
       ],
       "latitude": 37.788613,
       "longitude": -122.402163,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -210,8 +217,8 @@
       "lines": [
         "9"
       ],
-      "latitude": 37.787525,
-      "longitude": -122.403519,
+      "latitude": 37.787667,
+      "longitude": -122.403359,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -231,12 +238,9 @@
       "lines": [
         "9"
       ],
-      "latitude": 37.785705,
-      "longitude": -122.405847,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "latitude": 37.785411,
+      "longitude": -122.405531,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -257,9 +261,7 @@
       ],
       "latitude": 37.793473,
       "longitude": -122.396178,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -301,9 +303,7 @@
       ],
       "latitude": 37.789353,
       "longitude": -122.401306,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -345,9 +345,7 @@
       ],
       "latitude": 37.785777,
       "longitude": -122.405859,
-      "transferStations": [
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -366,11 +364,9 @@
       "lines": [
         "9"
       ],
-      "latitude": 37.783984,
-      "longitude": -122.408066,
-      "transferStations": [
-        "powell"
-      ],
+      "latitude": 37.783395,
+      "longitude": -122.408657,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -396,8 +392,8 @@
       "lines": [
         "9"
       ],
-      "latitude": 37.782102,
-      "longitude": -122.4104,
+      "latitude": 37.78129,
+      "longitude": -122.411329,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -438,11 +434,9 @@
       "lines": [
         "9"
       ],
-      "latitude": 37.780466,
-      "longitude": -122.412527,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "latitude": 37.780189,
+      "longitude": -122.412813,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -470,9 +464,7 @@
       ],
       "latitude": 37.778606,
       "longitude": -122.414826,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -514,9 +506,7 @@
       ],
       "latitude": 37.779105,
       "longitude": -122.414379,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -559,6 +549,8 @@
       "latitude": 37.775434,
       "longitude": -122.418548,
       "transferStations": [
+        "marketSouthVanNess",
+        "marketVanNess",
         "vanNess"
       ],
       "transferAgencies": [],

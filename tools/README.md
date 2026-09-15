@@ -1,20 +1,20 @@
 # Surface transit data
 
-`appdata/data.json` covers Muni Metro. This directory generates **every route it does
-not** — 58 bus routes, the 3 cable car lines, and the F Market & Wharves — into **one
-station namespace shared with the metro file**, so a stop served by a train and a bus
-is a single station.
+`appdata/data.json` covers Muni Metro and the F Market & Wharves. This directory
+generates **every route it does not** — 58 bus routes and the 3 cable car lines — into
+**one station namespace shared with the metro file**, so a stop served by a train and
+a bus is a single station.
 
 Route selection is derived, not listed: any GTFS route whose id is missing from
-`data.json`'s `lines`. The F is `route_type 0` like the metro but has never been in
-`data.json`, so it was absent from both files until this rule replaced a hardcoded
-`{bus, cable car}` filter. Add the F to `data.json` one day and the generator drops it
-automatically.
+`data.json`'s `lines`. That rule has already paid for itself — the F is `route_type 0`
+like the metro, so a hardcoded `{bus, cable car}` filter left it out of both files
+entirely. Moving it into `data.json` where it belongs then dropped it from here with
+no code change, and deleted `appdata/bus/F.json` on the next run.
 
 | file | what it is |
 |---|---|
-| `appdata/data.json` | Muni Metro. Hand-curated, **authoritative, never written by the generator** |
-| `appdata/bus.json` | all 62 surface routes merged — the file the app loads |
+| `appdata/data.json` | Muni Metro and the F. Hand-curated, **authoritative, never written by the generator** |
+| `appdata/bus.json` | all 61 surface routes merged — the file the app loads |
 | `appdata/bus/<route>.json` | one file per route. Source of truth for readable diffs; the app does not need these |
 | `tools/build_bus_data.py` | the generator |
 | `tools/station-ids.json` | frozen stop code → station id map |

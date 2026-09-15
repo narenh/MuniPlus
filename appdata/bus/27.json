@@ -591,7 +591,10 @@
       ],
       "latitude": 37.781166,
       "longitude": -122.412189,
-      "transferStations": [],
+      "transferStations": [
+        "market6",
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -613,7 +616,9 @@
       "latitude": 37.779346,
       "longitude": -122.415158,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "eighthMarket",
+        "marketHyde"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -633,11 +638,9 @@
       "lines": [
         "27"
       ],
-      "latitude": 37.778498,
-      "longitude": -122.414597,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "latitude": 37.778606,
+      "longitude": -122.414826,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -803,11 +806,9 @@
       "lines": [
         "27"
       ],
-      "latitude": 37.78072,
-      "longitude": -122.412739,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "latitude": 37.780189,
+      "longitude": -122.412813,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -828,7 +829,9 @@
       ],
       "latitude": 37.779327,
       "longitude": -122.411032,
-      "transferStations": [],
+      "transferStations": [
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

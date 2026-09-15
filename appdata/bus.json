@@ -510,58 +510,6 @@
       ]
     },
     {
-      "id": "F",
-      "name": "F Market & Wharves",
-      "shortName": "F",
-      "color": "#B49A36",
-      "stationIds": [
-        "jonesBeach",
-        "beachMason",
-        "beachStockton",
-        "jeffersonTaylor",
-        "jeffersonPowell",
-        "embarcaderoStockton",
-        "embarcaderoBay",
-        "embarcaderoSansome",
-        "embarcaderoGreenwich",
-        "embarcaderoGreen",
-        "embarcaderoBroadway",
-        "embarcaderoWashington",
-        "embarcaderoFerryBuilding",
-        "donCheeWaysteuart",
-        "marketDrumm",
-        "marketBattery",
-        "market2",
-        "marketKearny",
-        "marketStockton",
-        "mainMarket",
-        "market1",
-        "marketNewMontgomery",
-        "market3",
-        "fourthMarket",
-        "market5",
-        "marketTaylor",
-        "market6",
-        "market7",
-        "marketHyde",
-        "marketLarkin",
-        "marketVanNess",
-        "eighthMarket",
-        "market9",
-        "marketSouthVanNess",
-        "marketGough",
-        "marketLaguna",
-        "marketBuchanan",
-        "marketGuerrero",
-        "marketDolores",
-        "churchMarket",
-        "marketSanchez",
-        "marketNoe",
-        "seventeenthNoe",
-        "seventeenthCastro"
-      ]
-    },
-    {
       "id": "12",
       "name": "12 Folsom-Pacific",
       "shortName": "12",
@@ -4261,7 +4209,9 @@
       "latitude": 37.79455,
       "longitude": -122.3976,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5778,7 +5728,10 @@
       ],
       "latitude": 37.794275,
       "longitude": -122.394424,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -5811,7 +5764,10 @@
       "latitude": 37.7934,
       "longitude": -122.39528,
       "transferStations": [
-        "embarcadero"
+        "donCheeWaysteuart",
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5840,7 +5796,9 @@
       "latitude": 37.792572,
       "longitude": -122.397016,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -5862,7 +5820,6 @@
         "5",
         "7",
         "9",
-        "F",
         "38",
         "5R",
         "9R",
@@ -5904,6 +5861,10 @@
       "latitude": 37.78896,
       "longitude": -122.402739,
       "transferStations": [
+        "market2",
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -6229,7 +6190,11 @@
       ],
       "latitude": 37.794409,
       "longitude": -122.394538,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding",
+        "marketDrumm"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -6262,7 +6227,6 @@
       "lines": [
         "2",
         "9",
-        "F",
         "FBUS",
         "KBUS",
         "LOWL",
@@ -6271,9 +6235,7 @@
       ],
       "latitude": 37.793473,
       "longitude": -122.396178,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -6295,7 +6257,10 @@
       "latitude": 37.79192,
       "longitude": -122.39815,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -6319,6 +6284,8 @@
       "latitude": 37.790214,
       "longitude": -122.401338,
       "transferStations": [
+        "market2",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -6989,7 +6956,8 @@
       "latitude": 37.791939,
       "longitude": -122.396879,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7017,7 +6985,6 @@
         "5",
         "7",
         "9",
-        "F",
         "38",
         "5R",
         "9R",
@@ -7061,6 +7028,10 @@
       "latitude": 37.786597,
       "longitude": -122.404586,
       "transferStations": [
+        "fourthMarket",
+        "market3",
+        "marketKearny",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -7086,6 +7057,8 @@
       "latitude": 37.78484,
       "longitude": -122.406834,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "powell"
       ],
       "transferAgencies": [],
@@ -7107,7 +7080,6 @@
         "5",
         "7",
         "9",
-        "F",
         "5R",
         "9R",
         "FBUS",
@@ -7118,9 +7090,7 @@
       ],
       "latitude": 37.783395,
       "longitude": -122.408657,
-      "transferStations": [
-        "powell"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7157,7 +7127,8 @@
       "latitude": 37.780889,
       "longitude": -122.413587,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "market7"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7184,7 +7155,10 @@
       "latitude": 37.791645,
       "longitude": -122.398151,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -7210,6 +7184,9 @@
       "latitude": 37.790013,
       "longitude": -122.400491,
       "transferStations": [
+        "market1",
+        "market2",
+        "marketBattery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -7236,6 +7213,10 @@
       "latitude": 37.78849,
       "longitude": -122.40248,
       "transferStations": [
+        "market2",
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -7257,7 +7238,6 @@
         "5",
         "8",
         "9",
-        "F",
         "15",
         "30",
         "45",
@@ -7274,10 +7254,7 @@
       ],
       "latitude": 37.785411,
       "longitude": -122.405531,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7307,6 +7284,8 @@
       "latitude": 37.78639,
       "longitude": -122.40516,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -7333,6 +7312,7 @@
       "latitude": 37.784474,
       "longitude": -122.407544,
       "transferStations": [
+        "market5",
         "powell"
       ],
       "transferAgencies": [],
@@ -7370,7 +7350,10 @@
       ],
       "latitude": 37.78285,
       "longitude": -122.40964,
-      "transferStations": [],
+      "transferStations": [
+        "market5",
+        "marketTaylor"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -7393,7 +7376,10 @@
       ],
       "latitude": 37.781166,
       "longitude": -122.412189,
-      "transferStations": [],
+      "transferStations": [
+        "market6",
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -8563,7 +8549,9 @@
       "latitude": 37.779346,
       "longitude": -122.415158,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "eighthMarket",
+        "marketHyde"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -8585,7 +8573,10 @@
       ],
       "latitude": 37.777709,
       "longitude": -122.416852,
-      "transferStations": [],
+      "transferStations": [
+        "market9",
+        "marketLarkin"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10029,7 +10020,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10058,7 +10048,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10068,9 +10057,7 @@
       ],
       "latitude": 37.789353,
       "longitude": -122.401306,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10089,7 +10076,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10118,7 +10104,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10128,9 +10113,7 @@
       ],
       "latitude": 37.785777,
       "longitude": -122.405859,
-      "transferStations": [
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10149,7 +10132,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10185,7 +10167,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10214,7 +10195,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "19",
         "27",
         "9R",
@@ -10226,9 +10206,7 @@
       ],
       "latitude": 37.780189,
       "longitude": -122.412813,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10275,7 +10253,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "19",
         "27",
         "9R",
@@ -10287,9 +10264,7 @@
       ],
       "latitude": 37.778606,
       "longitude": -122.414826,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10315,7 +10290,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10343,7 +10317,6 @@
       "kind": "streetLevel",
       "lines": [
         "7",
-        "F",
         "49",
         "90",
         "FBUS",
@@ -10354,9 +10327,7 @@
       ],
       "latitude": 37.775056,
       "longitude": -122.419321,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10382,7 +10353,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "19",
         "9R",
         "FBUS",
@@ -10393,9 +10363,7 @@
       ],
       "latitude": 37.779105,
       "longitude": -122.414379,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10421,7 +10389,6 @@
       "lines": [
         "7",
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -10448,7 +10415,6 @@
       "kind": "streetLevel",
       "lines": [
         "7",
-        "F",
         "49",
         "90",
         "FBUS",
@@ -10459,9 +10425,7 @@
       ],
       "latitude": 37.775198,
       "longitude": -122.419252,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -10489,7 +10453,9 @@
       ],
       "latitude": 37.773134,
       "longitude": -122.422427,
-      "transferStations": [],
+      "transferStations": [
+        "marketGough"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -11917,7 +11883,9 @@
       ],
       "latitude": 37.807266,
       "longitude": -122.407556,
-      "transferStations": [],
+      "transferStations": [
+        "embarcaderoBay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -11992,7 +11960,10 @@
       ],
       "latitude": 37.80704,
       "longitude": -122.41038,
-      "transferStations": [],
+      "transferStations": [
+        "beachStockton",
+        "embarcaderoStockton"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -12022,7 +11993,10 @@
       ],
       "latitude": 37.806497,
       "longitude": -122.412176,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason",
+        "beachStockton"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -12347,6 +12321,9 @@
       "latitude": 37.788051,
       "longitude": -122.403461,
       "transferStations": [
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -12384,7 +12361,10 @@
       ],
       "latitude": 37.786373,
       "longitude": -122.40211,
-      "transferStations": [],
+      "transferStations": [
+        "market3",
+        "marketKearny"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -12785,7 +12765,9 @@
       ],
       "latitude": 37.784259,
       "longitude": -122.404117,
-      "transferStations": [],
+      "transferStations": [
+        "fourthMarket"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -14196,7 +14178,6 @@
       "kind": "streetLevel",
       "lines": [
         "9",
-        "F",
         "9R",
         "FBUS",
         "KBUS",
@@ -14206,9 +14187,7 @@
       ],
       "latitude": 37.788613,
       "longitude": -122.402163,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -14231,6 +14210,8 @@
       "latitude": 37.775434,
       "longitude": -122.418548,
       "transferStations": [
+        "marketSouthVanNess",
+        "marketVanNess",
         "vanNess"
       ],
       "transferAgencies": [],
@@ -15415,738 +15396,6 @@
       ]
     },
     {
-      "id": "jonesBeach",
-      "name": "Jones & Beach",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.807132,
-      "longitude": -122.417324,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15184",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.807132,
-          "longitude": -122.417324
-        }
-      ]
-    },
-    {
-      "id": "beachMason",
-      "name": "Beach & Mason",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.807407,
-      "longitude": -122.414125,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13092",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.807407,
-          "longitude": -122.414125
-        }
-      ]
-    },
-    {
-      "id": "beachStockton",
-      "name": "Beach & Stockton",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.807841,
-      "longitude": -122.41081,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13095",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.807841,
-          "longitude": -122.41081
-        }
-      ]
-    },
-    {
-      "id": "jeffersonTaylor",
-      "name": "Jefferson & Taylor",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.80832,
-      "longitude": -122.415514,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15175",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.80832,
-          "longitude": -122.415514
-        }
-      ]
-    },
-    {
-      "id": "jeffersonPowell",
-      "name": "Jefferson & Powell",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.808594,
-      "longitude": -122.413357,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15174",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.808594,
-          "longitude": -122.413357
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoStockton",
-      "name": "Embarcadero & Stockton",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "39",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.808351,
-      "longitude": -122.410287,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14530",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.808351,
-          "longitude": -122.410287
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoBay",
-      "name": "Embarcadero & Bay",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.806787,
-      "longitude": -122.406154,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14502",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.806629,
-          "longitude": -122.40603
-        },
-        {
-          "id": "14501",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.806945,
-          "longitude": -122.406278
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoSansome",
-      "name": "Embarcadero & Sansome",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.805084,
-      "longitude": -122.403273,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14529",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.805022,
-          "longitude": -122.403314
-        },
-        {
-          "id": "17281",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.805146,
-          "longitude": -122.403233
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoGreenwich",
-      "name": "Embarcadero & Greenwich",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.803111,
-      "longitude": -122.401071,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14515",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.803263,
-          "longitude": -122.401113
-        },
-        {
-          "id": "14516",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.80296,
-          "longitude": -122.401029
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoGreen",
-      "name": "Embarcadero & Green",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.800934,
-      "longitude": -122.399145,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14517",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.801264,
-          "longitude": -122.399369
-        },
-        {
-          "id": "14518",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.800605,
-          "longitude": -122.39892
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoBroadway",
-      "name": "Embarcadero & Broadway",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.799227,
-      "longitude": -122.397651,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14503",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.799552,
-          "longitude": -122.397869
-        },
-        {
-          "id": "14504",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.798901,
-          "longitude": -122.397434
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoWashington",
-      "name": "Embarcadero & Washington",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.79672,
-      "longitude": -122.395425,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14532",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.797085,
-          "longitude": -122.39567
-        },
-        {
-          "id": "14534",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.796355,
-          "longitude": -122.395181
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoFerryBuilding",
-      "name": "Embarcadero & Ferry Building",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.794859,
-      "longitude": -122.393661,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14513",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.79489,
-          "longitude": -122.393552
-        },
-        {
-          "id": "17283",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.794828,
-          "longitude": -122.39377
-        }
-      ]
-    },
-    {
-      "id": "donCheeWaysteuart",
-      "name": "Don Chee Way/Steuart",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "LOWL",
-        "NOWL"
-      ],
-      "latitude": 37.793949,
-      "longitude": -122.393496,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14727",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.793918,
-          "longitude": -122.393438
-        },
-        {
-          "id": "14726",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.79398,
-          "longitude": -122.393555
-        }
-      ]
-    },
-    {
-      "id": "mainMarket",
-      "name": "Main & Market",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "12",
-        "14",
-        "14R",
-        "FBUS"
-      ],
-      "latitude": 37.792984,
-      "longitude": -122.396627,
-      "transferStations": [
-        "embarcadero"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15336",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.79253,
-          "longitude": -122.39567
-        },
-        {
-          "id": "15682",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.792984,
-          "longitude": -122.396627
-        }
-      ]
-    },
-    {
-      "id": "marketGough",
-      "name": "Market & Gough",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.773072,
-      "longitude": -122.42188,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15673",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.772875,
-          "longitude": -122.421991
-        },
-        {
-          "id": "15672",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.773269,
-          "longitude": -122.421768
-        }
-      ]
-    },
-    {
-      "id": "marketLaguna",
-      "name": "Market & Laguna",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.770953,
-      "longitude": -122.424666,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15681",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.770953,
-          "longitude": -122.424666
-        }
-      ]
-    },
-    {
-      "id": "marketBuchanan",
-      "name": "Market & Buchanan",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.769786,
-      "longitude": -122.426149,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15659",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.769786,
-          "longitude": -122.426149
-        }
-      ]
-    },
-    {
-      "id": "marketGuerrero",
-      "name": "Market & Guerrero",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.77057,
-      "longitude": -122.424971,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15675",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.77057,
-          "longitude": -122.424971
-        }
-      ]
-    },
-    {
-      "id": "marketDolores",
-      "name": "Market & Dolores",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "FBUS",
-        "KBUS",
-        "LOWL",
-        "NBUS",
-        "NOWL"
-      ],
-      "latitude": 37.76888,
-      "longitude": -122.427103,
-      "transferStations": [
-        "churchDuboceJ"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15668",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.76888,
-          "longitude": -122.427103
-        }
-      ]
-    },
-    {
-      "id": "churchMarket",
-      "name": "Church & Market",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "22",
-        "FBUS",
-        "KBUS",
-        "LOWL"
-      ],
-      "latitude": 37.767398,
-      "longitude": -122.42899,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "17073",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.767509,
-          "longitude": -122.428927
-        },
-        {
-          "id": "18059",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.767286,
-          "longitude": -122.429053
-        },
-        {
-          "id": "15662",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.76725,
-          "longitude": -122.429214
-        },
-        {
-          "id": "18062",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.767277,
-          "longitude": -122.429099
-        },
-        {
-          "id": "15661",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.767705,
-          "longitude": -122.428778
-        }
-      ]
-    },
-    {
-      "id": "marketSanchez",
-      "name": "Market & Sanchez",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "37",
-        "FBUS",
-        "KBUS",
-        "LOWL"
-      ],
-      "latitude": 37.765908,
-      "longitude": -122.430961,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15691",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.765689,
-          "longitude": -122.43114
-        },
-        {
-          "id": "17123",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.765632,
-          "longitude": -122.431216
-        },
-        {
-          "id": "15690",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.766185,
-          "longitude": -122.430707
-        }
-      ]
-    },
-    {
-      "id": "marketNoe",
-      "name": "Market & Noe",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "37",
-        "FBUS",
-        "KBUS",
-        "LOWL"
-      ],
-      "latitude": 37.764223,
-      "longitude": -122.433067,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "15686",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.764489,
-          "longitude": -122.432812
-        },
-        {
-          "id": "15687",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.763958,
-          "longitude": -122.433323
-        }
-      ]
-    },
-    {
-      "id": "seventeenthNoe",
-      "name": "17th & Noe",
-      "kind": "streetLevel",
-      "lines": [
-        "F"
-      ],
-      "latitude": 37.762645,
-      "longitude": -122.432991,
-      "transferStations": [
-        "castro"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13318",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.762645,
-          "longitude": -122.432991
-        }
-      ]
-    },
-    {
-      "id": "seventeenthCastro",
-      "name": "17th & Castro",
-      "kind": "streetLevel",
-      "lines": [
-        "F",
-        "24",
-        "FBUS"
-      ],
-      "latitude": 37.762576,
-      "longitude": -122.434979,
-      "transferStations": [
-        "castro"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14313",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.76237,
-          "longitude": -122.43508
-        },
-        {
-          "id": "13311",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.762576,
-          "longitude": -122.434979
-        }
-      ]
-    },
-    {
       "id": "jacksonVanNess",
       "name": "Jackson & Van Ness",
       "kind": "streetLevel",
@@ -16608,7 +15857,9 @@
       "latitude": 37.79398,
       "longitude": -122.39635,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -16625,6 +15876,37 @@
           "name": null,
           "latitude": 37.793678,
           "longitude": -122.396373
+        }
+      ]
+    },
+    {
+      "id": "mainMarket",
+      "name": "Main & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "12",
+        "14",
+        "14R",
+        "FBUS"
+      ],
+      "latitude": 37.792984,
+      "longitude": -122.396627,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15336",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.79253,
+          "longitude": -122.39567
+        },
+        {
+          "id": "15682",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.792984,
+          "longitude": -122.396627
         }
       ]
     },
@@ -16959,7 +16241,9 @@
       ],
       "latitude": 37.792437,
       "longitude": -122.394047,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -17621,7 +16905,10 @@
       ],
       "latitude": 37.78992,
       "longitude": -122.39749,
-      "transferStations": [],
+      "transferStations": [
+        "market1",
+        "marketBattery"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -17675,7 +16962,9 @@
       ],
       "latitude": 37.78272,
       "longitude": -122.406582,
-      "transferStations": [],
+      "transferStations": [
+        "market5"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -17733,7 +17022,9 @@
       ],
       "latitude": 37.779162,
       "longitude": -122.410927,
-      "transferStations": [],
+      "transferStations": [
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -17807,7 +17098,9 @@
       ],
       "latitude": 37.776195,
       "longitude": -122.414745,
-      "transferStations": [],
+      "transferStations": [
+        "market9"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -21652,7 +20945,12 @@
       ],
       "latitude": 37.778901,
       "longitude": -122.416545,
-      "transferStations": [],
+      "transferStations": [
+        "eighthMarket",
+        "market9",
+        "marketHyde",
+        "marketLarkin"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -23202,7 +22500,9 @@
       "latitude": 37.792608,
       "longitude": -122.397532,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -23261,7 +22561,10 @@
       ],
       "latitude": 37.79202,
       "longitude": -122.40086,
-      "transferStations": [],
+      "transferStations": [
+        "market1",
+        "marketBattery"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -23282,7 +22585,9 @@
       ],
       "latitude": 37.790924,
       "longitude": -122.402118,
-      "transferStations": [],
+      "transferStations": [
+        "market2"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -24020,6 +23325,58 @@
           "name": null,
           "latitude": 37.769499,
           "longitude": -122.429167
+        }
+      ]
+    },
+    {
+      "id": "churchMarket",
+      "name": "Church & Market",
+      "kind": "streetLevel",
+      "lines": [
+        "22",
+        "FBUS",
+        "KBUS",
+        "LOWL"
+      ],
+      "latitude": 37.767398,
+      "longitude": -122.42899,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17073",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.767509,
+          "longitude": -122.428927
+        },
+        {
+          "id": "18059",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.767286,
+          "longitude": -122.429053
+        },
+        {
+          "id": "15662",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76725,
+          "longitude": -122.429214
+        },
+        {
+          "id": "18062",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.767277,
+          "longitude": -122.429099
+        },
+        {
+          "id": "15661",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.767705,
+          "longitude": -122.428778
         }
       ]
     },
@@ -26516,7 +25873,8 @@
       "latitude": 37.764217,
       "longitude": -122.435347,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -26550,7 +25908,8 @@
       "latitude": 37.762397,
       "longitude": -122.435266,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -26578,6 +25937,35 @@
       ]
     },
     {
+      "id": "seventeenthCastro",
+      "name": "17th & Castro",
+      "kind": "streetLevel",
+      "lines": [
+        "24",
+        "FBUS"
+      ],
+      "latitude": 37.762576,
+      "longitude": -122.434979,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14313",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.76237,
+          "longitude": -122.43508
+        },
+        {
+          "id": "13311",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.762576,
+          "longitude": -122.434979
+        }
+      ]
+    },
+    {
       "id": "eighteenthCastro",
       "name": "18th & Castro",
       "kind": "streetLevel",
@@ -26589,7 +25977,8 @@
       "latitude": 37.760849,
       "longitude": -122.434991,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -28743,7 +28132,12 @@
       ],
       "latitude": 37.807639,
       "longitude": -122.412141,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason",
+        "beachStockton",
+        "embarcaderoStockton",
+        "jeffersonPowell"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -28771,7 +28165,9 @@
       ],
       "latitude": 37.806542,
       "longitude": -122.41385,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -28799,7 +28195,9 @@
       ],
       "latitude": 37.80611,
       "longitude": -122.417291,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -32267,7 +31665,9 @@
       ],
       "latitude": 37.80551,
       "longitude": -122.41784,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -32289,7 +31689,9 @@
       ],
       "latitude": 37.80549,
       "longitude": -122.417589,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -32798,6 +32200,7 @@
       "latitude": 37.784011,
       "longitude": -122.40821,
       "transferStations": [
+        "market5",
         "powell"
       ],
       "transferAgencies": [],
@@ -32820,7 +32223,9 @@
       ],
       "latitude": 37.784172,
       "longitude": -122.410135,
-      "transferStations": [],
+      "transferStations": [
+        "market5"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -32904,7 +32309,10 @@
       ],
       "latitude": 37.783476,
       "longitude": -122.409379,
-      "transferStations": [],
+      "transferStations": [
+        "market5",
+        "marketTaylor"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -34390,7 +33798,9 @@
       ],
       "latitude": 37.761027,
       "longitude": -122.432796,
-      "transferStations": [],
+      "transferStations": [
+        "seventeenthNoe"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -37606,7 +37016,8 @@
       "longitude": -122.431191,
       "transferStations": [
         "church",
-        "churchMarket"
+        "churchMarket",
+        "marketSanchez"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -37660,6 +37071,68 @@
       ]
     },
     {
+      "id": "marketSanchez",
+      "name": "Market & Sanchez",
+      "kind": "streetLevel",
+      "lines": [
+        "37",
+        "FBUS",
+        "KBUS",
+        "LOWL"
+      ],
+      "latitude": 37.765908,
+      "longitude": -122.430961,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15691",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.765689,
+          "longitude": -122.43114
+        },
+        {
+          "id": "15690",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.766185,
+          "longitude": -122.430707
+        }
+      ]
+    },
+    {
+      "id": "marketNoe",
+      "name": "Market & Noe",
+      "kind": "streetLevel",
+      "lines": [
+        "37",
+        "FBUS",
+        "KBUS",
+        "LOWL"
+      ],
+      "latitude": 37.764223,
+      "longitude": -122.433067,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15686",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.764489,
+          "longitude": -122.432812
+        },
+        {
+          "id": "15687",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.763958,
+          "longitude": -122.433323
+        }
+      ]
+    },
+    {
       "id": "corbettDouglass",
       "name": "Corbett & Douglass",
       "kind": "streetLevel",
@@ -37689,7 +37162,9 @@
       ],
       "latitude": 37.76569,
       "longitude": -122.4314,
-      "transferStations": [],
+      "transferStations": [
+        "marketSanchez"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -37713,7 +37188,10 @@
       "latitude": 37.76391,
       "longitude": -122.43366,
       "transferStations": [
-        "castro"
+        "castro",
+        "marketNoe",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -37738,7 +37216,9 @@
       "latitude": 37.763022,
       "longitude": -122.434979,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -38458,6 +37938,8 @@
       "latitude": 37.786642,
       "longitude": -122.405629,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -39479,6 +38961,29 @@
           "name": null,
           "latitude": 37.779023,
           "longitude": -122.509411
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoStockton",
+      "name": "Embarcadero & Stockton",
+      "kind": "streetLevel",
+      "lines": [
+        "39",
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.808351,
+      "longitude": -122.410287,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14530",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.808351,
+          "longitude": -122.410287
         }
       ]
     },
@@ -49961,7 +49466,9 @@
       "latitude": 37.791991,
       "longitude": -122.395033,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -49991,7 +49498,9 @@
       "latitude": 37.793512,
       "longitude": -122.397336,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -50028,7 +49537,8 @@
       "latitude": 37.793354,
       "longitude": -122.398782,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -51232,6 +50742,481 @@
           "name": null,
           "latitude": 37.797849,
           "longitude": -122.407342
+        }
+      ]
+    },
+    {
+      "id": "jonesBeach",
+      "name": "Jones & Beach",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.807132,
+      "longitude": -122.417324,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15184",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.807132,
+          "longitude": -122.417324
+        }
+      ]
+    },
+    {
+      "id": "beachMason",
+      "name": "Beach & Mason",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.807407,
+      "longitude": -122.414125,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13092",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.807407,
+          "longitude": -122.414125
+        }
+      ]
+    },
+    {
+      "id": "beachStockton",
+      "name": "Beach & Stockton",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.807841,
+      "longitude": -122.41081,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13095",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.807841,
+          "longitude": -122.41081
+        }
+      ]
+    },
+    {
+      "id": "jeffersonTaylor",
+      "name": "Jefferson & Taylor",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.80832,
+      "longitude": -122.415514,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15175",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.80832,
+          "longitude": -122.415514
+        }
+      ]
+    },
+    {
+      "id": "jeffersonPowell",
+      "name": "Jefferson & Powell",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.808594,
+      "longitude": -122.413357,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15174",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.808594,
+          "longitude": -122.413357
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoBay",
+      "name": "Embarcadero & Bay",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.806787,
+      "longitude": -122.406154,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14502",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.806629,
+          "longitude": -122.40603
+        },
+        {
+          "id": "14501",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.806945,
+          "longitude": -122.406278
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoSansome",
+      "name": "Embarcadero & Sansome",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.805084,
+      "longitude": -122.403273,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14529",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.805022,
+          "longitude": -122.403314
+        },
+        {
+          "id": "17281",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.805146,
+          "longitude": -122.403233
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoGreenwich",
+      "name": "Embarcadero & Greenwich",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.803111,
+      "longitude": -122.401071,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14515",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.803263,
+          "longitude": -122.401113
+        },
+        {
+          "id": "14516",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.80296,
+          "longitude": -122.401029
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoGreen",
+      "name": "Embarcadero & Green",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.800934,
+      "longitude": -122.399145,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14517",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.801264,
+          "longitude": -122.399369
+        },
+        {
+          "id": "14518",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.800605,
+          "longitude": -122.39892
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoBroadway",
+      "name": "Embarcadero & Broadway",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.799227,
+      "longitude": -122.397651,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14503",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.799552,
+          "longitude": -122.397869
+        },
+        {
+          "id": "14504",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.798901,
+          "longitude": -122.397434
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoWashington",
+      "name": "Embarcadero & Washington",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.79672,
+      "longitude": -122.395425,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14532",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.797085,
+          "longitude": -122.39567
+        },
+        {
+          "id": "14534",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.796355,
+          "longitude": -122.395181
+        }
+      ]
+    },
+    {
+      "id": "embarcaderoFerryBuilding",
+      "name": "Embarcadero & Ferry Building",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL"
+      ],
+      "latitude": 37.794859,
+      "longitude": -122.393661,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14513",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.79489,
+          "longitude": -122.393552
+        },
+        {
+          "id": "17283",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.794828,
+          "longitude": -122.39377
+        }
+      ]
+    },
+    {
+      "id": "donCheeWaysteuart",
+      "name": "Don Chee Way/Steuart",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "LOWL",
+        "NOWL"
+      ],
+      "latitude": 37.793949,
+      "longitude": -122.393496,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14727",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.793918,
+          "longitude": -122.393438
+        },
+        {
+          "id": "14726",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.79398,
+          "longitude": -122.393555
+        }
+      ]
+    },
+    {
+      "id": "marketGough",
+      "name": "Market & Gough",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "KBUS",
+        "LOWL",
+        "NBUS",
+        "NOWL"
+      ],
+      "latitude": 37.773072,
+      "longitude": -122.42188,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15673",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.772875,
+          "longitude": -122.421991
+        },
+        {
+          "id": "15672",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.773269,
+          "longitude": -122.421768
+        }
+      ]
+    },
+    {
+      "id": "marketLaguna",
+      "name": "Market & Laguna",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "KBUS",
+        "LOWL",
+        "NBUS",
+        "NOWL"
+      ],
+      "latitude": 37.770953,
+      "longitude": -122.424666,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15681",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.770953,
+          "longitude": -122.424666
+        }
+      ]
+    },
+    {
+      "id": "marketBuchanan",
+      "name": "Market & Buchanan",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "KBUS",
+        "LOWL",
+        "NBUS",
+        "NOWL"
+      ],
+      "latitude": 37.769786,
+      "longitude": -122.426149,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15659",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.769786,
+          "longitude": -122.426149
+        }
+      ]
+    },
+    {
+      "id": "marketGuerrero",
+      "name": "Market & Guerrero",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "KBUS",
+        "LOWL",
+        "NBUS",
+        "NOWL"
+      ],
+      "latitude": 37.77057,
+      "longitude": -122.424971,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15675",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.77057,
+          "longitude": -122.424971
+        }
+      ]
+    },
+    {
+      "id": "marketDolores",
+      "name": "Market & Dolores",
+      "kind": "streetLevel",
+      "lines": [
+        "FBUS",
+        "KBUS",
+        "LOWL",
+        "NBUS",
+        "NOWL"
+      ],
+      "latitude": 37.76888,
+      "longitude": -122.427103,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15668",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.76888,
+          "longitude": -122.427103
         }
       ]
     },

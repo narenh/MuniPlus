@@ -425,11 +425,9 @@
       "lines": [
         "49"
       ],
-      "latitude": 37.7751,
-      "longitude": -122.41924,
-      "transferStations": [
-        "vanNess"
-      ],
+      "latitude": 37.775056,
+      "longitude": -122.419321,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -469,11 +467,9 @@
       "lines": [
         "49"
       ],
-      "latitude": 37.775172,
-      "longitude": -122.419309,
-      "transferStations": [
-        "vanNess"
-      ],
+      "latitude": 37.775198,
+      "longitude": -122.419252,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {

@@ -66,7 +66,8 @@
       "latitude": 37.762357,
       "longitude": -122.435502,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -96,7 +97,8 @@
       "latitude": 37.760863,
       "longitude": -122.435048,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [

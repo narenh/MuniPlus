@@ -618,7 +618,8 @@
       "latitude": 37.764217,
       "longitude": -122.435347,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -648,7 +649,8 @@
       "latitude": 37.762397,
       "longitude": -122.435266,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -668,11 +670,9 @@
       "lines": [
         "24"
       ],
-      "latitude": 37.76237,
-      "longitude": -122.43508,
-      "transferStations": [
-        "castro"
-      ],
+      "latitude": 37.762576,
+      "longitude": -122.434979,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -694,7 +694,8 @@
       "latitude": 37.760849,
       "longitude": -122.434991,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [

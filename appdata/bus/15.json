@@ -52,6 +52,8 @@
       "latitude": 37.790214,
       "longitude": -122.401338,
       "transferStations": [
+        "market2",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -74,7 +76,10 @@
       ],
       "latitude": 37.786373,
       "longitude": -122.40211,
-      "transferStations": [],
+      "transferStations": [
+        "market3",
+        "marketKearny"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -162,10 +167,7 @@
       ],
       "latitude": 37.785411,
       "longitude": -122.405531,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -186,7 +188,9 @@
       ],
       "latitude": 37.784259,
       "longitude": -122.404117,
-      "transferStations": [],
+      "transferStations": [
+        "fourthMarket"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

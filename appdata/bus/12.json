@@ -523,7 +523,9 @@
       "latitude": 37.79455,
       "longitude": -122.3976,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -546,7 +548,9 @@
       "latitude": 37.79398,
       "longitude": -122.39635,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -566,11 +570,9 @@
       "lines": [
         "12"
       ],
-      "latitude": 37.79253,
-      "longitude": -122.39567,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "latitude": 37.792984,
+      "longitude": -122.396627,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -993,7 +995,10 @@
       "latitude": 37.7934,
       "longitude": -122.39528,
       "transferStations": [
-        "embarcadero"
+        "donCheeWaysteuart",
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -1015,7 +1020,9 @@
       ],
       "latitude": 37.792437,
       "longitude": -122.394047,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

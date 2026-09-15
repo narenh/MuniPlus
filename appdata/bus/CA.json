@@ -40,7 +40,9 @@
       "latitude": 37.793678,
       "longitude": -122.396373,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -63,7 +65,9 @@
       "latitude": 37.793512,
       "longitude": -122.397336,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -100,7 +104,9 @@
       "latitude": 37.793512,
       "longitude": -122.397336,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -137,7 +143,8 @@
       "latitude": 37.793354,
       "longitude": -122.398782,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [

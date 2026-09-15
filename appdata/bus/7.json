@@ -119,7 +119,8 @@
       "latitude": 37.791939,
       "longitude": -122.396879,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -139,8 +140,8 @@
       "lines": [
         "7"
       ],
-      "latitude": 37.790485,
-      "longitude": -122.399723,
+      "latitude": 37.79094,
+      "longitude": -122.399195,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -184,6 +185,10 @@
       "latitude": 37.786597,
       "longitude": -122.404586,
       "transferStations": [
+        "fourthMarket",
+        "market3",
+        "marketKearny",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -207,6 +212,8 @@
       "latitude": 37.78484,
       "longitude": -122.406834,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "powell"
       ],
       "transferAgencies": [],
@@ -230,7 +237,10 @@
       "latitude": 37.791645,
       "longitude": -122.398151,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -273,9 +283,7 @@
       ],
       "latitude": 37.789353,
       "longitude": -122.401306,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -317,9 +325,7 @@
       ],
       "latitude": 37.785777,
       "longitude": -122.405859,
-      "transferStations": [
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -338,11 +344,9 @@
       "lines": [
         "7"
       ],
-      "latitude": 37.783738,
-      "longitude": -122.408324,
-      "transferStations": [
-        "powell"
-      ],
+      "latitude": 37.783395,
+      "longitude": -122.408657,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -412,9 +416,7 @@
       ],
       "latitude": 37.780189,
       "longitude": -122.412813,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -442,9 +444,7 @@
       ],
       "latitude": 37.778606,
       "longitude": -122.414826,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -486,9 +486,7 @@
       ],
       "latitude": 37.775056,
       "longitude": -122.419321,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -509,9 +507,7 @@
       ],
       "latitude": 37.779105,
       "longitude": -122.414379,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -553,9 +549,7 @@
       ],
       "latitude": 37.775198,
       "longitude": -122.419252,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -576,7 +570,9 @@
       ],
       "latitude": 37.773134,
       "longitude": -122.422427,
-      "transferStations": [],
+      "transferStations": [
+        "marketGough"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

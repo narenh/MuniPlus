@@ -445,7 +445,9 @@
       "latitude": 37.792572,
       "longitude": -122.397016,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -488,9 +490,7 @@
       ],
       "latitude": 37.788613,
       "longitude": -122.402163,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -509,8 +509,8 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.787525,
-      "longitude": -122.403519,
+      "latitude": 37.787667,
+      "longitude": -122.403359,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -530,12 +530,9 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.785705,
-      "longitude": -122.405847,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "latitude": 37.785411,
+      "longitude": -122.405531,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -556,7 +553,11 @@
       ],
       "latitude": 37.794409,
       "longitude": -122.394538,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding",
+        "marketDrumm"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -577,9 +578,7 @@
       ],
       "latitude": 37.793473,
       "longitude": -122.396178,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -621,9 +620,7 @@
       ],
       "latitude": 37.789353,
       "longitude": -122.401306,
-      "transferStations": [
-        "mongomery"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -665,9 +662,7 @@
       ],
       "latitude": 37.785777,
       "longitude": -122.405859,
-      "transferStations": [
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -686,11 +681,9 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.783984,
-      "longitude": -122.408066,
-      "transferStations": [
-        "powell"
-      ],
+      "latitude": 37.783395,
+      "longitude": -122.408657,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -716,8 +709,8 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.782102,
-      "longitude": -122.4104,
+      "latitude": 37.78129,
+      "longitude": -122.411329,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -758,11 +751,9 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.780466,
-      "longitude": -122.412527,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "latitude": 37.780189,
+      "longitude": -122.412813,
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -790,9 +781,7 @@
       ],
       "latitude": 37.778606,
       "longitude": -122.414826,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -834,9 +823,7 @@
       ],
       "latitude": 37.775056,
       "longitude": -122.419321,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -857,9 +844,7 @@
       ],
       "latitude": 37.779105,
       "longitude": -122.414379,
-      "transferStations": [
-        "civicCenter"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -901,9 +886,7 @@
       ],
       "latitude": 37.775198,
       "longitude": -122.419252,
-      "transferStations": [
-        "vanNess"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -973,9 +956,7 @@
       ],
       "latitude": 37.76888,
       "longitude": -122.427103,
-      "transferStations": [
-        "churchDuboceJ"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1064,8 +1045,8 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.765937,
-      "longitude": -122.430924,
+      "latitude": 37.765908,
+      "longitude": -122.430961,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -1092,8 +1073,8 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.763958,
-      "longitude": -122.433323,
+      "latitude": 37.764223,
+      "longitude": -122.433067,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -1116,7 +1097,8 @@
       "latitude": 37.762594,
       "longitude": -122.435289,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -1139,7 +1121,10 @@
       "latitude": 37.76391,
       "longitude": -122.43366,
       "transferStations": [
-        "castro"
+        "castro",
+        "marketNoe",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -1162,7 +1147,9 @@
       "latitude": 37.763022,
       "longitude": -122.434979,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [

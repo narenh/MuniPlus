@@ -76,6 +76,7 @@
       "latitude": 37.784011,
       "longitude": -122.40821,
       "transferStations": [
+        "market5",
         "powell"
       ],
       "transferAgencies": [],
@@ -98,7 +99,9 @@
       ],
       "latitude": 37.784172,
       "longitude": -122.410135,
-      "transferStations": [],
+      "transferStations": [
+        "market5"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -182,7 +185,10 @@
       ],
       "latitude": 37.783476,
       "longitude": -122.409379,
-      "transferStations": [],
+      "transferStations": [
+        "market5",
+        "marketTaylor"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

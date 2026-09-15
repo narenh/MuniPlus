@@ -50,7 +50,9 @@
       ],
       "latitude": 37.78272,
       "longitude": -122.406582,
-      "transferStations": [],
+      "transferStations": [
+        "market5"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

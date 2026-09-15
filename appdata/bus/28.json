@@ -62,7 +62,12 @@
       ],
       "latitude": 37.807639,
       "longitude": -122.412141,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason",
+        "beachStockton",
+        "embarcaderoStockton",
+        "jeffersonPowell"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -83,7 +88,9 @@
       ],
       "latitude": 37.806542,
       "longitude": -122.41385,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -111,7 +118,9 @@
       ],
       "latitude": 37.80611,
       "longitude": -122.417291,
-      "transferStations": [],
+      "transferStations": [
+        "jonesBeach"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

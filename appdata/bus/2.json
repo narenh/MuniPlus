@@ -64,7 +64,10 @@
       ],
       "latitude": 37.794275,
       "longitude": -122.394424,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -86,7 +89,10 @@
       "latitude": 37.7934,
       "longitude": -122.39528,
       "transferStations": [
-        "embarcadero"
+        "donCheeWaysteuart",
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -109,7 +115,9 @@
       "latitude": 37.792572,
       "longitude": -122.397016,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -153,6 +161,10 @@
       "latitude": 37.78896,
       "longitude": -122.402739,
       "transferStations": [
+        "market2",
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -431,7 +443,11 @@
       ],
       "latitude": 37.794409,
       "longitude": -122.394538,
-      "transferStations": [],
+      "transferStations": [
+        "donCheeWaysteuart",
+        "embarcaderoFerryBuilding",
+        "marketDrumm"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -452,9 +468,7 @@
       ],
       "latitude": 37.793473,
       "longitude": -122.396178,
-      "transferStations": [
-        "embarcadero"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -476,7 +490,10 @@
       "latitude": 37.79192,
       "longitude": -122.39815,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -499,6 +516,8 @@
       "latitude": 37.790214,
       "longitude": -122.401338,
       "transferStations": [
+        "market2",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],

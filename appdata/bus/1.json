@@ -451,7 +451,9 @@
       "latitude": 37.79455,
       "longitude": -122.3976,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "marketDrumm"
       ],
       "transferAgencies": [],
       "platforms": [

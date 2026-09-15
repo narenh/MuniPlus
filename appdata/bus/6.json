@@ -71,7 +71,9 @@
       "latitude": 37.779346,
       "longitude": -122.415158,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "eighthMarket",
+        "marketHyde"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -93,7 +95,10 @@
       ],
       "latitude": 37.777709,
       "longitude": -122.416852,
-      "transferStations": [],
+      "transferStations": [
+        "market9",
+        "marketLarkin"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

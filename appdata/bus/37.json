@@ -765,7 +765,8 @@
       "longitude": -122.431191,
       "transferStations": [
         "church",
-        "churchMarket"
+        "churchMarket",
+        "marketSanchez"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -825,8 +826,8 @@
       "lines": [
         "37"
       ],
-      "latitude": 37.765689,
-      "longitude": -122.43114,
+      "latitude": 37.765908,
+      "longitude": -122.430961,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -846,8 +847,8 @@
       "lines": [
         "37"
       ],
-      "latitude": 37.763958,
-      "longitude": -122.433323,
+      "latitude": 37.764223,
+      "longitude": -122.433067,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -870,7 +871,8 @@
       "latitude": 37.762594,
       "longitude": -122.435289,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -913,7 +915,9 @@
       ],
       "latitude": 37.76569,
       "longitude": -122.4314,
-      "transferStations": [],
+      "transferStations": [
+        "marketSanchez"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -935,7 +939,10 @@
       "latitude": 37.76391,
       "longitude": -122.43366,
       "transferStations": [
-        "castro"
+        "castro",
+        "marketNoe",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -958,7 +965,9 @@
       "latitude": 37.763022,
       "longitude": -122.434979,
       "transferStations": [
-        "castro"
+        "castro",
+        "seventeenthCastro",
+        "seventeenthNoe"
       ],
       "transferAgencies": [],
       "platforms": [

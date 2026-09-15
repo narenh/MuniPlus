@@ -96,7 +96,8 @@
       "latitude": 37.791939,
       "longitude": -122.396879,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -116,8 +117,8 @@
       "lines": [
         "5"
       ],
-      "latitude": 37.790485,
-      "longitude": -122.399723,
+      "latitude": 37.79094,
+      "longitude": -122.399195,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -161,6 +162,10 @@
       "latitude": 37.786597,
       "longitude": -122.404586,
       "transferStations": [
+        "fourthMarket",
+        "market3",
+        "marketKearny",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -184,6 +189,8 @@
       "latitude": 37.78484,
       "longitude": -122.406834,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "powell"
       ],
       "transferAgencies": [],
@@ -206,9 +213,7 @@
       ],
       "latitude": 37.783395,
       "longitude": -122.408657,
-      "transferStations": [
-        "powell"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -230,7 +235,8 @@
       "latitude": 37.780889,
       "longitude": -122.413587,
       "transferStations": [
-        "civicCenter"
+        "civicCenter",
+        "market7"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -253,7 +259,10 @@
       "latitude": 37.791645,
       "longitude": -122.398151,
       "transferStations": [
-        "embarcadero"
+        "embarcadero",
+        "mainMarket",
+        "market1",
+        "marketBattery"
       ],
       "transferAgencies": [],
       "platforms": [
@@ -276,6 +285,9 @@
       "latitude": 37.790013,
       "longitude": -122.400491,
       "transferStations": [
+        "market1",
+        "market2",
+        "marketBattery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -299,6 +311,10 @@
       "latitude": 37.78849,
       "longitude": -122.40248,
       "transferStations": [
+        "market2",
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -321,10 +337,7 @@
       ],
       "latitude": 37.785411,
       "longitude": -122.405531,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -346,6 +359,8 @@
       "latitude": 37.78639,
       "longitude": -122.40516,
       "transferStations": [
+        "fourthMarket",
+        "marketStockton",
         "unionSquare"
       ],
       "transferAgencies": [],
@@ -369,6 +384,7 @@
       "latitude": 37.784474,
       "longitude": -122.407544,
       "transferStations": [
+        "market5",
         "powell"
       ],
       "transferAgencies": [],
@@ -391,7 +407,10 @@
       ],
       "latitude": 37.78285,
       "longitude": -122.40964,
-      "transferStations": [],
+      "transferStations": [
+        "market5",
+        "marketTaylor"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -412,7 +431,10 @@
       ],
       "latitude": 37.781166,
       "longitude": -122.412189,
-      "transferStations": [],
+      "transferStations": [
+        "market6",
+        "market7"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

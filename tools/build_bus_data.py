@@ -644,6 +644,12 @@ def main():
               'build that fails validation must not add to it.')
         return 1
 
+    # a route that moves to data.json (as the F did) must not leave a stale file behind
+    keep = {f'{r}.json' for r in routes}
+    for stale in sorted(set(os.listdir(OUT_DIR)) - keep):
+        os.remove(os.path.join(OUT_DIR, stale))
+        print(f'removed appdata/bus/{stale} - no longer covered here')
+
     # only now, once everything checks out, freeze the ids
     for sid, rec in records.items():
         for s in rec['members']:

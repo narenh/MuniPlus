@@ -100,7 +100,9 @@
       ],
       "latitude": 37.807266,
       "longitude": -122.407556,
-      "transferStations": [],
+      "transferStations": [
+        "embarcaderoBay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -170,7 +172,9 @@
       ],
       "latitude": 37.807266,
       "longitude": -122.407556,
-      "transferStations": [],
+      "transferStations": [
+        "embarcaderoBay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -198,7 +202,10 @@
       ],
       "latitude": 37.80704,
       "longitude": -122.41038,
-      "transferStations": [],
+      "transferStations": [
+        "beachStockton",
+        "embarcaderoStockton"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -219,7 +226,10 @@
       ],
       "latitude": 37.806497,
       "longitude": -122.412176,
-      "transferStations": [],
+      "transferStations": [
+        "beachMason",
+        "beachStockton"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -514,6 +524,9 @@
       "latitude": 37.788051,
       "longitude": -122.403461,
       "transferStations": [
+        "market3",
+        "marketKearny",
+        "marketNewMontgomery",
         "mongomery"
       ],
       "transferAgencies": [],
@@ -536,7 +549,10 @@
       ],
       "latitude": 37.786373,
       "longitude": -122.40211,
-      "transferStations": [],
+      "transferStations": [
+        "market3",
+        "marketKearny"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -838,10 +854,7 @@
       ],
       "latitude": 37.785411,
       "longitude": -122.405531,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
+      "transferStations": [],
       "transferAgencies": [],
       "platforms": [
         {
@@ -862,7 +875,9 @@
       ],
       "latitude": 37.784259,
       "longitude": -122.404117,
-      "transferStations": [],
+      "transferStations": [
+        "fourthMarket"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
