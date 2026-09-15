@@ -83,7 +83,6 @@
         "thirdKirkwoodLaSalle",
         "thirdOakdalePalou",
         "thirdRevereShafter",
-        "thirdVanDyke",
         "thirdBayview",
         "thirdWilliams",
         "thirdCarroll",
@@ -2103,29 +2102,6 @@
       ]
     },
     {
-      "id": "thirdVanDyke",
-      "name": "3rd & Van Dyke",
-      "kind": "streetLevel",
-      "lines": [
-        "91"
-      ],
-      "latitude": 37.729238,
-      "longitude": -122.392593,
-      "transferStations": [
-        "thirdWilliams"
-      ],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "13149",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.729238,
-          "longitude": -122.392593
-        }
-      ]
-    },
-    {
       "id": "thirdBayview",
       "name": "3rd & Bayview",
       "kind": "streetLevel",
@@ -2160,6 +2136,13 @@
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "13149",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.729238,
+          "longitude": -122.392593
+        },
         {
           "id": "13150",
           "heading": "southbound",

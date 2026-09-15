@@ -11,6 +11,7 @@ metro file**, so a stop served by a train and a bus is a single station.
 | `appdata/bus/<route>.json` | one file per route. Source of truth for readable diffs; the app does not need these |
 | `tools/build_bus_data.py` | the generator |
 | `tools/station-ids.json` | frozen stop code → station id map |
+| `tools/station-overrides.json` | hand-verified corrections that beat every heuristic |
 
 Merged with `data.json`: **1,816 stations, 3,229 platforms, 68 lines.**
 `bus.json` is 1.17 MB (99 kB gzipped).
@@ -84,6 +85,34 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
 ## How station identity is decided
 
 `data.json` is authoritative. For each intersection, in order:
+
+0. **`tools/station-overrides.json` wins over everything**, including the frozen map.
+   This is where a person records what they verified on the real street, which no
+   rule here can work out from a feed. Every entry carries a `why`, because the
+   reasoning *is* the record. A stop code that no route serves, or an override that
+   fails to take effect, fails the build rather than being silently ignored.
+
+   ```json
+   "13149": {
+     "station": "thirdWilliams",
+     "why": "One physical pole with two SFMTA ids ..."
+   }
+   ```
+
+   The three in there now, all confirmed on the ground:
+
+   * `13149` — `3rd St & Van Dyke Ave` (91) and `Third Street & Williams Ave` (T)
+     are **one pole with two SFMTA ids**, 6 m apart and both northbound. Splitting
+     them separated the 91's northbound from its own southbound.
+   * `13254`, `13255` — the 37 at `14th & Church` is its own station. 25–58 m from
+     the J and 22 on Church and the F on Market as the crow flies, but several
+     crosswalks and a signal cycle on foot at the five-way Market/Church/14th
+     junction. Straight-line distance cannot see that, which is the whole reason
+     this file exists.
+   * `13535`, `13536` — `30th & Church` is its own station, not part of `churchDay`.
+     `churchDay` is a **southbound-only** J stop at Church & Day; its northbound
+     platform `14000` is confusingly named `Church St & 30th St` in the feed, so any
+     rule matching on platform names merges these two wrongly.
 
 1. An id already in `tools/station-ids.json` wins. **Ids are frozen on first mint
    and never change** — a shipped id lives in people's favourites, and a feed
@@ -191,7 +220,7 @@ changed in a way that needs a human decision, not a retry.
   stops at that intersection — so `gearyFillmore` is "Geary & Fillmore", not
   "Fillmore & Geary".
 * Splitting is decided by name, so it cannot tell a real block from a naming quirk
-  when two poles are metres apart. `3rd & Van Dyke` is its own station 6 m from
-  `3rd & Williams`, and `30th & Church` is 11 m from `Church & Day`. If those should
-  stay merged, add a minimum separation before a differing corner name is allowed to
-  split.
+  when two poles are metres apart, and straight-line distance cannot tell a shared
+  curb from one that is a signal cycle away. Neither signal is available in the feed.
+  That is what `station-overrides.json` is for — when you check a corner in person or
+  on Street View, record it there rather than tuning a threshold and hoping.

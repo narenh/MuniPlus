@@ -1,0 +1,26 @@
+{
+  "//": "Hand-verified corrections. These beat every heuristic AND the frozen id map, because a person checked the real street and the generator cannot. Keep 'why' filled in: it is the record of what was verified and how. See tools/README.md.",
+  "stations": {
+    "13149": {
+      "station": "thirdWilliams",
+      "why": "One physical pole with two SFMTA ids. 13149 is named '3rd St & Van Dyke Ave' and carries the 91; 17345 is named 'Third Street & Williams Ave' and carries the T. They are 6m apart and both northbound. Verified on Street View. Without this the 91's northbound is split from its own southbound (13150), which is in thirdWilliams."
+    },
+    "13254": {
+      "station": "fourteenthChurch",
+      "why": "The 37's poles at 14th & Church are their own station, not part of churchMarket. Straight-line they are 25-58m from the J and 22 on Church and the F on Market, but on foot it is several crosswalks and a signal cycle at the five-way Market/Church/14th junction. Verified on the ground."
+    },
+    "13255": {
+      "station": "fourteenthChurch",
+      "why": "See 13254 - the westbound half of the same pair."
+    },
+    "13535": {
+      "station": "thirtiethChurch",
+      "why": "30th & Church is its own station, not part of data.json's churchDay. churchDay's southbound platform 14004 is a southbound-only J stop at Church & Day, a separate place from 30th & Church; its northbound platform 14000 is confusingly named 'Church St & 30th St' in the feed, so any rule that matches on platform names would wrongly merge these. Verified on the ground."
+    },
+    "13536": {
+      "station": "thirtiethChurch",
+      "why": "See 13535 - the eastbound half of the same pair."
+    }
+  },
+  "headings": {}
+}

@@ -30,6 +30,7 @@ GTFS_URL = 'https://muni-gtfs.apps.sfmta.com/data/muni_gtfs-current.zip'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 METRO = os.path.join(ROOT, 'appdata', 'data.json')
 ID_MAP = os.path.join(ROOT, 'tools', 'station-ids.json')
+OVERRIDES = os.path.join(ROOT, 'tools', 'station-overrides.json')
 OUT_DIR = os.path.join(ROOT, 'appdata', 'bus')
 OUT_ALL = os.path.join(ROOT, 'appdata', 'bus.json')
 
@@ -208,7 +209,7 @@ def read_gtfs(src):
 
 
 # ------------------------------------------------------------------ headings
-def compute_headings(patterns, stops, metro):
+def compute_headings(patterns, stops, metro, head_overrides):
     """One heading per stop code, from travel through it across every route.
 
     Where data.json already describes a stop, its heading wins: those are
@@ -296,11 +297,14 @@ def compute_headings(patterns, stops, metro):
     for s in head:
         if stops[s]['stop_code'] in curated:
             head[s] = curated[stops[s]['stop_code']]
+    for s in head:                               # hand-verified corrections win outright
+        if stops[s]['stop_code'] in head_overrides:
+            head[s] = head_overrides[stops[s]['stop_code']]
     return head, snapped
 
 
 # ------------------------------------------------------------------ identity
-def resolve_stations(patterns, stops, metro, frozen):
+def resolve_stations(patterns, stops, metro, frozen, overrides):
     """Assign every bus stop to a station in the shared namespace."""
     served = {s for _, _, seq in patterns for s in seq}
     pt_of = {s: (float(stops[s]['stop_lon']), float(stops[s]['stop_lat'])) for s in served}
@@ -354,6 +358,15 @@ def resolve_stations(patterns, stops, metro, frozen):
     # is named for first, then by distance.
     split = []
     for members in clusters:
+        pinned = collections.defaultdict(list)
+        for s in list(members):
+            sid = overrides.get(stops[s]['stop_code'])
+            if sid:
+                pinned[sid].append(s)
+                members = [m for m in members if m != s]
+        split.extend((ms, sid) for sid, ms in pinned.items())
+        if not members:
+            continue
         cands = candidates(members)
         if len(cands) < 2:
             split.append((members, next(iter(cands), None)))
@@ -375,10 +388,15 @@ def resolve_stations(patterns, stops, metro, frozen):
     notes = collections.Counter()
     for members, forced in sorted(split, key=lambda c: int(stops[c[0][0]]['stop_id'])):
         primary = primary_of(members)
-        # an id frozen by an earlier build always wins - it is in people's favourites
-        sid = next((frozen[stops[s]['stop_code']] for s in members
-                    if stops[s]['stop_code'] in frozen), None)
+        # a hand-verified override beats everything, the frozen map included
+        sid = next((overrides[stops[s]['stop_code']] for s in members
+                    if stops[s]['stop_code'] in overrides), None)
         if sid:
+            notes['hand-verified override'] += 1
+        # then an id frozen by an earlier build - it is in people's favourites
+        elif (was := next((frozen[stops[s]['stop_code']] for s in members
+                           if stops[s]['stop_code'] in frozen), None)):
+            sid = was
             notes['frozen'] += 1
         elif forced:
             sid = forced
@@ -534,9 +552,12 @@ def main():
 
     metro = json.load(open(METRO))
     frozen = json.load(open(ID_MAP)) if os.path.exists(ID_MAP) else {}
+    ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
+    overrides = {k: v['station'] for k, v in ov.get('stations', {}).items()}
+    head_overrides = {k: v['heading'] for k, v in ov.get('headings', {}).items()}
     routes, stops, patterns = read_gtfs(args.gtfs)
-    head, snapped = compute_headings(patterns, stops, metro)
-    station_of, records, notes = resolve_stations(patterns, stops, metro, frozen)
+    head, snapped = compute_headings(patterns, stops, metro, head_overrides)
+    station_of, records, notes = resolve_stations(patterns, stops, metro, frozen, overrides)
 
     route_stations = {r: route_order(r, patterns, station_of) for r in routes}
     station_lines = collections.defaultdict(list)
@@ -585,6 +606,14 @@ def main():
     write(ID_MAP, dict(sorted(frozen.items())))
 
     problems = validate(docs + [merged], metro, stops, head)
+    known = {stops[s]['stop_code'] for s in station_of}
+    for code in list(overrides) + list(head_overrides):
+        if code not in known:
+            problems.append(f'override names stop {code}, which no route serves')
+    for code, sid in overrides.items():
+        if code in station_of and station_of.get(
+                next(s for s in station_of if stops[s]['stop_code'] == code)) != sid:
+            problems.append(f'override for stop {code} did not take effect')
     print(f'{len(routes)} routes, {len(merged_stations)} stations, '
           f'{sum(len(s["platforms"]) for s in merged_stations.values())} stops')
     print('station identity: ' + ', '.join(f'{v} {k}' for k, v in sorted(notes.items())))
