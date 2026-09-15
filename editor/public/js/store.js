@@ -89,18 +89,24 @@ export const canUndo = () => store._undo.length > 0;
 export const canRedo = () => store._redo.length > 0;
 
 // ------------------------------------------------------------------ shape
+/**
+ * A station is one of two shapes, and the shape is its own discriminator: it
+ * either has `levels` (and `exits`) or a flat `platforms` list. There is no
+ * stored `kind`, because a stored one can contradict the shape - and
+ * "underground" was already wrong for stations whose levels go up.
+ */
+export const hasLevels = st => Array.isArray(st?.levels);
+
 /** Every platform of a station, whichever shape holds it. */
 export function platformsOf(st) {
   if (!st) return [];
-  return st.kind === 'underground'
-    ? (st.levels || []).flatMap(l => l.platforms || [])
-    : (st.platforms || []);
+  return hasLevels(st) ? st.levels.flatMap(l => l.platforms || []) : (st.platforms || []);
 }
 
 /** The level a platform sits on, or null on the surface. */
 export function levelOf(st, code) {
-  if (st?.kind !== 'underground') return null;
-  return (st.levels || []).find(l => (l.platforms || []).some(p => String(p.id) === String(code))) || null;
+  if (!hasLevels(st)) return null;
+  return st.levels.find(l => (l.platforms || []).some(p => String(p.id) === String(code))) || null;
 }
 
 const isNum = v => typeof v === 'number' && Number.isFinite(v);
@@ -111,7 +117,7 @@ const isNum = v => typeof v === 'number' && Number.isFinite(v);
  * they are below ground, and what a rider walks to is a door.
  */
 export function derivedCoord(st) {
-  const pts = st.kind === 'underground'
+  const pts = hasLevels(st)
     ? (st.exits || []).filter(e => isNum(e.latitude) && isNum(e.longitude))
     : (st.platforms || []).filter(p => isNum(p.latitude) && isNum(p.longitude));
   if (!pts.length) return { latitude: null, longitude: null };
@@ -209,8 +215,11 @@ export function revalidate() {
     ids.add(st.id);
     if (!st.name?.trim()) E(at, 'station has an empty name');
 
-    if (st.kind === 'underground') {
-      if (!st.levels?.length) E(at, 'underground station has no levels');
+    if (st.kind !== undefined) E(at, 'kind is derived from the shape and must not be stored');
+    if (hasLevels(st) && st.platforms !== undefined) E(at, 'a station has levels or platforms, never both');
+
+    if (hasLevels(st)) {
+      if (!st.levels.length) E(at, 'a levelled station has no levels');
       const depths = new Set();
       for (const lv of st.levels || []) {
         const la = `${at} · level ${lv.id}`;
@@ -228,7 +237,7 @@ export function revalidate() {
       }
       if (!(st.exits || []).length) W(at, 'no exits yet, so this station has no coordinate');
     } else {
-      if (!st.platforms?.length) E(at, 'surface station has no platforms');
+      if (!st.platforms?.length) E(at, 'station has no platforms');
     }
 
     const seen = new Set();
@@ -299,10 +308,12 @@ export function changes() {
   for (const [id, b] of B) {
     const a = A.get(id);
     const T = b.name;
-    if (!a) { out.push({ k: 'add', t: T, d: `New ${b.kind} station <code>${id}</code>` }); continue; }
+    if (!a) { out.push({ k: 'add', t: T, d: `New station <code>${id}</code>` }); continue; }
 
     if (a.name !== b.name) out.push({ k: 'edit', t: T, d: `Renamed from <code>${esc(a.name)}</code>` });
-    if (a.kind !== b.kind) out.push({ k: 'edit', t: T, d: `<code>${a.kind}</code> → <code>${b.kind}</code>` });
+    if (hasLevels(a) !== hasLevels(b)) {
+      out.push({ k: 'edit', t: T, d: hasLevels(b) ? 'Converted to levels and exits' : 'Converted to street platforms' });
+    }
 
     // levels
     const AL = new Map((a.levels || []).map(l => [l.id, l]));

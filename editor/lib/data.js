@@ -12,7 +12,6 @@ const fs = require('fs');
 const path = require('path');
 
 const HEADINGS = ['northbound', 'southbound', 'eastbound', 'westbound'];
-const KINDS = ['underground', 'surface'];
 const MODES = ['indoor', 'street'];
 const SF = { minLat: 37.69, maxLat: 37.84, minLon: -122.55, maxLon: -122.33 };
 
@@ -29,12 +28,17 @@ function writeAtomic(file, doc) {
 
 const isNum = v => typeof v === 'number' && Number.isFinite(v);
 
+/**
+ * A station is one of two shapes, and the shape is its own discriminator:
+ * it either has `levels` (and `exits`), or a flat `platforms` list. There is
+ * no `kind` field to contradict it - which matters because "underground" was
+ * already wrong for Balboa Park, whose BART tracks are elevated.
+ */
+const hasLevels = st => Array.isArray(st?.levels);
+
 /** Every platform of a station, whichever shape it has. */
 function platformsOf(st) {
-  if (st.kind === 'underground') {
-    return (st.levels || []).flatMap(l => l.platforms || []);
-  }
-  return st.platforms || [];
+  return hasLevels(st) ? st.levels.flatMap(l => l.platforms || []) : (st.platforms || []);
 }
 
 /**
@@ -44,7 +48,7 @@ function platformsOf(st) {
  * rider walks to is a door.
  */
 function derivedCoord(st) {
-  const pts = st.kind === 'underground'
+  const pts = hasLevels(st)
     ? (st.exits || []).filter(e => isNum(e.latitude) && isNum(e.longitude))
     : (st.platforms || []).filter(p => isNum(p.latitude) && isNum(p.longitude));
   if (!pts.length) return { latitude: null, longitude: null };
@@ -94,14 +98,19 @@ function validate(doc) {
     if (stationIds.has(st.id)) E(at, `duplicate station id "${st.id}"`);
     stationIds.add(st.id);
     if (!st.name || !String(st.name).trim()) E(at, 'station has an empty name');
-    if (!KINDS.includes(st.kind)) E(at, `kind must be ${KINDS.join(' or ')}`);
+    if (st.kind !== undefined) E(at, 'kind is derived from the shape and must not be stored');
+    if (hasLevels(st) && st.platforms !== undefined) {
+      E(at, 'a station has levels or platforms, never both');
+    }
+    if (!hasLevels(st) && st.platforms === undefined) {
+      E(at, 'a station needs either levels or platforms');
+    }
 
-    const underground = st.kind === 'underground';
+    const underground = hasLevels(st);
 
     if (underground) {
-      if (!Array.isArray(st.levels) || !st.levels.length) E(at, 'underground station has no levels');
-      if (!Array.isArray(st.exits)) E(at, 'underground station has no exits array');
-      if (st.platforms !== undefined) E(at, 'underground stations hold platforms on levels, not directly');
+      if (!st.levels.length) E(at, 'a levelled station has no levels');
+      if (!Array.isArray(st.exits)) E(at, 'a levelled station has no exits array');
 
       const depths = new Set();
       for (const lv of st.levels || []) {
@@ -138,9 +147,8 @@ function validate(doc) {
       if (!(st.exits || []).length) W(at, 'no exits yet, so this station has no coordinate');
       else if (!open.some(e => isNum(e.latitude))) W(at, 'no open exit has coordinates yet');
     } else {
-      if (!Array.isArray(st.platforms) || !st.platforms.length) E(at, 'surface station has no platforms');
-      if (st.levels !== undefined) E(at, 'only underground stations have levels');
-      if (st.exits !== undefined) E(at, 'only underground stations have exits');
+      if (!st.platforms.length) E(at, 'station has no platforms');
+      if (st.exits !== undefined) E(at, 'exits belong to a levelled station');
     }
 
     // platforms, whichever shape holds them
@@ -162,7 +170,7 @@ function validate(doc) {
       for (const l of p.terminates || []) {
         if (!(p.lines || []).includes(l)) E(pat, `terminates lists "${l}", which does not serve this platform`);
       }
-      if (underground && p.stopName !== undefined) W(pat, 'stopName is a surface field');
+      if (underground && p.stopName !== undefined) W(pat, 'stopName is for street-level platforms');
     }
 
     if (isNum(st.latitude) && (st.latitude < SF.minLat || st.latitude > SF.maxLat ||
@@ -219,12 +227,12 @@ function stats(doc) {
     platforms: doc.stations.reduce((n, s) => n + platformsOf(s).length, 0),
     lines: doc.lines.length,
     subways: (doc.subways || []).length,
-    underground: doc.stations.filter(s => s.kind === 'underground').length,
+    levelled: doc.stations.filter(hasLevels).length,
     exits: doc.stations.reduce((n, s) => n + (s.exits || []).length, 0),
   };
 }
 
 module.exports = {
   read, serialise, writeAtomic, validate, stats, platformsOf, derivedCoord, applyDerived,
-  HEADINGS, KINDS, MODES,
+  hasLevels, HEADINGS, MODES,
 };

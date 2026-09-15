@@ -286,7 +286,6 @@
   "stations": [
     {
       "id": "embarcadero",
-      "kind": "underground",
       "name": "Embarcadero",
       "lines": [
         "J",
@@ -365,7 +364,6 @@
     },
     {
       "id": "mongomery",
-      "kind": "underground",
       "name": "Montgomery",
       "lines": [
         "J",
@@ -430,7 +428,6 @@
     },
     {
       "id": "powell",
-      "kind": "underground",
       "name": "Powell",
       "lines": [
         "J",
@@ -503,7 +500,6 @@
     },
     {
       "id": "civicCenter",
-      "kind": "underground",
       "name": "Civic Center",
       "lines": [
         "J",
@@ -572,7 +568,6 @@
     },
     {
       "id": "vanNess",
-      "kind": "underground",
       "name": "Van Ness",
       "lines": [
         "J",
@@ -635,7 +630,6 @@
     },
     {
       "id": "church",
-      "kind": "underground",
       "name": "Church",
       "lines": [
         "K",
@@ -696,7 +690,6 @@
     },
     {
       "id": "castro",
-      "kind": "underground",
       "name": "Castro",
       "lines": [
         "K",
@@ -753,7 +746,6 @@
     },
     {
       "id": "forestHill",
-      "kind": "underground",
       "name": "Forest Hill",
       "lines": [
         "K",
@@ -805,7 +797,6 @@
     },
     {
       "id": "westPortal",
-      "kind": "underground",
       "name": "West Portal",
       "lines": [
         "K",
@@ -863,7 +854,6 @@
     },
     {
       "id": "chinatownRosePak",
-      "kind": "underground",
       "name": "Chinatown - Rose Pak",
       "lines": [
         "T"
@@ -899,7 +889,6 @@
     },
     {
       "id": "unionSquare",
-      "kind": "underground",
       "name": "Union Square",
       "lines": [
         "T"
@@ -951,7 +940,6 @@
     },
     {
       "id": "yerbaBuenaMoscone",
-      "kind": "underground",
       "name": "Yerba Buena - Moscone",
       "lines": [
         "T"
@@ -994,7 +982,6 @@
     },
     {
       "id": "fourthBrannan",
-      "kind": "surface",
       "name": "4th & Brannan",
       "lines": [
         "T"
@@ -1030,7 +1017,6 @@
     },
     {
       "id": "fourthKingT",
-      "kind": "surface",
       "name": "4th & King",
       "lines": [
         "T"
@@ -1073,7 +1059,6 @@
     },
     {
       "id": "oceanBeach",
-      "kind": "surface",
       "name": "Ocean Beach",
       "lines": [
         "N"
@@ -1101,7 +1086,6 @@
     },
     {
       "id": "judah46",
-      "kind": "surface",
       "name": "Judah & 46th",
       "lines": [
         "N"
@@ -1137,7 +1121,6 @@
     },
     {
       "id": "judah43",
-      "kind": "surface",
       "name": "Judah & 43rd",
       "lines": [
         "N"
@@ -1173,7 +1156,6 @@
     },
     {
       "id": "judah40",
-      "kind": "surface",
       "name": "Judah & 40th",
       "lines": [
         "N"
@@ -1209,7 +1191,6 @@
     },
     {
       "id": "judahSunset",
-      "kind": "surface",
       "name": "Judah & Sunset",
       "lines": [
         "N"
@@ -1245,7 +1226,6 @@
     },
     {
       "id": "judah34",
-      "kind": "surface",
       "name": "Judah & 34th",
       "lines": [
         "N"
@@ -1281,7 +1261,6 @@
     },
     {
       "id": "judah31",
-      "kind": "surface",
       "name": "Judah & 31st",
       "lines": [
         "N"
@@ -1317,7 +1296,6 @@
     },
     {
       "id": "judah28",
-      "kind": "surface",
       "name": "Judah & 28th",
       "lines": [
         "N"
@@ -1353,7 +1331,6 @@
     },
     {
       "id": "judah25",
-      "kind": "surface",
       "name": "Judah & 25th",
       "lines": [
         "N"
@@ -1389,7 +1366,6 @@
     },
     {
       "id": "judah22",
-      "kind": "surface",
       "name": "Judah & 22nd",
       "lines": [
         "N"
@@ -1425,7 +1401,6 @@
     },
     {
       "id": "judah19",
-      "kind": "surface",
       "name": "Judah & 19th",
       "lines": [
         "N"
@@ -1461,7 +1436,6 @@
     },
     {
       "id": "judah15",
-      "kind": "surface",
       "name": "Judah & 15th",
       "lines": [
         "N"
@@ -1497,7 +1471,6 @@
     },
     {
       "id": "judahFunston",
-      "kind": "surface",
       "name": "Judah & Funston",
       "lines": [
         "N"
@@ -1533,7 +1506,6 @@
     },
     {
       "id": "judah12",
-      "kind": "surface",
       "name": "Judah & 12th",
       "lines": [
         "N"
@@ -1569,7 +1541,6 @@
     },
     {
       "id": "judah9",
-      "kind": "surface",
       "name": "Judah & 9th",
       "lines": [
         "N"
@@ -1605,7 +1576,6 @@
     },
     {
       "id": "irving8",
-      "kind": "surface",
       "name": "Irving & 8th/9th",
       "lines": [
         "N"
@@ -1641,7 +1611,6 @@
     },
     {
       "id": "irving5",
-      "kind": "surface",
       "name": "Irving & 5th/6th",
       "lines": [
         "N"
@@ -1677,7 +1646,6 @@
     },
     {
       "id": "irvingArguello",
-      "kind": "surface",
       "name": "Irving & Arguello",
       "lines": [
         "N"
@@ -1713,7 +1681,6 @@
     },
     {
       "id": "carlHillway",
-      "kind": "surface",
       "name": "Carl & Hillway",
       "lines": [
         "N"
@@ -1749,7 +1716,6 @@
     },
     {
       "id": "carlStanyan",
-      "kind": "surface",
       "name": "Carl & Stanyan",
       "lines": [
         "N"
@@ -1785,7 +1751,6 @@
     },
     {
       "id": "carlCole",
-      "kind": "surface",
       "name": "Carl & Cole",
       "lines": [
         "N"
@@ -1821,7 +1786,6 @@
     },
     {
       "id": "duboceNoe",
-      "kind": "surface",
       "name": "Duboce & Noe (Sunset Tunnel East Portal)",
       "lines": [
         "N"
@@ -1857,7 +1821,6 @@
     },
     {
       "id": "duboceChurchN",
-      "kind": "surface",
       "name": "Duboce & Church",
       "lines": [
         "N"
@@ -1902,7 +1865,6 @@
     },
     {
       "id": "embarcaderoFolsom",
-      "kind": "surface",
       "name": "Embarcadero & Folsom",
       "lines": [
         "N"
@@ -1938,7 +1900,6 @@
     },
     {
       "id": "embarcaderoBrannan",
-      "kind": "surface",
       "name": "Embarcadero & Brannan",
       "lines": [
         "N"
@@ -1974,7 +1935,6 @@
     },
     {
       "id": "secondKing",
-      "kind": "surface",
       "name": "2nd & King",
       "lines": [
         "N"
@@ -2010,7 +1970,6 @@
     },
     {
       "id": "fourthKingN",
-      "kind": "surface",
       "name": "4th & King",
       "lines": [
         "N"
@@ -2045,7 +2004,6 @@
     },
     {
       "id": "thirdMissionRock",
-      "kind": "surface",
       "name": "3rd St & Mission Rock",
       "lines": [
         "T"
@@ -2081,7 +2039,6 @@
     },
     {
       "id": "ucsfChaseCenter",
-      "kind": "surface",
       "name": "UCSF / Chase Center",
       "lines": [
         "T"
@@ -2117,7 +2074,6 @@
     },
     {
       "id": "ucsfMedicalCenter",
-      "kind": "surface",
       "name": "UCSF Medical Center",
       "lines": [
         "T"
@@ -2153,7 +2109,6 @@
     },
     {
       "id": "third20",
-      "kind": "surface",
       "name": "3rd & 20th",
       "lines": [
         "T"
@@ -2189,7 +2144,6 @@
     },
     {
       "id": "third23",
-      "kind": "surface",
       "name": "3rd & 23rd",
       "lines": [
         "T"
@@ -2225,7 +2179,6 @@
     },
     {
       "id": "thirdMarin",
-      "kind": "surface",
       "name": "3rd & Marin",
       "lines": [
         "T"
@@ -2261,7 +2214,6 @@
     },
     {
       "id": "thirdEvans",
-      "kind": "surface",
       "name": "3rd & Evans",
       "lines": [
         "T"
@@ -2297,7 +2249,6 @@
     },
     {
       "id": "thirdHudsonInnes",
-      "kind": "surface",
       "name": "3rd & Hudson/Innes",
       "lines": [
         "T"
@@ -2333,7 +2284,6 @@
     },
     {
       "id": "thirdKirkwoodLaSalle",
-      "kind": "surface",
       "name": "3rd & Kirkwood/La Salle",
       "lines": [
         "T"
@@ -2369,7 +2319,6 @@
     },
     {
       "id": "thirdOakdalePalou",
-      "kind": "surface",
       "name": "3rd & Oakdale/Palou",
       "lines": [
         "T"
@@ -2405,7 +2354,6 @@
     },
     {
       "id": "thirdRevereShafter",
-      "kind": "surface",
       "name": "3rd & Revere/Shafter",
       "lines": [
         "T"
@@ -2441,7 +2389,6 @@
     },
     {
       "id": "thirdWilliams",
-      "kind": "surface",
       "name": "3rd & Williams",
       "lines": [
         "T"
@@ -2477,7 +2424,6 @@
     },
     {
       "id": "thirdCarroll",
-      "kind": "surface",
       "name": "3rd & Carroll",
       "lines": [
         "T"
@@ -2513,7 +2459,6 @@
     },
     {
       "id": "thirdGilmanPaul",
-      "kind": "surface",
       "name": "3rd & Gilman/Paul",
       "lines": [
         "T"
@@ -2549,7 +2494,6 @@
     },
     {
       "id": "thirdLeConte",
-      "kind": "surface",
       "name": "3rd & Le Conte",
       "lines": [
         "T"
@@ -2585,7 +2529,6 @@
     },
     {
       "id": "bayshoreArletaBlanken",
-      "kind": "surface",
       "name": "Bayshore & Arleta/Blanken",
       "lines": [
         "T"
@@ -2621,7 +2564,6 @@
     },
     {
       "id": "sunnydale",
-      "kind": "surface",
       "name": "Sunnydale",
       "lines": [
         "T"
@@ -2649,7 +2591,6 @@
     },
     {
       "id": "churchDuboceJ",
-      "kind": "surface",
       "name": "Church & Duboce",
       "lines": [
         "J"
@@ -2679,7 +2620,6 @@
     },
     {
       "id": "churchMarket",
-      "kind": "surface",
       "name": "Church & Market",
       "lines": [
         "F",
@@ -2743,7 +2683,6 @@
     },
     {
       "id": "church16",
-      "kind": "surface",
       "name": "Church & 16th",
       "lines": [
         "J"
@@ -2779,7 +2718,6 @@
     },
     {
       "id": "doloresPark18",
-      "kind": "surface",
       "name": "Dolores Park - 18th St",
       "lines": [
         "J"
@@ -2815,7 +2753,6 @@
     },
     {
       "id": "doloresPark20",
-      "kind": "surface",
       "name": "Dolores Park - 20th St 🏳️‍🌈",
       "lines": [
         "J"
@@ -2851,7 +2788,6 @@
     },
     {
       "id": "rightOfWayLiberty",
-      "kind": "surface",
       "name": "Right Of Way & Liberty",
       "lines": [
         "J"
@@ -2887,7 +2823,6 @@
     },
     {
       "id": "rightOfWay21",
-      "kind": "surface",
       "name": "Right Of Way & 21st",
       "lines": [
         "J"
@@ -2923,7 +2858,6 @@
     },
     {
       "id": "church22",
-      "kind": "surface",
       "name": "Church & 22nd",
       "lines": [
         "J"
@@ -2959,7 +2893,6 @@
     },
     {
       "id": "church24",
-      "kind": "surface",
       "name": "Church & 24th",
       "lines": [
         "J"
@@ -2995,7 +2928,6 @@
     },
     {
       "id": "churchClipper",
-      "kind": "surface",
       "name": "Church & 26th",
       "lines": [
         "J"
@@ -3031,7 +2963,6 @@
     },
     {
       "id": "church27",
-      "kind": "surface",
       "name": "Church & 28th",
       "lines": [
         "J"
@@ -3067,7 +2998,6 @@
     },
     {
       "id": "church29",
-      "kind": "surface",
       "name": "Church & 29th",
       "lines": [
         "J"
@@ -3092,7 +3022,6 @@
     },
     {
       "id": "churchDay",
-      "kind": "surface",
       "name": "Church & Day",
       "lines": [
         "J"
@@ -3128,7 +3057,6 @@
     },
     {
       "id": "dolores30",
-      "kind": "surface",
       "name": "Dolores & 30th",
       "lines": [
         "J"
@@ -3164,7 +3092,6 @@
     },
     {
       "id": "sanJoseRandall",
-      "kind": "surface",
       "name": "San Jose & Randall",
       "lines": [
         "J"
@@ -3200,7 +3127,6 @@
     },
     {
       "id": "glenPark",
-      "kind": "surface",
       "name": "Glen Park",
       "lines": [
         "J"
@@ -3238,7 +3164,6 @@
     },
     {
       "id": "sanJoseSantaRosa",
-      "kind": "surface",
       "name": "San Jose & Santa Rosa",
       "lines": [
         "J"
@@ -3274,7 +3199,6 @@
     },
     {
       "id": "sanJoseSantaYnez",
-      "kind": "surface",
       "name": "San Jose & Santa Ynez",
       "lines": [
         "J"
@@ -3310,7 +3234,6 @@
     },
     {
       "id": "sanJoseOcean",
-      "kind": "surface",
       "name": "San Jose & Ocean",
       "lines": [
         "J"
@@ -3346,7 +3269,6 @@
     },
     {
       "id": "balboaPark",
-      "kind": "surface",
       "name": "Balboa Park Station",
       "lines": [
         "J",
@@ -3384,7 +3306,6 @@
     },
     {
       "id": "westPortal14",
-      "kind": "surface",
       "name": "West Portal & 14th",
       "lines": [
         "K",
@@ -3423,7 +3344,6 @@
     },
     {
       "id": "sloatStFrancis",
-      "kind": "surface",
       "name": "Sloat & St Francis",
       "lines": [
         "K",
@@ -3462,7 +3382,6 @@
     },
     {
       "id": "juniperoSerraOcean",
-      "kind": "surface",
       "name": "Junipero Serra & Ocean",
       "lines": [
         "K"
@@ -3498,7 +3417,6 @@
     },
     {
       "id": "oceanSanLeandro",
-      "kind": "surface",
       "name": "Ocean & San Leandro",
       "lines": [
         "K"
@@ -3534,7 +3452,6 @@
     },
     {
       "id": "oceanAptos",
-      "kind": "surface",
       "name": "Ocean & Aptos",
       "lines": [
         "K"
@@ -3570,7 +3487,6 @@
     },
     {
       "id": "oceanVictoriaFairfield",
-      "kind": "surface",
       "name": "Ocean & Victoria/Fairfield",
       "lines": [
         "K"
@@ -3606,7 +3522,6 @@
     },
     {
       "id": "oceanJulesDorado",
-      "kind": "surface",
       "name": "Ocean & Jules/Dorado",
       "lines": [
         "K"
@@ -3642,7 +3557,6 @@
     },
     {
       "id": "oceanMiramar",
-      "kind": "surface",
       "name": "Ocean & Miramar",
       "lines": [
         "K"
@@ -3678,7 +3592,6 @@
     },
     {
       "id": "oceanLee",
-      "kind": "surface",
       "name": "Ocean & Lee",
       "lines": [
         "K"
@@ -3714,7 +3627,6 @@
     },
     {
       "id": "oceanCCSF",
-      "kind": "surface",
       "name": "Ocean/CCSF Pedestrian Bridge",
       "lines": [
         "K"
@@ -3750,7 +3662,6 @@
     },
     {
       "id": "sanJoseGeneva",
-      "kind": "surface",
       "name": "Balboa Park (M Platform)",
       "lines": [
         "M"
@@ -3783,7 +3694,6 @@
     },
     {
       "id": "sanJoseLakeview",
-      "kind": "surface",
       "name": "San Jose Ave & Lakeview Ave",
       "lines": [
         "M"
@@ -3819,7 +3729,6 @@
     },
     {
       "id": "sanJoseFarallones",
-      "kind": "surface",
       "name": "San Jose Ave & Farallones St",
       "lines": [
         "M"
@@ -3855,7 +3764,6 @@
     },
     {
       "id": "broadPlymouth",
-      "kind": "surface",
       "name": "Broad St & Plymouth Ave",
       "lines": [
         "M"
@@ -3891,7 +3799,6 @@
     },
     {
       "id": "broadCapitol",
-      "kind": "surface",
       "name": "Broad St & Capitol Ave",
       "lines": [
         "M"
@@ -3927,7 +3834,6 @@
     },
     {
       "id": "orizabaBroad",
-      "kind": "surface",
       "name": "Orizaba Ave & Broad St",
       "lines": [
         "M"
@@ -3963,7 +3869,6 @@
     },
     {
       "id": "randolphBright",
-      "kind": "surface",
       "name": "Randolph St & Bright St",
       "lines": [
         "M"
@@ -3999,7 +3904,6 @@
     },
     {
       "id": "randolphArch",
-      "kind": "surface",
       "name": "Randolph St & Arch St",
       "lines": [
         "M"
@@ -4035,7 +3939,6 @@
     },
     {
       "id": "randolph19",
-      "kind": "surface",
       "name": "19th Ave & Randolph St",
       "lines": [
         "M"
@@ -4071,7 +3974,6 @@
     },
     {
       "id": "juniperoSerra19",
-      "kind": "surface",
       "name": "19th Ave & Junipero Serra Blvd",
       "lines": [
         "M"
@@ -4107,7 +4009,6 @@
     },
     {
       "id": "holloway19",
-      "kind": "surface",
       "name": "19th Ave & Holloway Ave (SF State)",
       "lines": [
         "M"
@@ -4143,7 +4044,6 @@
     },
     {
       "id": "winston19",
-      "kind": "surface",
       "name": "Stonestown Galleria",
       "lines": [
         "M"
@@ -4179,7 +4079,6 @@
     },
     {
       "id": "rightOfWayEucalyptus",
-      "kind": "surface",
       "name": "Right Of Way/Eucalyptus Dr",
       "lines": [
         "M"
@@ -4215,7 +4114,6 @@
     },
     {
       "id": "rightOfWayOcean",
-      "kind": "surface",
       "name": "Right Of Way/Ocean Ave",
       "lines": [
         "M"
@@ -4251,7 +4149,6 @@
     },
     {
       "id": "ulloa14",
-      "kind": "surface",
       "name": "Ulloa St & 14th Ave",
       "lines": [
         "L"
@@ -4287,7 +4184,6 @@
     },
     {
       "id": "taraval1517",
-      "kind": "surface",
       "name": "15th / 17th Ave & Taraval St",
       "lines": [
         "L"
@@ -4323,7 +4219,6 @@
     },
     {
       "id": "taraval19",
-      "kind": "surface",
       "name": "19th Ave & Taraval St",
       "lines": [
         "L"
@@ -4359,7 +4254,6 @@
     },
     {
       "id": "taraval2223",
-      "kind": "surface",
       "name": "22nd / 23rd Ave & Taraval St",
       "lines": [
         "L"
@@ -4395,7 +4289,6 @@
     },
     {
       "id": "taraval26",
-      "kind": "surface",
       "name": "26th Ave & Taraval St",
       "lines": [
         "L"
@@ -4431,7 +4324,6 @@
     },
     {
       "id": "taraval30",
-      "kind": "surface",
       "name": "30th Ave & Taraval St",
       "lines": [
         "L"
@@ -4467,7 +4359,6 @@
     },
     {
       "id": "taraval32",
-      "kind": "surface",
       "name": "32nd Ave & Taraval St",
       "lines": [
         "L"
@@ -4503,7 +4394,6 @@
     },
     {
       "id": "taravalSunset",
-      "kind": "surface",
       "name": "Sunset Blvd & Taraval St",
       "lines": [
         "L"
@@ -4539,7 +4429,6 @@
     },
     {
       "id": "taraval40",
-      "kind": "surface",
       "name": "40th Ave & Taraval St",
       "lines": [
         "L"
@@ -4575,7 +4464,6 @@
     },
     {
       "id": "taraval42",
-      "kind": "surface",
       "name": "42th Ave & Taraval St",
       "lines": [
         "L"
@@ -4611,7 +4499,6 @@
     },
     {
       "id": "taraval44",
-      "kind": "surface",
       "name": "44th Ave & Taraval St",
       "lines": [
         "L"
@@ -4647,7 +4534,6 @@
     },
     {
       "id": "taraval46",
-      "kind": "surface",
       "name": "46th Ave & Taraval St",
       "lines": [
         "L"
@@ -4683,7 +4569,6 @@
     },
     {
       "id": "ulloa46",
-      "kind": "surface",
       "name": "Ulloa St & 46th Ave",
       "lines": [
         "L"
@@ -4719,7 +4604,6 @@
     },
     {
       "id": "vincente46",
-      "kind": "surface",
       "name": "Vincente St & 46th Ave",
       "lines": [
         "L"
@@ -4755,7 +4639,6 @@
     },
     {
       "id": "sfZoo",
-      "kind": "surface",
       "name": "SF Zoo",
       "lines": [
         "L"
@@ -4783,7 +4666,6 @@
     },
     {
       "id": "jonesBeach",
-      "kind": "surface",
       "name": "Jones & Beach",
       "lines": [
         "F"
@@ -4808,7 +4690,6 @@
     },
     {
       "id": "beachMason",
-      "kind": "surface",
       "name": "Beach & Mason",
       "lines": [
         "F"
@@ -4836,7 +4717,6 @@
     },
     {
       "id": "jeffersonTaylor",
-      "kind": "surface",
       "name": "Jefferson & Taylor",
       "lines": [
         "F"
@@ -4861,7 +4741,6 @@
     },
     {
       "id": "jeffersonPowell",
-      "kind": "surface",
       "name": "Jefferson & Powell",
       "lines": [
         "F"
@@ -4886,7 +4765,6 @@
     },
     {
       "id": "pier39",
-      "kind": "surface",
       "name": "Pier 39",
       "lines": [
         "F"
@@ -4922,7 +4800,6 @@
     },
     {
       "id": "embarcaderoBay",
-      "kind": "surface",
       "name": "Embarcadero & Bay",
       "lines": [
         "F"
@@ -4958,7 +4835,6 @@
     },
     {
       "id": "embarcaderoSansome",
-      "kind": "surface",
       "name": "Embarcadero & Sansome",
       "lines": [
         "F"
@@ -4994,7 +4870,6 @@
     },
     {
       "id": "embarcaderoGreenwich",
-      "kind": "surface",
       "name": "Embarcadero & Greenwich",
       "lines": [
         "F"
@@ -5030,7 +4905,6 @@
     },
     {
       "id": "embarcaderoGreen",
-      "kind": "surface",
       "name": "Embarcadero & Green",
       "lines": [
         "F"
@@ -5066,7 +4940,6 @@
     },
     {
       "id": "embarcaderoBroadway",
-      "kind": "surface",
       "name": "Embarcadero & Broadway",
       "lines": [
         "F"
@@ -5102,7 +4975,6 @@
     },
     {
       "id": "embarcaderoWashington",
-      "kind": "surface",
       "name": "Embarcadero & Washington",
       "lines": [
         "F"
@@ -5138,7 +5010,6 @@
     },
     {
       "id": "embarcaderoFerryBuilding",
-      "kind": "surface",
       "name": "Embarcadero & Ferry Building",
       "lines": [
         "F"
@@ -5174,7 +5045,6 @@
     },
     {
       "id": "donCheeWaySteuart",
-      "kind": "surface",
       "name": "Don Chee Way/Steuart",
       "lines": [
         "F"
@@ -5210,7 +5080,6 @@
     },
     {
       "id": "market2",
-      "kind": "surface",
       "name": "Market & 2nd/Montgomery",
       "lines": [
         "F"
@@ -5251,7 +5120,6 @@
     },
     {
       "id": "marketEmbarcaderoSubway",
-      "kind": "surface",
       "name": "Market & Embarcadero Subway",
       "lines": [
         "F"
@@ -5292,7 +5160,6 @@
     },
     {
       "id": "market1",
-      "kind": "surface",
       "name": "Market & 1st/Battery",
       "lines": [
         "F"
@@ -5328,7 +5195,6 @@
     },
     {
       "id": "market3",
-      "kind": "surface",
       "name": "Market & 3rd",
       "lines": [
         "F"
@@ -5364,7 +5230,6 @@
     },
     {
       "id": "market4",
-      "kind": "surface",
       "name": "Market & 4th",
       "lines": [
         "F"
@@ -5409,7 +5274,6 @@
     },
     {
       "id": "market5",
-      "kind": "surface",
       "name": "Market & 5th",
       "lines": [
         "F"
@@ -5450,7 +5314,6 @@
     },
     {
       "id": "market6",
-      "kind": "surface",
       "name": "Market & 6th/Taylor",
       "lines": [
         "F"
@@ -5486,7 +5349,6 @@
     },
     {
       "id": "market7",
-      "kind": "surface",
       "name": "Market & 7th",
       "lines": [
         "F"
@@ -5527,7 +5389,6 @@
     },
     {
       "id": "marketVanNess",
-      "kind": "surface",
       "name": "Market & Van Ness",
       "lines": [
         "F"
@@ -5568,7 +5429,6 @@
     },
     {
       "id": "market8",
-      "kind": "surface",
       "name": "Market & 8th/Hyde",
       "lines": [
         "F"
@@ -5609,7 +5469,6 @@
     },
     {
       "id": "market9",
-      "kind": "surface",
       "name": "Market & 9th/Larkin",
       "lines": [
         "F"
@@ -5645,7 +5504,6 @@
     },
     {
       "id": "marketGough",
-      "kind": "surface",
       "name": "Market & Gough",
       "lines": [
         "F"
@@ -5681,7 +5539,6 @@
     },
     {
       "id": "marketGuerrero",
-      "kind": "surface",
       "name": "Market & Guerrero/Laguna",
       "lines": [
         "F"
@@ -5717,7 +5574,6 @@
     },
     {
       "id": "marketDolores",
-      "kind": "surface",
       "name": "Market & Dolores/Buchanan",
       "lines": [
         "F"
@@ -5753,7 +5609,6 @@
     },
     {
       "id": "marketSanchez",
-      "kind": "surface",
       "name": "Market & Sanchez",
       "lines": [
         "F"
@@ -5789,7 +5644,6 @@
     },
     {
       "id": "marketNoe",
-      "kind": "surface",
       "name": "Market & Noe",
       "lines": [
         "F"
@@ -5825,7 +5679,6 @@
     },
     {
       "id": "seventeenthNoe",
-      "kind": "surface",
       "name": "17th & Noe",
       "lines": [
         "F"
@@ -5850,7 +5703,6 @@
     },
     {
       "id": "castroPlaza",
-      "kind": "surface",
       "name": "Castro Plaza",
       "lines": [
         "F"

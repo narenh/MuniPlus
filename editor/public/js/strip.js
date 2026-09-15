@@ -2,7 +2,7 @@
 // be dragged into a new order. This is the thing that should feel like editing
 // a route rather than a list.
 
-import { store, edit, select, stationById, linesOf, lineById, esc, platformsOf } from './store.js';
+import { store, edit, select, stationById, linesOf, lineById, esc, platformsOf, hasLevels } from './store.js';
 import { flyToStation } from './map.js';
 
 let onPickStation = () => {};
@@ -60,7 +60,7 @@ export function renderStrip() {
     const others = linesOf(sid).filter(l => l.id !== ln.id);
     const terminal = i === 0 || i === ln.stationIds.length - 1;
     const nodeCls = ['node',
-      st.kind === 'underground' ? 'underground' : '',
+      hasLevels(st) ? 'underground' : '',
       others.length ? 'interchange' : '',
       terminal ? 'terminal' : ''].filter(Boolean).join(' ');
 
@@ -69,7 +69,7 @@ export function renderStrip() {
       <div class="stop-main">
         <div class="stop-name">${esc(st.name)}</div>
         <div class="stop-meta">
-          ${st.kind === 'underground' ? `<span class="tag">${(st.exits || []).length} EXIT</span>` : ''}
+          ${hasLevels(st) ? `<span class="tag">${(st.exits || []).length} EXIT</span>` : ''}
           <span class="tag">${platformsOf(st).length} PLAT</span>
           ${others.map(l => `<span class="pip" style="background:${l.color}" title="${esc(l.name)}"></span>`).join('')}
           ${(st.transfers || []).length ? '<span class="tag">↔</span>' : ''}

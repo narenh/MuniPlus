@@ -500,6 +500,9 @@ select.inp { appearance: none; cursor: pointer;
   font-size: 12.5px; font-weight: 650; color: var(--accent);
 }
 .level-head .level-name { height: 28px; font-weight: 550; }
+.level-move { display: flex; flex-direction: column; gap: 1px; flex: none; }
+.level-move .icon-btn { width: 20px; height: 13px; border-radius: 4px; }
+.level-move .icon-btn:disabled { opacity: .25; cursor: default; background: none; }
 .level-head .depth.above  { color: #fcd34d; }   /* elevated */
 .level-head .depth.street { color: var(--ink); }
 .level .plat { background: rgba(255,255,255,.035); }

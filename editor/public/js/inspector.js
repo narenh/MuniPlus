@@ -5,7 +5,7 @@
 
 import {
   store, edit, select, stationById, linesOf, esc, metresBetween,
-  platformsOf, levelOf, hasCoord, anchorOf,
+  platformsOf, levelOf, hasCoord, anchorOf, hasLevels,
 } from './store.js';
 import { flyToStation, refresh, hint, map, highlightLink } from './map.js';
 
@@ -39,7 +39,9 @@ export function renderInspector() {
   el.style.setProperty('--accent', ls[0]?.color || '#6ea8fe');
 
   document.getElementById('insp-name').textContent = st.name;
-  document.getElementById('insp-id').textContent = `${st.id} · ${st.kind}`;
+  document.getElementById('insp-id').textContent = hasLevels(st)
+    ? `${st.id} · ${st.levels.length} level${st.levels.length === 1 ? '' : 's'} · ${(st.exits || []).length} exit${(st.exits || []).length === 1 ? '' : 's'}`
+    : `${st.id} · ${st.platforms.length} platform${st.platforms.length === 1 ? '' : 's'}`;
 
   const box = document.getElementById('insp-lines');
   box.innerHTML = '';
@@ -56,7 +58,7 @@ export function renderInspector() {
 
   document.getElementById('insp-body').innerHTML =
     sectionStation(st) +
-    (st.kind === 'underground' ? sectionLevels(st) + sectionExits(st) : sectionPlatforms(st, null)) +
+    (hasLevels(st) ? sectionLevels(st) + sectionExits(st) : sectionPlatforms(st, null)) +
     sectionTransfers(st) +
     sectionDanger(st);
   wire(st);
@@ -64,7 +66,7 @@ export function renderInspector() {
 
 // ------------------------------------------------------------------ station
 function sectionStation(st) {
-  const src = st.kind === 'underground' ? 'exits' : 'platforms';
+  const src = hasLevels(st) ? 'exits' : 'platforms';
   const coord = hasCoord(st)
     ? `<code>${st.latitude}, ${st.longitude}</code>`
     : `<span style="color:var(--warn)">no ${src} with coordinates yet</span>`;
@@ -80,10 +82,10 @@ function sectionStation(st) {
       <input class="inp mono" id="f-id" value="${esc(st.id)}">
     </div>
     <div class="field">
-      <label class="micro">Kind</label>
+      <label class="micro">Structure <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— not stored; it is whichever shape the record has</span></label>
       <div class="seg" id="f-kind">
-        <button data-v="surface" class="${st.kind === 'surface' ? 'on' : ''}">Surface</button>
-        <button data-v="underground" class="${st.kind === 'underground' ? 'on' : ''}">Underground</button>
+        <button data-v="flat"   class="${hasLevels(st) ? '' : 'on'}">Street platforms</button>
+        <button data-v="levels" class="${hasLevels(st) ? 'on' : ''}">Levels &amp; exits</button>
       </div>
     </div>
     <div class="field">
@@ -96,7 +98,7 @@ function sectionStation(st) {
 // ------------------------------------------------------------------- levels
 function sectionLevels(st) {
   const levels = [...(st.levels || [])].sort((a, b) => b.id - a.id);
-  const cards = levels.map(lv => {
+  const cards = levels.map((lv, i) => {
     const island = lv.isIsland === true ? 'island' : lv.isIsland === false ? 'sep' : 'unset';
     return `
     <div class="level" data-level="${lv.id}">
@@ -104,6 +106,16 @@ function sectionLevels(st) {
         <div class="depth mono ${lv.id > 0 ? 'above' : lv.id === 0 ? 'street' : ''}"
            title="${lv.id > 0 ? 'above street' : lv.id === 0 ? 'street level' : 'below street'}">${lv.id > 0 ? '+' : ''}${lv.id}</div>
         <input class="inp level-name" data-lf="name" data-level="${lv.id}" value="${esc(lv.name)}">
+        <div class="level-move">
+          <button class="icon-btn" data-act="lv-up" data-level="${lv.id}" title="Move up the stack"
+                  ${i === 0 ? 'disabled' : ''}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 10l4-4 4 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="icon-btn" data-act="lv-down" data-level="${lv.id}" title="Move down the stack"
+                  ${i === levels.length - 1 ? 'disabled' : ''}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
         <button class="icon-btn danger" data-act="del-level" data-level="${lv.id}" title="Remove this level">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </button>
@@ -291,11 +303,11 @@ function platformCards(st, level) {
         <label class="micro">Stop code</label>
         <input class="inp mono" data-pf="id" data-code="${esc(p.id)}" value="${esc(p.id)}">
       </div>
-      ${st.kind === 'surface' ? `
+      ${hasLevels(st) ? '' : `
       <div class="field">
         <label class="micro">Stop name</label>
         <input class="inp" data-pf="stopName" data-code="${esc(p.id)}" value="${esc(p.stopName || '')}">
-      </div>` : ''}
+      </div>`}
       <div class="field">
         <label class="micro">Label <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— signage, e.g. Platform 1</span></label>
         <input class="inp" data-pf="name" data-code="${esc(p.id)}" value="${esc(p.name ?? '')}" placeholder="none">
@@ -437,15 +449,15 @@ function wire(st) {
   // Changing kind restructures the record, so it is deliberate and confirmed.
   body.querySelectorAll('#f-kind button').forEach(b => {
     b.onclick = () => {
-      const to = b.dataset.v;
-      if (to === st.kind) return;
-      const msg = to === 'underground'
-        ? `Make "${st.name}" underground?\n\nIts ${platformsOf(st).length} platform(s) move onto a new level at depth -1, and it gains an empty exits list. Until an exit has coordinates the station has no position.`
-        : `Make "${st.name}" a surface station?\n\nIts levels and exits are removed and every platform moves to a flat list. Level names, agencies, isIsland and all exits are lost.`;
+      const toLevels = b.dataset.v === 'levels';
+      if (toLevels === hasLevels(st)) return;
+      const msg = toLevels
+        ? `Give "${st.name}" levels and exits?\n\nIts ${platformsOf(st).length} platform(s) move onto a new level at depth -1, and it gains an empty exits list. Until an exit has coordinates the station has no position.`
+        : `Flatten "${st.name}" to street platforms?\n\nIts levels and exits are removed and every platform moves to a flat list. Level names, agencies, isIsland and all exits are lost.`;
       if (!confirm(msg)) return;
-      commit(`${sid} → ${to}`, s => {
+      commit(toLevels ? `${sid} → levels` : `${sid} → flat`, s => {
         const ps = platformsOf(s);
-        if (to === 'underground') {
+        if (toLevels) {
           delete s.platforms;
           s.levels = [{ id: -1, name: 'Platforms', agency: 'muni', isIsland: null, platforms: ps }];
           s.exits = [];
@@ -455,7 +467,6 @@ function wire(st) {
           s.platforms = ps;
           for (const p of ps) if (p.stopName === undefined) p.stopName = s.name;
         }
-        s.kind = to;
       });
     };
   });
@@ -605,7 +616,7 @@ function wire(st) {
         latitude: anchor?.latitude ?? st.latitude ?? 37.7749,
         longitude: anchor?.longitude ?? st.longitude ?? -122.4194,
       };
-      if (st.kind === 'surface') base.stopName = st.name;
+      if (!hasLevels(st)) base.stopName = st.name;
       const levelId = b.dataset.level !== undefined ? Number(b.dataset.level) : null;
       commit('Add platform', s => {
         if (levelId !== null) s.levels.find(l => l.id === levelId).platforms.push(base);
@@ -680,6 +691,28 @@ function wire(st) {
         select(sid, null, null);
       }
 
+      if (act === 'lv-up' || act === 'lv-down') {
+        const id = Number(b.dataset.level);
+        const order = [...st.levels].sort((x, y) => y.id - x.id);   // top first
+        const i = order.findIndex(l => l.id === id);
+        const j = act === 'lv-up' ? i - 1 : i + 1;
+        if (j < 0 || j >= order.length) return;
+        const other = order[j].id;
+        // A level's depth is its identity, so a move is a swap of the two
+        // depths - and every exit that lands on either one has to follow the
+        // level it belongs to, not the number it used to carry.
+        commit(`Swap levels ${id} and ${other}`, s2 => {
+          const A = s2.levels.find(l => l.id === id);
+          const B = s2.levels.find(l => l.id === other);
+          A.id = other; B.id = id;
+          for (const e of s2.exits || []) {
+            if (e.level === id) e.level = other;
+            else if (e.level === other) e.level = id;
+          }
+        });
+        return;
+      }
+
       if (act === 'del-level') {
         const id = Number(b.dataset.level);
         const lv = st.levels.find(l => l.id === id);
@@ -704,7 +737,7 @@ function wire(st) {
       if (act === 'del-plat') {
         if (platformsOf(st).length === 1) { hint('A station must keep at least one platform'); return; }
         commit(`Remove platform ${code}`, s => {
-          if (s.kind === 'underground') {
+          if (hasLevels(s)) {
             for (const l of s.levels) l.platforms = l.platforms.filter(p => String(p.id) !== String(code));
           } else s.platforms = s.platforms.filter(p => String(p.id) !== String(code));
         });

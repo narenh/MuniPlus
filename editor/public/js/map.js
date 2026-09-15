@@ -4,7 +4,7 @@
 
 import {
   store, edit, select, stationById, linesOf, emit,
-  platformsOf, anchorOf, hasCoord,
+  platformsOf, anchorOf, hasCoord, hasLevels,
 } from './store.js';
 
 const STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
@@ -152,7 +152,7 @@ function stationFeatures() {
         properties: {
           sid: s.id,
           name: s.name,
-          kind: s.kind,
+          levelled: hasLevels(s) ? 1 : 0,
           color: primary?.color || '#7c8598',
           active: on ? 1 : 0,
           interchange: ls.length > 1 ? 1 : 0,
@@ -173,7 +173,7 @@ function stationFeatures() {
 function exitFeatures() {
   const feats = [];
   for (const s of store.doc.stations) {
-    if (s.kind !== 'underground') continue;
+    if (!hasLevels(s)) continue;
     const ls = linesOf(s.id);
     const on = !store.activeLine || ls.some(l => l.id === store.activeLine);
     for (const e of s.exits || []) {
@@ -508,11 +508,11 @@ function addLayers() {
     id: 'muni-station', type: 'circle', source: 'stations',
     paint: {
       'circle-radius': ['interpolate', ['linear'], ['zoom'],
-        11, ['case', ['==', ['get', 'kind'], 'underground'], 5, 3.4],
-        14, ['case', ['==', ['get', 'kind'], 'underground'], 7.5, 5.4],
-        18, ['case', ['==', ['get', 'kind'], 'underground'], 13, 9.5]],
+        11, ['case', ['==', ['get', 'levelled'], 1], 5, 3.4],
+        14, ['case', ['==', ['get', 'levelled'], 1], 7.5, 5.4],
+        18, ['case', ['==', ['get', 'levelled'], 1], 13, 9.5]],
       'circle-color': ['case',
-        ['==', ['get', 'kind'], 'underground'], '#ffffff',
+        ['==', ['get', 'levelled'], 1], '#ffffff',
         ['==', ['get', 'interchange'], 1], '#e9edf6',
         '#0a0c12'],
       'circle-stroke-width': ['case',
@@ -809,7 +809,7 @@ const round6 = n => Math.round(n * 1e6) / 1e6;
 
 /** Keep a station's derived coordinate correct mid-drag. */
 function applyDerivedLive(st) {
-  if (st.kind !== 'underground') return;
+  if (!hasLevels(st)) return;
   const pts = (st.exits || []).filter(e => Number.isFinite(e.latitude));
   if (!pts.length) { st.latitude = null; st.longitude = null; return; }
   st.latitude = round6(pts.reduce((n, e) => n + e.latitude, 0) / pts.length);

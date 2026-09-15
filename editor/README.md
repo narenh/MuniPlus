@@ -86,9 +86,12 @@ persistent volume.
 
 ## The data model
 
-A station is one of two shapes.
+A station is one of two shapes, and **the shape is its own discriminator** —
+there is no `kind` field. A station either has `levels` (and `exits`), or a flat
+`platforms` list. A stored kind could contradict the shape, and "underground"
+was already wrong for a station whose levels go up.
 
-**Underground** — platforms live on `levels`, keyed by depth. Depth is a signed
+**Levelled** — platforms live on `levels`, keyed by depth. Depth is a signed
 ordinal, not a measurement: **0 is street, negative is below it, positive is
 above**. Elevated levels are real — Balboa Park's BART tracks are on a viaduct —
 so a positive depth is not a mistake. A level carries its name, an optional `agency`, and
@@ -96,7 +99,7 @@ so a positive depth is not a mistake. A level carries its name, an optional `age
 a level with no platforms. `exits` are the doors: a name, the level each lands
 on, `stairs` / `escalator` / `elevator` / `closed` booleans, and coordinates.
 
-**Surface** — a flat `platforms` list. No levels, no exits, no island flag;
+**Street** — a flat `platforms` list. No levels, no exits, no island flag;
 every platform already has precise coordinates, so grouping by heading axis is
 derivable rather than stored.
 
@@ -140,9 +143,13 @@ transfers · `N` reset bearing · `Esc` deselect.
 
 ### Levels and exits
 
-Levels are added, renamed, re-depthed and deleted from the inspector. Changing a
-level's depth changes its id, so every exit that lands there is repointed in the
-same edit. Deleting a level tells you how many platforms go with it and how many
+Levels are added, renamed, re-depthed, reordered and deleted from the inspector,
+and are always listed top of the stack first.
+
+Because a level's depth *is* its identity, moving one up or down swaps the two
+depths — and every exit that lands on either level follows the level it belongs
+to, not the number it used to carry. Typing a new depth directly does the same
+repointing. Deleting a level tells you how many platforms go with it and how many
 exits will need a new home.
 
 An exit starts with no coordinate. **Place this exit on the map** drops it on the
