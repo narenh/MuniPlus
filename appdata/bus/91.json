@@ -35,7 +35,7 @@
         "vanNessBay",
         "vanNessNorthPoint",
         "northPointPolk",
-        "northPointHyde",
+        "hydeNorthPoint",
         "columbusNorthPoint",
         "columbusBay",
         "columbusFrancisco",
@@ -57,14 +57,15 @@
         "thirdFolsom",
         "thirdBryant",
         "thirdBrannan",
+        "fourthKingT",
         "gearyStockton",
         "fourthMarket",
         "mission4",
         "fourthFolsom",
         "fourthBrannan",
         "fourthTownsend",
-        "fourthKingT",
-        "thirdMissionRock",
+        "fourthBerry",
+        "third4",
         "thirdWarriorsWay",
         "thirdGeneFriendWay",
         "thirdMariposa",
@@ -82,6 +83,8 @@
         "thirdKirkwoodLaSalle",
         "thirdOakdalePalou",
         "thirdRevereShafter",
+        "thirdVanDyke",
+        "thirdBayview",
         "thirdWilliams",
         "thirdCarroll",
         "thirdFitzgerald",
@@ -123,6 +126,7 @@
         "oceanSanLeandro",
         "juniperoSerraOcean",
         "sloatStFrancis",
+        "sloatWestPortal",
         "westPortal14",
         "ulloaWestPortal"
       ]
@@ -927,7 +931,7 @@
       ]
     },
     {
-      "id": "northPointHyde",
+      "id": "hydeNorthPoint",
       "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [
@@ -1446,6 +1450,27 @@
       ]
     },
     {
+      "id": "fourthKingT",
+      "name": "4th & King",
+      "kind": "streetLevel",
+      "lines": [
+        "91"
+      ],
+      "latitude": 37.776207,
+      "longitude": -122.393846,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17405",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.776251,
+          "longitude": -122.393933
+        }
+      ]
+    },
+    {
       "id": "gearyStockton",
       "name": "Geary & Stockton",
       "kind": "streetLevel",
@@ -1582,24 +1607,20 @@
       ]
     },
     {
-      "id": "fourthKingT",
-      "name": "4th & King",
+      "id": "fourthBerry",
+      "name": "4th & Berry",
       "kind": "streetLevel",
       "lines": [
         "91"
       ],
-      "latitude": 37.776207,
-      "longitude": -122.393846,
-      "transferStations": [],
+      "latitude": 37.775825,
+      "longitude": -122.393607,
+      "transferStations": [
+        "fourthKingN",
+        "fourthKingT"
+      ],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17405",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.776251,
-          "longitude": -122.393933
-        },
         {
           "id": "17366",
           "heading": "southbound",
@@ -1610,15 +1631,17 @@
       ]
     },
     {
-      "id": "thirdMissionRock",
-      "name": "3rd St & Mission Rock",
+      "id": "third4",
+      "name": "3rd & 4th",
       "kind": "streetLevel",
       "lines": [
         "91"
       ],
-      "latitude": 37.772908,
-      "longitude": -122.3897,
-      "transferStations": [],
+      "latitude": 37.772792,
+      "longitude": -122.38974,
+      "transferStations": [
+        "thirdMissionRock"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -2076,7 +2099,46 @@
           "name": null,
           "latitude": 37.73225,
           "longitude": -122.39146
-        },
+        }
+      ]
+    },
+    {
+      "id": "thirdVanDyke",
+      "name": "3rd & Van Dyke",
+      "kind": "streetLevel",
+      "lines": [
+        "91"
+      ],
+      "latitude": 37.729238,
+      "longitude": -122.392593,
+      "transferStations": [
+        "thirdWilliams"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13149",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.729238,
+          "longitude": -122.392593
+        }
+      ]
+    },
+    {
+      "id": "thirdBayview",
+      "name": "3rd & Bayview",
+      "kind": "streetLevel",
+      "lines": [
+        "91"
+      ],
+      "latitude": 37.7322,
+      "longitude": -122.391731,
+      "transferStations": [
+        "thirdRevereShafter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
         {
           "id": "13113",
           "heading": "southbound",
@@ -2098,13 +2160,6 @@
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "13149",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.729238,
-          "longitude": -122.392593
-        },
         {
           "id": "13150",
           "heading": "southbound",
@@ -3132,18 +3187,34 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "17205",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.735039,
-          "longitude": -122.471343
-        },
-        {
           "id": "16503",
           "heading": "southbound",
           "name": null,
           "latitude": 37.734807,
           "longitude": -122.471618
+        }
+      ]
+    },
+    {
+      "id": "sloatWestPortal",
+      "name": "Sloat & West Portal",
+      "kind": "streetLevel",
+      "lines": [
+        "91"
+      ],
+      "latitude": 37.735039,
+      "longitude": -122.471343,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17205",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.735039,
+          "longitude": -122.471343
         }
       ]
     },

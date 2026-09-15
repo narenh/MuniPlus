@@ -72,7 +72,7 @@
         "santaClaraSaintFrancis",
         "saintFrancisSantaAna",
         "saintFrancisSanFernandoWay",
-        "sloatStFrancis",
+        "sloatWestPortal",
         "nineteenthSloat",
         "sloat21",
         "sloatCrestlake",
@@ -1723,15 +1723,17 @@
       ]
     },
     {
-      "id": "sloatStFrancis",
-      "name": "Sloat & St Francis",
+      "id": "sloatWestPortal",
+      "name": "Sloat & West Portal",
       "kind": "streetLevel",
       "lines": [
         "23"
       ],
-      "latitude": 37.734816,
-      "longitude": -122.471532,
-      "transferStations": [],
+      "latitude": 37.734678,
+      "longitude": -122.471875,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

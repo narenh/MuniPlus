@@ -48,8 +48,9 @@
         "woodsidePortola",
         "ulloaClaremont",
         "westPortal14",
+        "sloatWestPortal",
         "sloatStFrancis",
-        "sloatStFrancis",
+        "juniperoSerraSloat",
         "juniperoSerraOcean",
         "oceanSanLeandro",
         "oceanAptos",
@@ -1035,15 +1036,17 @@
       ]
     },
     {
-      "id": "sloatStFrancis",
-      "name": "Sloat & St Francis",
+      "id": "sloatWestPortal",
+      "name": "Sloat & West Portal",
       "kind": "streetLevel",
       "lines": [
         "KBUS"
       ],
-      "latitude": 37.734816,
-      "longitude": -122.471532,
-      "transferStations": [],
+      "latitude": 37.735039,
+      "longitude": -122.471343,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -1052,20 +1055,6 @@
           "name": null,
           "latitude": 37.735039,
           "longitude": -122.471343
-        },
-        {
-          "id": "15141",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734307,
-          "longitude": -122.471675
-        },
-        {
-          "id": "16503",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734807,
-          "longitude": -122.471618
         }
       ]
     },
@@ -1082,25 +1071,34 @@
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "17205",
-          "heading": "northbound",
+          "id": "16503",
+          "heading": "southbound",
           "name": null,
-          "latitude": 37.735039,
-          "longitude": -122.471343
-        },
+          "latitude": 37.734807,
+          "longitude": -122.471618
+        }
+      ]
+    },
+    {
+      "id": "juniperoSerraSloat",
+      "name": "Junipero Serra & Sloat",
+      "kind": "streetLevel",
+      "lines": [
+        "KBUS"
+      ],
+      "latitude": 37.734307,
+      "longitude": -122.471675,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
+      "transferAgencies": [],
+      "platforms": [
         {
           "id": "15141",
           "heading": "southbound",
           "name": null,
           "latitude": 37.734307,
           "longitude": -122.471675
-        },
-        {
-          "id": "16503",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734807,
-          "longitude": -122.471618
         }
       ]
     },

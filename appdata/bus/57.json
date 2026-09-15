@@ -10,9 +10,10 @@
         "westPortalVicente",
         "westPortal14",
         "fifteenthWestPortal",
-        "sloatStFrancis",
+        "juniperoSerraSloat",
+        "sloatWestPortal",
         "juniperoSerraOcean",
-        "juniperoSerraOcean",
+        "eucalyptusJuniperoSerra",
         "nineteenthEucalyptus",
         "20thAvestonestownMall",
         "20thAvstonestownMall",
@@ -148,24 +149,19 @@
       ]
     },
     {
-      "id": "sloatStFrancis",
-      "name": "Sloat & St Francis",
+      "id": "juniperoSerraSloat",
+      "name": "Junipero Serra & Sloat",
       "kind": "streetLevel",
       "lines": [
         "57"
       ],
-      "latitude": 37.734816,
-      "longitude": -122.471532,
-      "transferStations": [],
+      "latitude": 37.734307,
+      "longitude": -122.471675,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17205",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.735039,
-          "longitude": -122.471343
-        },
         {
           "id": "15141",
           "heading": "southbound",
@@ -176,37 +172,25 @@
       ]
     },
     {
-      "id": "juniperoSerraOcean",
-      "name": "Junipero Serra & Ocean",
+      "id": "sloatWestPortal",
+      "name": "Sloat & West Portal",
       "kind": "streetLevel",
       "lines": [
         "57"
       ],
-      "latitude": 37.731449,
-      "longitude": -122.471762,
-      "transferStations": [],
+      "latitude": 37.735039,
+      "longitude": -122.471343,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
-          "id": "15138",
+          "id": "17205",
           "heading": "northbound",
           "name": null,
-          "latitude": 37.731363,
-          "longitude": -122.471674
-        },
-        {
-          "id": "15139",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.731238,
-          "longitude": -122.471858
-        },
-        {
-          "id": "14546",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.730988,
-          "longitude": -122.472442
+          "latitude": 37.735039,
+          "longitude": -122.471343
         }
       ]
     },
@@ -235,7 +219,25 @@
           "name": null,
           "latitude": 37.731238,
           "longitude": -122.471858
-        },
+        }
+      ]
+    },
+    {
+      "id": "eucalyptusJuniperoSerra",
+      "name": "Eucalyptus & Junipero Serra",
+      "kind": "streetLevel",
+      "lines": [
+        "57"
+      ],
+      "latitude": 37.730988,
+      "longitude": -122.472442,
+      "transferStations": [
+        "juniperoSerraOcean",
+        "rightOfWayEucalyptus",
+        "rightOfWayOcean"
+      ],
+      "transferAgencies": [],
+      "platforms": [
         {
           "id": "14546",
           "heading": "eastbound",

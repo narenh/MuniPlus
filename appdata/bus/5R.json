@@ -18,7 +18,7 @@
         "marketSansome",
         "marketMontgomery",
         "marketGrant",
-        "marketPowell",
+        "powellMarket",
         "marketMason",
         "mcallisterJones",
         "mcallisterVanNess",
@@ -325,7 +325,7 @@
       ]
     },
     {
-      "id": "marketPowell",
+      "id": "powellMarket",
       "name": "Powell & Market",
       "kind": "streetLevel",
       "lines": [

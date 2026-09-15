@@ -12,7 +12,7 @@
         "market1",
         "postKearny",
         "postGrant",
-        "postPowell",
+        "powellPost",
         "postTaylor",
         "jonesPost",
         "leavenworthPost",
@@ -29,7 +29,7 @@
         "sutterSansome",
         "kearnySutter",
         "stocktonSutter",
-        "sutterPowell",
+        "powellSutter",
         "sutterMason",
         "sutterTaylor",
         "jonesSutter",
@@ -190,7 +190,7 @@
       ]
     },
     {
-      "id": "postPowell",
+      "id": "powellPost",
       "name": "Powell & Post",
       "kind": "streetLevel",
       "lines": [
@@ -555,7 +555,7 @@
       ]
     },
     {
-      "id": "sutterPowell",
+      "id": "powellSutter",
       "name": "Powell & Sutter",
       "kind": "streetLevel",
       "lines": [

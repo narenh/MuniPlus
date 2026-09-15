@@ -6,16 +6,16 @@
       "shortName": "PH",
       "color": "#B49A36",
       "stationIds": [
-        "marketPowell",
-        "ofarrellPowell",
-        "gearyPowell",
-        "postPowell",
-        "sutterPowell",
+        "powellMarket",
+        "powellOfarrell",
+        "powellGeary",
+        "powellPost",
+        "powellSutter",
         "powellBush",
         "powellPine",
         "californiaPowell",
-        "sacramentoPowell",
-        "clayPowell",
+        "powellSacramento",
+        "powellClay",
         "powellJackson",
         "masonJackson",
         "jacksonTaylor",
@@ -28,17 +28,17 @@
         "washingtonJones",
         "washingtonLeavenworth",
         "jacksonHyde",
-        "pacificHyde",
+        "hydePacific",
         "hydeBroadway",
         "hydeVallejo",
         "hydeGreen",
-        "unionHyde",
+        "hydeUnion",
         "hydeFilbert",
         "hydeGreenwich",
         "hydeLombard",
         "hydeChestnut",
         "hydeBay",
-        "northPointHyde",
+        "hydeNorthPoint",
         "hydeBeach"
       ]
     }
@@ -46,7 +46,7 @@
   "subways": [],
   "stations": [
     {
-      "id": "marketPowell",
+      "id": "powellMarket",
       "name": "Powell & Market",
       "kind": "streetLevel",
       "lines": [
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "id": "ofarrellPowell",
+      "id": "powellOfarrell",
       "name": "Powell & O'Farrell",
       "kind": "streetLevel",
       "lines": [
@@ -106,7 +106,7 @@
       ]
     },
     {
-      "id": "gearyPowell",
+      "id": "powellGeary",
       "name": "Powell & Geary",
       "kind": "streetLevel",
       "lines": [
@@ -136,7 +136,7 @@
       ]
     },
     {
-      "id": "postPowell",
+      "id": "powellPost",
       "name": "Powell & Post",
       "kind": "streetLevel",
       "lines": [
@@ -166,7 +166,7 @@
       ]
     },
     {
-      "id": "sutterPowell",
+      "id": "powellSutter",
       "name": "Powell & Sutter",
       "kind": "streetLevel",
       "lines": [
@@ -278,7 +278,7 @@
       ]
     },
     {
-      "id": "sacramentoPowell",
+      "id": "powellSacramento",
       "name": "Powell & Sacramento",
       "kind": "streetLevel",
       "lines": [
@@ -306,7 +306,7 @@
       ]
     },
     {
-      "id": "clayPowell",
+      "id": "powellClay",
       "name": "Powell & Clay",
       "kind": "streetLevel",
       "lines": [
@@ -613,7 +613,7 @@
       ]
     },
     {
-      "id": "pacificHyde",
+      "id": "hydePacific",
       "name": "Hyde & Pacific",
       "kind": "streetLevel",
       "lines": [
@@ -725,7 +725,7 @@
       ]
     },
     {
-      "id": "unionHyde",
+      "id": "hydeUnion",
       "name": "Hyde & Union",
       "kind": "streetLevel",
       "lines": [
@@ -893,7 +893,7 @@
       ]
     },
     {
-      "id": "northPointHyde",
+      "id": "hydeNorthPoint",
       "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [

@@ -64,10 +64,12 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
 
   Four is the floor for a crossroads of two bus corridors, two poles per street:
   `judah46` has four because the N runs east-west on Judah and the 18 north-south on
-  46th Ave. It goes higher where local and rapid service use separate curbs —
-  `33rd & Geary` has **seven inside 34 m**, four on 33rd Ave and three on Geary,
-  because the 38 and 38R do not share poles. Single-platform stations are one-way
-  streets and terminals, not errors.
+  46th Ave. It goes higher where **different routes use different curbs** —
+  `33rd & Geary` has seven inside 34 m because the 1 California and the 38 Geary each
+  have their own westbound pole, and the 1X and the 18 each have their own northbound
+  one. Not a local-versus-rapid split: a rapid shares its local's poles and simply
+  skips stops (38/38R share 45 poles, 5/5R share 62, 8/8BX share 82). Single-platform
+  stations are one-way streets and terminals, not errors.
 * **`kind`** is `underground` or `streetLevel`. Every generated station is
   `streetLevel`; only `data.json` has `underground` ones.
 * **`transferStations`** links a surface station to a nearby metro station it was
@@ -87,10 +89,22 @@ three platforms: the J's northbound, the 22's northbound, and the shared southbo
    and never change** — a shipped id lives in people's favourites, and a feed
    update must not rename a station someone has saved.
 2. A stop sharing a stop code with a metro platform is filed under that station.
-3. A stop at a street-level metro station joins it. **Underground stations are
-   never merged into** — `data.json` models a surface stop next to an underground
-   one as a separate station reached by `transferStations` (`church` vs
-   `churchMarket`), and that convention is preserved.
+3. A stop at a street-level metro station joins it, but only if it names **the same
+   corner** — every street in one name must appear in the other. One shared street is
+   not enough: the 37's poles at `14th St & Church St` are a signalled crossing away
+   from the J and the 22 on Church and the F on Market, so they are their own station
+   even though all four names contain "Church". **Underground stations are never
+   merged into** — `data.json` models a surface stop next to an underground one as a
+   separate station reached by `transferStations` (`church` vs `churchMarket`), and
+   that convention is preserved.
+
+   Comparing corners needs a harsher normalisation than display does, because the same
+   street is spelled several ways across the two files: `Third St` / `3rd St`,
+   `The Embarcadero` / `Embarcadero`, `San Leandro Way` / `San Leandro`, plus two typos
+   in `data.json` that must not be edited (`Vincente St`, `42th Ave`). A `/` counts as
+   either side, so a stop at `Ocean & Dorado` still joins `Ocean & Jules/Dorado`.
+   Without this, requiring the same corner would wrongly split 27 stations that are
+   genuinely one place.
 4. Otherwise a new camelCase id is minted in `data.json`'s style (`churchMarket`,
    `church24`, `fourthKing`), never reusing one that already means somewhere else.
 
@@ -176,3 +190,8 @@ changed in a way that needs a human decision, not a retry.
 * Station names keep SFMTA's street order, picked by majority vote across the
   stops at that intersection — so `gearyFillmore` is "Geary & Fillmore", not
   "Fillmore & Geary".
+* Splitting is decided by name, so it cannot tell a real block from a naming quirk
+  when two poles are metres apart. `3rd & Van Dyke` is its own station 6 m from
+  `3rd & Williams`, and `30th & Church` is 11 m from `Church & Day`. If those should
+  stay merged, add a minimum separation before a differing corner name is allowed to
+  split.

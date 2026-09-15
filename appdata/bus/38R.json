@@ -11,7 +11,7 @@
         "market1",
         "market3",
         "ofarrellGrant",
-        "ofarrellPowell",
+        "powellOfarrell",
         "ofarrellTaylor",
         "ofarrellVanNess",
         "fremontMarket",
@@ -19,7 +19,7 @@
         "marketMontgomery",
         "gearyKearny",
         "gearyStockton",
-        "gearyPowell",
+        "powellGeary",
         "gearyLeavenworth",
         "gearyVanNess",
         "gearyLaguna",
@@ -156,7 +156,7 @@
       ]
     },
     {
-      "id": "ofarrellPowell",
+      "id": "powellOfarrell",
       "name": "Powell & O'Farrell",
       "kind": "streetLevel",
       "lines": [
@@ -336,7 +336,7 @@
       ]
     },
     {
-      "id": "gearyPowell",
+      "id": "powellGeary",
       "name": "Powell & Geary",
       "kind": "streetLevel",
       "lines": [

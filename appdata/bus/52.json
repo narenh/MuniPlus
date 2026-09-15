@@ -23,10 +23,9 @@
         "diamondHeightsGoldMine",
         "diamondHeightsDiamond",
         "addisonDiamondHeights",
+        "diamondHeightsGoldMine2",
         "diamondHeightsBerkeley",
         "diamondDiamondHeights",
-        "diamondHeightsGoldMine2",
-        "diamondHeightsBerkeleyWay",
         "diamondStSouthdiamondHts",
         "diamondConrad",
         "diamondMoffitt",
@@ -484,48 +483,6 @@
       ]
     },
     {
-      "id": "diamondHeightsBerkeley",
-      "name": "Diamond Heights & Berkeley",
-      "kind": "streetLevel",
-      "lines": [
-        "52"
-      ],
-      "latitude": 37.73867,
-      "longitude": -122.43668,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14361",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.73867,
-          "longitude": -122.43668
-        }
-      ]
-    },
-    {
-      "id": "diamondDiamondHeights",
-      "name": "Diamond & Diamond Heights",
-      "kind": "streetLevel",
-      "lines": [
-        "52"
-      ],
-      "latitude": 37.73822,
-      "longitude": -122.43726,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14395",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.73822,
-          "longitude": -122.43726
-        }
-      ]
-    },
-    {
       "id": "diamondHeightsGoldMine2",
       "name": "Diamond Heights & Gold Mine",
       "kind": "streetLevel",
@@ -547,23 +504,51 @@
       ]
     },
     {
-      "id": "diamondHeightsBerkeleyWay",
-      "name": "Diamond Heights & Berkeley Way",
+      "id": "diamondHeightsBerkeley",
+      "name": "Diamond Heights & Berkeley",
       "kind": "streetLevel",
       "lines": [
         "52"
       ],
-      "latitude": 37.7386,
-      "longitude": -122.4369,
+      "latitude": 37.738635,
+      "longitude": -122.43679,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14361",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73867,
+          "longitude": -122.43668
+        },
         {
           "id": "14362",
           "heading": "southbound",
           "name": null,
           "latitude": 37.7386,
           "longitude": -122.4369
+        }
+      ]
+    },
+    {
+      "id": "diamondDiamondHeights",
+      "name": "Diamond & Diamond Heights",
+      "kind": "streetLevel",
+      "lines": [
+        "52"
+      ],
+      "latitude": 37.73822,
+      "longitude": -122.43726,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14395",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.73822,
+          "longitude": -122.43726
         }
       ]
     },

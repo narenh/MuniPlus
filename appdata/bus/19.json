@@ -86,6 +86,7 @@
         "evansMarin",
         "evansSelby",
         "evansQuint",
+        "evansPhelps",
         "thirdEvans",
         "evansNewhall",
         "evansMendell",
@@ -1946,6 +1947,36 @@
       ]
     },
     {
+      "id": "evansPhelps",
+      "name": "Evans & Phelps",
+      "kind": "streetLevel",
+      "lines": [
+        "19"
+      ],
+      "latitude": 37.742986,
+      "longitude": -122.388452,
+      "transferStations": [
+        "thirdEvans"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14560",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.742977,
+          "longitude": -122.388595
+        },
+        {
+          "id": "14559",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.742994,
+          "longitude": -122.388309
+        }
+      ]
+    },
+    {
       "id": "thirdEvans",
       "name": "3rd & Evans",
       "kind": "streetLevel",
@@ -1963,20 +1994,6 @@
           "name": null,
           "latitude": 37.742628,
           "longitude": -122.387862
-        },
-        {
-          "id": "14560",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.742977,
-          "longitude": -122.388595
-        },
-        {
-          "id": "14559",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.742994,
-          "longitude": -122.388309
         }
       ]
     },

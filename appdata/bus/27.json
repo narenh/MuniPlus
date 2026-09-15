@@ -12,14 +12,14 @@
         "leavenworthJackson",
         "clayLeavenworth",
         "leavenworthSacramento",
-        "leavenworthCalifornia",
+        "californiaLeavenworth",
         "leavenworthPine",
         "pacificVanNess",
         "pacificVanNess",
         "polkWashington",
         "washingtonLarkin",
         "clayHyde",
-        "hydeCalifornia",
+        "californiaHyde",
         "hydePine",
         "bushHyde",
         "bushLeavenworth",
@@ -205,7 +205,7 @@
       ]
     },
     {
-      "id": "leavenworthCalifornia",
+      "id": "californiaLeavenworth",
       "name": "California & Leavenworth",
       "kind": "streetLevel",
       "lines": [
@@ -366,7 +366,7 @@
       ]
     },
     {
-      "id": "hydeCalifornia",
+      "id": "californiaHyde",
       "name": "California & Hyde",
       "kind": "streetLevel",
       "lines": [

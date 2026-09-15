@@ -13,7 +13,7 @@
         "clayKearny",
         "clayGrant",
         "clayStockton",
-        "clayPowell",
+        "powellClay",
         "clayMason",
         "clayTaylor",
         "clayJones",
@@ -30,7 +30,7 @@
         "sacramentoKearny",
         "sacramentoGrant",
         "sacramentoStockton",
-        "sacramentoPowell",
+        "powellSacramento",
         "sacramentoSprouleLn",
         "sacramentoJones",
         "leavenworthSacramento",
@@ -87,7 +87,7 @@
         "market1",
         "postKearny",
         "postGrant",
-        "postPowell",
+        "powellPost",
         "postTaylor",
         "jonesPost",
         "leavenworthPost",
@@ -104,7 +104,7 @@
         "sutterSansome",
         "kearnySutter",
         "stocktonSutter",
-        "sutterPowell",
+        "powellSutter",
         "sutterMason",
         "sutterTaylor",
         "jonesSutter",
@@ -146,7 +146,7 @@
         "marketMontgomery",
         "fourthMarket",
         "marketGrant",
-        "marketPowell",
+        "powellMarket",
         "marketMason",
         "mcallisterJones",
         "mcallisterHyde",
@@ -353,7 +353,7 @@
         "columbusKearny",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -520,11 +520,11 @@
         "pacificVanNess",
         "pacificPolk",
         "pacificLarkin",
-        "pacificHyde",
+        "hydePacific",
         "pacificLeavenworth",
         "pacificJones",
         "pacificTaylor",
-        "pacificMason",
+        "masonPacific",
         "pacificPowell",
         "stocktonPacific",
         "pacificGrant",
@@ -535,7 +535,7 @@
         "sacramentoSansome",
         "sacramentoBattery",
         "sacramentoDavis",
-        "drummCalifornia",
+        "californiaDrumm",
         "mainMarket",
         "howardMain",
         "mainFolsom",
@@ -839,6 +839,7 @@
         "evansMarin",
         "evansSelby",
         "evansQuint",
+        "evansPhelps",
         "thirdEvans",
         "evansNewhall",
         "evansMendell",
@@ -1023,7 +1024,7 @@
         "santaClaraSaintFrancis",
         "saintFrancisSantaAna",
         "saintFrancisSanFernandoWay",
-        "sloatStFrancis",
+        "sloatWestPortal",
         "nineteenthSloat",
         "sloat21",
         "sloatCrestlake",
@@ -1092,7 +1093,7 @@
         "noe29",
         "thirtiethNoe",
         "thirtiethSanchez",
-        "churchDay",
+        "thirtiethChurch",
         "dolores30",
         "thirtiethMission",
         "cortlandMission",
@@ -1157,14 +1158,14 @@
         "leavenworthJackson",
         "clayLeavenworth",
         "leavenworthSacramento",
-        "leavenworthCalifornia",
+        "californiaLeavenworth",
         "leavenworthPine",
         "pacificVanNess",
         "pacificVanNess",
         "polkWashington",
         "washingtonLarkin",
         "clayHyde",
-        "hydeCalifornia",
+        "californiaHyde",
         "hydePine",
         "bushHyde",
         "bushLeavenworth",
@@ -1229,7 +1230,7 @@
         "powellBeach",
         "northPointMason",
         "northPointJones",
-        "northPointHyde",
+        "hydeNorthPoint",
         "northPointPolk",
         "vanNessNorthPoint",
         "vanNessBay",
@@ -1414,7 +1415,7 @@
         "columbusFrancisco",
         "columbusBay",
         "columbusNorthPoint",
-        "northPointHyde",
+        "hydeNorthPoint",
         "northPointPolk",
         "vanNessNorthPoint",
         "vanNessBay",
@@ -1746,7 +1747,7 @@
         "fourteenthCastro",
         "fourteenthNoe",
         "fourteenthSanchez",
-        "churchMarket",
+        "fourteenthChurch",
         "marketSanchez",
         "marketNoe",
         "marketCastro",
@@ -1797,7 +1798,7 @@
         "market1",
         "market3",
         "ofarrellGrant",
-        "ofarrellPowell",
+        "powellOfarrell",
         "ofarrellTaylor",
         "leavenworthOfarrell",
         "larkinOfarrell",
@@ -1808,7 +1809,7 @@
         "marketMontgomery",
         "gearyKearny",
         "gearyStockton",
-        "gearyPowell",
+        "powellGeary",
         "gearyTaylor",
         "gearyJones",
         "gearyLeavenworth",
@@ -1866,7 +1867,7 @@
       "color": "#005B95",
       "stationIds": [
         "northPointStockton",
-        "theEmbarcaderoStockton",
+        "embarcaderoStockton",
         "powellBeach",
         "powellNorthPoint",
         "powellBay",
@@ -2121,11 +2122,11 @@
         "stocktonPacific",
         "stocktonColumbus",
         "columbusUnion",
-        "unionMason",
+        "masonUnion",
         "unionTaylor",
         "unionJones",
         "unionLeavenworth",
-        "unionHyde",
+        "hydeUnion",
         "unionLarkin",
         "polkUnion",
         "unionVanNess",
@@ -2316,10 +2317,9 @@
         "diamondHeightsGoldMine",
         "diamondHeightsDiamond",
         "addisonDiamondHeights",
+        "diamondHeightsGoldMine2",
         "diamondHeightsBerkeley",
         "diamondDiamondHeights",
-        "diamondHeightsGoldMine2",
-        "diamondHeightsBerkeleyWay",
         "diamondStSouthdiamondHts",
         "diamondConrad",
         "diamondMoffitt",
@@ -2556,9 +2556,10 @@
         "westPortalVicente",
         "westPortal14",
         "fifteenthWestPortal",
-        "sloatStFrancis",
+        "juniperoSerraSloat",
+        "sloatWestPortal",
         "juniperoSerraOcean",
-        "juniperoSerraOcean",
+        "eucalyptusJuniperoSerra",
         "nineteenthEucalyptus",
         "20thAvestonestownMall",
         "20thAvstonestownMall",
@@ -2642,7 +2643,7 @@
         "marketSansome",
         "marketMontgomery",
         "marketGrant",
-        "marketPowell",
+        "powellMarket",
         "marketMason",
         "mcallisterJones",
         "mcallisterVanNess",
@@ -2854,7 +2855,7 @@
         "vanNessBay",
         "vanNessNorthPoint",
         "northPointPolk",
-        "northPointHyde",
+        "hydeNorthPoint",
         "columbusNorthPoint",
         "columbusBay",
         "columbusFrancisco",
@@ -2876,14 +2877,15 @@
         "thirdFolsom",
         "thirdBryant",
         "thirdBrannan",
+        "fourthKingT",
         "gearyStockton",
         "fourthMarket",
         "mission4",
         "fourthFolsom",
         "fourthBrannan",
         "fourthTownsend",
-        "fourthKingT",
-        "thirdMissionRock",
+        "fourthBerry",
+        "third4",
         "thirdWarriorsWay",
         "thirdGeneFriendWay",
         "thirdMariposa",
@@ -2901,6 +2903,8 @@
         "thirdKirkwoodLaSalle",
         "thirdOakdalePalou",
         "thirdRevereShafter",
+        "thirdVanDyke",
+        "thirdBayview",
         "thirdWilliams",
         "thirdCarroll",
         "thirdFitzgerald",
@@ -2942,6 +2946,7 @@
         "oceanSanLeandro",
         "juniperoSerraOcean",
         "sloatStFrancis",
+        "sloatWestPortal",
         "westPortal14",
         "ulloaWestPortal"
       ]
@@ -3014,22 +3019,22 @@
       "shortName": "CA",
       "color": "#B49A36",
       "stationIds": [
-        "drummCalifornia",
+        "californiaDrumm",
         "californiaDavis",
         "californiaDavis",
         "californiaFront",
         "californiaBattery",
-        "sansomeCalifornia",
+        "californiaSansome",
         "californiaMontgomery",
-        "kearnyCalifornia",
+        "californiaKearny",
         "californiaGrant",
         "californiaStockton",
         "californiaPowell",
         "californiaMason",
         "californiaTaylor",
         "californiaJones",
-        "leavenworthCalifornia",
-        "hydeCalifornia",
+        "californiaLeavenworth",
+        "californiaHyde",
         "californiaLarkin",
         "californiaPolk",
         "californiaVanNess"
@@ -3041,16 +3046,16 @@
       "shortName": "PH",
       "color": "#B49A36",
       "stationIds": [
-        "marketPowell",
-        "ofarrellPowell",
-        "gearyPowell",
-        "postPowell",
-        "sutterPowell",
+        "powellMarket",
+        "powellOfarrell",
+        "powellGeary",
+        "powellPost",
+        "powellSutter",
         "powellBush",
         "powellPine",
         "californiaPowell",
-        "sacramentoPowell",
-        "clayPowell",
+        "powellSacramento",
+        "powellClay",
         "powellJackson",
         "masonJackson",
         "jacksonTaylor",
@@ -3063,17 +3068,17 @@
         "washingtonJones",
         "washingtonLeavenworth",
         "jacksonHyde",
-        "pacificHyde",
+        "hydePacific",
         "hydeBroadway",
         "hydeVallejo",
         "hydeGreen",
-        "unionHyde",
+        "hydeUnion",
         "hydeFilbert",
         "hydeGreenwich",
         "hydeLombard",
         "hydeChestnut",
         "hydeBay",
-        "northPointHyde",
+        "hydeNorthPoint",
         "hydeBeach"
       ]
     },
@@ -3083,25 +3088,25 @@
       "shortName": "PM",
       "color": "#B49A36",
       "stationIds": [
-        "marketPowell",
-        "ofarrellPowell",
-        "gearyPowell",
-        "postPowell",
-        "sutterPowell",
+        "powellMarket",
+        "powellOfarrell",
+        "powellGeary",
+        "powellPost",
+        "powellSutter",
         "powellBush",
         "powellPine",
         "californiaPowell",
-        "sacramentoPowell",
-        "clayPowell",
+        "powellSacramento",
+        "powellClay",
         "washingtonPowell",
         "washingtonMason",
         "powellJackson",
         "masonJackson",
-        "pacificMason",
+        "masonPacific",
         "masonBroadway",
         "masonVallejo",
         "masonGreen",
-        "unionMason",
+        "masonUnion",
         "masonFilbert",
         "masonGreenwich",
         "columbusLombard",
@@ -3183,7 +3188,7 @@
         "bealeMission",
         "davisPine",
         "californiaBattery",
-        "sansomeCalifornia",
+        "californiaSansome",
         "claySansome",
         "clayMontgomery",
         "vanNessChestnut",
@@ -3211,7 +3216,7 @@
         "market1",
         "market3",
         "ofarrellGrant",
-        "ofarrellPowell",
+        "powellOfarrell",
         "ofarrellTaylor",
         "ofarrellVanNess",
         "fremontMarket",
@@ -3219,7 +3224,7 @@
         "marketMontgomery",
         "gearyKearny",
         "gearyStockton",
-        "gearyPowell",
+        "powellGeary",
         "gearyLeavenworth",
         "gearyVanNess",
         "gearyLaguna",
@@ -3282,7 +3287,7 @@
         "sanBrunoFelton",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -3331,7 +3336,7 @@
         "columbusKearny",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -3394,15 +3399,14 @@
         "beachStockton",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "theEmbarcaderoStockton",
-        "theEmbarcaderoBay",
-        "theEmbarcaderoSansome",
+        "embarcaderoStockton",
+        "embarcaderoBay",
         "embarcaderoSansome",
-        "theEmbarcaderoGreenwich",
-        "theEmbarcaderoGreen",
-        "theEmbarcaderoBroadway",
-        "theEmbarcaderoWashington",
-        "theEmbarcaderoFerryBuilding",
+        "embarcaderoGreenwich",
+        "embarcaderoGreen",
+        "embarcaderoBroadway",
+        "embarcaderoWashington",
+        "embarcaderoFerryBuilding",
         "donCheeWaysteuart",
         "marketDrumm",
         "marketBattery",
@@ -3483,8 +3487,9 @@
         "woodsidePortola",
         "ulloaClaremont",
         "westPortal14",
+        "sloatWestPortal",
         "sloatStFrancis",
-        "sloatStFrancis",
+        "juniperoSerraSloat",
         "juniperoSerraOcean",
         "oceanSanLeandro",
         "oceanAptos",
@@ -3505,17 +3510,16 @@
         "jonesBeach",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "theEmbarcaderoStockton",
+        "embarcaderoStockton",
         "beachMason",
         "beachStockton",
-        "theEmbarcaderoBay",
+        "embarcaderoBay",
         "embarcaderoSansome",
-        "theEmbarcaderoSansome",
-        "theEmbarcaderoGreenwich",
-        "theEmbarcaderoGreen",
-        "theEmbarcaderoBroadway",
-        "theEmbarcaderoWashington",
-        "theEmbarcaderoFerryBuilding",
+        "embarcaderoGreenwich",
+        "embarcaderoGreen",
+        "embarcaderoBroadway",
+        "embarcaderoWashington",
+        "embarcaderoFerryBuilding",
         "donCheeWaysteuart",
         "marketBeale",
         "market1",
@@ -3588,7 +3592,7 @@
         "townsend5",
         "fourthTownsend",
         "secondKing",
-        "theEmbarcaderoTownsend",
+        "embarcaderoTownsend",
         "embarcaderoBrannan",
         "embarcaderoFolsom",
         "marketSteuart",
@@ -3652,10 +3656,10 @@
         "townsend5",
         "fourthTownsend",
         "secondKing",
-        "theEmbarcaderoTownsend",
+        "embarcaderoTownsend",
         "embarcaderoBrannan",
         "embarcaderoFolsom",
-        "theEmbarcaderoHoward",
+        "embarcaderoHoward",
         "steuartMission",
         "donCheeWaysteuart",
         "marketSteuart",
@@ -3737,6 +3741,7 @@
         "thirdCarroll",
         "thirdUnderwood",
         "thirdWilliams",
+        "thirdBayview",
         "thirdRevereShafter",
         "thirdOakdalePalou",
         "thirdKirkwoodLaSalle",
@@ -3748,12 +3753,13 @@
         "thirdMariposa",
         "thirdGeneFriendWay",
         "thirdWarriorsWay",
-        "thirdMissionRock",
-        "fourthKingT",
+        "third4",
+        "fourthBerry",
         "fourthBrannan",
         "fourthFolsom",
         "fourthMarket",
         "gearyStockton",
+        "fourthKingT",
         "thirdBrannan",
         "thirdFolsom",
         "gearyKearny",
@@ -3948,7 +3954,7 @@
       ]
     },
     {
-      "id": "clayPowell",
+      "id": "powellClay",
       "name": "Powell & Clay",
       "kind": "streetLevel",
       "lines": [
@@ -4377,7 +4383,7 @@
       ]
     },
     {
-      "id": "sacramentoPowell",
+      "id": "powellSacramento",
       "name": "Powell & Sacramento",
       "kind": "streetLevel",
       "lines": [
@@ -5891,7 +5897,7 @@
       ]
     },
     {
-      "id": "postPowell",
+      "id": "powellPost",
       "name": "Powell & Post",
       "kind": "streetLevel",
       "lines": [
@@ -6358,7 +6364,7 @@
       ]
     },
     {
-      "id": "sutterPowell",
+      "id": "powellSutter",
       "name": "Powell & Sutter",
       "kind": "streetLevel",
       "lines": [
@@ -7267,7 +7273,7 @@
       ]
     },
     {
-      "id": "marketPowell",
+      "id": "powellMarket",
       "name": "Powell & Market",
       "kind": "streetLevel",
       "lines": [
@@ -12202,7 +12208,7 @@
       ]
     },
     {
-      "id": "kearnyCalifornia",
+      "id": "californiaKearny",
       "name": "California & Kearny",
       "kind": "streetLevel",
       "lines": [
@@ -15501,7 +15507,7 @@
       ]
     },
     {
-      "id": "pacificHyde",
+      "id": "hydePacific",
       "name": "Hyde & Pacific",
       "kind": "streetLevel",
       "lines": [
@@ -15628,7 +15634,7 @@
       ]
     },
     {
-      "id": "pacificMason",
+      "id": "masonPacific",
       "name": "Mason & Pacific",
       "kind": "streetLevel",
       "lines": [
@@ -15820,7 +15826,7 @@
       ]
     },
     {
-      "id": "drummCalifornia",
+      "id": "californiaDrumm",
       "name": "California & Drumm",
       "kind": "streetLevel",
       "lines": [
@@ -18522,20 +18528,6 @@
           "name": null,
           "latitude": 37.742628,
           "longitude": -122.387862
-        },
-        {
-          "id": "14560",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.742977,
-          "longitude": -122.388595
-        },
-        {
-          "id": "14559",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.742994,
-          "longitude": -122.388309
         }
       ]
     },
@@ -21999,6 +21991,36 @@
       ]
     },
     {
+      "id": "evansPhelps",
+      "name": "Evans & Phelps",
+      "kind": "streetLevel",
+      "lines": [
+        "19"
+      ],
+      "latitude": 37.742986,
+      "longitude": -122.388452,
+      "transferStations": [
+        "thirdEvans"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14560",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.742977,
+          "longitude": -122.388595
+        },
+        {
+          "id": "14559",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.742994,
+          "longitude": -122.388309
+        }
+      ]
+    },
+    {
       "id": "evansNewhall",
       "name": "Evans & Newhall",
       "kind": "streetLevel",
@@ -23276,7 +23298,6 @@
       "kind": "streetLevel",
       "lines": [
         "22",
-        "37",
         "FBUS",
         "KBUS",
         "LOWL"
@@ -23301,13 +23322,6 @@
           "longitude": -122.429053
         },
         {
-          "id": "13254",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.767768,
-          "longitude": -122.429088
-        },
-        {
           "id": "15662",
           "heading": "eastbound",
           "name": null,
@@ -23320,13 +23334,6 @@
           "name": null,
           "latitude": 37.767277,
           "longitude": -122.429099
-        },
-        {
-          "id": "13255",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.76767,
-          "longitude": -122.42913
         },
         {
           "id": "15661",
@@ -25004,8 +25011,8 @@
       ]
     },
     {
-      "id": "sloatStFrancis",
-      "name": "Sloat & St Francis",
+      "id": "sloatWestPortal",
+      "name": "Sloat & West Portal",
       "kind": "streetLevel",
       "lines": [
         "23",
@@ -25013,9 +25020,11 @@
         "91",
         "KBUS"
       ],
-      "latitude": 37.734816,
-      "longitude": -122.471532,
-      "transferStations": [],
+      "latitude": 37.734678,
+      "longitude": -122.471875,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -25024,20 +25033,6 @@
           "name": null,
           "latitude": 37.735039,
           "longitude": -122.471343
-        },
-        {
-          "id": "15141",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734307,
-          "longitude": -122.471675
-        },
-        {
-          "id": "16503",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.734807,
-          "longitude": -122.471618
         },
         {
           "id": "16465",
@@ -26419,15 +26414,18 @@
       ]
     },
     {
-      "id": "churchDay",
-      "name": "Church & Day",
+      "id": "thirtiethChurch",
+      "name": "30th & Church",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
-      "latitude": 37.742517,
-      "longitude": -122.426557,
-      "transferStations": [],
+      "latitude": 37.7421,
+      "longitude": -122.426564,
+      "transferStations": [
+        "church29",
+        "churchDay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -27252,7 +27250,7 @@
       ]
     },
     {
-      "id": "leavenworthCalifornia",
+      "id": "californiaLeavenworth",
       "name": "California & Leavenworth",
       "kind": "streetLevel",
       "lines": [
@@ -27330,7 +27328,7 @@
       ]
     },
     {
-      "id": "hydeCalifornia",
+      "id": "californiaHyde",
       "name": "California & Hyde",
       "kind": "streetLevel",
       "lines": [
@@ -28173,7 +28171,7 @@
       ]
     },
     {
-      "id": "northPointHyde",
+      "id": "hydeNorthPoint",
       "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [
@@ -37009,6 +37007,39 @@
       ]
     },
     {
+      "id": "fourteenthChurch",
+      "name": "14th & Church",
+      "kind": "streetLevel",
+      "lines": [
+        "37"
+      ],
+      "latitude": 37.767719,
+      "longitude": -122.429109,
+      "transferStations": [
+        "church",
+        "churchDuboceJ",
+        "churchMarket",
+        "duboceChurchN"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13254",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.767768,
+          "longitude": -122.429088
+        },
+        {
+          "id": "13255",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.76767,
+          "longitude": -122.42913
+        }
+      ]
+    },
+    {
       "id": "marketSanchez",
       "name": "Market & Sanchez",
       "kind": "streetLevel",
@@ -37883,7 +37914,7 @@
       ]
     },
     {
-      "id": "ofarrellPowell",
+      "id": "powellOfarrell",
       "name": "Powell & O'Farrell",
       "kind": "streetLevel",
       "lines": [
@@ -37997,7 +38028,7 @@
       ]
     },
     {
-      "id": "gearyPowell",
+      "id": "powellGeary",
       "name": "Powell & Geary",
       "kind": "streetLevel",
       "lines": [
@@ -38922,8 +38953,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoStockton",
-      "name": "The Embarcadero & Stockton",
+      "id": "embarcaderoStockton",
+      "name": "Embarcadero & Stockton",
       "kind": "streetLevel",
       "lines": [
         "39",
@@ -41627,7 +41658,7 @@
       ]
     },
     {
-      "id": "unionMason",
+      "id": "masonUnion",
       "name": "Mason & Union",
       "kind": "streetLevel",
       "lines": [
@@ -41754,7 +41785,7 @@
       ]
     },
     {
-      "id": "unionHyde",
+      "id": "hydeUnion",
       "name": "Hyde & Union",
       "kind": "streetLevel",
       "lines": [
@@ -43754,48 +43785,6 @@
       ]
     },
     {
-      "id": "diamondHeightsBerkeley",
-      "name": "Diamond Heights & Berkeley",
-      "kind": "streetLevel",
-      "lines": [
-        "52"
-      ],
-      "latitude": 37.73867,
-      "longitude": -122.43668,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14361",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.73867,
-          "longitude": -122.43668
-        }
-      ]
-    },
-    {
-      "id": "diamondDiamondHeights",
-      "name": "Diamond & Diamond Heights",
-      "kind": "streetLevel",
-      "lines": [
-        "52"
-      ],
-      "latitude": 37.73822,
-      "longitude": -122.43726,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14395",
-          "heading": "westbound",
-          "name": null,
-          "latitude": 37.73822,
-          "longitude": -122.43726
-        }
-      ]
-    },
-    {
       "id": "diamondHeightsGoldMine2",
       "name": "Diamond Heights & Gold Mine",
       "kind": "streetLevel",
@@ -43817,23 +43806,51 @@
       ]
     },
     {
-      "id": "diamondHeightsBerkeleyWay",
-      "name": "Diamond Heights & Berkeley Way",
+      "id": "diamondHeightsBerkeley",
+      "name": "Diamond Heights & Berkeley",
       "kind": "streetLevel",
       "lines": [
         "52"
       ],
-      "latitude": 37.7386,
-      "longitude": -122.4369,
+      "latitude": 37.738635,
+      "longitude": -122.43679,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14361",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.73867,
+          "longitude": -122.43668
+        },
         {
           "id": "14362",
           "heading": "southbound",
           "name": null,
           "latitude": 37.7386,
           "longitude": -122.4369
+        }
+      ]
+    },
+    {
+      "id": "diamondDiamondHeights",
+      "name": "Diamond & Diamond Heights",
+      "kind": "streetLevel",
+      "lines": [
+        "52"
+      ],
+      "latitude": 37.73822,
+      "longitude": -122.43726,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "14395",
+          "heading": "westbound",
+          "name": null,
+          "latitude": 37.73822,
+          "longitude": -122.43726
         }
       ]
     },
@@ -44478,13 +44495,6 @@
           "longitude": -122.39135
         },
         {
-          "id": "13113",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.7322,
-          "longitude": -122.391731
-        },
-        {
           "id": "16249",
           "heading": "southbound",
           "name": null,
@@ -44705,13 +44715,6 @@
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "13149",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.729238,
-          "longitude": -122.392593
-        },
         {
           "id": "13150",
           "heading": "southbound",
@@ -47011,6 +47014,30 @@
       ]
     },
     {
+      "id": "juniperoSerraSloat",
+      "name": "Junipero Serra & Sloat",
+      "kind": "streetLevel",
+      "lines": [
+        "57",
+        "KBUS"
+      ],
+      "latitude": 37.734307,
+      "longitude": -122.471675,
+      "transferStations": [
+        "sloatStFrancis"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "15141",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.734307,
+          "longitude": -122.471675
+        }
+      ]
+    },
+    {
       "id": "juniperoSerraOcean",
       "name": "Junipero Serra & Ocean",
       "kind": "streetLevel",
@@ -47044,7 +47071,25 @@
           "name": null,
           "latitude": 37.730952,
           "longitude": -122.471686
-        },
+        }
+      ]
+    },
+    {
+      "id": "eucalyptusJuniperoSerra",
+      "name": "Eucalyptus & Junipero Serra",
+      "kind": "streetLevel",
+      "lines": [
+        "57"
+      ],
+      "latitude": 37.730988,
+      "longitude": -122.472442,
+      "transferStations": [
+        "juniperoSerraOcean",
+        "rightOfWayEucalyptus",
+        "rightOfWayOcean"
+      ],
+      "transferAgencies": [],
+      "platforms": [
         {
           "id": "14546",
           "heading": "eastbound",
@@ -48842,6 +48887,28 @@
       ]
     },
     {
+      "id": "fourthKingT",
+      "name": "4th & King",
+      "kind": "streetLevel",
+      "lines": [
+        "91",
+        "TBUS"
+      ],
+      "latitude": 37.776207,
+      "longitude": -122.393846,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17405",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.776251,
+          "longitude": -122.393933
+        }
+      ]
+    },
+    {
       "id": "fourthBrannan",
       "name": "4th & Brannan",
       "kind": "streetLevel",
@@ -48864,25 +48931,21 @@
       ]
     },
     {
-      "id": "fourthKingT",
-      "name": "4th & King",
+      "id": "fourthBerry",
+      "name": "4th & Berry",
       "kind": "streetLevel",
       "lines": [
         "91",
         "TBUS"
       ],
-      "latitude": 37.776207,
-      "longitude": -122.393846,
-      "transferStations": [],
+      "latitude": 37.775825,
+      "longitude": -122.393607,
+      "transferStations": [
+        "fourthKingN",
+        "fourthKingT"
+      ],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17405",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.776251,
-          "longitude": -122.393933
-        },
         {
           "id": "17366",
           "heading": "southbound",
@@ -48893,16 +48956,18 @@
       ]
     },
     {
-      "id": "thirdMissionRock",
-      "name": "3rd St & Mission Rock",
+      "id": "third4",
+      "name": "3rd & 4th",
       "kind": "streetLevel",
       "lines": [
         "91",
         "TBUS"
       ],
-      "latitude": 37.772908,
-      "longitude": -122.3897,
-      "transferStations": [],
+      "latitude": 37.772792,
+      "longitude": -122.38974,
+      "transferStations": [
+        "thirdMissionRock"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -49075,6 +49140,53 @@
           "name": null,
           "latitude": 37.741056,
           "longitude": -122.384679
+        }
+      ]
+    },
+    {
+      "id": "thirdVanDyke",
+      "name": "3rd & Van Dyke",
+      "kind": "streetLevel",
+      "lines": [
+        "91"
+      ],
+      "latitude": 37.729238,
+      "longitude": -122.392593,
+      "transferStations": [
+        "thirdWilliams"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13149",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.729238,
+          "longitude": -122.392593
+        }
+      ]
+    },
+    {
+      "id": "thirdBayview",
+      "name": "3rd & Bayview",
+      "kind": "streetLevel",
+      "lines": [
+        "91",
+        "TBUS"
+      ],
+      "latitude": 37.7322,
+      "longitude": -122.391731,
+      "transferStations": [
+        "thirdRevereShafter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13113",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7322,
+          "longitude": -122.391731
         }
       ]
     },
@@ -49369,6 +49481,28 @@
       ]
     },
     {
+      "id": "sloatStFrancis",
+      "name": "Sloat & St Francis",
+      "kind": "streetLevel",
+      "lines": [
+        "91",
+        "KBUS"
+      ],
+      "latitude": 37.734816,
+      "longitude": -122.471532,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "16503",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.734807,
+          "longitude": -122.471618
+        }
+      ]
+    },
+    {
       "id": "mainMission",
       "name": "Main & Mission",
       "kind": "streetLevel",
@@ -49467,7 +49601,7 @@
       ]
     },
     {
-      "id": "sansomeCalifornia",
+      "id": "californiaSansome",
       "name": "California & Sansome",
       "kind": "streetLevel",
       "lines": [
@@ -50764,8 +50898,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoBay",
-      "name": "The Embarcadero & Bay",
+      "id": "embarcaderoBay",
+      "name": "Embarcadero & Bay",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50793,15 +50927,15 @@
       ]
     },
     {
-      "id": "theEmbarcaderoSansome",
-      "name": "The Embarcadero & Sansome",
+      "id": "embarcaderoSansome",
+      "name": "Embarcadero & Sansome",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
         "LOWL"
       ],
-      "latitude": 37.805022,
-      "longitude": -122.403314,
+      "latitude": 37.805084,
+      "longitude": -122.403273,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
@@ -50811,22 +50945,7 @@
           "name": null,
           "latitude": 37.805022,
           "longitude": -122.403314
-        }
-      ]
-    },
-    {
-      "id": "embarcaderoSansome",
-      "name": "Embarcadero & Sansome",
-      "kind": "streetLevel",
-      "lines": [
-        "FBUS",
-        "LOWL"
-      ],
-      "latitude": 37.805146,
-      "longitude": -122.403233,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+        },
         {
           "id": "17281",
           "heading": "westbound",
@@ -50837,8 +50956,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoGreenwich",
-      "name": "The Embarcadero & Greenwich",
+      "id": "embarcaderoGreenwich",
+      "name": "Embarcadero & Greenwich",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50866,8 +50985,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoGreen",
-      "name": "The Embarcadero & Green",
+      "id": "embarcaderoGreen",
+      "name": "Embarcadero & Green",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50895,8 +51014,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoBroadway",
-      "name": "The Embarcadero & Broadway",
+      "id": "embarcaderoBroadway",
+      "name": "Embarcadero & Broadway",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50924,8 +51043,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoWashington",
-      "name": "The Embarcadero & Washington",
+      "id": "embarcaderoWashington",
+      "name": "Embarcadero & Washington",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -50953,8 +51072,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoFerryBuilding",
-      "name": "The Embarcadero & Ferry Building",
+      "id": "embarcaderoFerryBuilding",
+      "name": "Embarcadero & Ferry Building",
       "kind": "streetLevel",
       "lines": [
         "FBUS",
@@ -51444,8 +51563,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoTownsend",
-      "name": "The Embarcadero & Townsend",
+      "id": "embarcaderoTownsend",
+      "name": "Embarcadero & Townsend",
       "kind": "streetLevel",
       "lines": [
         "NBUS",
@@ -51981,8 +52100,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoHoward",
-      "name": "The Embarcadero & Howard",
+      "id": "embarcaderoHoward",
+      "name": "Embarcadero & Howard",
       "kind": "streetLevel",
       "lines": [
         "NOWL"

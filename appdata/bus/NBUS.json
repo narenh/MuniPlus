@@ -9,7 +9,7 @@
         "townsend5",
         "fourthTownsend",
         "secondKing",
-        "theEmbarcaderoTownsend",
+        "embarcaderoTownsend",
         "embarcaderoBrannan",
         "embarcaderoFolsom",
         "marketSteuart",
@@ -141,8 +141,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoTownsend",
-      "name": "The Embarcadero & Townsend",
+      "id": "embarcaderoTownsend",
+      "name": "Embarcadero & Townsend",
       "kind": "streetLevel",
       "lines": [
         "NBUS"

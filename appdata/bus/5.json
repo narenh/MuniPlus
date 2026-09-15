@@ -19,7 +19,7 @@
         "marketMontgomery",
         "fourthMarket",
         "marketGrant",
-        "marketPowell",
+        "powellMarket",
         "marketMason",
         "mcallisterJones",
         "mcallisterHyde",
@@ -360,7 +360,7 @@
       ]
     },
     {
-      "id": "marketPowell",
+      "id": "powellMarket",
       "name": "Powell & Market",
       "kind": "streetLevel",
       "lines": [

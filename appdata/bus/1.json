@@ -13,7 +13,7 @@
         "clayKearny",
         "clayGrant",
         "clayStockton",
-        "clayPowell",
+        "powellClay",
         "clayMason",
         "clayTaylor",
         "clayJones",
@@ -30,7 +30,7 @@
         "sacramentoKearny",
         "sacramentoGrant",
         "sacramentoStockton",
-        "sacramentoPowell",
+        "powellSacramento",
         "sacramentoSprouleLn",
         "sacramentoJones",
         "leavenworthSacramento",
@@ -230,7 +230,7 @@
       ]
     },
     {
-      "id": "clayPowell",
+      "id": "powellClay",
       "name": "Powell & Clay",
       "kind": "streetLevel",
       "lines": [
@@ -593,7 +593,7 @@
       ]
     },
     {
-      "id": "sacramentoPowell",
+      "id": "powellSacramento",
       "name": "Powell & Sacramento",
       "kind": "streetLevel",
       "lines": [

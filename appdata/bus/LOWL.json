@@ -9,17 +9,16 @@
         "jonesBeach",
         "jeffersonTaylor",
         "jeffersonPowell",
-        "theEmbarcaderoStockton",
+        "embarcaderoStockton",
         "beachMason",
         "beachStockton",
-        "theEmbarcaderoBay",
+        "embarcaderoBay",
         "embarcaderoSansome",
-        "theEmbarcaderoSansome",
-        "theEmbarcaderoGreenwich",
-        "theEmbarcaderoGreen",
-        "theEmbarcaderoBroadway",
-        "theEmbarcaderoWashington",
-        "theEmbarcaderoFerryBuilding",
+        "embarcaderoGreenwich",
+        "embarcaderoGreen",
+        "embarcaderoBroadway",
+        "embarcaderoWashington",
+        "embarcaderoFerryBuilding",
         "donCheeWaysteuart",
         "marketBeale",
         "market1",
@@ -150,8 +149,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoStockton",
-      "name": "The Embarcadero & Stockton",
+      "id": "embarcaderoStockton",
+      "name": "Embarcadero & Stockton",
       "kind": "streetLevel",
       "lines": [
         "LOWL"
@@ -213,8 +212,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoBay",
-      "name": "The Embarcadero & Bay",
+      "id": "embarcaderoBay",
+      "name": "Embarcadero & Bay",
       "kind": "streetLevel",
       "lines": [
         "LOWL"
@@ -247,11 +246,18 @@
       "lines": [
         "LOWL"
       ],
-      "latitude": 37.805146,
-      "longitude": -122.403233,
+      "latitude": 37.805084,
+      "longitude": -122.403273,
       "transferStations": [],
       "transferAgencies": [],
       "platforms": [
+        {
+          "id": "14529",
+          "heading": "eastbound",
+          "name": null,
+          "latitude": 37.805022,
+          "longitude": -122.403314
+        },
         {
           "id": "17281",
           "heading": "westbound",
@@ -262,29 +268,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoSansome",
-      "name": "The Embarcadero & Sansome",
-      "kind": "streetLevel",
-      "lines": [
-        "LOWL"
-      ],
-      "latitude": 37.805022,
-      "longitude": -122.403314,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
-        {
-          "id": "14529",
-          "heading": "eastbound",
-          "name": null,
-          "latitude": 37.805022,
-          "longitude": -122.403314
-        }
-      ]
-    },
-    {
-      "id": "theEmbarcaderoGreenwich",
-      "name": "The Embarcadero & Greenwich",
+      "id": "embarcaderoGreenwich",
+      "name": "Embarcadero & Greenwich",
       "kind": "streetLevel",
       "lines": [
         "LOWL"
@@ -311,8 +296,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoGreen",
-      "name": "The Embarcadero & Green",
+      "id": "embarcaderoGreen",
+      "name": "Embarcadero & Green",
       "kind": "streetLevel",
       "lines": [
         "LOWL"
@@ -339,8 +324,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoBroadway",
-      "name": "The Embarcadero & Broadway",
+      "id": "embarcaderoBroadway",
+      "name": "Embarcadero & Broadway",
       "kind": "streetLevel",
       "lines": [
         "LOWL"
@@ -367,8 +352,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoWashington",
-      "name": "The Embarcadero & Washington",
+      "id": "embarcaderoWashington",
+      "name": "Embarcadero & Washington",
       "kind": "streetLevel",
       "lines": [
         "LOWL"
@@ -395,8 +380,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoFerryBuilding",
-      "name": "The Embarcadero & Ferry Building",
+      "id": "embarcaderoFerryBuilding",
+      "name": "Embarcadero & Ferry Building",
       "kind": "streetLevel",
       "lines": [
         "LOWL"

@@ -59,12 +59,49 @@ ORDINAL = re.compile(r'\d+(st|nd|rd|th)$')
 ORD_SUFFIX = re.compile(r'(st|nd|rd|th)$')
 
 
+# Matching needs a harsher normalisation than display does. SFMTA and data.json spell
+# the same street several ways: "Third St" / "3rd St", "The Embarcadero" / "Embarcadero",
+# "San Leandro Way" / "San Leandro", plus two typos in data.json we must not edit.
+MATCH_SUFFIX = SUFFIX | {'way', 'ter', 'terrace', 'cir', 'circle', 'ln', 'lane', 'pl',
+                         'place', 'ct', 'court', 'hwy', 'highway', 'plz', 'plaza', 'path'}
+MATCH_ALIAS = {'third': '3rd', 'fourth': '4th', 'fifth': '5th', 'sixth': '6th',
+               'seventh': '7th', 'eighth': '8th', 'ninth': '9th', 'tenth': '10th',
+               'vincente': 'vicente',       # data.json spells Vicente St with an n
+               '42th': '42nd',              # and 42nd Ave as 42th
+               'bay shore': 'bayshore'}
+
+
+def match_key(name):
+    """Street set for comparing two names for the same corner. '/' counts as either:
+    a stop at 'Ocean & Dorado' belongs to data.json's 'Ocean & Jules/Dorado'."""
+    name = re.sub(r'\([^)]*\)', ' ', name)              # drop "(SF State)" etc.
+    out = set()
+    for part in re.split(r'[&/]', name):
+        toks = [t for t in re.split(r'[\s.]+', part.strip().lower()) if t]
+        if toks and toks[0] == 'the':
+            toks = toks[1:]
+        while len(toks) > 1 and toks[-1] in MATCH_SUFFIX:
+            toks.pop()
+        if toks:
+            joined = ' '.join(toks)
+            out.add(MATCH_ALIAS.get(joined, joined))
+    return out
+
+
+def same_corner(a, b):
+    """True if two names denote the same intersection."""
+    ka, kb = match_key(a), match_key(b)
+    return bool(ka) and bool(kb) and (ka <= kb or kb <= ka)
+
+
 def streets(name):
     """'16th St& Rhode Island St' -> ['16th', 'rhode island']"""
     name = re.sub(r'\s*(SE|NE|SW|NW)-(FS|NS|MB)\s*/?\s*BZ\s*$', '', name).strip()
     out = []
     for part in name.split('&'):
         toks = [t for t in re.split(r'[\s.]+', part.strip().lower()) if t]
+        if len(toks) > 1 and toks[0] == 'the':      # "The Embarcadero" -> Embarcadero
+            toks = toks[1:]
         while len(toks) > 1 and toks[-1] in SUFFIX:
             toks.pop()
         if toks:
@@ -282,9 +319,9 @@ def resolve_stations(patterns, stops, metro, frozen):
             hit = metro_by_code.get(stops[s]['stop_code'])
             if hit:
                 out[hit['id']] = hit
-            ours = set(streets(stops[s]['stop_name']))
             for st in metro['stations']:
-                if st['kind'] == 'streetLevel' and set(streets(st['name'])) & ours \
+                if st['kind'] == 'streetLevel' \
+                        and same_corner(st['name'], stops[s]['stop_name']) \
                         and min(metres(pt_of[s], mp) for mp in platforms_of(st)) <= MERGE_RADIUS:
                     out[st['id']] = st
         return out
@@ -297,7 +334,7 @@ def resolve_stations(patterns, stops, metro, frozen):
     # group stops into intersections: same cross streets, then within CLUSTER_RADIUS
     groups = collections.defaultdict(list)
     for s in served:
-        groups[frozenset(streets(stops[s]['stop_name']))].append(s)
+        groups[frozenset(match_key(stops[s]['stop_name']))].append(s)
     clusters = []
     for key, members in groups.items():
         members.sort(key=lambda s: int(stops[s]['stop_id']))
@@ -327,9 +364,9 @@ def resolve_stations(patterns, stops, metro, frozen):
             if pin and pin['id'] in cands:
                 buckets[pin['id']].append(s)
                 continue
-            ours = streets(stops[s]['stop_name'])[:1]
+            ours = [next(iter(match_key(streets(stops[s]['stop_name'])[0])), '')]
             best = min(cands.values(), key=lambda st: (
-                0 if streets(st['name'])[:1] == ours else 1,
+                0 if [next(iter(match_key(streets(st['name'])[0])), '')] == ours else 1,
                 min(metres(pt_of[s], mp) for mp in platforms_of(st))))
             buckets[best['id']].append(s)
         split.extend((ms, sid) for sid, ms in buckets.items())

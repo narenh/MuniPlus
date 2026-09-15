@@ -11,7 +11,7 @@
         "bealeMission",
         "davisPine",
         "californiaBattery",
-        "sansomeCalifornia",
+        "californiaSansome",
         "claySansome",
         "clayMontgomery",
         "vanNessChestnut",
@@ -141,7 +141,7 @@
       ]
     },
     {
-      "id": "sansomeCalifornia",
+      "id": "californiaSansome",
       "name": "California & Sansome",
       "kind": "streetLevel",
       "lines": [

@@ -33,7 +33,7 @@
         "columbusFrancisco",
         "columbusBay",
         "columbusNorthPoint",
-        "northPointHyde",
+        "hydeNorthPoint",
         "northPointPolk",
         "vanNessNorthPoint",
         "vanNessBay",
@@ -695,7 +695,7 @@
       ]
     },
     {
-      "id": "northPointHyde",
+      "id": "hydeNorthPoint",
       "name": "Hyde & North Point",
       "kind": "streetLevel",
       "lines": [

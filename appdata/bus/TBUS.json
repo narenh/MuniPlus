@@ -18,6 +18,7 @@
         "thirdCarroll",
         "thirdUnderwood",
         "thirdWilliams",
+        "thirdBayview",
         "thirdRevereShafter",
         "thirdOakdalePalou",
         "thirdKirkwoodLaSalle",
@@ -29,12 +30,13 @@
         "thirdMariposa",
         "thirdGeneFriendWay",
         "thirdWarriorsWay",
-        "thirdMissionRock",
-        "fourthKingT",
+        "third4",
+        "fourthBerry",
         "fourthBrannan",
         "fourthFolsom",
         "fourthMarket",
         "gearyStockton",
+        "fourthKingT",
         "thirdBrannan",
         "thirdFolsom",
         "gearyKearny",
@@ -353,6 +355,29 @@
       ]
     },
     {
+      "id": "thirdBayview",
+      "name": "3rd & Bayview",
+      "kind": "streetLevel",
+      "lines": [
+        "TBUS"
+      ],
+      "latitude": 37.7322,
+      "longitude": -122.391731,
+      "transferStations": [
+        "thirdRevereShafter"
+      ],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "13113",
+          "heading": "southbound",
+          "name": null,
+          "latitude": 37.7322,
+          "longitude": -122.391731
+        }
+      ]
+    },
+    {
       "id": "thirdRevereShafter",
       "name": "3rd & Revere/Shafter",
       "kind": "streetLevel",
@@ -370,13 +395,6 @@
           "name": null,
           "latitude": 37.73225,
           "longitude": -122.39146
-        },
-        {
-          "id": "13113",
-          "heading": "southbound",
-          "name": null,
-          "latitude": 37.7322,
-          "longitude": -122.391731
         }
       ]
     },
@@ -653,15 +671,17 @@
       ]
     },
     {
-      "id": "thirdMissionRock",
-      "name": "3rd St & Mission Rock",
+      "id": "third4",
+      "name": "3rd & 4th",
       "kind": "streetLevel",
       "lines": [
         "TBUS"
       ],
-      "latitude": 37.772908,
-      "longitude": -122.3897,
-      "transferStations": [],
+      "latitude": 37.772792,
+      "longitude": -122.38974,
+      "transferStations": [
+        "thirdMissionRock"
+      ],
       "transferAgencies": [],
       "platforms": [
         {
@@ -681,24 +701,20 @@
       ]
     },
     {
-      "id": "fourthKingT",
-      "name": "4th & King",
+      "id": "fourthBerry",
+      "name": "4th & Berry",
       "kind": "streetLevel",
       "lines": [
         "TBUS"
       ],
-      "latitude": 37.776207,
-      "longitude": -122.393846,
-      "transferStations": [],
+      "latitude": 37.775825,
+      "longitude": -122.393607,
+      "transferStations": [
+        "fourthKingN",
+        "fourthKingT"
+      ],
       "transferAgencies": [],
       "platforms": [
-        {
-          "id": "17405",
-          "heading": "northbound",
-          "name": null,
-          "latitude": 37.776251,
-          "longitude": -122.393933
-        },
         {
           "id": "17366",
           "heading": "southbound",
@@ -796,6 +812,27 @@
           "name": null,
           "latitude": 37.787704,
           "longitude": -122.406729
+        }
+      ]
+    },
+    {
+      "id": "fourthKingT",
+      "name": "4th & King",
+      "kind": "streetLevel",
+      "lines": [
+        "TBUS"
+      ],
+      "latitude": 37.776207,
+      "longitude": -122.393846,
+      "transferStations": [],
+      "transferAgencies": [],
+      "platforms": [
+        {
+          "id": "17405",
+          "heading": "northbound",
+          "name": null,
+          "latitude": 37.776251,
+          "longitude": -122.393933
         }
       ]
     },

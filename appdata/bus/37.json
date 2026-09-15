@@ -35,7 +35,7 @@
         "fourteenthCastro",
         "fourteenthNoe",
         "fourteenthSanchez",
-        "churchMarket",
+        "fourteenthChurch",
         "marketSanchez",
         "marketNoe",
         "marketCastro",
@@ -786,15 +786,20 @@
       ]
     },
     {
-      "id": "churchMarket",
-      "name": "Church & Market",
+      "id": "fourteenthChurch",
+      "name": "14th & Church",
       "kind": "streetLevel",
       "lines": [
         "37"
       ],
-      "latitude": 37.767398,
-      "longitude": -122.42899,
-      "transferStations": [],
+      "latitude": 37.767719,
+      "longitude": -122.429109,
+      "transferStations": [
+        "church",
+        "churchDuboceJ",
+        "churchMarket",
+        "duboceChurchN"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

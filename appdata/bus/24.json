@@ -45,7 +45,7 @@
         "noe29",
         "thirtiethNoe",
         "thirtiethSanchez",
-        "churchDay",
+        "thirtiethChurch",
         "dolores30",
         "thirtiethMission",
         "cortlandMission",
@@ -1135,15 +1135,18 @@
       ]
     },
     {
-      "id": "churchDay",
-      "name": "Church & Day",
+      "id": "thirtiethChurch",
+      "name": "30th & Church",
       "kind": "streetLevel",
       "lines": [
         "24"
       ],
-      "latitude": 37.742517,
-      "longitude": -122.426557,
-      "transferStations": [],
+      "latitude": 37.7421,
+      "longitude": -122.426564,
+      "transferStations": [
+        "church29",
+        "churchDay"
+      ],
       "transferAgencies": [],
       "platforms": [
         {

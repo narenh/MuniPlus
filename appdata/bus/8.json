@@ -21,7 +21,7 @@
         "columbusKearny",
         "kearnyJackson",
         "clayKearny",
-        "kearnyCalifornia",
+        "californiaKearny",
         "kearnyBush",
         "kearnySutter",
         "gearyKearny",
@@ -443,7 +443,7 @@
       ]
     },
     {
-      "id": "kearnyCalifornia",
+      "id": "californiaKearny",
       "name": "California & Kearny",
       "kind": "streetLevel",
       "lines": [

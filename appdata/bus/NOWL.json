@@ -9,10 +9,10 @@
         "townsend5",
         "fourthTownsend",
         "secondKing",
-        "theEmbarcaderoTownsend",
+        "embarcaderoTownsend",
         "embarcaderoBrannan",
         "embarcaderoFolsom",
-        "theEmbarcaderoHoward",
+        "embarcaderoHoward",
         "steuartMission",
         "donCheeWaysteuart",
         "marketSteuart",
@@ -153,8 +153,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoTownsend",
-      "name": "The Embarcadero & Townsend",
+      "id": "embarcaderoTownsend",
+      "name": "Embarcadero & Townsend",
       "kind": "streetLevel",
       "lines": [
         "NOWL"
@@ -225,8 +225,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoHoward",
-      "name": "The Embarcadero & Howard",
+      "id": "embarcaderoHoward",
+      "name": "Embarcadero & Howard",
       "kind": "streetLevel",
       "lines": [
         "NOWL"

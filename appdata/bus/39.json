@@ -7,7 +7,7 @@
       "color": "#005B95",
       "stationIds": [
         "northPointStockton",
-        "theEmbarcaderoStockton",
+        "embarcaderoStockton",
         "powellBeach",
         "powellNorthPoint",
         "powellBay",
@@ -59,8 +59,8 @@
       ]
     },
     {
-      "id": "theEmbarcaderoStockton",
-      "name": "The Embarcadero & Stockton",
+      "id": "embarcaderoStockton",
+      "name": "Embarcadero & Stockton",
       "kind": "streetLevel",
       "lines": [
         "39"

@@ -6,22 +6,22 @@
       "shortName": "CA",
       "color": "#B49A36",
       "stationIds": [
-        "drummCalifornia",
+        "californiaDrumm",
         "californiaDavis",
         "californiaDavis",
         "californiaFront",
         "californiaBattery",
-        "sansomeCalifornia",
+        "californiaSansome",
         "californiaMontgomery",
-        "kearnyCalifornia",
+        "californiaKearny",
         "californiaGrant",
         "californiaStockton",
         "californiaPowell",
         "californiaMason",
         "californiaTaylor",
         "californiaJones",
-        "leavenworthCalifornia",
-        "hydeCalifornia",
+        "californiaLeavenworth",
+        "californiaHyde",
         "californiaLarkin",
         "californiaPolk",
         "californiaVanNess"
@@ -31,7 +31,7 @@
   "subways": [],
   "stations": [
     {
-      "id": "drummCalifornia",
+      "id": "californiaDrumm",
       "name": "California & Drumm",
       "kind": "streetLevel",
       "lines": [
@@ -186,7 +186,7 @@
       ]
     },
     {
-      "id": "sansomeCalifornia",
+      "id": "californiaSansome",
       "name": "California & Sansome",
       "kind": "streetLevel",
       "lines": [
@@ -242,7 +242,7 @@
       ]
     },
     {
-      "id": "kearnyCalifornia",
+      "id": "californiaKearny",
       "name": "California & Kearny",
       "kind": "streetLevel",
       "lines": [
@@ -438,7 +438,7 @@
       ]
     },
     {
-      "id": "leavenworthCalifornia",
+      "id": "californiaLeavenworth",
       "name": "California & Leavenworth",
       "kind": "streetLevel",
       "lines": [
@@ -466,7 +466,7 @@
       ]
     },
     {
-      "id": "hydeCalifornia",
+      "id": "californiaHyde",
       "name": "California & Hyde",
       "kind": "streetLevel",
       "lines": [

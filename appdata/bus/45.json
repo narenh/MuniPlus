@@ -27,11 +27,11 @@
         "stocktonPacific",
         "stocktonColumbus",
         "columbusUnion",
-        "unionMason",
+        "masonUnion",
         "unionTaylor",
         "unionJones",
         "unionLeavenworth",
-        "unionHyde",
+        "hydeUnion",
         "unionLarkin",
         "polkUnion",
         "unionVanNess",
@@ -548,7 +548,7 @@
       ]
     },
     {
-      "id": "unionMason",
+      "id": "masonUnion",
       "name": "Mason & Union",
       "kind": "streetLevel",
       "lines": [
@@ -660,7 +660,7 @@
       ]
     },
     {
-      "id": "unionHyde",
+      "id": "hydeUnion",
       "name": "Hyde & Union",
       "kind": "streetLevel",
       "lines": [
