@@ -1,6 +1,6 @@
 // Command palette, save sheet, history, toasts - everything that floats.
 
-import { store, esc, linesOf, changes, stationById } from './store.js';
+import { store, esc, linesOf, changes, stationById, platformsOf } from './store.js';
 
 // --------------------------------------------------------------------- toasts
 export function toast(msg, kind = 'info', action = null) {
@@ -81,8 +81,9 @@ function buildPalette(q, mode) {
   }
 
   for (const st of store.doc.stations) {
-    const codes = st.platforms.map(p => String(p.id)).join(' ');
-    const names = st.platforms.map(p => p.stopName || '').join(' ');
+    const ps = platformsOf(st);
+    const codes = ps.map(p => String(p.id)).join(' ');
+    const names = ps.map(p => `${p.stopName || ''} ${p.name || ''}`).join(' ');
     const hay = `${st.id} ${st.name} ${codes} ${names}`.toLowerCase();
     if (query && !hay.includes(query)) continue;
     const ls = linesOf(st.id);
@@ -90,7 +91,7 @@ function buildPalette(q, mode) {
       kind: 'station', id: st.id,
       lead: ls.length ? (ls[0].shortName || ls[0].id) : '·',
       leadBg: ls[0]?.color || 'rgba(255,255,255,.08)',
-      t1: st.name, t2: `${st.id} · ${st.platforms.map(p => p.id).join(' ')}`,
+      t1: st.name, t2: `${st.id} · ${ps.map(p => p.id).join(' ')}`,
       lines: ls.map(l => l.color),
     });
   }

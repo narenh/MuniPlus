@@ -211,7 +211,8 @@
         "castro",
         "forestHill",
         "westPortal"
-      ]
+      ],
+      "hidden": true
     },
     {
       "id": "F",
@@ -285,8 +286,8 @@
   "stations": [
     {
       "id": "embarcadero",
-      "name": "Embarcadero",
       "kind": "underground",
+      "name": "Embarcadero",
       "lines": [
         "J",
         "K",
@@ -295,37 +296,77 @@
         "N",
         "S"
       ],
-      "latitude": 37.792862,
-      "longitude": -122.39685,
-      "transferStations": [
-        "marketEmbarcaderoSubway"
+      "latitude": null,
+      "longitude": null,
+      "levels": [
+        {
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "16992",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "terminates": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.793134,
+              "longitude": -122.396431
+            },
+            {
+              "id": "17217",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "terminates": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.79271,
+              "longitude": -122.39715
+            }
+          ]
+        }
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "marketEmbarcaderoSubway",
+          "mode": "street"
+        }
       ],
       "transferAgencies": [
         "bart"
-      ],
-      "platforms": [
-        {
-          "id": "16992",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Embarcadero",
-          "latitude": 37.793134,
-          "longitude": -122.396431
-        },
-        {
-          "id": "17217",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Embarcadero",
-          "latitude": 37.79271,
-          "longitude": -122.39715
-        }
       ]
     },
     {
       "id": "mongomery",
-      "name": "Montgomery",
       "kind": "underground",
+      "name": "Montgomery",
       "lines": [
         "J",
         "K",
@@ -334,37 +375,63 @@
         "N",
         "S"
       ],
-      "latitude": 37.789005,
-      "longitude": -122.401739,
-      "transferStations": [
-        "market2"
+      "latitude": null,
+      "longitude": null,
+      "levels": [
+        {
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15731",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.789219,
+              "longitude": -122.401351
+            },
+            {
+              "id": "16994",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.788791,
+              "longitude": -122.402127
+            }
+          ]
+        }
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "market2",
+          "mode": "street"
+        }
       ],
       "transferAgencies": [
         "bart"
-      ],
-      "platforms": [
-        {
-          "id": "15731",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Montgomery",
-          "latitude": 37.789219,
-          "longitude": -122.401351
-        },
-        {
-          "id": "16994",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Montgomery",
-          "latitude": 37.788791,
-          "longitude": -122.402127
-        }
       ]
     },
     {
       "id": "powell",
-      "name": "Powell",
       "kind": "underground",
+      "name": "Powell",
       "lines": [
         "J",
         "K",
@@ -373,39 +440,71 @@
         "N",
         "S"
       ],
-      "latitude": 37.784476,
-      "longitude": -122.407454,
-      "transferStations": [
-        "unionSquare",
-        "market4",
-        "market5"
+      "latitude": null,
+      "longitude": null,
+      "levels": [
+        {
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15417",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.784653,
+              "longitude": -122.407086
+            },
+            {
+              "id": "16995",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.7843,
+              "longitude": -122.407822
+            }
+          ]
+        }
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "unionSquare",
+          "mode": "indoor"
+        },
+        {
+          "to": "market4",
+          "mode": "street"
+        },
+        {
+          "to": "market5",
+          "mode": "street"
+        }
       ],
       "transferAgencies": [
         "bart"
-      ],
-      "platforms": [
-        {
-          "id": "15417",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Powell",
-          "latitude": 37.784653,
-          "longitude": -122.407086
-        },
-        {
-          "id": "16995",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Powell",
-          "latitude": 37.7843,
-          "longitude": -122.407822
-        }
       ]
     },
     {
       "id": "civicCenter",
-      "name": "Civic Center",
       "kind": "underground",
+      "name": "Civic Center",
       "lines": [
         "J",
         "K",
@@ -414,38 +513,67 @@
         "N",
         "S"
       ],
-      "latitude": 37.779476,
-      "longitude": -122.413785,
-      "transferStations": [
-        "market7",
-        "market8"
+      "latitude": null,
+      "longitude": null,
+      "levels": [
+        {
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15727",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.779712,
+              "longitude": -122.413347
+            },
+            {
+              "id": "16997",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.77924,
+              "longitude": -122.414223
+            }
+          ]
+        }
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "market7",
+          "mode": "street"
+        },
+        {
+          "to": "market8",
+          "mode": "street"
+        }
       ],
       "transferAgencies": [
         "bart"
-      ],
-      "platforms": [
-        {
-          "id": "15727",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Civic Center",
-          "latitude": 37.779712,
-          "longitude": -122.413347
-        },
-        {
-          "id": "16997",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Civic Center",
-          "latitude": 37.77924,
-          "longitude": -122.414223
-        }
       ]
     },
     {
       "id": "vanNess",
-      "name": "Van Ness",
       "kind": "underground",
+      "name": "Van Ness",
       "lines": [
         "J",
         "K",
@@ -454,270 +582,434 @@
         "N",
         "S"
       ],
-      "latitude": 37.77518,
-      "longitude": -122.419296,
-      "transferStations": [
-        "marketVanNess"
-      ],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "15419",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Van Ness",
-          "latitude": 37.775127,
-          "longitude": -122.419252
-        },
-        {
-          "id": "16996",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Van Ness",
-          "latitude": 37.775234,
-          "longitude": -122.41934
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15419",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.775127,
+              "longitude": -122.419252
+            },
+            {
+              "id": "16996",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "S"
+              ],
+              "latitude": 37.775234,
+              "longitude": -122.41934
+            }
+          ]
         }
-      ]
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "marketVanNess",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "church",
-      "name": "Church",
       "kind": "underground",
+      "name": "Church",
       "lines": [
         "K",
         "L",
         "M",
         "S"
       ],
-      "latitude": 37.767814,
-      "longitude": -122.429067,
-      "transferStations": [
-        "churchMarket",
-        "duboceChurchN"
-      ],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "15726",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Church",
-          "latitude": 37.767194,
-          "longitude": -122.429168
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15726",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.767194,
+              "longitude": -122.429168
+            },
+            {
+              "id": "16998",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.767327,
+              "longitude": -122.429321
+            }
+          ]
+        }
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "churchMarket",
+          "mode": "street"
         },
         {
-          "id": "16998",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Church",
-          "latitude": 37.767327,
-          "longitude": -122.429321
+          "to": "duboceChurchN",
+          "mode": "street"
         }
-      ]
+      ],
+      "transferAgencies": []
     },
     {
       "id": "castro",
-      "name": "Castro",
       "kind": "underground",
+      "name": "Castro",
       "lines": [
         "K",
         "L",
         "M",
         "S"
       ],
-      "latitude": 37.762652,
-      "longitude": -122.43526,
-      "transferStations": [
-        "castroPlaza"
-      ],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "15728",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Castro",
-          "latitude": 37.76262,
-          "longitude": -122.435231
-        },
-        {
-          "id": "16991",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Castro",
-          "latitude": 37.762683,
-          "longitude": -122.435289
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15728",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.76262,
+              "longitude": -122.435231
+            },
+            {
+              "id": "16991",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.762683,
+              "longitude": -122.435289
+            }
+          ]
         }
-      ]
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "castroPlaza",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "forestHill",
-      "name": "Forest Hill",
       "kind": "underground",
+      "name": "Forest Hill",
       "lines": [
         "K",
         "L",
         "M",
         "S"
       ],
-      "latitude": 37.748261,
-      "longitude": -122.458908,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "15730",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "Forest Hill",
-          "latitude": 37.748351,
-          "longitude": -122.458623
-        },
-        {
-          "id": "16993",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "Forest Hill",
-          "latitude": 37.74817,
-          "longitude": -122.459192
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "15730",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.748351,
+              "longitude": -122.458623
+            },
+            {
+              "id": "16993",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "latitude": 37.74817,
+              "longitude": -122.459192
+            }
+          ]
         }
-      ]
+      ],
+      "exits": [],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "westPortal",
-      "name": "West Portal",
       "kind": "underground",
+      "name": "West Portal",
       "lines": [
         "K",
         "L",
         "M",
         "S"
       ],
-      "latitude": 37.741455,
-      "longitude": -122.465373,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "16740",
-          "heading": "eastbound",
-          "name": null,
-          "stopName": "West Portal",
-          "latitude": 37.741518,
-          "longitude": -122.465216
-        },
-        {
-          "id": "16739",
-          "heading": "westbound",
-          "name": null,
-          "stopName": "West Portal",
-          "latitude": 37.741391,
-          "longitude": -122.46553
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "16740",
+              "heading": "eastbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "terminates": [
+                "S"
+              ],
+              "latitude": 37.741518,
+              "longitude": -122.465216
+            },
+            {
+              "id": "16739",
+              "heading": "westbound",
+              "name": null,
+              "lines": [
+                "K",
+                "L",
+                "M",
+                "S"
+              ],
+              "terminates": [
+                "S"
+              ],
+              "latitude": 37.741391,
+              "longitude": -122.46553
+            }
+          ]
         }
-      ]
+      ],
+      "exits": [],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "chinatownRosePak",
-      "name": "Chinatown - Rose Pak",
       "kind": "underground",
+      "name": "Chinatown - Rose Pak",
       "lines": [
         "T"
       ],
-      "latitude": 37.794807,
-      "longitude": -122.408078,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "17876",
-          "heading": "southbound",
-          "name": "Southbound (Terminus)",
-          "stopName": "Chinatown - Rose Pak",
-          "latitude": 37.794807,
-          "longitude": -122.408078
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "17876",
+              "heading": "southbound",
+              "name": "Southbound",
+              "lines": [
+                "T"
+              ],
+              "terminates": [
+                "T"
+              ],
+              "latitude": 37.794807,
+              "longitude": -122.408078
+            }
+          ]
         }
-      ]
+      ],
+      "exits": [],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "unionSquare",
-      "name": "Union Square",
       "kind": "underground",
+      "name": "Union Square",
       "lines": [
         "T"
       ],
-      "latitude": 37.787142,
-      "longitude": -122.4065,
-      "transferStations": [
-        "powell",
-        "market4"
-      ],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "17877",
-          "heading": "northbound",
-          "name": null,
-          "stopName": "Union Square",
-          "latitude": 37.787151,
-          "longitude": -122.406477
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "17877",
+              "heading": "northbound",
+              "name": null,
+              "lines": [
+                "T"
+              ],
+              "latitude": 37.787151,
+              "longitude": -122.406477
+            },
+            {
+              "id": "17874",
+              "heading": "southbound",
+              "name": null,
+              "lines": [
+                "T"
+              ],
+              "latitude": 37.787133,
+              "longitude": -122.406523
+            }
+          ]
+        }
+      ],
+      "exits": [],
+      "transfers": [
+        {
+          "to": "powell",
+          "mode": "indoor"
         },
         {
-          "id": "17874",
-          "heading": "southbound",
-          "name": null,
-          "stopName": "Union Square",
-          "latitude": 37.787133,
-          "longitude": -122.406523
+          "to": "market4",
+          "mode": "street"
         }
-      ]
+      ],
+      "transferAgencies": []
     },
     {
       "id": "yerbaBuenaMoscone",
-      "name": "Yerba Buena - Moscone",
       "kind": "underground",
+      "name": "Yerba Buena - Moscone",
       "lines": [
         "T"
       ],
-      "latitude": 37.78226,
-      "longitude": -122.401551,
-      "transferStations": [],
-      "transferAgencies": [],
-      "platforms": [
+      "latitude": null,
+      "longitude": null,
+      "levels": [
         {
-          "id": "17878",
-          "heading": "northbound",
-          "name": null,
-          "stopName": "Yerba Buena - Moscone",
-          "latitude": 37.782358,
-          "longitude": -122.401551
-        },
-        {
-          "id": "17873",
-          "heading": "southbound",
-          "name": null,
-          "stopName": "Yerba Buena - Moscone",
-          "latitude": 37.78238,
-          "longitude": -122.40173
+          "id": -1,
+          "name": "Muni Metro",
+          "agency": "muni",
+          "isIsland": null,
+          "platforms": [
+            {
+              "id": "17878",
+              "heading": "northbound",
+              "name": null,
+              "lines": [
+                "T"
+              ],
+              "latitude": 37.782358,
+              "longitude": -122.401551
+            },
+            {
+              "id": "17873",
+              "heading": "southbound",
+              "name": null,
+              "lines": [
+                "T"
+              ],
+              "latitude": 37.78238,
+              "longitude": -122.40173
+            }
+          ]
         }
-      ]
+      ],
+      "exits": [],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "fourthBrannan",
+      "kind": "surface",
       "name": "4th & Brannan",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.778372,
       "longitude": -122.396602,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17879",
           "heading": "northbound",
           "name": null,
           "stopName": "4th & Brannan",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.778403,
           "longitude": -122.39659
         },
@@ -726,32 +1018,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "4th & Brannan",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.778341,
           "longitude": -122.396613
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "fourthKingT",
+      "kind": "surface",
       "name": "4th & King",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.776207,
       "longitude": -122.393846,
-      "transferStations": [
-        "fourthKingN"
-      ],
-      "transferAgencies": [
-        "caltrain"
-      ],
       "platforms": [
         {
           "id": "17166",
           "heading": "northbound",
           "name": null,
           "stopName": "4th & King",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.776278,
           "longitude": -122.393864
         },
@@ -760,50 +1054,69 @@
           "heading": "southbound",
           "name": null,
           "stopName": "4th & King",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.776135,
           "longitude": -122.393829
         }
+      ],
+      "transfers": [
+        {
+          "to": "fourthKingN",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": [
+        "caltrain"
       ]
     },
     {
       "id": "oceanBeach",
+      "kind": "surface",
       "name": "Ocean Beach",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.760304,
       "longitude": -122.508181,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15223",
           "heading": "eastbound",
-          "name": "To Embarcadero (Terminus)",
+          "name": "To Embarcadero",
           "stopName": "Ocean Beach",
+          "lines": [
+            "N"
+          ],
+          "terminates": [
+            "N"
+          ],
           "latitude": 37.760304,
           "longitude": -122.508181
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah46",
+      "kind": "surface",
       "name": "Judah & 46th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.760442,
       "longitude": -122.505948,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15216",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 46th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760392,
           "longitude": -122.506064
         },
@@ -812,28 +1125,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 46th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760493,
           "longitude": -122.505832
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah43",
+      "kind": "surface",
       "name": "Judah & 43rd",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.760558,
       "longitude": -122.502706,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15214",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 43rd",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760518,
           "longitude": -122.502839
         },
@@ -842,28 +1161,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 43rd",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760598,
           "longitude": -122.502574
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah40",
+      "kind": "surface",
       "name": "Judah & 40th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.760711,
       "longitude": -122.499257,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15212",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 40th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760679,
           "longitude": -122.499154
         },
@@ -872,28 +1197,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 40th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760743,
           "longitude": -122.499359
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judahSunset",
+      "kind": "surface",
       "name": "Judah & Sunset",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.760881,
       "longitude": -122.495736,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15225",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & Sunset",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760845,
           "longitude": -122.495805
         },
@@ -902,28 +1233,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & Sunset",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760917,
           "longitude": -122.495668
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah34",
+      "kind": "surface",
       "name": "Judah & 34th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.760992,
       "longitude": -122.493065,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15210",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 34th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.760955,
           "longitude": -122.493199
         },
@@ -932,28 +1269,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 34th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761028,
           "longitude": -122.49293
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah31",
+      "kind": "surface",
       "name": "Judah & 31st",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.761139,
       "longitude": -122.48961,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15208",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 31st",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761105,
           "longitude": -122.4895
         },
@@ -962,28 +1305,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 31st",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761172,
           "longitude": -122.489719
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah28",
+      "kind": "surface",
       "name": "Judah & 28th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.761271,
       "longitude": -122.486637,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15206",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 28th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761232,
           "longitude": -122.486763
         },
@@ -992,28 +1341,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 28th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.76131,
           "longitude": -122.48651
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah25",
+      "kind": "surface",
       "name": "Judah & 25th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.761412,
       "longitude": -122.48343,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15204",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 25th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761373,
           "longitude": -122.48356
         },
@@ -1022,28 +1377,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 25th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761452,
           "longitude": -122.4833
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah22",
+      "kind": "surface",
       "name": "Judah & 22nd",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.76154,
       "longitude": -122.48051,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15201",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 22nd",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761534,
           "longitude": -122.479855
         },
@@ -1052,28 +1413,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 22nd",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761547,
           "longitude": -122.481164
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah19",
+      "kind": "surface",
       "name": "Judah & 19th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.761699,
       "longitude": -122.477058,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15200",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 19th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761655,
           "longitude": -122.477194
         },
@@ -1082,28 +1449,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 19th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761743,
           "longitude": -122.476921
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah15",
+      "kind": "surface",
       "name": "Judah & 15th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.761894,
       "longitude": -122.473204,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15197",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 15th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761848,
           "longitude": -122.472777
         },
@@ -1112,28 +1485,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 15th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.76194,
           "longitude": -122.473632
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judahFunston",
+      "kind": "surface",
       "name": "Judah & Funston",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.762012,
       "longitude": -122.47045,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15220",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & Funston",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.76195,
           "longitude": -122.470572
         },
@@ -1142,28 +1521,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & Funston",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.762075,
           "longitude": -122.470329
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah12",
+      "kind": "surface",
       "name": "Judah & 12th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.762028,
       "longitude": -122.469425,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15196",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 12th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.761988,
           "longitude": -122.469526
         },
@@ -1172,28 +1557,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 12th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.762069,
           "longitude": -122.469324
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "judah9",
+      "kind": "surface",
       "name": "Judah & 9th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.762183,
       "longitude": -122.4665,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15194",
           "heading": "eastbound",
           "name": null,
           "stopName": "Judah & 9th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.762139,
           "longitude": -122.466312
         },
@@ -1202,28 +1593,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Judah & 9th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.762227,
           "longitude": -122.466688
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "irving8",
+      "kind": "surface",
       "name": "Irving & 8th/9th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.763672,
       "longitude": -122.465886,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17996",
           "heading": "eastbound",
           "name": null,
           "stopName": "Irving & 8th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.764038,
           "longitude": -122.465428
         },
@@ -1232,28 +1629,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Irving & 9th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.763307,
           "longitude": -122.466344
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "irving5",
+      "kind": "surface",
       "name": "Irving & 5th/6th",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.764213,
       "longitude": -122.462563,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "18031",
           "heading": "eastbound",
           "name": null,
           "stopName": "Irving & 5th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.764182,
           "longitude": -122.462139
         },
@@ -1262,28 +1665,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Irving & 6th",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.764244,
           "longitude": -122.462987
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "irvingArguello",
+      "kind": "surface",
       "name": "Irving & Arguello",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.764404,
       "longitude": -122.458333,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15124",
           "heading": "eastbound",
           "name": null,
           "stopName": "Irving & Arguello",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.764366,
           "longitude": -122.458024
         },
@@ -1292,28 +1701,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Irving & Arguello",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.764441,
           "longitude": -122.458643
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "carlHillway",
+      "kind": "surface",
       "name": "Carl & Hillway",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.764967,
       "longitude": -122.456536,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13913",
           "heading": "eastbound",
           "name": null,
           "stopName": "Carl & Hillway",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.764932,
           "longitude": -122.456512
         },
@@ -1322,28 +1737,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Carl & Hillway",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.765003,
           "longitude": -122.456561
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "carlStanyan",
+      "kind": "surface",
       "name": "Carl & Stanyan",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.765433,
       "longitude": -122.452759,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13915",
           "heading": "eastbound",
           "name": null,
           "stopName": "Carl & Stanyan",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.765371,
           "longitude": -122.452928
         },
@@ -1352,28 +1773,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Carl & Stanyan",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.765495,
           "longitude": -122.45259
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "carlCole",
+      "kind": "surface",
       "name": "Carl & Cole",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.765804,
       "longitude": -122.449967,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13911",
           "heading": "eastbound",
           "name": null,
           "stopName": "Carl & Cole",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.765745,
           "longitude": -122.450131
         },
@@ -1382,28 +1809,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Carl & Cole",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.765863,
           "longitude": -122.449804
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "duboceNoe",
+      "kind": "surface",
       "name": "Duboce & Noe (Sunset Tunnel East Portal)",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.769321,
       "longitude": -122.433534,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17318",
           "heading": "eastbound",
           "name": null,
           "stopName": "Duboce & Noe (Sunset Tunnel East Portal)",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.769285,
           "longitude": -122.433511
         },
@@ -1412,31 +1845,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Duboce & Noe (Sunset Tunnel East Portal)",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.769357,
           "longitude": -122.433557
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "duboceChurchN",
+      "kind": "surface",
       "name": "Duboce & Church",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.769441,
       "longitude": -122.429404,
-      "transferStations": [
-        "churchDuboceJ",
-        "church"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14448",
           "heading": "eastbound",
           "name": null,
           "stopName": "Duboce & Church",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.769409,
           "longitude": -122.4294
         },
@@ -1445,28 +1881,43 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Duboce & Church",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.769472,
           "longitude": -122.429408
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "churchDuboceJ",
+          "mode": "street"
+        },
+        {
+          "to": "church",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoFolsom",
+      "kind": "surface",
       "name": "Embarcadero & Folsom",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.790615,
       "longitude": -122.389767,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14509",
           "heading": "southbound",
           "name": "To Caltrain",
           "stopName": "Embarcadero & Folsom",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.790481,
           "longitude": -122.389692
         },
@@ -1475,28 +1926,34 @@
           "heading": "northbound",
           "name": "To Ocean Beach",
           "stopName": "Embarcadero & Folsom",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.790749,
           "longitude": -122.389841
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoBrannan",
+      "kind": "surface",
       "name": "Embarcadero & Brannan",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.784493,
       "longitude": -122.388058,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14506",
           "heading": "southbound",
           "name": "To Caltrain",
           "stopName": "Embarcadero & Brannan",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.784359,
           "longitude": -122.388138
         },
@@ -1505,28 +1962,34 @@
           "heading": "northbound",
           "name": "To Ocean Beach",
           "stopName": "Embarcadero & Brannan",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.784627,
           "longitude": -122.387977
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "secondKing",
+      "kind": "surface",
       "name": "2nd & King",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.77967,
       "longitude": -122.389848,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15234",
           "heading": "southbound",
           "name": "To Caltrain",
           "stopName": "2nd & King",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.77972,
           "longitude": -122.389872
         },
@@ -1535,54 +1998,69 @@
           "heading": "northbound",
           "name": "To Ocean Beach",
           "stopName": "2nd & King",
+          "lines": [
+            "N"
+          ],
           "latitude": 37.779621,
           "longitude": -122.389824
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "fourthKingN",
+      "kind": "surface",
       "name": "4th & King",
-      "kind": "streetLevel",
       "lines": [
         "N"
       ],
       "latitude": 37.776269,
       "longitude": -122.394082,
-      "transferStations": [
-        "fourthKingT"
-      ],
-      "transferAgencies": [
-        "caltrain"
-      ],
       "platforms": [
         {
           "id": "15240",
           "heading": "northbound",
-          "name": "Ocean Beach via Embarcadero (Terminus)",
+          "name": "Ocean Beach via Embarcadero",
           "stopName": "4th & King",
+          "lines": [
+            "N"
+          ],
+          "terminates": [
+            "N"
+          ],
           "latitude": 37.776269,
           "longitude": -122.394082
         }
+      ],
+      "transfers": [
+        {
+          "to": "fourthKingT",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": [
+        "caltrain"
       ]
     },
     {
       "id": "thirdMissionRock",
+      "kind": "surface",
       "name": "3rd St & Mission Rock",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.772908,
       "longitude": -122.3897,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17358",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd St & Mission Rock",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.772984,
           "longitude": -122.389683
         },
@@ -1591,28 +2069,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd St & Mission Rock",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.772832,
           "longitude": -122.389717
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "ucsfChaseCenter",
+      "kind": "surface",
       "name": "UCSF / Chase Center",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.768371,
       "longitude": -122.389274,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17357",
           "heading": "northbound",
           "name": null,
           "stopName": "UCSF / Chase Center",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.768504,
           "longitude": -122.389182
         },
@@ -1621,28 +2105,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "UCSF / Chase Center",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.768237,
           "longitude": -122.389366
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "ucsfMedicalCenter",
+      "kind": "surface",
       "name": "UCSF Medical Center",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.764315,
       "longitude": -122.388859,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17356",
           "heading": "northbound",
           "name": null,
           "stopName": "UCSF Medical Center",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.764391,
           "longitude": -122.388853
         },
@@ -1651,28 +2141,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "UCSF Medical Center",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.764239,
           "longitude": -122.388865
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "third20",
+      "kind": "surface",
       "name": "3rd & 20th",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.760442,
       "longitude": -122.388576,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17355",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & 20th",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.760518,
           "longitude": -122.388558
         },
@@ -1681,28 +2177,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & 20th",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.760367,
           "longitude": -122.388593
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "third23",
+      "kind": "surface",
       "name": "3rd & 23rd",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.755339,
       "longitude": -122.388024,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17354",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & 23rd",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.755414,
           "longitude": -122.388001
         },
@@ -1711,28 +2213,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & 23rd",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.755263,
           "longitude": -122.388047
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdMarin",
+      "kind": "surface",
       "name": "3rd & Marin",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.749048,
       "longitude": -122.387485,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17353",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Marin",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.748999,
           "longitude": -122.387445
         },
@@ -1741,28 +2249,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Marin",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.749097,
           "longitude": -122.387525
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdEvans",
+      "kind": "surface",
       "name": "3rd & Evans",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.742727,
       "longitude": -122.387977,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17352",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Evans",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.742726,
           "longitude": -122.38792
         },
@@ -1771,28 +2285,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Evans",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.742727,
           "longitude": -122.388034
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdHudsonInnes",
+      "kind": "surface",
       "name": "3rd & Hudson/Innes",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.739925,
       "longitude": -122.388907,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17404",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Hudson/Innes",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.739916,
           "longitude": -122.388884
         },
@@ -1801,28 +2321,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Hudson/Innes",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.739934,
           "longitude": -122.38893
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdKirkwoodLaSalle",
+      "kind": "surface",
       "name": "3rd & Kirkwood/La Salle",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.737645,
       "longitude": -122.389711,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17403",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Kirkwood/La Salle",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.737641,
           "longitude": -122.389688
         },
@@ -1831,28 +2357,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Kirkwood/La Salle",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.73765,
           "longitude": -122.389734
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdOakdalePalou",
+      "kind": "surface",
       "name": "3rd & Oakdale/Palou",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.734354,
       "longitude": -122.390864,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17402",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Oakdale/Palou",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.734358,
           "longitude": -122.390836
         },
@@ -1861,28 +2393,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Oakdale/Palou",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.73435,
           "longitude": -122.390893
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdRevereShafter",
+      "kind": "surface",
       "name": "3rd & Revere/Shafter",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.732276,
       "longitude": -122.391554,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17401",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Revere/Shafter",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.732262,
           "longitude": -122.391502
         },
@@ -1891,28 +2429,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Revere/Shafter",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.732289,
           "longitude": -122.391605
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdWilliams",
+      "kind": "surface",
       "name": "3rd & Williams",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.729251,
       "longitude": -122.392644,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17345",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Williams",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.729291,
           "longitude": -122.392604
         },
@@ -1921,28 +2465,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Williams",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.729211,
           "longitude": -122.392684
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdCarroll",
+      "kind": "surface",
       "name": "3rd & Carroll",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.725366,
       "longitude": -122.394308,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17343",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Carroll",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.725491,
           "longitude": -122.394222
         },
@@ -1951,28 +2501,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Carroll",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.725241,
           "longitude": -122.394394
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdGilmanPaul",
+      "kind": "surface",
       "name": "3rd & Gilman/Paul",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.722324,
       "longitude": -122.395696,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17347",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Gilman/Paul",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.722449,
           "longitude": -122.39561
         },
@@ -1981,28 +2537,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Gilman/Paul",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.722199,
           "longitude": -122.395782
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "thirdLeConte",
+      "kind": "surface",
       "name": "3rd & Le Conte",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.718725,
       "longitude": -122.397582,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17400",
           "heading": "northbound",
           "name": null,
           "stopName": "3rd & Le Conte",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.718809,
           "longitude": -122.397468
         },
@@ -2011,28 +2573,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "3rd & Le Conte",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.71864,
           "longitude": -122.397697
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "bayshoreArletaBlanken",
+      "kind": "surface",
       "name": "Bayshore & Arleta/Blanken",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.712239,
       "longitude": -122.402327,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17399",
           "heading": "northbound",
           "name": null,
           "stopName": "Bayshore & Arleta",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.712226,
           "longitude": -122.402339
         },
@@ -2041,77 +2609,93 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Bayshore & Blanken",
+          "lines": [
+            "T"
+          ],
           "latitude": 37.712253,
           "longitude": -122.402316
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sunnydale",
+      "kind": "surface",
       "name": "Sunnydale",
-      "kind": "streetLevel",
       "lines": [
         "T"
       ],
       "latitude": 37.708944,
       "longitude": -122.405044,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17398",
           "heading": "northbound",
-          "name": "Northbound (Terminus)",
+          "name": "Northbound",
           "stopName": "Sunnydale",
+          "lines": [
+            "T"
+          ],
+          "terminates": [
+            "T"
+          ],
           "latitude": 37.708944,
           "longitude": -122.405044
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "churchDuboceJ",
+      "kind": "surface",
       "name": "Church & Duboce",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.769302,
       "longitude": -122.429087,
-      "transferStations": [
-        "duboceChurchN"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14006",
           "heading": "eastbound",
           "name": null,
           "stopName": "Church & Duboce",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.769302,
           "longitude": -122.429087
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "duboceChurchN",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "churchMarket",
+      "kind": "surface",
       "name": "Church & Market",
-      "kind": "streetLevel",
       "lines": [
-        "J",
-        "F"
+        "F",
+        "J"
       ],
-      "latitude": 37.767398,
-      "longitude": -122.42899,
-      "transferStations": [
-        "church"
-      ],
-      "transferAgencies": [],
+      "latitude": 37.767437,
+      "longitude": -122.428993,
       "platforms": [
         {
           "id": "17073",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & Market",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.767509,
           "longitude": -122.428927
         },
@@ -2120,6 +2704,9 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & Market",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.767286,
           "longitude": -122.429053
         },
@@ -2128,6 +2715,9 @@
           "heading": "eastbound",
           "name": null,
           "stopName": "Church & Market",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.76725,
           "longitude": -122.429214
         },
@@ -2136,28 +2726,39 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Church & Market",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.767705,
           "longitude": -122.428778
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "church",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "church16",
+      "kind": "surface",
       "name": "Church & 16th",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.764501,
       "longitude": -122.428665,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13985",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & 16th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.764382,
           "longitude": -122.428609
         },
@@ -2166,28 +2767,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & 16th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.764621,
           "longitude": -122.428722
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "doloresPark18",
+      "kind": "surface",
       "name": "Dolores Park - 18th St",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.76133,
       "longitude": -122.4283,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16213",
           "heading": "northbound",
           "name": null,
           "stopName": "Dolores Park - 18th St",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.761192,
           "longitude": -122.428184
         },
@@ -2196,28 +2803,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Dolores Park - 18th St",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.761467,
           "longitude": -122.428416
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "doloresPark20",
+      "kind": "surface",
       "name": "Dolores Park - 20th St 🏳️‍🌈",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.758246,
       "longitude": -122.42786,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16215",
           "heading": "northbound",
           "name": null,
           "stopName": "Dolores Park - 20th St 🏳️‍🌈",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.758229,
           "longitude": -122.427795
         },
@@ -2226,28 +2839,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Dolores Park - 20th St 🏳️‍🌈",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.758264,
           "longitude": -122.427924
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "rightOfWayLiberty",
+      "kind": "surface",
       "name": "Right Of Way & Liberty",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.757345,
       "longitude": -122.426933,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16222",
           "heading": "northbound",
           "name": null,
           "stopName": "Right Of Way & Liberty",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.757239,
           "longitude": -122.426867
         },
@@ -2256,28 +2875,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Right Of Way & Liberty",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.757451,
           "longitude": -122.426999
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "rightOfWay21",
+      "kind": "surface",
       "name": "Right Of Way & 21st",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.75654,
       "longitude": -122.426872,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16217",
           "heading": "northbound",
           "name": null,
           "stopName": "Right Of Way & 21st",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.756436,
           "longitude": -122.426822
         },
@@ -2286,28 +2911,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Right Of Way & 21st",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.756643,
           "longitude": -122.426922
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "church22",
+      "kind": "surface",
       "name": "Church & 22nd",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.754674,
       "longitude": -122.427693,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13994",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & 22nd",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.754741,
           "longitude": -122.427636
         },
@@ -2316,28 +2947,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & 22nd",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.754607,
           "longitude": -122.42775
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "church24",
+      "kind": "surface",
       "name": "Church & 24th",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.751695,
       "longitude": -122.427424,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13996",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & 24th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.751591,
           "longitude": -122.42735
         },
@@ -2346,28 +2983,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & 24th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.7518,
           "longitude": -122.427497
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "churchClipper",
+      "kind": "surface",
       "name": "Church & 26th",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
-      "latitude": 37.748611,
-      "longitude": -122.427222,
-      "transferStations": [],
-      "transferAgencies": [],
+      "latitude": 37.748509,
+      "longitude": -122.42716,
       "platforms": [
         {
           "id": "18155",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & 26th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.748416,
           "longitude": -122.42706
         },
@@ -2376,28 +3019,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & 26th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.748603,
           "longitude": -122.427261
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "church27",
+      "kind": "surface",
       "name": "Church & 28th",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
-      "latitude": 37.745278,
-      "longitude": -122.426944,
-      "transferStations": [],
-      "transferAgencies": [],
+      "latitude": 37.745311,
+      "longitude": -122.426846,
       "platforms": [
         {
           "id": "18157",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & 28th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.745225,
           "longitude": -122.426737
         },
@@ -2406,50 +3055,59 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & 28th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.745398,
           "longitude": -122.426955
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "church29",
+      "kind": "surface",
       "name": "Church & 29th",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.743587,
       "longitude": -122.426585,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13999",
           "heading": "northbound",
           "name": "Northbound (N Transfer Only)",
           "stopName": "Church & 29th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.743587,
           "longitude": -122.426585
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "churchDay",
+      "kind": "surface",
       "name": "Church & Day",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.742517,
       "longitude": -122.426557,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14000",
           "heading": "northbound",
           "name": null,
           "stopName": "Church & Day",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.742222,
           "longitude": -122.426459
         },
@@ -2458,28 +3116,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Church & Day",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.742811,
           "longitude": -122.426654
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "dolores30",
+      "kind": "surface",
       "name": "Dolores & 30th",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.742237,
       "longitude": -122.424241,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13537",
           "heading": "northbound",
           "name": null,
           "stopName": "Dolores & 30th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.742304,
           "longitude": -122.424026
         },
@@ -2488,28 +3152,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Dolores & 30th",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.74217,
           "longitude": -122.424457
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sanJoseRandall",
+      "kind": "surface",
       "name": "San Jose & Randall",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.739563,
       "longitude": -122.424239,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16277",
           "heading": "northbound",
           "name": null,
           "stopName": "San Jose & Randall",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.739741,
           "longitude": -122.424157
         },
@@ -2518,30 +3188,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "San Jose & Randall",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.739385,
           "longitude": -122.42432
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "glenPark",
+      "kind": "surface",
       "name": "Glen Park",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.732463,
       "longitude": -122.433635,
-      "transferStations": [],
-      "transferAgencies": [
-        "bart"
-      ],
       "platforms": [
         {
           "id": "14787",
           "heading": "northbound",
           "name": null,
           "stopName": "Glen Park",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.732525,
           "longitude": -122.433416
         },
@@ -2550,28 +3224,36 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Glen Park",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.732401,
           "longitude": -122.433855
         }
+      ],
+      "transfers": [],
+      "transferAgencies": [
+        "bart"
       ]
     },
     {
       "id": "sanJoseSantaRosa",
+      "kind": "surface",
       "name": "San Jose & Santa Rosa",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.728994,
       "longitude": -122.439969,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16284",
           "heading": "northbound",
           "name": null,
           "stopName": "San Jose & Santa Rosa",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.728991,
           "longitude": -122.439922
         },
@@ -2580,28 +3262,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "San Jose & Santa Rosa",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.728996,
           "longitude": -122.440016
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sanJoseSantaYnez",
+      "kind": "surface",
       "name": "San Jose & Santa Ynez",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.725779,
       "longitude": -122.4424,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16288",
           "heading": "northbound",
           "name": null,
           "stopName": "San Jose & Santa Ynez",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.725681,
           "longitude": -122.442442
         },
@@ -2610,28 +3298,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "San Jose & Santa Ynez",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.725877,
           "longitude": -122.442359
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sanJoseOcean",
+      "kind": "surface",
       "name": "San Jose & Ocean",
-      "kind": "streetLevel",
       "lines": [
         "J"
       ],
       "latitude": 37.722973,
       "longitude": -122.444744,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16275",
           "heading": "northbound",
           "name": null,
           "stopName": "San Jose & Ocean",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.722862,
           "longitude": -122.44479
         },
@@ -2640,56 +3334,74 @@
           "heading": "southbound",
           "name": null,
           "stopName": "San Jose & Ocean",
+          "lines": [
+            "J"
+          ],
           "latitude": 37.723085,
           "longitude": -122.444699
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "balboaPark",
+      "kind": "surface",
       "name": "Balboa Park Station",
-      "kind": "streetLevel",
       "lines": [
         "J",
         "K"
       ],
       "latitude": 37.721238,
       "longitude": -122.446222,
-      "transferStations": [
-        "sanJoseGeneva"
-      ],
-      "transferAgencies": [
-        "bart"
-      ],
       "platforms": [
         {
           "id": "17778",
           "heading": "northbound",
           "name": null,
           "stopName": "Balboa Park Station",
+          "lines": [
+            "J",
+            "K"
+          ],
+          "terminates": [
+            "J",
+            "K"
+          ],
           "latitude": 37.721238,
           "longitude": -122.446222
         }
+      ],
+      "transfers": [
+        {
+          "to": "sanJoseGeneva",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": [
+        "bart"
       ]
     },
     {
       "id": "westPortal14",
+      "kind": "surface",
       "name": "West Portal & 14th",
-      "kind": "streetLevel",
       "lines": [
         "K",
         "M"
       ],
       "latitude": 37.737961,
       "longitude": -122.469013,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16898",
           "heading": "northbound",
           "name": null,
           "stopName": "West Portal & 14th",
+          "lines": [
+            "K",
+            "M"
+          ],
           "latitude": 37.737859,
           "longitude": -122.469042
         },
@@ -2698,29 +3410,37 @@
           "heading": "southbound",
           "name": null,
           "stopName": "West Portal & 14th",
+          "lines": [
+            "K",
+            "M"
+          ],
           "latitude": 37.738064,
           "longitude": -122.468984
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sloatStFrancis",
+      "kind": "surface",
       "name": "Sloat & St Francis",
-      "kind": "streetLevel",
       "lines": [
         "K",
         "M"
       ],
       "latitude": 37.734816,
       "longitude": -122.471532,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17109",
           "heading": "northbound",
           "name": null,
           "stopName": "Sloat & St Francis",
+          "lines": [
+            "K",
+            "M"
+          ],
           "latitude": 37.734825,
           "longitude": -122.471446
         },
@@ -2729,28 +3449,35 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Sloat & St Francis",
+          "lines": [
+            "K",
+            "M"
+          ],
           "latitude": 37.734807,
           "longitude": -122.471618
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "juniperoSerraOcean",
+      "kind": "surface",
       "name": "Junipero Serra & Ocean",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.731449,
       "longitude": -122.471762,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17113",
           "heading": "northbound",
           "name": null,
           "stopName": "Junipero Serra & Ocean",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.731628,
           "longitude": -122.471707
         },
@@ -2759,28 +3486,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Junipero Serra & Ocean",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.731271,
           "longitude": -122.471818
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanSanLeandro",
+      "kind": "surface",
       "name": "Ocean & San Leandro",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.729967,
       "longitude": -122.469286,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15806",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean & San Leandro",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.729989,
           "longitude": -122.469097
         },
@@ -2789,28 +3522,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean & San Leandro",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.729945,
           "longitude": -122.469475
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanAptos",
+      "kind": "surface",
       "name": "Ocean & Aptos",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.728334,
       "longitude": -122.467716,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15779",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean & Aptos",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.728285,
           "longitude": -122.467561
         },
@@ -2819,28 +3558,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean & Aptos",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.728383,
           "longitude": -122.467871
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanVictoriaFairfield",
+      "kind": "surface",
       "name": "Ocean & Victoria/Fairfield",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.726018,
       "longitude": -122.464204,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15788",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean & Fairfield",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.726008,
           "longitude": -122.464072
         },
@@ -2849,28 +3594,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean & Victoria",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.726029,
           "longitude": -122.464337
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanJulesDorado",
+      "kind": "surface",
       "name": "Ocean & Jules/Dorado",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.724956,
       "longitude": -122.461225,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15787",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean & Dorado",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.724957,
           "longitude": -122.461059
         },
@@ -2879,28 +3630,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean & Jules",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.724955,
           "longitude": -122.46139
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanMiramar",
+      "kind": "surface",
       "name": "Ocean & Miramar",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.724325,
       "longitude": -122.458191,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15797",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean & Miramar",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.724387,
           "longitude": -122.458077
         },
@@ -2909,28 +3666,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean & Miramar",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.724262,
           "longitude": -122.458306
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanLee",
+      "kind": "surface",
       "name": "Ocean & Lee",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.723428,
       "longitude": -122.454211,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15794",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean & Lee",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.723459,
           "longitude": -122.453999
         },
@@ -2939,28 +3702,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean & Lee",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.723397,
           "longitude": -122.454423
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "oceanCCSF",
+      "kind": "surface",
       "name": "Ocean/CCSF Pedestrian Bridge",
-      "kind": "streetLevel",
       "lines": [
         "K"
       ],
       "latitude": 37.722994,
       "longitude": -122.451157,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15784",
           "heading": "northbound",
           "name": null,
           "stopName": "Ocean/CCSF Pedestrian Bridge",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.72304,
           "longitude": -122.451448
         },
@@ -2969,52 +3738,67 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Ocean/CCSF Pedestrian Bridge",
+          "lines": [
+            "K"
+          ],
           "latitude": 37.722947,
           "longitude": -122.450866
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sanJoseGeneva",
+      "kind": "surface",
       "name": "Balboa Park (M Platform)",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.720096,
       "longitude": -122.447196,
-      "transferStations": [
-        "balboaPark"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16262",
           "heading": "eastbound",
           "name": null,
           "stopName": "Balboa Park (M Platform)",
+          "lines": [
+            "M"
+          ],
+          "terminates": [
+            "M"
+          ],
           "latitude": 37.720096,
           "longitude": -122.447196
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "balboaPark",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "sanJoseLakeview",
+      "kind": "surface",
       "name": "San Jose Ave & Lakeview Ave",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.716206,
       "longitude": -122.450401,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16265",
           "heading": "eastbound",
           "name": null,
           "stopName": "San Jose Ave & Lakeview Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.71633,
           "longitude": -122.450368
         },
@@ -3023,28 +3807,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "San Jose Ave & Lakeview Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.716083,
           "longitude": -122.450435
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sanJoseFarallones",
+      "kind": "surface",
       "name": "San Jose Ave & Farallones St",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.714055,
       "longitude": -122.452214,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16257",
           "heading": "eastbound",
           "name": null,
           "stopName": "San Jose Ave & Farallones St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.714153,
           "longitude": -122.452148
         },
@@ -3053,28 +3843,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "San Jose Ave & Farallones St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713957,
           "longitude": -122.452281
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "broadPlymouth",
+      "kind": "surface",
       "name": "Broad St & Plymouth Ave",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.713192,
       "longitude": -122.456053,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13718",
           "heading": "eastbound",
           "name": null,
           "stopName": "Broad St & Plymouth Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713222,
           "longitude": -122.455927
         },
@@ -3083,28 +3879,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Broad St & Plymouth Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713161,
           "longitude": -122.45618
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "broadCapitol",
+      "kind": "surface",
       "name": "Broad St & Capitol Ave",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.713172,
       "longitude": -122.45904,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13715",
           "heading": "eastbound",
           "name": null,
           "stopName": "Broad St & Capitol Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713191,
           "longitude": -122.458921
         },
@@ -3113,28 +3915,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Broad St & Capitol Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713152,
           "longitude": -122.459159
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "orizabaBroad",
+      "kind": "surface",
       "name": "Orizaba Ave & Broad St",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.713253,
       "longitude": -122.462458,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13717",
           "heading": "eastbound",
           "name": null,
           "stopName": "Orizaba Ave & Broad St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713178,
           "longitude": -122.462331
         },
@@ -3143,28 +3951,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Orizaba Ave & Broad St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.713328,
           "longitude": -122.462585
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "randolphBright",
+      "kind": "surface",
       "name": "Randolph St & Bright St",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.714299,
       "longitude": -122.463533,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16174",
           "heading": "eastbound",
           "name": null,
           "stopName": "Randolph St & Bright St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.714348,
           "longitude": -122.463392
         },
@@ -3173,28 +3987,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Randolph St & Bright St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.71425,
           "longitude": -122.463675
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "randolphArch",
+      "kind": "surface",
       "name": "Randolph St & Arch St",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.714272,
       "longitude": -122.4671,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16172",
           "heading": "eastbound",
           "name": null,
           "stopName": "Randolph St & Arch St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.714342,
           "longitude": -122.466982
         },
@@ -3203,28 +4023,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Randolph St & Arch St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.714201,
           "longitude": -122.467218
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "randolph19",
+      "kind": "surface",
       "name": "19th Ave & Randolph St",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.71465,
       "longitude": -122.470123,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13385",
           "heading": "eastbound",
           "name": null,
           "stopName": "19th Ave & Randolph St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.714856,
           "longitude": -122.470249
         },
@@ -3233,28 +4059,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "19th Ave & Randolph St",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.714443,
           "longitude": -122.469998
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "juniperoSerra19",
+      "kind": "surface",
       "name": "19th Ave & Junipero Serra Blvd",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.716544,
       "longitude": -122.471972,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13361",
           "heading": "eastbound",
           "name": null,
           "stopName": "19th Ave & Junipero Serra Blvd",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.716889,
           "longitude": -122.472275
         },
@@ -3263,28 +4095,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "19th Ave & Junipero Serra Blvd",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.7162,
           "longitude": -122.47167
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "holloway19",
+      "kind": "surface",
       "name": "19th Ave & Holloway Ave (SF State)",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.721342,
       "longitude": -122.475211,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17065",
           "heading": "eastbound",
           "name": null,
           "stopName": "19th Ave & Holloway Ave (SF State)",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.721342,
           "longitude": -122.475176
         },
@@ -3293,28 +4131,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "19th Ave & Holloway Ave (SF State)",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.721342,
           "longitude": -122.475245
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "winston19",
+      "kind": "surface",
       "name": "Stonestown Galleria",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.727106,
       "longitude": -122.474891,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17449",
           "heading": "eastbound",
           "name": null,
           "stopName": "Stonestown Galleria",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.727195,
           "longitude": -122.474846
         },
@@ -3323,28 +4167,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Stonestown Galleria",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.727017,
           "longitude": -122.474937
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "rightOfWayEucalyptus",
+      "kind": "surface",
       "name": "Right Of Way/Eucalyptus Dr",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.731088,
       "longitude": -122.474358,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16220",
           "heading": "eastbound",
           "name": null,
           "stopName": "Right Of Way/Eucalyptus Dr",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.730987,
           "longitude": -122.474366
         },
@@ -3353,28 +4203,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Right Of Way/Eucalyptus Dr",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.73119,
           "longitude": -122.47435
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "rightOfWayOcean",
+      "kind": "surface",
       "name": "Right Of Way/Ocean Ave",
-      "kind": "streetLevel",
       "lines": [
         "M"
       ],
       "latitude": 37.731915,
       "longitude": -122.473767,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16224",
           "heading": "eastbound",
           "name": null,
           "stopName": "Right Of Way/Ocean Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.731808,
           "longitude": -122.473815
         },
@@ -3383,28 +4239,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Right Of Way/Ocean Ave",
+          "lines": [
+            "M"
+          ],
           "latitude": 37.732022,
           "longitude": -122.473719
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "ulloa14",
+      "kind": "surface",
       "name": "Ulloa St & 14th Ave",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.741428,
       "longitude": -122.47009,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "18137",
           "heading": "eastbound",
           "name": null,
           "stopName": "Ulloa St & 14th Ave",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.741356,
           "longitude": -122.470211
         },
@@ -3413,28 +4275,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Ulloa St & 14th Ave",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.7415,
           "longitude": -122.469969
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval1517",
+      "kind": "surface",
       "name": "15th / 17th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.743127,
       "longitude": -122.472302,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16615",
           "heading": "eastbound",
           "name": null,
           "stopName": "17th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.743131,
           "longitude": -122.473306
         },
@@ -3443,28 +4311,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "15th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.743124,
           "longitude": -122.471297
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval19",
+      "kind": "surface",
       "name": "19th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.74304,
       "longitude": -122.475632,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16617",
           "heading": "eastbound",
           "name": null,
           "stopName": "19th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742971,
           "longitude": -122.475821
         },
@@ -3473,28 +4347,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "19th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.74311,
           "longitude": -122.475444
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval2223",
+      "kind": "surface",
       "name": "22nd / 23rd Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.742881,
       "longitude": -122.479438,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16619",
           "heading": "eastbound",
           "name": null,
           "stopName": "22nd Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.74289,
           "longitude": -122.478426
         },
@@ -3503,28 +4383,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "23rd Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742872,
           "longitude": -122.48045
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval26",
+      "kind": "surface",
       "name": "26th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.74273,
       "longitude": -122.483234,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16623",
           "heading": "eastbound",
           "name": null,
           "stopName": "26th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742683,
           "longitude": -122.483385
         },
@@ -3533,28 +4419,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "26th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742777,
           "longitude": -122.483083
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval30",
+      "kind": "surface",
       "name": "30th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.742541,
       "longitude": -122.487509,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16627",
           "heading": "eastbound",
           "name": null,
           "stopName": "30th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742494,
           "longitude": -122.487681
         },
@@ -3563,28 +4455,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "30th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742588,
           "longitude": -122.487337
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval32",
+      "kind": "surface",
       "name": "32nd Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.742446,
       "longitude": -122.489653,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16629",
           "heading": "eastbound",
           "name": null,
           "stopName": "32nd Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742402,
           "longitude": -122.489801
         },
@@ -3593,28 +4491,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "32nd Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742491,
           "longitude": -122.489505
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taravalSunset",
+      "kind": "surface",
       "name": "Sunset Blvd & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.742238,
       "longitude": -122.494436,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16641",
           "heading": "eastbound",
           "name": null,
           "stopName": "Sunset Blvd & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742188,
           "longitude": -122.49451
         },
@@ -3623,28 +4527,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Sunset Blvd & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742287,
           "longitude": -122.494361
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval40",
+      "kind": "surface",
       "name": "40th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.742057,
       "longitude": -122.498186,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16633",
           "heading": "eastbound",
           "name": null,
           "stopName": "40th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.74199,
           "longitude": -122.498316
         },
@@ -3653,28 +4563,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "40th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742124,
           "longitude": -122.498055
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval42",
+      "kind": "surface",
       "name": "42th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.741961,
       "longitude": -122.500332,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16635",
           "heading": "eastbound",
           "name": null,
           "stopName": "42th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.7419,
           "longitude": -122.500461
         },
@@ -3683,28 +4599,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "42th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.742021,
           "longitude": -122.500202
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval44",
+      "kind": "surface",
       "name": "44th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.741864,
       "longitude": -122.502476,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16637",
           "heading": "eastbound",
           "name": null,
           "stopName": "44th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.741804,
           "longitude": -122.502606
         },
@@ -3713,28 +4635,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "44th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.741924,
           "longitude": -122.502346
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "taraval46",
+      "kind": "surface",
       "name": "46th Ave & Taraval St",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.741754,
       "longitude": -122.504512,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13599",
           "heading": "eastbound",
           "name": null,
           "stopName": "46th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.741685,
           "longitude": -122.504534
         },
@@ -3743,28 +4671,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "46th Ave & Taraval St",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.741823,
           "longitude": -122.50449
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "ulloa46",
+      "kind": "surface",
       "name": "Ulloa St & 46th Ave",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.739914,
       "longitude": -122.504493,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13601",
           "heading": "eastbound",
           "name": null,
           "stopName": "Ulloa St & 46th Ave",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.739829,
           "longitude": -122.504407
         },
@@ -3773,28 +4707,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Ulloa St & 46th Ave",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.739998,
           "longitude": -122.504579
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "vincente46",
+      "kind": "surface",
       "name": "Vincente St & 46th Ave",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.738057,
       "longitude": -122.504354,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13603",
           "heading": "eastbound",
           "name": null,
           "stopName": "Vincente St & 46th Ave",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.737973,
           "longitude": -122.504268
         },
@@ -3803,138 +4743,165 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Vincente St & 46th Ave",
+          "lines": [
+            "L"
+          ],
           "latitude": 37.738142,
           "longitude": -122.50444
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "sfZoo",
+      "kind": "surface",
       "name": "SF Zoo",
-      "kind": "streetLevel",
       "lines": [
         "L"
       ],
       "latitude": 37.736125,
       "longitude": -122.504351,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "16932",
           "heading": "eastbound",
           "name": null,
           "stopName": "SF Zoo",
+          "lines": [
+            "L"
+          ],
+          "terminates": [
+            "L"
+          ],
           "latitude": 37.736125,
           "longitude": -122.504351
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "jonesBeach",
+      "kind": "surface",
       "name": "Jones & Beach",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.807132,
       "longitude": -122.417324,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15184",
           "heading": "eastbound",
           "name": "To Castro via Wharf Loop",
           "stopName": "Jones & Beach",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.807132,
           "longitude": -122.417324
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "beachMason",
+      "kind": "surface",
       "name": "Beach & Mason",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.807407,
       "longitude": -122.414125,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13092",
           "heading": "eastbound",
           "name": "To Castro via Wharf Loop",
           "stopName": "Beach & Mason",
+          "lines": [
+            "F"
+          ],
+          "terminates": [
+            "F"
+          ],
           "latitude": 37.807407,
           "longitude": -122.414125
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "jeffersonTaylor",
+      "kind": "surface",
       "name": "Jefferson & Taylor",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.80832,
       "longitude": -122.415514,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15175",
           "heading": "westbound",
           "name": "To Castro via Wharf Loop",
           "stopName": "Jefferson & Taylor",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.80832,
           "longitude": -122.415514
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "jeffersonPowell",
+      "kind": "surface",
       "name": "Jefferson & Powell",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.808594,
       "longitude": -122.413357,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15174",
           "heading": "westbound",
           "name": "To Castro via Wharf Loop",
           "stopName": "Jefferson & Powell",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.808594,
           "longitude": -122.413357
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "pier39",
+      "kind": "surface",
       "name": "Pier 39",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.808096,
       "longitude": -122.410549,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14530",
           "heading": "westbound",
           "name": "Wharf Loop",
           "stopName": "Pier 39",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.808351,
           "longitude": -122.410287
         },
@@ -3943,28 +4910,34 @@
           "heading": "eastbound",
           "name": "To Castro",
           "stopName": "Pier 39",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.807841,
           "longitude": -122.41081
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoBay",
+      "kind": "surface",
       "name": "Embarcadero & Bay",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.806787,
       "longitude": -122.406154,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14502",
           "heading": "eastbound",
           "name": null,
           "stopName": "Embarcadero & Bay",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.806629,
           "longitude": -122.40603
         },
@@ -3973,28 +4946,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Embarcadero & Bay",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.806945,
           "longitude": -122.406278
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoSansome",
+      "kind": "surface",
       "name": "Embarcadero & Sansome",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.805084,
       "longitude": -122.403273,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14529",
           "heading": "eastbound",
           "name": null,
           "stopName": "Embarcadero & Sansome",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.805022,
           "longitude": -122.403314
         },
@@ -4003,28 +4982,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Embarcadero & Sansome",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.805146,
           "longitude": -122.403233
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoGreenwich",
+      "kind": "surface",
       "name": "Embarcadero & Greenwich",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.803111,
       "longitude": -122.401071,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14515",
           "heading": "northbound",
           "name": null,
           "stopName": "Embarcadero & Greenwich",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.803263,
           "longitude": -122.401113
         },
@@ -4033,28 +5018,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Embarcadero & Greenwich",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.80296,
           "longitude": -122.401029
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoGreen",
+      "kind": "surface",
       "name": "Embarcadero & Green",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.800934,
       "longitude": -122.399145,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14517",
           "heading": "northbound",
           "name": null,
           "stopName": "Embarcadero & Green",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.801264,
           "longitude": -122.399369
         },
@@ -4063,28 +5054,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Embarcadero & Green",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.800605,
           "longitude": -122.39892
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoBroadway",
+      "kind": "surface",
       "name": "Embarcadero & Broadway",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.799227,
       "longitude": -122.397651,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14503",
           "heading": "northbound",
           "name": null,
           "stopName": "Embarcadero & Broadway",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.799552,
           "longitude": -122.397869
         },
@@ -4093,28 +5090,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Embarcadero & Broadway",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.798901,
           "longitude": -122.397434
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoWashington",
+      "kind": "surface",
       "name": "Embarcadero & Washington",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.79672,
       "longitude": -122.395425,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14532",
           "heading": "northbound",
           "name": null,
           "stopName": "Embarcadero & Washington",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.797085,
           "longitude": -122.39567
         },
@@ -4123,28 +5126,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Embarcadero & Washington",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.796355,
           "longitude": -122.395181
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "embarcaderoFerryBuilding",
+      "kind": "surface",
       "name": "Embarcadero & Ferry Building",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.794859,
       "longitude": -122.393661,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14513",
           "heading": "northbound",
           "name": null,
           "stopName": "Embarcadero & Ferry Building",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.79489,
           "longitude": -122.393552
         },
@@ -4153,28 +5162,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Embarcadero & Ferry Building",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.794828,
           "longitude": -122.39377
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "donCheeWaySteuart",
+      "kind": "surface",
       "name": "Don Chee Way/Steuart",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.793949,
       "longitude": -122.393496,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "14727",
           "heading": "northbound",
           "name": null,
           "stopName": "Don Chee Way/Steuart",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.793918,
           "longitude": -122.393438
         },
@@ -4183,30 +5198,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Don Chee Way/Steuart",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.79398,
           "longitude": -122.393555
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "market2",
+      "kind": "surface",
       "name": "Market & 2nd/Montgomery",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.788983,
       "longitude": -122.401735,
-      "transferStations": [
-        "mongomery"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15639",
           "heading": "westbound",
           "name": null,
           "stopName": "Market & 2nd",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.789353,
           "longitude": -122.401306
         },
@@ -4215,30 +5234,39 @@
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & Montgomery",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.788613,
           "longitude": -122.402163
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "mongomery",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "marketEmbarcaderoSubway",
+      "kind": "surface",
       "name": "Market & Embarcadero Subway",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.793228,
       "longitude": -122.396402,
-      "transferStations": [
-        "embarcadero"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15682",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & Embarcadero Subway",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.792984,
           "longitude": -122.396627
         },
@@ -4247,28 +5275,39 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Embarcadero Subway",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.793473,
           "longitude": -122.396178
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "embarcadero",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "market1",
+      "kind": "surface",
       "name": "Market & 1st/Battery",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.791025,
       "longitude": -122.399132,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17264",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 1st",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.79094,
           "longitude": -122.399195
         },
@@ -4277,28 +5316,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Battery",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.79111,
           "longitude": -122.399069
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "market3",
+      "kind": "surface",
       "name": "Market & 3rd",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.787627,
       "longitude": -122.403445,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15640",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 3rd",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.787525,
           "longitude": -122.403519
         },
@@ -4307,31 +5352,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & 3rd",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.78773,
           "longitude": -122.40337
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "market4",
+      "kind": "surface",
       "name": "Market & 4th",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.785741,
       "longitude": -122.405853,
-      "transferStations": [
-        "powell",
-        "unionSquare"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15643",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 4th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.785705,
           "longitude": -122.405847
         },
@@ -4340,30 +5388,43 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & 4th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.785777,
           "longitude": -122.405859
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "powell",
+          "mode": "street"
+        },
+        {
+          "to": "unionSquare",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "market5",
+      "kind": "surface",
       "name": "Market & 5th",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.783395,
-      "longitude": -122.408657,
-      "transferStations": [
-        "powell"
-      ],
-      "transferAgencies": [],
+      "latitude": 37.783984,
+      "longitude": -122.408066,
       "platforms": [
         {
           "id": "15645",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 5th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.783886,
           "longitude": -122.408141
         },
@@ -4372,28 +5433,39 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & 5th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.784082,
           "longitude": -122.407992
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "powell",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "market6",
+      "kind": "surface",
       "name": "Market & 6th/Taylor",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.782209,
       "longitude": -122.410314,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15647",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 6th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.782102,
           "longitude": -122.4104
         },
@@ -4402,30 +5474,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Taylor",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.782316,
           "longitude": -122.410228
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "market7",
+      "kind": "surface",
       "name": "Market & 7th",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
-      "latitude": 37.780189,
-      "longitude": -122.412813,
-      "transferStations": [
-        "civicCenter"
-      ],
-      "transferAgencies": [],
+      "latitude": 37.780466,
+      "longitude": -122.412527,
       "platforms": [
         {
           "id": "15650",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 7th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.780363,
           "longitude": -122.412613
         },
@@ -4434,30 +5510,39 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & 7th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.780568,
           "longitude": -122.412441
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "civicCenter",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "marketVanNess",
+      "kind": "surface",
       "name": "Market & Van Ness",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.775127,
       "longitude": -122.419286,
-      "transferStations": [
-        "vanNess"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15696",
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Van Ness",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.775198,
           "longitude": -122.419252
         },
@@ -4466,30 +5551,39 @@
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & Van Ness",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.775056,
           "longitude": -122.419321
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "vanNess",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "market8",
+      "kind": "surface",
       "name": "Market & 8th/Hyde",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.778856,
       "longitude": -122.414603,
-      "transferStations": [
-        "civicCenter"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15651",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & 8th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.778606,
           "longitude": -122.414826
         },
@@ -4498,28 +5592,39 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Hyde",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.779105,
           "longitude": -122.414379
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "civicCenter",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     },
     {
       "id": "market9",
+      "kind": "surface",
       "name": "Market & 9th/Larkin",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.777504,
       "longitude": -122.416288,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15652",
           "heading": "northbound",
           "name": null,
           "stopName": "Market & 9th",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.77741,
           "longitude": -122.41634
         },
@@ -4528,28 +5633,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Market & Larkin",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.777598,
           "longitude": -122.416236
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "marketGough",
+      "kind": "surface",
       "name": "Market & Gough",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.773072,
       "longitude": -122.42188,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15673",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & Gough",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.772875,
           "longitude": -122.421991
         },
@@ -4558,28 +5669,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Gough",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.773269,
           "longitude": -122.421768
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "marketGuerrero",
+      "kind": "surface",
       "name": "Market & Guerrero/Laguna",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.770761,
       "longitude": -122.424819,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15675",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & Guerrero",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.77057,
           "longitude": -122.424971
         },
@@ -4588,28 +5705,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Laguna",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.770953,
           "longitude": -122.424666
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "marketDolores",
+      "kind": "surface",
       "name": "Market & Dolores/Buchanan",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.769333,
       "longitude": -122.426626,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15668",
           "heading": "eastbound",
           "name": null,
           "stopName": "Market & Dolores",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.76888,
           "longitude": -122.427103
         },
@@ -4618,28 +5741,34 @@
           "heading": "westbound",
           "name": null,
           "stopName": "Market & Buchanan",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.769786,
           "longitude": -122.426149
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "marketSanchez",
+      "kind": "surface",
       "name": "Market & Sanchez",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.765908,
       "longitude": -122.430961,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "17123",
           "heading": "northbound",
           "name": null,
           "stopName": "Market & Sanchez",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.765632,
           "longitude": -122.431216
         },
@@ -4648,28 +5777,34 @@
           "heading": "southbound",
           "name": null,
           "stopName": "Market & Sanchez",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.766185,
           "longitude": -122.430707
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "marketNoe",
+      "kind": "surface",
       "name": "Market & Noe",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.764223,
       "longitude": -122.433067,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "15686",
           "heading": "southbound",
           "name": "To Castro",
           "stopName": "Market & Noe",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.764489,
           "longitude": -122.432812
         },
@@ -4678,56 +5813,73 @@
           "heading": "eastbound",
           "name": "To Pier 39",
           "stopName": "Market & Noe",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.763958,
           "longitude": -122.433323
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "seventeenthNoe",
+      "kind": "surface",
       "name": "17th & Noe",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.762645,
       "longitude": -122.432991,
-      "transferStations": [],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13318",
           "heading": "westbound",
           "name": "To Castro",
           "stopName": "17th & Noe",
+          "lines": [
+            "F"
+          ],
           "latitude": 37.762645,
           "longitude": -122.432991
         }
-      ]
+      ],
+      "transfers": [],
+      "transferAgencies": []
     },
     {
       "id": "castroPlaza",
+      "kind": "surface",
       "name": "Castro Plaza",
-      "kind": "streetLevel",
       "lines": [
         "F"
       ],
       "latitude": 37.762576,
       "longitude": -122.434979,
-      "transferStations": [
-        "castro"
-      ],
-      "transferAgencies": [],
       "platforms": [
         {
           "id": "13311",
           "heading": "eastbound",
           "name": null,
           "stopName": "Castro Plaza",
+          "lines": [
+            "F"
+          ],
+          "terminates": [
+            "F"
+          ],
           "latitude": 37.762576,
           "longitude": -122.434979
         }
-      ]
+      ],
+      "transfers": [
+        {
+          "to": "castro",
+          "mode": "street"
+        }
+      ],
+      "transferAgencies": []
     }
   ]
 }

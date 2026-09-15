@@ -1,20 +1,24 @@
-// Right-hand inspector: everything about the selected station, and a card per
-// platform. Edits are committed on change/blur so each field is one undo step.
+// Right-hand inspector. Two shapes: an underground station is levels and exits,
+// a surface station is a flat list of platforms. Station coordinates are shown
+// but never editable - they are derived, from exits underground and from
+// platforms on the surface.
 
 import {
   store, edit, select, stationById, linesOf, esc, metresBetween,
+  platformsOf, levelOf, hasCoord, anchorOf,
 } from './store.js';
 import { flyToStation, refresh, hint, map, highlightLink } from './map.js';
 
 const HEADINGS = ['northbound', 'southbound', 'eastbound', 'westbound'];
 const AGENCIES = ['bart', 'caltrain'];
+const LEVEL_AGENCIES = ['muni', 'bart'];
 const ARROW = { northbound: 0, eastbound: 90, southbound: 180, westbound: 270 };
 
-let pickStationFor = null;     // callback when the palette is used to pick a station
+let pickStationFor = null;
 
 export function initInspector({ onNeedStationPicker }) {
   pickStationFor = onNeedStationPicker;
-  document.getElementById('insp-close').onclick = () => { select(null, null); renderInspector(); };
+  document.getElementById('insp-close').onclick = () => { select(null, null, null); renderInspector(); };
 }
 
 export function renderInspector() {
@@ -35,33 +39,35 @@ export function renderInspector() {
   el.style.setProperty('--accent', ls[0]?.color || '#6ea8fe');
 
   document.getElementById('insp-name').textContent = st.name;
-  document.getElementById('insp-id').textContent = st.id;
+  document.getElementById('insp-id').textContent = `${st.id} · ${st.kind}`;
 
-  // line toggles
-  const lineBox = document.getElementById('insp-lines');
-  lineBox.innerHTML = '';
+  const box = document.getElementById('insp-lines');
+  box.innerHTML = '';
   for (const ln of store.doc.lines) {
     const on = (st.lines || []).includes(ln.id);
     const b = document.createElement('button');
     b.className = 'mini-bullet' + (on ? '' : ' off');
     b.style.background = ln.color;
     b.textContent = ln.shortName || ln.id;
-    b.title = on ? `On ${ln.name} — click to remove` : `Add to ${ln.name}`;
-    b.onclick = () => toggleLine(st.id, ln.id);
-    lineBox.appendChild(b);
+    b.title = on ? `${ln.name} — derived from the platforms below` : ln.name;
+    b.disabled = true;                       // station.lines is derived
+    box.appendChild(b);
   }
 
-  document.getElementById('insp-body').innerHTML = `
-    ${sectionStation(st)}
-    ${sectionPlatforms(st)}
-    ${sectionTransfers(st)}
-    ${sectionDanger(st)}
-  `;
+  document.getElementById('insp-body').innerHTML =
+    sectionStation(st) +
+    (st.kind === 'underground' ? sectionLevels(st) + sectionExits(st) : sectionPlatforms(st, null)) +
+    sectionTransfers(st) +
+    sectionDanger(st);
   wire(st);
 }
 
-// ------------------------------------------------------------------ sections
+// ------------------------------------------------------------------ station
 function sectionStation(st) {
+  const src = st.kind === 'underground' ? 'exits' : 'platforms';
+  const coord = hasCoord(st)
+    ? `<code>${st.latitude}, ${st.longitude}</code>`
+    : `<span style="color:var(--warn)">no ${src} with coordinates yet</span>`;
   return `
   <div class="sect">
     <div class="sect-head"><div class="micro">Station</div></div>
@@ -76,152 +82,287 @@ function sectionStation(st) {
     <div class="field">
       <label class="micro">Kind</label>
       <div class="seg" id="f-kind">
-        <button data-v="streetLevel" class="${st.kind === 'streetLevel' ? 'on' : ''}">Street level</button>
+        <button data-v="surface" class="${st.kind === 'surface' ? 'on' : ''}">Surface</button>
         <button data-v="underground" class="${st.kind === 'underground' ? 'on' : ''}">Underground</button>
       </div>
     </div>
     <div class="field">
-      <label class="micro">Centre coordinate</label>
-      <div class="pair">
-        <input class="inp mono" id="f-lat" value="${st.latitude}" inputmode="decimal">
-        <input class="inp mono" id="f-lon" value="${st.longitude}" inputmode="decimal">
-      </div>
-    </div>
-    <div class="field">
-      <button class="btn" id="f-centre" style="width:100%;justify-content:center">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2" fill="currentColor"/><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 .8v2M8 13.2v2M.8 8h2M13.2 8h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Centre on its platforms
-      </button>
+      <label class="micro">Coordinate <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— derived from ${src}, not editable</span></label>
+      <div class="derived mono">${coord}</div>
     </div>
   </div>`;
 }
 
-function sectionPlatforms(st) {
-  const cards = st.platforms.map((p, i) => {
-    const d = store.drift?.get(String(p.id));
-    const sel = store.selPlatform === String(p.id);
-    let badge = '';
-    if (d?.kind === 'missing') {
-      badge = `<div class="drift-badge missing">Not in the current SFMTA feed</div>`;
-    } else if (d?.kind === 'moved') {
-      badge = `<div class="drift-badge moved">
-        Feed places this pole ${d.metres} m away
-        <button data-act="snap" data-i="${i}">snap to feed</button></div>`;
-    } else if (d?.kind === 'ok') {
-      badge = `<div class="drift-badge ok">Matches the feed${d.metres ? ` (${d.metres} m)` : ''}</div>`;
-    }
-
+// ------------------------------------------------------------------- levels
+function sectionLevels(st) {
+  const levels = [...(st.levels || [])].sort((a, b) => b.id - a.id);
+  const cards = levels.map(lv => {
+    const island = lv.isIsland === true ? 'island' : lv.isIsland === false ? 'sep' : 'unset';
     return `
-    <div class="plat ${sel ? 'sel' : ''}" data-i="${i}" data-code="${esc(p.id)}">
-      <div class="plat-head">
-        <div class="compass" title="${esc(p.heading)}">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="transform:rotate(${ARROW[p.heading] ?? 0}deg)">
-            <path d="M8 2.2l3.6 10-3.6-2.6-3.6 2.6L8 2.2z" fill="currentColor"/>
-          </svg>
+    <div class="level" data-level="${lv.id}">
+      <div class="level-head">
+        <div class="depth mono">${lv.id}</div>
+        <input class="inp level-name" data-lf="name" data-level="${lv.id}" value="${esc(lv.name)}">
+        <button class="icon-btn danger" data-act="del-level" data-level="${lv.id}" title="Remove this level">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="pair" style="margin-bottom:9px">
+        <div>
+          <label class="micro">Depth</label>
+          <input class="inp mono" type="number" data-lf="id" data-level="${lv.id}" value="${lv.id}" max="-1" step="1">
         </div>
-        <div style="min-width:0">
-          <div class="plat-code">${esc(p.id)}</div>
-          <div class="plat-sub">${esc(p.stopName || '—')}</div>
-        </div>
-        <div class="plat-actions">
-          <button class="icon-btn" data-act="locate" data-i="${i}" title="Show on the map">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14.5S13 10 13 6.4A5 5 0 003 6.4C3 10 8 14.5 8 14.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.3" r="1.8" fill="currentColor"/></svg>
-          </button>
-          <button class="icon-btn danger" data-act="del-plat" data-i="${i}" title="Remove this platform">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.6 8h4.8l.6-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="micro">Stop name</label>
-        <input class="inp" data-f="stopName" data-i="${i}" value="${esc(p.stopName || '')}">
-      </div>
-      <div class="field">
-        <label class="micro">Direction label <span style="color:var(--ink-faint);text-transform:none;letter-spacing:0">— shown only when set</span></label>
-        <input class="inp" data-f="name" data-i="${i}" value="${esc(p.name ?? '')}" placeholder="e.g. To Castro">
-      </div>
-      <div class="field">
-        <label class="micro">Heading</label>
-        <select class="inp" data-f="heading" data-i="${i}">
-          ${HEADINGS.map(h => `<option value="${h}" ${p.heading === h ? 'selected' : ''}>${h}</option>`).join('')}
-        </select>
-      </div>
-      <div class="field">
-        <label class="micro">Coordinate — drag the pole on the map</label>
-        <div class="pair">
-          <input class="inp mono" data-f="latitude" data-i="${i}" value="${p.latitude}" inputmode="decimal">
-          <input class="inp mono" data-f="longitude" data-i="${i}" value="${p.longitude}" inputmode="decimal">
+        <div>
+          <label class="micro">Agency</label>
+          <select class="inp" data-lf="agency" data-level="${lv.id}">
+            <option value="">none</option>
+            ${LEVEL_AGENCIES.map(a => `<option value="${a}" ${lv.agency === a ? 'selected' : ''}>${a}</option>`).join('')}
+          </select>
         </div>
       </div>
-      ${badge}
+      <div class="field">
+        <label class="micro">Platforms on this level</label>
+        <div class="seg" data-island="${lv.id}">
+          <button data-v="unset" class="${island === 'unset' ? 'on' : ''}">Unset</button>
+          <button data-v="island" class="${island === 'island' ? 'on' : ''}">Island</button>
+          <button data-v="sep"    class="${island === 'sep' ? 'on' : ''}">Separated</button>
+        </div>
+      </div>
+      ${platformCards(st, lv)}
+      <button class="tchip add" data-act="add-plat" data-level="${lv.id}"
+              style="width:100%;justify-content:center;height:27px;margin-top:2px">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Add platform here
+      </button>
     </div>`;
   }).join('');
 
   return `
   <div class="sect">
     <div class="sect-head">
-      <div class="micro">Platforms · ${st.platforms.length}</div>
-      <button class="icon-btn" id="add-plat" title="Add a platform">
+      <div class="micro">Levels · ${levels.length}</div>
+      <button class="icon-btn" id="add-level" title="Add a level">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       </button>
     </div>
-    ${cards || '<div class="empty">No platforms. A station needs at least one.</div>'}
+    ${cards || '<div class="empty">No levels.</div>'}
   </div>`;
 }
 
-const ICON = {
-  out:  '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M10.5 1.8L14 5l-3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  both: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M3 5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M10.5 1.8L14 5l-3.5 3.2M5.5 1.8L2 5l3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  in:   '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M3 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M5.5 1.8L2 5l3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+// -------------------------------------------------------------------- exits
+function sectionExits(st) {
+  const levels = [...(st.levels || [])].sort((a, b) => b.id - a.id);
+  const cards = (st.exits || []).map(ex => {
+    const sel = store.selExit === ex.id;
+    const placed = Number.isFinite(ex.latitude);
+    return `
+    <div class="plat exit ${sel ? 'sel' : ''} ${ex.closed ? 'closed' : ''}" data-exit="${esc(ex.id)}">
+      <div class="plat-head">
+        <div class="compass" title="${ex.closed ? 'closed' : 'open'}">
+          <svg width="13" height="13" viewBox="0 0 18 18" fill="none">
+            <path d="M11 3H5v12h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 9h7M12 5.6L15.4 9 12 12.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="min-width:0;flex:1">
+          <input class="inp exit-name" data-xf="name" data-exit="${esc(ex.id)}" value="${esc(ex.name)}">
+        </div>
+        <div class="plat-actions">
+          <button class="icon-btn" data-act="locate-exit" data-exit="${esc(ex.id)}" title="Show on the map">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14.5S13 10 13 6.4A5 5 0 003 6.4C3 10 8 14.5 8 14.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.3" r="1.8" fill="currentColor"/></svg>
+          </button>
+          <button class="icon-btn danger" data-act="del-exit" data-exit="${esc(ex.id)}" title="Delete this exit">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.6 8h4.8l.6-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="pair" style="margin-bottom:9px">
+        <div>
+          <label class="micro">Lands on</label>
+          <select class="inp" data-xf="level" data-exit="${esc(ex.id)}">
+            ${levels.map(l => `<option value="${l.id}" ${l.id === ex.level ? 'selected' : ''}>${l.id} · ${esc(l.name)}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label class="micro">Status</label>
+          <div class="seg">
+            <button data-xtog="closed" data-exit="${esc(ex.id)}" data-v="0" class="${ex.closed ? '' : 'on'}">Open</button>
+            <button data-xtog="closed" data-exit="${esc(ex.id)}" data-v="1" class="${ex.closed ? 'on' : ''}">Closed</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="micro">Access</label>
+        <div class="chips">
+          ${['stairs', 'escalator', 'elevator'].map(f => `
+            <button class="tchip ${ex[f] ? 'agency-on' : 'add'}" data-xtog="${f}" data-exit="${esc(ex.id)}">${f}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:0">
+        <label class="micro">Coordinate — drag the door on the map</label>
+        ${placed ? `<div class="pair">
+          <input class="inp mono" data-xf="latitude"  data-exit="${esc(ex.id)}" value="${ex.latitude}" inputmode="decimal">
+          <input class="inp mono" data-xf="longitude" data-exit="${esc(ex.id)}" value="${ex.longitude}" inputmode="decimal">
+        </div>`
+        : `<button class="btn" data-act="place-exit" data-exit="${esc(ex.id)}" style="width:100%;justify-content:center">
+             Place this exit on the map
+           </button>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  const open = (st.exits || []).filter(e => !e.closed).length;
+  return `
+  <div class="sect">
+    <div class="sect-head">
+      <div class="micro">Exits · ${(st.exits || []).length}${open !== (st.exits || []).length ? ` · ${open} open` : ''}</div>
+      <button class="icon-btn" id="add-exit" title="Add an exit">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    ${cards || '<div class="empty">No exits yet. Until one has coordinates this station has no position.</div>'}
+  </div>`;
+}
+
+// ---------------------------------------------------------------- platforms
+function sectionPlatforms(st, level) {
+  return `
+  <div class="sect">
+    <div class="sect-head">
+      <div class="micro">Platforms · ${st.platforms.length}</div>
+      <button class="icon-btn" data-act="add-plat" title="Add a platform">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    ${platformCards(st, null) || '<div class="empty">No platforms.</div>'}
+  </div>`;
+}
+
+function platformCards(st, level) {
+  const list = level ? (level.platforms || []) : (st.platforms || []);
+  return list.map(p => {
+    const d = store.drift?.get(String(p.id));
+    const sel = store.selPlatform === String(p.id);
+    let badge = '';
+    if (d?.kind === 'missing') badge = `<div class="drift-badge missing">Not in the current SFMTA feed</div>`;
+    else if (d?.kind === 'moved') badge = `<div class="drift-badge moved">Feed places this ${d.metres} m away
+      <button data-act="snap" data-code="${esc(p.id)}">snap to feed</button></div>`;
+    else if (d?.kind === 'ok') badge = `<div class="drift-badge ok">Matches the feed${d.metres ? ` (${d.metres} m)` : ''}</div>`;
+
+    const lines = store.doc.lines.map(ln => {
+      const on = (p.lines || []).includes(ln.id);
+      return `<button class="mini-bullet ${on ? '' : 'off'}" style="${on ? `background:${ln.color}` : ''}"
+        data-act="tog-line" data-code="${esc(p.id)}" data-line="${ln.id}"
+        title="${on ? `${esc(ln.name)} — click to remove` : `Add ${esc(ln.name)}`}">${esc(ln.shortName || ln.id)}</button>`;
+    }).join('');
+
+    const term = (p.lines || []).map(l => {
+      const on = (p.terminates || []).includes(l);
+      return `<button class="tchip ${on ? 'agency-on' : 'add'}" data-act="tog-term"
+        data-code="${esc(p.id)}" data-line="${l}">${l}</button>`;
+    }).join('') || '<span class="empty">no lines yet</span>';
+
+    return `
+    <div class="plat ${sel ? 'sel' : ''}" data-code="${esc(p.id)}">
+      <div class="plat-head">
+        <div class="compass" title="${esc(p.heading)}">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="transform:rotate(${ARROW[p.heading] ?? 0}deg)">
+            <path d="M8 2.2l3.6 10-3.6-2.6-3.6 2.6L8 2.2z" fill="currentColor"/></svg>
+        </div>
+        <div style="min-width:0">
+          <div class="plat-code">${esc(p.id)}</div>
+          <div class="plat-sub">${esc(p.stopName || p.name || st.name)}</div>
+        </div>
+        <div class="plat-actions">
+          <button class="icon-btn" data-act="locate" data-code="${esc(p.id)}" title="Show on the map">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14.5S13 10 13 6.4A5 5 0 003 6.4C3 10 8 14.5 8 14.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.3" r="1.8" fill="currentColor"/></svg>
+          </button>
+          <button class="icon-btn danger" data-act="del-plat" data-code="${esc(p.id)}" title="Remove this platform">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.6 8h4.8l.6-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="micro">Stop code</label>
+        <input class="inp mono" data-pf="id" data-code="${esc(p.id)}" value="${esc(p.id)}">
+      </div>
+      ${st.kind === 'surface' ? `
+      <div class="field">
+        <label class="micro">Stop name</label>
+        <input class="inp" data-pf="stopName" data-code="${esc(p.id)}" value="${esc(p.stopName || '')}">
+      </div>` : ''}
+      <div class="field">
+        <label class="micro">Label <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— signage, e.g. Platform 1</span></label>
+        <input class="inp" data-pf="name" data-code="${esc(p.id)}" value="${esc(p.name ?? '')}" placeholder="none">
+      </div>
+      <div class="field">
+        <label class="micro">Heading</label>
+        <select class="inp" data-pf="heading" data-code="${esc(p.id)}">
+          ${HEADINGS.map(h => `<option value="${h}" ${p.heading === h ? 'selected' : ''}>${h}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label class="micro">Lines</label>
+        <div class="insp-lines">${lines}</div>
+      </div>
+      <div class="field">
+        <label class="micro">Terminates here</label>
+        <div class="chips">${term}</div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label class="micro">Coordinate — drag the pole on the map</label>
+        <div class="pair">
+          <input class="inp mono" data-pf="latitude"  data-code="${esc(p.id)}" value="${p.latitude}"  inputmode="decimal">
+          <input class="inp mono" data-pf="longitude" data-code="${esc(p.id)}" value="${p.longitude}" inputmode="decimal">
+        </div>
+      </div>
+      ${badge}
+    </div>`;
+  }).join('');
+}
+
+// ---------------------------------------------------------------- transfers
+const TMODE = {
+  street: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M10.5 1.8L14 5l-3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  indoor: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M1 5h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M10.5 1.8L14 5l-3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
 
-/**
- * Transfers, both directions.
- *
- * transferStations is one-way by design and 248 of the links in the merged data
- * are asymmetric on purpose, so this never symmetrises anything. What it does do
- * is show the direction of each link, and show the links pointing AT this
- * station - which are invisible in the raw file and are the thing you need when
- * deciding whether a link should be mutual.
- */
 function sectionTransfers(st) {
-  const outgoing = st.transferStations || [];
-  const incoming = store.doc.stations
-    .filter(s => s.id !== st.id && (s.transferStations || []).includes(st.id))
+  const inbound = store.doc.stations
+    .filter(s => s.id !== st.id && (s.transfers || []).some(t => t.to === st.id))
     .map(s => s.id);
 
-  const mutual = outgoing.filter(id => incoming.includes(id));
-  const outOnly = outgoing.filter(id => !incoming.includes(id));
-  const inOnly = incoming.filter(id => !outgoing.includes(id));
-
-  const label = id => esc(stationById(id)?.name || id);
-  const away = id => {
-    const to = stationById(id);
-    return to ? `${metresBetween(st, to)} m` : '?';
-  };
-
-  const chip = (id, kind) => `
-    <span class="tchip link ${kind}" data-act="hover-link" data-id="${esc(id)}" title="${esc(id)} · ${away(id)}">
-      <i class="dir">${ICON[kind]}</i>
-      <span class="nm">${label(id)}</span>
-      <em>${away(id)}</em>
-      ${kind === 'in'
-        ? `<button class="x mk" data-act="reciprocate" data-id="${esc(id)}" title="Also link this station back">
-             <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-           </button>`
-        : `<button class="x" data-act="untransfer" data-id="${esc(id)}" title="Remove this link">
-             <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-           </button>`}
+  const rows = (st.transfers || []).map(t => {
+    const to = stationById(t.to);
+    const mutual = inbound.includes(t.to);
+    const away = to && hasCoord(to) && hasCoord(st) ? `${metresBetween(st, to)} m` : '—';
+    return `
+    <span class="tchip link ${mutual ? 'both' : 'out'}" data-act="hover-link" data-id="${esc(t.to)}">
+      <i class="dir">${TMODE[t.mode] || TMODE.street}</i>
+      <span class="nm">${esc(to ? to.name : t.to)}</span>
+      <em>${t.mode === 'indoor' ? 'indoor' : away}</em>
+      <button class="x" data-act="cycle-mode" data-id="${esc(t.to)}" title="Switch to ${t.mode === 'indoor' ? 'street' : 'indoor'}">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 4.5h6.5M6.5 2.5L8.8 4.5 6.5 6.5M10 7.5H3.5M5.5 5.5L3.2 7.5 5.5 9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="x" data-act="untransfer" data-id="${esc(t.to)}" title="Remove">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
     </span>`;
+  }).join('');
 
-  const group = (title, note, ids, kind) => ids.length ? `
-    <div class="field">
-      <label class="micro">${title}
-        <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— ${note}</span>
-      </label>
-      <div class="chips">${ids.map(id => chip(id, kind)).join('')}</div>
-    </div>` : '';
+  const inOnly = inbound.filter(id => !(st.transfers || []).some(t => t.to === id)).map(id => `
+    <span class="tchip link in" data-act="hover-link" data-id="${esc(id)}">
+      <i class="dir">${TMODE.street}</i>
+      <span class="nm">${esc(stationById(id)?.name || id)}</span>
+      <em>links here</em>
+      <button class="x mk" data-act="reciprocate" data-id="${esc(id)}" title="Link back">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+    </span>`).join('');
 
   const agencies = AGENCIES.map(ag => {
     const on = (st.transferAgencies || []).includes(ag);
@@ -230,25 +371,16 @@ function sectionTransfers(st) {
 
   return `
   <div class="sect">
-    <div class="sect-head">
-      <div class="micro">Transfers</div>
-      <span class="micro" style="color:var(--ink-faint)">${outgoing.length} out · ${incoming.length} in</span>
-    </div>
-
-    ${group('Both ways', 'each station lists the other', mutual, 'both')}
-    ${group('One way out', 'this station only', outOnly, 'out')}
-    ${group('One way in', 'they link here; this station does not link back', inOnly, 'in')}
-
-    ${!outgoing.length && !incoming.length
-      ? '<div class="empty" style="margin-bottom:10px">No transfer links.</div>' : ''}
-
+    <div class="sect-head"><div class="micro">Transfers</div></div>
+    ${rows ? `<div class="field"><div class="chips">${rows}</div></div>` : ''}
+    ${inOnly ? `<div class="field"><label class="micro">One way in <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— they link here; this station does not link back</span></label><div class="chips">${inOnly}</div></div>` : ''}
+    ${!rows && !inOnly ? '<div class="empty" style="margin-bottom:10px">No transfer links.</div>' : ''}
     <div class="field">
       <button class="tchip add" data-act="add-transfer" style="width:100%;justify-content:center;height:29px">
         <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         Link a station
       </button>
     </div>
-
     <div class="field" style="margin-top:12px">
       <label class="micro">Other agencies</label>
       <div class="chips">${agencies}</div>
@@ -266,90 +398,236 @@ function sectionDanger(st) {
   </div>`;
 }
 
-// --------------------------------------------------------------------- wiring
+
+// ==========================================================================
+// Wiring. Every handler commits through edit(), so one gesture is one undo and
+// derived fields are recomputed by the store.
+// ==========================================================================
 function wire(st) {
   const body = document.getElementById('insp-body');
   const sid = st.id;
-
   const commit = (label, fn) => edit(label, d => fn(d.stations.find(s => s.id === sid), d));
 
-  // --- station fields
+  const plat = (s2, code) => platformsOf(s2).find(x => String(x.id) === String(code));
+  const exitOf = (s2, eid) => (s2.exits || []).find(x => x.id === eid);
+
+  // ---------------------------------------------------------------- station
   const name = body.querySelector('#f-name');
   name.onchange = () => {
     const v = name.value.trim();
     if (!v || v === st.name) { name.value = st.name; return; }
-    commit(`Rename ${st.id}`, s => { s.name = v; });
+    commit(`Rename ${sid}`, s => { s.name = v; });
   };
 
   const idf = body.querySelector('#f-id');
   idf.onchange = () => {
     const v = idf.value.trim();
     if (!v || v === sid) { idf.value = sid; return; }
-    if (store.doc.stations.some(s => s.id === v)) {
-      idf.classList.add('bad');
-      hint(`A station with id "${v}" already exists`);
-      return;
-    }
+    if (store.doc.stations.some(s => s.id === v)) { idf.classList.add('bad'); hint(`"${v}" already exists`); return; }
     edit(`Rename id ${sid} → ${v}`, d => {
       d.stations.find(s => s.id === sid).id = v;
       for (const l of d.lines) l.stationIds = l.stationIds.map(x => x === sid ? v : x);
       for (const s of d.subways || []) s.stationIds = s.stationIds.map(x => x === sid ? v : x);
-      for (const s of d.stations) {
-        s.transferStations = (s.transferStations || []).map(x => x === sid ? v : x);
-      }
+      for (const s of d.stations) for (const t of s.transfers || []) if (t.to === sid) t.to = v;
     });
-    select(v, store.selPlatform);
+    select(v, store.selPlatform, store.selExit);
   };
 
+  // Changing kind restructures the record, so it is deliberate and confirmed.
   body.querySelectorAll('#f-kind button').forEach(b => {
     b.onclick = () => {
-      if (b.dataset.v === st.kind) return;
-      commit(`${st.id} → ${b.dataset.v}`, s => { s.kind = b.dataset.v; });
+      const to = b.dataset.v;
+      if (to === st.kind) return;
+      const msg = to === 'underground'
+        ? `Make "${st.name}" underground?\n\nIts ${platformsOf(st).length} platform(s) move onto a new level at depth -1, and it gains an empty exits list. Until an exit has coordinates the station has no position.`
+        : `Make "${st.name}" a surface station?\n\nIts levels and exits are removed and every platform moves to a flat list. Level names, agencies, isIsland and all exits are lost.`;
+      if (!confirm(msg)) return;
+      commit(`${sid} → ${to}`, s => {
+        const ps = platformsOf(s);
+        if (to === 'underground') {
+          delete s.platforms;
+          s.levels = [{ id: -1, name: 'Platforms', agency: 'muni', isIsland: null, platforms: ps }];
+          s.exits = [];
+          for (const p of ps) delete p.stopName;
+        } else {
+          delete s.levels; delete s.exits;
+          s.platforms = ps;
+          for (const p of ps) if (p.stopName === undefined) p.stopName = s.name;
+        }
+        s.kind = to;
+      });
     };
   });
 
-  for (const [id, key] of [['#f-lat', 'latitude'], ['#f-lon', 'longitude']]) {
-    const el = body.querySelector(id);
-    el.onchange = () => {
-      const v = Number(el.value);
-      if (!Number.isFinite(v)) { el.value = st[key]; return; }
-      commit(`Move ${st.id}`, s => { s[key] = v; });
-    };
-  }
-
-  body.querySelector('#f-centre').onclick = () => {
-    if (!st.platforms.length) return;
-    const lat = st.platforms.reduce((n, p) => n + p.latitude, 0) / st.platforms.length;
-    const lon = st.platforms.reduce((n, p) => n + p.longitude, 0) / st.platforms.length;
-    const moved = metresBetween(st, { latitude: lat, longitude: lon });
-    commit(`Centre ${st.id}`, s => {
-      s.latitude = Math.round(lat * 1e6) / 1e6;
-      s.longitude = Math.round(lon * 1e6) / 1e6;
+  // ----------------------------------------------------------------- levels
+  body.querySelector('#add-level')?.addEventListener('click', () => {
+    const used = new Set((st.levels || []).map(l => l.id));
+    let depth = -1;
+    while (used.has(depth)) depth--;
+    commit(`Add level ${depth}`, s => {
+      (s.levels || (s.levels = [])).push({ id: depth, name: 'New level', agency: null, isIsland: null, platforms: [] });
     });
-    hint(`Centred on ${st.platforms.length} platforms — moved ${moved} m`);
-  };
+    hint(`Level ${depth} added — rename it and set its depth`);
+  });
 
-  // --- platform fields
-  body.querySelectorAll('[data-f]').forEach(el => {
+  body.querySelectorAll('[data-lf]').forEach(el => {
     el.onchange = () => {
-      const i = Number(el.dataset.i), f = el.dataset.f;
+      const id = Number(el.dataset.level), f = el.dataset.lf;
+      if (f === 'id') {
+        const to = Math.trunc(Number(el.value));
+        if (!Number.isInteger(to) || to >= 0) { hint('A level depth must be a negative integer'); renderInspector(); return; }
+        if (to !== id && (st.levels || []).some(l => l.id === to)) { hint(`Depth ${to} is already used here`); renderInspector(); return; }
+        // exits reference levels by depth, so they move with it
+        commit(`Level ${id} → ${to}`, s => {
+          s.levels.find(l => l.id === id).id = to;
+          for (const e of s.exits || []) if (e.level === id) e.level = to;
+        });
+        return;
+      }
+      const v = f === 'agency' ? (el.value || null) : el.value.trim();
+      commit(`Edit level ${id}`, s => { s.levels.find(l => l.id === id)[f] = v; });
+    };
+  });
+
+  body.querySelectorAll('[data-island]').forEach(seg => {
+    seg.querySelectorAll('button').forEach(b => {
+      b.onclick = () => {
+        const id = Number(seg.dataset.island);
+        const v = b.dataset.v === 'unset' ? null : b.dataset.v === 'island';
+        commit(`Level ${id} isIsland → ${v}`, s => { s.levels.find(l => l.id === id).isIsland = v; });
+      };
+    });
+  });
+
+  // ------------------------------------------------------------------ exits
+  body.querySelector('#add-exit')?.addEventListener('click', () => {
+    const levels = st.levels || [];
+    if (!levels.length) { hint('Add a level first — an exit has to land somewhere'); return; }
+    const level = Math.max(...levels.map(l => l.id));   // the shallowest
+    const eid = freshExitId(st);
+    commit('Add exit', s => {
+      (s.exits || (s.exits = [])).push({
+        id: eid, name: 'New exit', level,
+        stairs: true, escalator: false, elevator: false, closed: false,
+        latitude: null, longitude: null,
+      });
+    });
+    select(sid, null, eid);
+    hint('Exit added — name it, then place it on the map');
+  });
+
+  body.querySelectorAll('[data-xf]').forEach(el => {
+    el.onchange = () => {
+      const eid = el.dataset.exit, f = el.dataset.xf;
+      let v = el.value;
+      if (f === 'level') v = Number(v);
+      else if (f === 'latitude' || f === 'longitude') {
+        v = Number(v);
+        if (!Number.isFinite(v)) { renderInspector(); return; }
+      } else v = v.trim();
+      if (f === 'name' && !v) { renderInspector(); return; }
+      commit(`Edit exit ${eid}`, s => { exitOf(s, eid)[f] = v; });
+    };
+  });
+
+  body.querySelectorAll('[data-xtog]').forEach(b => {
+    b.onclick = ev => {
+      ev.stopPropagation();
+      const eid = b.dataset.exit, f = b.dataset.xtog;
+      const v = b.dataset.v !== undefined ? b.dataset.v === '1' : !exitOf(st, eid)[f];
+      commit(`Exit ${eid} ${f} → ${v}`, s => { exitOf(s, eid)[f] = v; });
+    };
+  });
+
+  // -------------------------------------------------------------- platforms
+  body.querySelectorAll('[data-pf]').forEach(el => {
+    el.onchange = () => {
+      const code = el.dataset.code, f = el.dataset.pf;
       let v = el.value;
       if (f === 'latitude' || f === 'longitude') {
         v = Number(v);
         if (!Number.isFinite(v)) { renderInspector(); return; }
+      } else v = v.trim();
+
+      if (f === 'id') {
+        if (!v || v === code) { renderInspector(); return; }
+        const clash = store.doc.stations.some(s2 =>
+          platformsOf(s2).some(p => String(p.id) === v && !(s2.id === sid && String(p.id) === code)));
+        if (clash) { el.classList.add('bad'); hint(`Stop code ${v} is already used`); return; }
+        commit(`Stop code ${code} → ${v}`, s => { plat(s, code).id = v; });
+        select(sid, v, null);
+        return;
       }
-      if (f === 'name') v = v.trim() === '' ? null : v.trim();
-      if (f === 'stopName') v = v.trim();
-      commit(`Edit ${st.platforms[i].id}`, s => { s.platforms[i][f] = v; });
+      if (f === 'name') v = v === '' ? null : v;
+      commit(`Edit ${code}`, s => { plat(s, code)[f] = v; });
     };
   });
 
-  body.querySelectorAll('.plat').forEach(card => {
+  body.querySelectorAll('[data-act="tog-line"]').forEach(b => {
+    b.onclick = ev => {
+      ev.stopPropagation();
+      const code = b.dataset.code, line = b.dataset.line;
+      const on = (plat(st, code).lines || []).includes(line);
+      commit(`${on ? 'Remove' : 'Add'} ${line} at ${code}`, s => {
+        const p = plat(s, code);
+        p.lines = on ? (p.lines || []).filter(x => x !== line)
+                     : [...(p.lines || []), line].sort();
+        if (on && p.terminates) {
+          p.terminates = p.terminates.filter(x => x !== line);
+          if (!p.terminates.length) delete p.terminates;
+        }
+      });
+    };
+  });
+
+  body.querySelectorAll('[data-act="tog-term"]').forEach(b => {
+    b.onclick = ev => {
+      ev.stopPropagation();
+      const code = b.dataset.code, line = b.dataset.line;
+      const on = (plat(st, code).terminates || []).includes(line);
+      commit(`${line} ${on ? 'passes through' : 'terminates'} at ${code}`, s => {
+        const p = plat(s, code);
+        const next = on ? (p.terminates || []).filter(x => x !== line)
+                        : [...(p.terminates || []), line].sort();
+        if (next.length) p.terminates = next; else delete p.terminates;
+      });
+    };
+  });
+
+  body.querySelectorAll('[data-act="add-plat"]').forEach(b => {
+    b.onclick = () => {
+      const code = freshCode();
+      const anchor = platformsOf(st)[0];
+      const base = {
+        id: code, heading: 'northbound', name: null,
+        lines: [...(st.lines || [])].slice(0, 1),
+        latitude: anchor?.latitude ?? st.latitude ?? 37.7749,
+        longitude: anchor?.longitude ?? st.longitude ?? -122.4194,
+      };
+      if (st.kind === 'surface') base.stopName = st.name;
+      const levelId = b.dataset.level !== undefined ? Number(b.dataset.level) : null;
+      commit('Add platform', s => {
+        if (levelId !== null) s.levels.find(l => l.id === levelId).platforms.push(base);
+        else s.platforms.push(base);
+      });
+      select(sid, code, null);
+      hint(`Platform ${code} added — set its real stop code, then drag it into place`);
+    };
+  });
+
+  // ------------------------------------------------------------ row actions
+  body.querySelectorAll('.plat[data-code]').forEach(card => {
     card.addEventListener('click', ev => {
-      if (ev.target.closest('[data-act]') || ev.target.closest('input,select')) return;
-      select(sid, card.dataset.code);
-      renderInspector();
-      refresh('platforms');
+      if (ev.target.closest('[data-act]') || ev.target.closest('input,select,button')) return;
+      select(sid, card.dataset.code, null);
+      renderInspector(); refresh('platforms');
+    });
+  });
+  body.querySelectorAll('.plat[data-exit]').forEach(card => {
+    card.addEventListener('click', ev => {
+      if (ev.target.closest('[data-act]') || ev.target.closest('input,select,button')) return;
+      select(sid, null, card.dataset.exit);
+      renderInspector(); refresh('exits');
     });
   });
 
@@ -359,54 +637,114 @@ function wire(st) {
   });
 
   body.querySelectorAll('[data-act]').forEach(b => {
+    const act = b.dataset.act;
+    if (['tog-line', 'tog-term', 'add-plat', 'hover-link'].includes(act)) return;
     b.onclick = ev => {
       ev.stopPropagation();
-      const act = b.dataset.act, i = Number(b.dataset.i);
+      const code = b.dataset.code, eid = b.dataset.exit;
 
       if (act === 'locate') {
-        const p = st.platforms[i];
-        select(sid, String(p.id));
+        const p = plat(st, code);
+        select(sid, code, null);
         map.easeTo({ center: [p.longitude, p.latitude], zoom: Math.max(map.getZoom(), 17.4), duration: 800 });
         renderInspector(); refresh('platforms');
       }
 
+      if (act === 'locate-exit' || act === 'place-exit') {
+        const e0 = exitOf(st, eid);
+        select(sid, null, eid);
+        if (Number.isFinite(e0.latitude)) {
+          map.easeTo({ center: [e0.longitude, e0.latitude], zoom: Math.max(map.getZoom(), 18), duration: 800 });
+        } else {
+          // No coordinate yet. Drop it on the station itself - its platforms if
+          // it has no position yet - and fly there, rather than wherever the
+          // camera happens to be pointing.
+          const at = anchorOf(st);
+          if (!at) { hint('Nothing to anchor this exit to yet'); return; }
+          commit(`Place exit ${e0.name}`, s2 => {
+            const x = exitOf(s2, eid);
+            x.latitude = Math.round(at[1] * 1e6) / 1e6;
+            x.longitude = Math.round(at[0] * 1e6) / 1e6;
+          });
+          map.easeTo({ center: at, zoom: Math.max(map.getZoom(), 18), duration: 700 });
+          hint('Dropped on the station — drag it onto the real door');
+        }
+        renderInspector(); refresh('exits');
+      }
+
+      if (act === 'del-exit') {
+        const e0 = exitOf(st, eid);
+        if (!confirm(`Delete exit "${e0.name}"?`)) return;
+        commit(`Delete exit ${e0.name}`, s => { s.exits = s.exits.filter(x => x.id !== eid); });
+        select(sid, null, null);
+      }
+
+      if (act === 'del-level') {
+        const id = Number(b.dataset.level);
+        const lv = st.levels.find(l => l.id === id);
+        const n = (lv.platforms || []).length;
+        const refs = (st.exits || []).filter(e => e.level === id).length;
+        if (!confirm(`Delete level ${id} "${lv.name}"?` +
+          (n ? `\n\n${n} platform(s) on it will be deleted too.` : '') +
+          (refs ? `\n${refs} exit(s) land here and will need a new level.` : ''))) return;
+        commit(`Delete level ${id}`, s => { s.levels = s.levels.filter(l => l.id !== id); });
+      }
+
       if (act === 'snap') {
-        const p = st.platforms[i];
-        const d = store.drift?.get(String(p.id));
+        const d = store.drift?.get(String(code));
         if (!d) return;
-        commit(`Snap ${p.id} to the feed`, s => {
-          s.platforms[i].latitude = d.feedLat;
-          s.platforms[i].longitude = d.feedLon;
+        commit(`Snap ${code} to the feed`, s => {
+          const p = plat(s, code);
+          p.latitude = d.feedLat; p.longitude = d.feedLon;
         });
-        hint(`Snapped ${p.id} to the SFMTA coordinate`);
+        hint(`Snapped ${code} to the SFMTA coordinate`);
       }
 
       if (act === 'del-plat') {
-        if (st.platforms.length === 1) { hint('A station must keep at least one platform'); return; }
-        const code = st.platforms[i].id;
-        commit(`Remove platform ${code}`, s => { s.platforms.splice(i, 1); });
+        if (platformsOf(st).length === 1) { hint('A station must keep at least one platform'); return; }
+        commit(`Remove platform ${code}`, s => {
+          if (s.kind === 'underground') {
+            for (const l of s.levels) l.platforms = l.platforms.filter(p => String(p.id) !== String(code));
+          } else s.platforms = s.platforms.filter(p => String(p.id) !== String(code));
+        });
       }
 
       if (act === 'untransfer') {
         commit(`Unlink ${b.dataset.id}`, s => {
-          s.transferStations = (s.transferStations || []).filter(x => x !== b.dataset.id);
+          s.transfers = (s.transfers || []).filter(t => t.to !== b.dataset.id);
         });
       }
 
-      // Make an inbound-only link mutual. Never automatic: the asymmetry in
-      // data.json is deliberate, so this is always one explicit click.
+      // An indoor passage cannot be one-way, so switching to indoor sets both
+      // sides; switching away only touches this one.
+      if (act === 'cycle-mode') {
+        const other = b.dataset.id;
+        const cur = (st.transfers || []).find(t => t.to === other)?.mode;
+        const to = cur === 'indoor' ? 'street' : 'indoor';
+        commit(`${other} transfer → ${to}`, (s, d) => {
+          const t = s.transfers.find(x => x.to === other);
+          t.mode = to;
+          if (to === 'indoor') {
+            const os = d.stations.find(x => x.id === other);
+            const back = (os.transfers || (os.transfers = [])).find(x => x.to === s.id);
+            if (back) back.mode = 'indoor';
+            else os.transfers.push({ to: s.id, mode: 'indoor' });
+          }
+        });
+        if (to === 'indoor') hint('Indoor links work both ways, so the reciprocal was added too');
+      }
+
       if (act === 'reciprocate') {
         const other = b.dataset.id;
+        const mode = (stationById(other)?.transfers || []).find(t => t.to === sid)?.mode || 'street';
         commit(`Link ${sid} back to ${other}`, s => {
-          const list = s.transferStations || (s.transferStations = []);
-          if (!list.includes(other)) list.push(other);
+          (s.transfers || (s.transfers = [])).push({ to: other, mode });
         });
-        hint(`${st.name} now links back — the walk is mutual`);
       }
 
       if (act === 'agency') {
         const ag = b.dataset.ag;
-        commit(`Toggle ${ag} at ${st.id}`, s => {
+        commit(`Toggle ${ag} at ${sid}`, s => {
           const list = s.transferAgencies || (s.transferAgencies = []);
           const k = list.indexOf(ag);
           if (k >= 0) list.splice(k, 1); else list.push(ag);
@@ -416,65 +754,36 @@ function wire(st) {
       if (act === 'add-transfer') {
         pickStationFor?.(target => {
           if (!target || target === sid) return;
+          if ((st.transfers || []).some(t => t.to === target)) { hint('Already linked'); return; }
           commit(`Link ${sid} → ${target}`, s => {
-            const list = s.transferStations || (s.transferStations = []);
-            if (!list.includes(target)) list.push(target);
+            (s.transfers || (s.transfers = [])).push({ to: target, mode: 'street' });
           });
         });
       }
     };
   });
 
-  body.querySelector('#add-plat').onclick = () => {
-    const code = nextFreeCode();
-    commit('Add platform', s => {
-      s.platforms.push({
-        id: code,
-        heading: 'northbound',
-        name: null,
-        stopName: s.name,
-        latitude: s.latitude,
-        longitude: s.longitude,
-      });
-    });
-    select(sid, code);
-    hint(`Added platform ${code} — set its real stop code, then drag the pole into place`);
-  };
-
   body.querySelector('#del-station').onclick = () => {
-    if (!confirm(`Delete "${st.name}"?\n\nIt will also be removed from every line, subway and transfer list that references it.`)) return;
+    if (!confirm(`Delete "${st.name}"?\n\nIt is also removed from every line, subway and transfer that references it.`)) return;
     edit(`Delete ${sid}`, d => {
       d.stations = d.stations.filter(s => s.id !== sid);
       for (const l of d.lines) l.stationIds = l.stationIds.filter(x => x !== sid);
       for (const s of d.subways || []) s.stationIds = s.stationIds.filter(x => x !== sid);
-      for (const s of d.stations) {
-        s.transferStations = (s.transferStations || []).filter(x => x !== sid);
-      }
+      for (const s of d.stations) s.transfers = (s.transfers || []).filter(t => t.to !== sid);
     });
-    select(null, null);
+    select(null, null, null);
   };
 }
 
-function toggleLine(sid, lineId) {
-  const st = stationById(sid);
-  const on = (st.lines || []).includes(lineId);
-  edit(`${on ? 'Remove' : 'Add'} ${sid} ${on ? 'from' : 'to'} ${lineId}`, d => {
-    const s = d.stations.find(x => x.id === sid);
-    const l = d.lines.find(x => x.id === lineId);
-    if (on) {
-      s.lines = (s.lines || []).filter(x => x !== lineId);
-      l.stationIds = l.stationIds.filter(x => x !== sid);
-    } else {
-      (s.lines || (s.lines = [])).push(lineId);
-      if (!l.stationIds.includes(sid)) l.stationIds.push(sid);
-    }
-  });
+function freshExitId(st) {
+  const used = new Set((st.exits || []).map(e => e.id));
+  for (let n = 1; ; n++) if (!used.has(`exit${n}`)) return `exit${n}`;
 }
 
 /** A placeholder code that cannot collide with a real one already in the file. */
-function nextFreeCode() {
+function freshCode() {
   const used = new Set();
-  for (const s of store.doc.stations) for (const p of s.platforms) used.add(String(p.id));
+  for (const s of store.doc.stations) for (const p of platformsOf(s)) used.add(String(p.id));
   for (let n = 90000; n < 99999; n++) if (!used.has(String(n))) return String(n);
   return '99999';
 }

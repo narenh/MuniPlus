@@ -161,11 +161,10 @@ const M_PER_DEG_LON = 111320 * Math.cos(37.76 * Math.PI / 180);
 const metres = (aLat, aLon, bLat, bLon) =>
   Math.hypot((aLon - bLon) * M_PER_DEG_LON, (aLat - bLat) * M_PER_DEG_LAT);
 
-async function computeDrift(doc) {
-  const stops = await fetchStops();
+function compareToFeed(doc, stops) {
   const platforms = [];
   for (const st of doc.stations) {
-    for (const p of st.platforms) {
+    for (const p of data.platformsOf(st)) {
       const feed = stops.get(String(p.id));
       if (!feed) {
         platforms.push({ station: st.id, platform: p.id, kind: 'missing',
@@ -225,13 +224,15 @@ async function api(req, res, url) {
     if (!force && driftCache.payload && Date.now() - driftCache.at < DRIFT_TTL) {
       return json(res, 200, { ...driftCache.payload, cached: true });
     }
+    let stops;
     try {
-      const payload = await computeDrift(data.read(DATA_ABS));
-      driftCache = { at: Date.now(), payload };
-      return json(res, 200, { ...payload, cached: false });
+      stops = await fetchStops();
     } catch (e) {
       return json(res, 502, { error: `could not reach the SFMTA feed: ${e.message}` });
     }
+    const payload = compareToFeed(data.read(DATA_ABS), stops);
+    driftCache = { at: Date.now(), payload };
+    return json(res, 200, { ...payload, cached: false });
   }
 
   if (route === 'POST /api/validate') {

@@ -84,6 +84,44 @@ If `GIT_PUSH` is off, commits pile up in the container's checkout and are lost
 when the container is replaced. Either turn pushing on, or mount `REPO_ROOT` on a
 persistent volume.
 
+## The data model
+
+A station is one of two shapes.
+
+**Underground** — platforms live on `levels`, keyed by depth (`-1`, `-2`, …;
+street is not modelled). A level carries its name, an optional `agency`, and
+`isIsland`, which is hand-authored and legitimately `null`. A mezzanine is just
+a level with no platforms. `exits` are the doors: a name, the level each lands
+on, `stairs` / `escalator` / `elevator` / `closed` booleans, and coordinates.
+
+**Surface** — a flat `platforms` list. No levels, no exits, no island flag;
+every platform already has precise coordinates, so grouping by heading axis is
+derivable rather than stored.
+
+Every platform carries `id` (the 5-digit stop code), `heading`, `lines`, an
+optional `name` for signage ("Platform 1", "To Castro"), and — where some but
+not all of its lines end there — `terminates`. That last one is per *(platform,
+line)* rather than per platform because Embarcadero needs it: J/K/L/M/S
+terminate while the N runs through, on the same concrete.
+
+Transfers are objects with a `mode`. An `indoor` link is validated as
+reciprocal, because you cannot build a passage you can only walk one way.
+
+### What is derived, and never editable
+
+| field | from |
+|---|---|
+| `station.latitude` / `longitude` | **exits** underground, **platforms** on the surface |
+| `station.lines` | the union of its platforms' lines |
+
+Underground platform coordinates deliberately do **not** feed the station
+coordinate — they are below ground, and what a rider walks to is a door. They
+are kept because they let you rank exits by distance to a platform.
+
+An underground station with no exits yet therefore has `latitude: null`. The
+editor still shows it, anchored to its platforms so you can find it and author
+its doors; the stored value stays null until a door exists.
+
 ## Using it
 
 | | |
@@ -91,11 +129,28 @@ persistent volume.
 | **Line rail** (left edge) | click a line to focus it; click again for all lines |
 | **Route strip** | the focused line's stops in order — drag the grip to reorder, `−` to remove |
 | **Map** | click a station or pole to select; **drag a pole** to move it |
-| **Inspector** (right) | everything about the selected station, one card per platform |
+| **Inspector** (right) | the selected station: levels and exits underground, platforms on the surface |
+| **Exits** | added from the inspector, dropped on the station, then dragged onto the real door |
 
 Keys: `⌘K` find anything · `⌘S` save · `⌘Z` / `⇧⌘Z` undo, redo · `↑` `↓` walk the
 focused line · `F` fit line · `A` all lines · `P` `L` `T` toggle poles, labels,
 transfers · `N` reset bearing · `Esc` deselect.
+
+### Levels and exits
+
+Levels are added, renamed, re-depthed and deleted from the inspector. Changing a
+level's depth changes its id, so every exit that lands there is repointed in the
+same edit. Deleting a level tells you how many platforms go with it and how many
+exits will need a new home.
+
+An exit starts with no coordinate. **Place this exit on the map** drops it on the
+station and flies there; from then on you drag the door onto its real position,
+and the station's coordinate follows. Closed exits render struck through in red,
+on the map and in the inspector.
+
+`isIsland` is a three-state control — Unset / Island / Separated — and the editor
+proposes nothing. Geometry cannot answer it: Stonestown and Holloway are the same
+construction with opposite geometric signatures, so it is authored by hand.
 
 ### Stations and their platforms
 

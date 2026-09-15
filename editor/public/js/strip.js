@@ -2,7 +2,7 @@
 // be dragged into a new order. This is the thing that should feel like editing
 // a route rather than a list.
 
-import { store, edit, select, stationById, linesOf, lineById, esc } from './store.js';
+import { store, edit, select, stationById, linesOf, lineById, esc, platformsOf } from './store.js';
 import { flyToStation } from './map.js';
 
 let onPickStation = () => {};
@@ -34,7 +34,7 @@ export function renderStrip() {
   document.getElementById('strip-badge').style.setProperty('--c', ln.color);
   document.getElementById('strip-name').textContent = ln.name;
 
-  const nplat = ln.stationIds.reduce((n, id) => n + (stationById(id)?.platforms.length || 0), 0);
+  const nplat = ln.stationIds.reduce((n, id) => n + platformsOf(stationById(id)).length, 0);
   document.getElementById('strip-sub').textContent =
     `${ln.stationIds.length} stations · ${nplat} platforms`;
 
@@ -69,10 +69,10 @@ export function renderStrip() {
       <div class="stop-main">
         <div class="stop-name">${esc(st.name)}</div>
         <div class="stop-meta">
-          ${st.kind === 'underground' ? '<span class="tag">UNDERGROUND</span>' : ''}
-          <span class="tag">${st.platforms.length} PLAT</span>
+          ${st.kind === 'underground' ? `<span class="tag">${(st.exits || []).length} EXIT</span>` : ''}
+          <span class="tag">${platformsOf(st).length} PLAT</span>
           ${others.map(l => `<span class="pip" style="background:${l.color}" title="${esc(l.name)}"></span>`).join('')}
-          ${(st.transferStations || []).length ? '<span class="tag">↔</span>' : ''}
+          ${(st.transfers || []).length ? '<span class="tag">↔</span>' : ''}
         </div>
       </div>
       <div class="stop-side">

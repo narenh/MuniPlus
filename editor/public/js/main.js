@@ -1,7 +1,7 @@
 import {
   store, load, subscribe, edit, undo, redo, canUndo, canRedo,
   select, setActiveLine, toggleLayer, stationById, lineById,
-  isDirty, changes, esc,
+  isDirty, changes, esc, platformsOf,
 } from './store.js';
 import { api } from './api.js';
 import {
@@ -84,7 +84,8 @@ function renderAll() {
 function renderChrome() {
   const s = store.doc;
   $('n-stations').textContent = s.stations.length;
-  $('n-platforms').textContent = s.stations.reduce((n, x) => n + x.platforms.length, 0);
+  $('n-platforms').textContent = s.stations.reduce((n, x) => n + platformsOf(x).length, 0);
+  $('n-exits').textContent = s.stations.reduce((n, x) => n + (x.exits || []).length, 0);
   $('n-lines').textContent = s.lines.length;
 
   const list = changes();

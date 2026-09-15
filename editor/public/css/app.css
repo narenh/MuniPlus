@@ -477,6 +477,37 @@ select.inp { appearance: none; cursor: pointer;
 
 .empty { color: var(--ink-faint); font-size: 11.5px; padding: 3px 0; }
 
+/* --- derived, read-only values ------------------------------------------- */
+.derived {
+  padding: 7px 9px; border-radius: 8px;
+  background: rgba(255,255,255,.035);
+  border: 1px dashed var(--line);
+  color: var(--ink-dim); font-size: 11.5px;
+}
+.derived code { color: var(--ink); font-family: var(--mono); }
+
+/* --- a level: a card that owns its platforms ----------------------------- */
+.level {
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(255,255,255,.022);
+  padding: 11px 11px 10px; margin-bottom: 10px;
+}
+.level-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.level-head .depth {
+  width: 34px; height: 28px; flex: none; border-radius: 8px;
+  display: grid; place-items: center;
+  background: rgba(0,0,0,.45); border: 1px solid var(--line);
+  font-size: 12.5px; font-weight: 650; color: var(--accent);
+}
+.level-head .level-name { height: 28px; font-weight: 550; }
+.level .plat { background: rgba(255,255,255,.035); }
+
+/* --- an exit ------------------------------------------------------------- */
+.plat.exit .compass { color: var(--ok); }
+.plat.exit.closed .compass { color: var(--bad); }
+.plat.exit.closed { border-color: rgba(251,113,133,.3); background: rgba(251,113,133,.06); }
+.plat.exit .exit-name { height: 28px; font-weight: 550; }
+
 /* ==========================================================================
    Map overlays
    ========================================================================== */
