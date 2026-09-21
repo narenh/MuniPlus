@@ -201,6 +201,10 @@ export class Budget {
       });
     }
 
+    if (url.pathname === "/note") {
+      return this.note(url, tokens, cap, spend, now);
+    }
+
     if (tokens < 1) {
       // Deliberately no write on refusal: the refill is derived from `updated`,
       // so leaving it alone keeps the arithmetic right and stops a hammering
@@ -214,6 +218,30 @@ export class Budget {
     await this.state.storage.put("bucket", { tokens: tokens - 1, updated: now });
     await this.state.storage.put("spend", spend);
     return json({ ok: true, remaining: tokens - 1 });
+  }
+
+  /**
+   * Record a call that has already been decided on, rather than asking
+   * permission for one.
+   *
+   * The GTFS poller runs at a fixed rate that does not vary with how many
+   * clients are connected, so there is nothing about it to ration -- but its
+   * calls are real and they come out of the same 500/hr key. Left uncounted,
+   * /health reports a budget that looks healthier than the key actually is.
+   *
+   * It deliberately does not gate. Gating would make a busy SIRI path able to
+   * starve the feed that serves every stop in the city, which is backwards:
+   * the poller is the cheap path and should have priority. Draining the shared
+   * bucket gives it exactly that, since whatever it spends is no longer there
+   * for per-stop SIRI calls to take.
+   */
+  async note(url, tokens, cap, spend, now) {
+    const stop = url.searchParams.get("stop") ?? "unknown";
+    spend.stops[stop] = (spend.stops[stop] ?? 0) + 1;
+    const left = Math.max(0, tokens - 1);
+    await this.state.storage.put("bucket", { tokens: left, updated: now });
+    await this.state.storage.put("spend", spend);
+    return json({ ok: true, remaining: left });
   }
 }
 
@@ -235,11 +263,24 @@ async function relay(env, target) {
 /**
  * Holds the whole city's predictions in memory.
  *
- * There is no D1, KV or cache layer under this on purpose. The entire inverted
- * feed is about 570 KB — every arrival at every stop in San Francisco — which
- * is nothing against a Durable Object's memory, and it is fully regenerable
- * from one upstream call. Persisting it would buy a faster cold start and cost
- * a storage engine to reason about; losing it costs one poll interval.
+ * The whole inverted feed is about 570 KB — every arrival at every stop in
+ * San Francisco — so it lives in memory and is served from there.
+ *
+ * Memory alone is not enough, which took production to discover. A Durable
+ * Object with a pending alarm is NOT kept resident: the alarm schedules a
+ * wake-up, it does not pin the object, and an idle one is evicted after about
+ * ten seconds (the alarm invocation's own wallTimeMs lands on 10001, which is
+ * that eviction showing through). With a 60 s poll the object is therefore
+ * cold almost every time anyone asks, `polls` never reached 2 across a
+ * five-minute watch, and a client request on a cold instance was re-fetching
+ * 683 KB from 511 on its own latency — 877 ms against 73 ms warm, and one
+ * upstream call per request, which is precisely the coupling this path exists
+ * to remove.
+ *
+ * So each poll also writes the raw feed to durable storage, and a cold
+ * instance restores from there and re-scans instead of going upstream. The raw
+ * protobuf is stored rather than the inverted map because scan() is then the
+ * only reader of the format and there is no second encoding to keep correct.
  */
 export class Feed {
   constructor(state, env) {
@@ -249,7 +290,13 @@ export class Feed {
     this.fetchedAt = 0;       // ms, when the held copy came back from 511
     this.lastError = null;
     this.polls = 0;
+    this.upstreamCalls = 0;   // calls this instance made to 511
+    this.restoredFrom = null; // "storage" when this instance never went upstream
   }
+
+  /// Chunk width for the stored snapshot. Small enough to stay well clear of
+  /// any per-value ceiling, large enough that a feed is a handful of writes.
+  static get CHUNK() { return 96 * 1024; }
 
   async fetch(request) {
     const url = new URL(request.url);
@@ -267,6 +314,8 @@ export class Feed {
         arrivals: this.arrivalCount(),
         ageSeconds: this.fetchedAt ? Math.round((Date.now() - this.fetchedAt) / 1000) : null,
         polls: this.polls,
+        upstreamCalls: this.upstreamCalls,
+        restoredFrom: this.restoredFrom,
         pollSeconds: this.pollInterval(),
         quietHours: {
           active: this.isQuietHour(),
@@ -279,12 +328,12 @@ export class Feed {
       });
     }
 
-    // A cold object has an armed alarm but no data yet. Rather than hand back
-    // an empty board, poll inline once — this is the only path that pays for a
-    // fetch on a client's latency.
-    if (this.stops.size === 0) {
-      await this.poll();
-    }
+    // A cold object has an armed alarm but no data yet. Restoring the last
+    // stored feed costs a storage read and a re-scan; going upstream costs
+    // most of a second and a call on the shared key. Only do the latter when
+    // there is genuinely nothing stored, which is the first request after a
+    // deploy and not much else.
+    await this.ensureLoaded();
 
     const codes = (url.searchParams.get("codes") ?? "").split(",").filter(Boolean);
     const now = Math.floor(Date.now() / 1000);
@@ -346,6 +395,55 @@ export class Feed {
     return from <= to ? now >= from && now < to : now >= from || now < to;
   }
 
+  /// Memory, then storage, then 511 -- in that order, because that is the
+  /// order of what they cost.
+  async ensureLoaded() {
+    if (this.stops.size > 0) return;
+    if (await this.restore()) return;
+    await this.poll();
+  }
+
+  /**
+   * Rebuild from the last stored feed.
+   *
+   * The re-scan is the same code the alarm runs, so a restored instance holds
+   * exactly what a freshly polled one would, minus whatever changed upstream
+   * since. Absent or partial snapshots return false rather than throwing, and
+   * the caller falls through to a real poll.
+   */
+  async restore() {
+    try {
+      const meta = await this.state.storage.get("snap:meta");
+      if (!meta || !meta.chunks) return false;
+
+      const keys = [];
+      for (let i = 0; i < meta.chunks; i++) keys.push(`snap:${i}`);
+      const parts = await this.state.storage.get(keys);
+
+      const bytes = new Uint8Array(meta.bytes);
+      let offset = 0;
+      for (const key of keys) {
+        const part = parts.get(key);
+        if (!part) return false;   // torn snapshot; go upstream instead
+        bytes.set(part, offset);
+        offset += part.length;
+      }
+      if (offset !== meta.bytes) return false;
+
+      const stops = scan(bytes, this.horizon());
+      if (stops.size === 0) return false;
+
+      this.stops = stops;
+      this.fetchedAt = meta.fetchedAt;
+      this.restoredFrom = "storage";
+      console.log(`restored ${meta.bytes}B -> ${stops.size} stops, age ${Math.round((Date.now() - meta.fetchedAt) / 1000)}s`);
+      return true;
+    } catch (err) {
+      console.log(`restore failed: ${err}`);
+      return false;
+    }
+  }
+
   async poll() {
     const url = new URL(UPSTREAM_GTFS);
     url.searchParams.set("api_key", this.env.API_511_KEY);
@@ -353,6 +451,12 @@ export class Feed {
 
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+      this.upstreamCalls++;
+      // Recorded, not requested. See Budget.note(): this call is already made
+      // and the poller must not be gated, but it does come out of the same
+      // 500/hr key and /health should say so.
+      await noteToken(this.env, "gtfs-feed");
+
       if (!res.ok) {
         this.lastError = `upstream ${res.status}`;
         console.log(`poll failed: upstream ${res.status}`);
@@ -360,12 +464,7 @@ export class Feed {
       }
       const bytes = new Uint8Array(await res.arrayBuffer());
 
-      // Anything past the horizon is a prediction for a bus that has not left
-      // yet; it inflates the map without ever being shown. Dropping it here is
-      // free, since the scan has to walk those bytes either way.
-      const horizon = Math.floor(Date.now() / 1000) + int(this.env.HORIZON_SECONDS, DEFAULTS.horizon);
-
-      const stops = scan(bytes, horizon);
+      const stops = scan(bytes, this.horizon());
       if (stops.size === 0) {
         // A structurally valid but empty feed should not blank out a good copy.
         this.lastError = "feed parsed to zero stops";
@@ -375,12 +474,43 @@ export class Feed {
       this.stops = stops;
       this.fetchedAt = Date.now();
       this.lastError = null;
+      this.restoredFrom = null;
       this.polls++;
       console.log(`poll ok: ${bytes.length}B -> ${stops.size} stops`);
+      await this.store(bytes);
     } catch (err) {
       this.lastError = String(err);
       console.log(`poll threw: ${err}`);
     }
+  }
+
+  /**
+   * Park the raw feed so the next cold instance does not have to go upstream.
+   *
+   * Written after the response has already been served from memory, so its
+   * cost never lands on a client. Chunked because one feed is several hundred
+   * KB; the meta row is written last, so a snapshot only becomes visible once
+   * every chunk of it is in place.
+   */
+  async store(bytes) {
+    try {
+      const chunk = Feed.CHUNK;
+      const n = Math.ceil(bytes.length / chunk);
+      const batch = {};
+      for (let i = 0; i < n; i++) batch[`snap:${i}`] = bytes.slice(i * chunk, (i + 1) * chunk);
+      await this.state.storage.put(batch);
+      await this.state.storage.put("snap:meta", { chunks: n, bytes: bytes.length, fetchedAt: this.fetchedAt });
+    } catch (err) {
+      // A feed that cannot be parked is still a feed that can be served.
+      console.log(`store failed: ${err}`);
+    }
+  }
+
+  /// Arrivals beyond this are for vehicles that have not started their run.
+  /// The scan uses it to abandon a trip early, so it is a CPU knob as much as
+  /// a content one.
+  horizon() {
+    return Math.floor(Date.now() / 1000) + int(this.env.HORIZON_SECONDS, DEFAULTS.horizon);
   }
 
   arrivalCount() {
@@ -414,7 +544,7 @@ export class Feed {
  * advances it, so every submessage ends up short by the width of its own length
  * prefix, and the walk drifts into garbage a few hundred entities in.
  */
-function scan(buf, horizon) {
+export function scan(buf, horizon) {
   if (horizon === undefined) horizon = Infinity;
   const byStop = new Map();
   const len = buf.length;
@@ -472,7 +602,18 @@ function scan(buf, horizon) {
             }
             p = evEnd;
           }
-          if (time && stop >= 0 && time <= horizon) {
+          if (time && stop >= 0) {
+            // Arrival times inside a trip are monotonic -- a vehicle visits its
+            // stops in order -- so the first arrival past the horizon means
+            // every remaining stop_time_update in this trip is past it too.
+            // Jumping to the end of the trip skips tags that would only be
+            // read and discarded, and it is the only way to make the walk
+            // cheaper: protobuf has no index, so a field can never be skipped
+            // without first reading its tag and length. Filtering alone saves
+            // nothing measurable (3.74 ms vs 3.88 ms at a 45 min horizon);
+            // this takes the same scan to 1.81 ms, with identical output.
+            // Verified monotonic across all 466 trips in a live feed.
+            if (time > horizon) { p = tuEnd; break; }
             let v = byStop.get(stop);
             if (v === undefined) { v = []; byStop.set(stop, v); }
             v.push(route, dir, time);
@@ -556,6 +697,18 @@ async function callUpstream(stopcode, agency, apiKey) {
   } catch (err) {
     console.log(`stop=${stopcode} upstream threw: ${err}`);
     return null;
+  }
+}
+
+/// Tell the budget a call has happened. Never gates, never throws: a poller
+/// that cannot reach the bookkeeping should still serve predictions.
+async function noteToken(env, label) {
+  try {
+    const id = env.BUDGET.idFromName("global");
+    const limit = int(env.HOURLY_LIMIT, DEFAULTS.hourlyLimit);
+    await env.BUDGET.get(id).fetch(`https://budget/note?limit=${limit}&stop=${label}`);
+  } catch (err) {
+    console.log(`budget note failed: ${err}`);
   }
 }
 

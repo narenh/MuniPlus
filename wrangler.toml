@@ -33,8 +33,14 @@ STALE_SECONDS = 900
 # app builds that still call 511 directly.
 POLL_SECONDS = 60
 # Predictions beyond this are for vehicles that have not started their run yet.
-# They never reach a screen, so they are dropped while the feed is scanned.
-HORIZON_SECONDS = 5400
+#
+# This is a CPU knob, not just a content one. Because arrivals inside a trip are
+# monotonic, the scan abandons a trip at the first arrival past this line rather
+# than walking the rest of it, and that is the only thing that makes the walk
+# cheaper -- protobuf cannot skip a field without reading its tag first. On a
+# 683 KB feed: 3.88 ms at 90 min, 1.81 ms at 45. Coverage barely moves, 3,051
+# of 3,061 stops still carry predictions at 45 min.
+HORIZON_SECONDS = 2700
 
 # TEMPORARY, REMOVE BEFORE THIS PATH SERVES ANYONE.
 #
