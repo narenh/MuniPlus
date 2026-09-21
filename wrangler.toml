@@ -17,7 +17,7 @@ directory = "appdata"
 # stop, one every 40 s. Asking faster than that does not buy freshness, it
 # pins the budget at zero — and a stop that then finds its cache entry evicted
 # has no fresh copy, no stale copy and no budget, so it fails outright.
-TTL_SECONDS = 75
+TTL_SECONDS = 120
 # Hard ceiling on calls to 511 per hour, across every client. 511 allows 500/hr
 # on this key; the rest is headroom for app builds that still call 511 directly.
 HOURLY_LIMIT = 450

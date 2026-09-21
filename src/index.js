@@ -26,7 +26,7 @@ const UPSTREAM = "https://api.511.org/transit/StopMonitoring";
 const ROUTE = "/transit/StopMonitoring";
 const ROUTE_HEALTH = "/health";
 
-const DEFAULTS = { ttl: 75, hourlyLimit: 450, stale: 900 };
+const DEFAULTS = { ttl: 120, hourlyLimit: 450, stale: 900 };
 
 /// How long a stale copy is parked under the fresh key during a shortfall,
 /// before anything tries the budget again. Short enough that recovery is quick
