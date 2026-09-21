@@ -10,7 +10,14 @@ directory = "appdata"
 [vars]
 # How long a stop's predictions are served from cache before going upstream.
 # This is the freshness knob — tuning it is a redeploy, never an App Store release.
-TTL_SECONDS = 20
+#
+# It cannot be set below what the hourly budget can actually sustain, which is
+# HOURLY_LIMIT divided by however many stops are being watched at once: with a
+# five-stop dashboard running all day that is 450/5 = 90 fetches an hour per
+# stop, one every 40 s. Asking faster than that does not buy freshness, it
+# pins the budget at zero — and a stop that then finds its cache entry evicted
+# has no fresh copy, no stale copy and no budget, so it fails outright.
+TTL_SECONDS = 45
 # Hard ceiling on calls to 511 per hour, across every client. 511 allows 500/hr
 # on this key; the rest is headroom for app builds that still call 511 directly.
 HOURLY_LIMIT = 450

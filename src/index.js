@@ -26,7 +26,13 @@ const UPSTREAM = "https://api.511.org/transit/StopMonitoring";
 const ROUTE = "/transit/StopMonitoring";
 const ROUTE_HEALTH = "/health";
 
-const DEFAULTS = { ttl: 20, hourlyLimit: 450, stale: 900 };
+const DEFAULTS = { ttl: 45, hourlyLimit: 450, stale: 900 };
+
+/// How long a stale copy is parked under the fresh key during a shortfall,
+/// before anything tries the budget again. Short enough that recovery is quick
+/// once tokens are available, long enough that a dashboard refreshing several
+/// stops at once is not re-asking on every tick.
+const BACKOFF_SECONDS = 10;
 
 export default {
   async fetch(request, env, ctx) {
@@ -89,8 +95,22 @@ export default {
     // the estimate behind it, not the countdown.
     const stale = await cache.match(staleKey);
     if (stale) {
+      const body = await stale.arrayBuffer();
+      const type = stale.headers.get("content-type") ?? "application/json; charset=utf-8";
+      const fetchedAt = stale.headers.get("X-Fetched-At");
+
+      // Park the stale copy under the fresh key for a few seconds.
+      //
+      // Without this, a budget shortfall makes every single request re-ask the
+      // budget, get refused, and re-read the same stale entry — a stampede
+      // doing no work, hammering one Durable Object, and keeping the bucket
+      // pinned at empty so genuine cold misses have nothing left to draw on.
+      // Its original timestamp rides along, so the copy still reports its true
+      // age rather than looking freshly baked.
+      ctx.waitUntil(cache.put(freshKey, storable(body, type, BACKOFF_SECONDS, fetchedAt)));
+
       log(stopcode, "STALE", grant.ok ? "upstream failed" : `budget spent (${fmt(grant.remaining)})`);
-      return serve(stale, "STALE", grant.remaining);
+      return serve(storable(body, type, BACKOFF_SECONDS, fetchedAt), "STALE", grant.remaining);
     }
 
     log(stopcode, "EMPTY", grant.ok ? "upstream failed, no stale copy" : "budget spent, no stale copy");
@@ -234,13 +254,16 @@ function cacheKey(stopcode, kind) {
  * `cache.put` honours all three — pass its response through unedited and the
  * cache silently stores nothing while every request goes upstream.
  */
-function storable(body, contentType, maxAge) {
+function storable(body, contentType, maxAge, fetchedAt) {
   return new Response(body, {
     status: 200,
     headers: {
       "Content-Type": contentType,
       "Cache-Control": `public, max-age=${maxAge}`,
-      "X-Fetched-At": new Date().toISOString(),
+      // Carried over when re-parking an older copy, so its age keeps counting
+      // from when 511 produced it rather than resetting every time it is
+      // handed out again.
+      "X-Fetched-At": fetchedAt ?? new Date().toISOString(),
     },
   });
 }
