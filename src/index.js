@@ -24,12 +24,17 @@
 
 const UPSTREAM = "https://api.511.org/transit/StopMonitoring";
 const ROUTE = "/transit/StopMonitoring";
+const ROUTE_HEALTH = "/health";
 
 const DEFAULTS = { ttl: 20, hourlyLimit: 450, stale: 900 };
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    if (url.pathname === ROUTE_HEALTH) {
+      return health(env);
+    }
 
     if (url.pathname !== ROUTE) {
       return problem(404, "not_found", `Nothing here. Try GET ${ROUTE}?agency=SF&stopcode=<digits>`);
@@ -111,12 +116,18 @@ export class Budget {
   }
 
   async fetch(request) {
-    const cap = int(new URL(request.url).searchParams.get("limit"), DEFAULTS.hourlyLimit);
+    const url = new URL(request.url);
+    const cap = int(url.searchParams.get("limit"), DEFAULTS.hourlyLimit);
     const now = Date.now();
     const bucket = (await this.state.storage.get("bucket")) ?? { tokens: cap, updated: now };
 
     const elapsed = Math.max(0, (now - bucket.updated) / 1000);
     const tokens = Math.min(cap, bucket.tokens + elapsed * (cap / 3600));
+
+    // A look at the bucket that doesn't spend from it, for /health.
+    if (url.pathname === "/peek") {
+      return json({ ok: tokens >= 1, remaining: tokens, capacity: cap });
+    }
 
     if (tokens < 1) {
       // Deliberately no write on refusal: the refill is derived from `updated`,
@@ -128,6 +139,44 @@ export class Budget {
     await this.state.storage.put("bucket", { tokens: tokens - 1, updated: now });
     return json({ ok: true, remaining: tokens - 1 });
   }
+}
+
+/**
+ * Whether this Worker is actually wired up, without saying anything about what
+ * the bindings contain.
+ *
+ * Worth having permanently: a missing binding and a refused budget both end as
+ * the same 503 on the predictions route, and the two want very different
+ * fixes. Reports booleans only — never a value, never a length.
+ */
+async function health(env) {
+  const bindings = {
+    API_511_KEY: typeof env.API_511_KEY === "string" && env.API_511_KEY.length > 0,
+    BUDGET: Boolean(env.BUDGET),
+  };
+
+  let budget = null;
+  if (bindings.BUDGET) {
+    try {
+      const limit = int(env.HOURLY_LIMIT, DEFAULTS.hourlyLimit);
+      const res = await env.BUDGET.get(env.BUDGET.idFromName("global"))
+        .fetch(`https://budget/peek?limit=${limit}`);
+      budget = await res.json();
+    } catch (err) {
+      budget = { error: String(err) };
+    }
+  }
+
+  return json({
+    ok: bindings.API_511_KEY && bindings.BUDGET && Boolean(budget) && !budget.error,
+    bindings,
+    config: {
+      ttl: int(env.TTL_SECONDS, DEFAULTS.ttl),
+      hourlyLimit: int(env.HOURLY_LIMIT, DEFAULTS.hourlyLimit),
+      stale: int(env.STALE_SECONDS, DEFAULTS.stale),
+    },
+    budget,
+  }, 200, { "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" });
 }
 
 // MARK: - Upstream
