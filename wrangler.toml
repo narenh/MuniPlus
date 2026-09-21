@@ -52,6 +52,15 @@ QUIET_POLL_SECONDS = 180
 QUIET_FROM_HOUR = 0
 QUIET_TO_HOUR = 9
 
+# Workers Logs, off unless asked for. head_sampling_rate = 1 keeps every
+# invocation rather than a sample, which matters here because the interesting
+# invocation is the once-a-minute alarm, not the requests: sampling would throw
+# away exactly the one whose CPU time is in question. Free plan carries 200k
+# events a day against maybe 2k from this Worker, and keeps them 3 days.
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 [[durable_objects.bindings]]
 name = "BUDGET"
 class_name = "Budget"
