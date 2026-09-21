@@ -24,12 +24,33 @@ HOURLY_LIMIT = 450
 # How long a copy is kept around to serve when the budget is spent or 511 is down.
 STALE_SECONDS = 900
 
+# --- GTFS-Realtime path (/gtfs/*) ---
+#
+# One poll of 511's TripUpdates feed serves every stop in the city, so unlike
+# TTL_SECONDS above this is not divided by the number of stops being watched.
+# It is the freshness of every stop at once, and it costs 60 calls an hour no
+# matter how many clients are connected. The rest of the 500/hr key is left for
+# app builds that still call 511 directly.
+POLL_SECONDS = 60
+# Predictions beyond this are for vehicles that have not started their run yet.
+# They never reach a screen, so they are dropped while the feed is scanned.
+HORIZON_SECONDS = 5400
+
 [[durable_objects.bindings]]
 name = "BUDGET"
 class_name = "Budget"
+
+[[durable_objects.bindings]]
+name = "FEED"
+class_name = "Feed"
 
 [[migrations]]
 tag = "v1"
 # new_sqlite_classes, NOT new_classes: the key-value storage backend for Durable
 # Objects is paid-only, the SQLite backend is what's available on the free plan.
 new_sqlite_classes = ["Budget"]
+
+[[migrations]]
+# Additive: Feed is a new class, Budget is untouched.
+tag = "v2"
+new_sqlite_classes = ["Feed"]
