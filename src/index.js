@@ -38,7 +38,7 @@ const UPSTREAM_GTFS = "https://api.511.org/transit/tripupdates";
 const ROUTE_GTFS = "/gtfs/stops";
 const ROUTE_GTFS_HEALTH = "/gtfs/health";
 
-const DEFAULTS = { ttl: 120, hourlyLimit: 450, stale: 900, poll: 60, horizon: 5400 };
+const DEFAULTS = { ttl: 120, hourlyLimit: 450, stale: 900, poll: 60, horizon: 5400, quietPoll: 180, quietFrom: 0, quietTo: 9 };
 
 /// How long a stale copy is parked under the fresh key during a shortfall,
 /// before anything tries the budget again. Short enough that recovery is quick
@@ -253,7 +253,6 @@ export class Feed {
 
   async fetch(request) {
     const url = new URL(request.url);
-    const poll = int(this.env.POLL_SECONDS, DEFAULTS.poll);
 
     // The alarm is what keeps this warm; arm it on the first request to touch
     // this object after a cold start, and let it re-arm itself from then on.
@@ -268,7 +267,14 @@ export class Feed {
         arrivals: this.arrivalCount(),
         ageSeconds: this.fetchedAt ? Math.round((Date.now() - this.fetchedAt) / 1000) : null,
         polls: this.polls,
-        pollSeconds: poll,
+        pollSeconds: this.pollInterval(),
+        quietHours: {
+          active: this.isQuietHour(),
+          pacificHour: pacificHour(),
+          from: hour(this.env.QUIET_FROM_HOUR, DEFAULTS.quietFrom),
+          to: hour(this.env.QUIET_TO_HOUR, DEFAULTS.quietTo),
+          pollSeconds: int(this.env.QUIET_POLL_SECONDS, DEFAULTS.quietPoll),
+        },
         lastError: this.lastError,
       });
     }
@@ -301,12 +307,43 @@ export class Feed {
   }
 
   async alarm() {
-    const poll = int(this.env.POLL_SECONDS, DEFAULTS.poll);
     // Re-arm first. A throw inside poll() must not leave this object with no
     // alarm pending, which would silently stop the whole feed until the next
     // client request happened to wake it.
-    await this.state.storage.setAlarm(Date.now() + poll * 1000);
+    await this.state.storage.setAlarm(Date.now() + this.pollInterval() * 1000);
     await this.poll();
+  }
+
+  /**
+   * Seconds until the next poll.
+   *
+   * TEMPORARY -- this whole quiet-window idea exists because /gtfs is a test
+   * deployment with an audience of one. Between QUIET_FROM_HOUR and
+   * QUIET_TO_HOUR Pacific nobody is looking at it, so it polls at a third of
+   * the rate rather than spending the key on predictions no one will read.
+   *
+   * Note what this is NOT: it is not a claim that predictions matter less in
+   * the early morning. The tail of that window is the start of the commute,
+   * and riders on the first N of the day need this more than anyone. They are
+   * served by the SIRI path, which this does not touch. The day /gtfs starts
+   * answering real clients, delete this method and go back to a flat interval
+   * -- see the note in wrangler.toml.
+   */
+  pollInterval() {
+    const fast = int(this.env.POLL_SECONDS, DEFAULTS.poll);
+    const slow = int(this.env.QUIET_POLL_SECONDS, DEFAULTS.quietPoll);
+    return this.isQuietHour() ? slow : fast;
+  }
+
+  /// `now` is injectable so the window can be tested against all 24 hours
+  /// without waiting for the clock to reach them.
+  isQuietHour(now = pacificHour()) {
+    const from = hour(this.env.QUIET_FROM_HOUR, DEFAULTS.quietFrom);
+    const to = hour(this.env.QUIET_TO_HOUR, DEFAULTS.quietTo);
+    // A window that wraps past midnight (22 -> 6) is the union of two ranges,
+    // not an empty one, so it is worth handling even though the default
+    // window does not wrap.
+    return from <= to ? now >= from && now < to : now >= from || now < to;
   }
 
   async poll() {
@@ -609,6 +646,30 @@ function problem(status, code, message, extra = {}) {
     "Cache-Control": "no-store",
     ...extra,
   });
+}
+
+/**
+ * The hour of the day in San Francisco, 0-23.
+ *
+ * Pacific rather than UTC because the window it feeds is about when a person
+ * here is awake, and DST would otherwise walk it an hour twice a year. The
+ * Workers runtime carries full ICU, so the IANA zone is enough and no offset
+ * arithmetic is needed. `hour12: false` reports midnight as 24 in some
+ * implementations, hence the modulo.
+ */
+function pacificHour(now = new Date()) {
+  const h = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    hour: "numeric",
+    hour12: false,
+  }).format(now);
+  return Number.parseInt(h, 10) % 24;
+}
+
+/// Like int(), but 0 is a legitimate hour, so it cannot use the >0 test.
+function hour(value, fallback) {
+  const n = Number.parseInt(value, 10);
+  return Number.isFinite(n) && n >= 0 && n <= 23 ? n : fallback;
 }
 
 function int(value, fallback) {

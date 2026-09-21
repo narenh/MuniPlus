@@ -36,6 +36,22 @@ POLL_SECONDS = 60
 # They never reach a screen, so they are dropped while the feed is scanned.
 HORIZON_SECONDS = 5400
 
+# TEMPORARY, REMOVE BEFORE THIS PATH SERVES ANYONE.
+#
+# /gtfs is a test deployment whose only reader is asleep between midnight and
+# 09:00 Pacific, so it polls at a third of the rate through that window rather
+# than spending the key on predictions nobody will look at.
+#
+# The hours are deliberately the wrong ones for a real transit app: 06:00-09:00
+# Pacific is the morning commute, when riders need predictions most. That is
+# fine only for as long as /gtfs has no riders on it -- they are on
+# /transit/StopMonitoring, which has no quiet window and is unaffected. The day
+# an app build points at /gtfs, delete QUIET_* here and pollInterval() in
+# src/index.js, and let POLL_SECONDS stand on its own.
+QUIET_POLL_SECONDS = 180
+QUIET_FROM_HOUR = 0
+QUIET_TO_HOUR = 9
+
 [[durable_objects.bindings]]
 name = "BUDGET"
 class_name = "Budget"
