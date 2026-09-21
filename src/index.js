@@ -26,7 +26,7 @@ const UPSTREAM = "https://api.511.org/transit/StopMonitoring";
 const ROUTE = "/transit/StopMonitoring";
 const ROUTE_HEALTH = "/health";
 
-const DEFAULTS = { ttl: 45, hourlyLimit: 450, stale: 900 };
+const DEFAULTS = { ttl: 75, hourlyLimit: 450, stale: 900 };
 
 /// How long a stale copy is parked under the fresh key during a shortfall,
 /// before anything tries the budget again. Short enough that recovery is quick
@@ -144,9 +144,31 @@ export class Budget {
     const elapsed = Math.max(0, (now - bucket.updated) / 1000);
     const tokens = Math.min(cap, bucket.tokens + elapsed * (cap / 3600));
 
-    // A look at the bucket that doesn't spend from it, for /health.
+    // Which stops are spending the budget, and how hard.
+    //
+    // Worth carrying: the ceiling is shared, so "we are at the ceiling" says
+    // nothing about whether that is six stops behaving or two misbehaving, and
+    // those need opposite fixes. Reset on the hour so it cannot grow without
+    // bound.
+    let spend = (await this.state.storage.get("spend")) ?? { since: now, stops: {} };
+    if (now - spend.since >= 3_600_000) spend = { since: now, stops: {} };
+
     if (url.pathname === "/peek") {
-      return json({ ok: tokens >= 1, remaining: tokens, capacity: cap });
+      const stops = Object.entries(spend.stops).sort((a, b) => b[1] - a[1]);
+      const total = stops.reduce((sum, [, n]) => sum + n, 0);
+      const minutes = Math.max(1, (now - spend.since) / 60000);
+      return json({
+        ok: tokens >= 1,
+        remaining: tokens,
+        capacity: cap,
+        spend: {
+          windowMinutes: Math.round(minutes),
+          distinctStops: stops.length,
+          grants: total,
+          perHour: Math.round(total / (minutes / 60)),
+          top: Object.fromEntries(stops.slice(0, 12)),
+        },
+      });
     }
 
     if (tokens < 1) {
@@ -156,7 +178,11 @@ export class Budget {
       return json({ ok: false, remaining: tokens });
     }
 
+    const stop = url.searchParams.get("stop") ?? "unknown";
+    spend.stops[stop] = (spend.stops[stop] ?? 0) + 1;
+
     await this.state.storage.put("bucket", { tokens: tokens - 1, updated: now });
+    await this.state.storage.put("spend", spend);
     return json({ ok: true, remaining: tokens - 1 });
   }
 }
@@ -223,7 +249,7 @@ async function takeToken(env, stopcode) {
   try {
     const id = env.BUDGET.idFromName("global");
     const limit = int(env.HOURLY_LIMIT, DEFAULTS.hourlyLimit);
-    const res = await env.BUDGET.get(id).fetch(`https://budget/take?limit=${limit}`);
+    const res = await env.BUDGET.get(id).fetch(`https://budget/take?limit=${limit}&stop=${stopcode}`);
     return await res.json();
   } catch (err) {
     // A broken budget must not take the endpoint down with it. Falling through
