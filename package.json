@@ -1,0 +1,13 @@
+{
+  "name": "muni-canopysf",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail --format pretty"
+  },
+  "devDependencies": {
+    "wrangler": "^4.135.0"
+  }
+}

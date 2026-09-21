@@ -1,5 +1,28 @@
-name = "morning-queen-79aa"
+name = "muniplus-backend"
+main = "src/index.js"
 compatibility_date = "2026-09-14"
 
+# Static assets (data.json, bus.json, map.pdf) are served first; anything that
+# doesn't match a file falls through to the Worker in src/index.js.
 [assets]
 directory = "appdata"
+
+[vars]
+# How long a stop's predictions are served from cache before going upstream.
+# This is the freshness knob — tuning it is a redeploy, never an App Store release.
+TTL_SECONDS = 20
+# Hard ceiling on calls to 511 per hour, across every client. 511 allows 500/hr
+# on this key; the rest is headroom for app builds that still call 511 directly.
+HOURLY_LIMIT = 450
+# How long a copy is kept around to serve when the budget is spent or 511 is down.
+STALE_SECONDS = 900
+
+[[durable_objects.bindings]]
+name = "BUDGET"
+class_name = "Budget"
+
+[[migrations]]
+tag = "v1"
+# new_sqlite_classes, NOT new_classes: the key-value storage backend for Durable
+# Objects is paid-only, the SQLite backend is what's available on the free plan.
+new_sqlite_classes = ["Budget"]
