@@ -294,9 +294,24 @@ export class Feed {
     this.restoredFrom = null; // "storage" when this instance never went upstream
   }
 
-  /// Chunk width for the stored snapshot. Small enough to stay well clear of
-  /// any per-value ceiling, large enough that a feed is a handful of writes.
-  static get CHUNK() { return 96 * 1024; }
+  /// Chunk width for the stored snapshot.
+  ///
+  /// Sized against the SQLite backend's ceiling -- key and value combined
+  /// cannot exceed 2 MB -- not the key-value backend's 128 KiB, which is what
+  /// the old 96 KB was clearing and which this Worker cannot use anyway (the
+  /// KV backend is paid-only; see the migrations in wrangler.toml).
+  ///
+  /// Width is a row-count knob, and rows are the scarce resource here: the
+  /// free plan allows 100k writes a day across the whole account. Counting the
+  /// meta row, one poll of a 1.6 MB rush-hour feed costs 3 rows at this width
+  /// against 18 at 96 KB; the 1,091 KB feed measured at midday costs 3 against
+  /// 13. Over ~1,080 polls a day that is on the order of 12-16k rows back,
+  /// something like an eighth of the daily allowance -- the low end, because
+  /// the overnight feeds that fill the quiet window are smaller than either.
+  ///
+  /// Widening is backward compatible: restore() trusts meta.chunks and
+  /// reassembles by length, so it reads a snapshot written at any width.
+  static get CHUNK() { return 1024 * 1024; }
 
   async fetch(request) {
     const url = new URL(request.url);
@@ -410,6 +425,21 @@ export class Feed {
    * exactly what a freshly polled one would, minus whatever changed upstream
    * since. Absent or partial snapshots return false rather than throwing, and
    * the caller falls through to a real poll.
+   *
+   * This is the CPU-constrained path, and the only one. It runs inside a
+   * client request, so it gets the free plan's 10 ms, not the 30 s an alarm
+   * gets -- and it does the two most expensive things in the file: it
+   * reassembles the whole feed with bytes.set, then scans it. Scaling the
+   * measured 1.81 ms at 683 KB, a 1.6 MB rush-hour feed is ~4.3 ms of scan
+   * alone at the current 45 min horizon, and ~9.2 ms at the 90 min horizon
+   * this used to run. So HORIZON_SECONDS cannot simply go back up: the alarm
+   * would not notice, but this would, and 1102 here is a 5xx to a rider.
+   *
+   * The way out, if it ever needs one, is for the alarm to store the inverted
+   * map instead of the raw feed, which would move the scan onto the invocation
+   * with 30 s of headroom and leave this one a deserialize. That is the second
+   * encoding the class note argues against, and the argument still stands --
+   * it is written here only so the option is not rediscovered under pressure.
    */
   async restore() {
     try {
@@ -487,19 +517,37 @@ export class Feed {
   /**
    * Park the raw feed so the next cold instance does not have to go upstream.
    *
-   * Written after the response has already been served from memory, so its
-   * cost never lands on a client. Chunked because one feed is several hundred
-   * KB; the meta row is written last, so a snapshot only becomes visible once
+   * What this costs is rows, not CPU. The old note here said the cost "never
+   * lands on a client", which was true of latency and beside the point: this
+   * is awaited inside alarm(), and an alarm on a sub-hour interval has 30 s of
+   * CPU, so the milliseconds were never the constraint. Writes are -- the free
+   * plan allows 100k rows a day across the account, and at the old 96 KB chunk
+   * width a rush-hour feed spent 18 of them every 60 s.
+   *
+   * The meta row is written last, so a snapshot only becomes visible once
    * every chunk of it is in place.
    */
   async store(bytes) {
     try {
+      const prev = await this.state.storage.get("snap:meta");
+
       const chunk = Feed.CHUNK;
       const n = Math.ceil(bytes.length / chunk);
       const batch = {};
       for (let i = 0; i < n; i++) batch[`snap:${i}`] = bytes.slice(i * chunk, (i + 1) * chunk);
       await this.state.storage.put(batch);
       await this.state.storage.put("snap:meta", { chunks: n, bytes: bytes.length, fetchedAt: this.fetchedAt });
+
+      // A snapshot that shrank leaves the tail of the previous one behind --
+      // from a smaller feed, or from a deploy that widened CHUNK. restore()
+      // never reads those rows, since it trusts meta.chunks, but they do sit
+      // in storage, so drop them on the polls where the count actually falls.
+      // Deleted after meta, so a failure here cannot strand a torn snapshot.
+      if (prev && prev.chunks > n) {
+        const stale = [];
+        for (let i = n; i < prev.chunks; i++) stale.push(`snap:${i}`);
+        await this.state.storage.delete(stale);
+      }
     } catch (err) {
       // A feed that cannot be parked is still a feed that can be served.
       console.log(`store failed: ${err}`);
@@ -537,7 +585,16 @@ export class Feed {
  * the feed contains hundreds of thousands of them. And stop ids are folded from
  * ASCII digits straight to integers, which skips ~24,000 short-lived string
  * allocations per poll. Measured together these take the scan from 7.5 ms to
- * 4.1 ms, which is the difference between fitting in the free plan and not.
+ * 4.1 ms.
+ *
+ * Worth keeping, but not for the reason first written here. The note used to
+ * say this was "the difference between fitting in the free plan and not",
+ * meaning the 10 ms ceiling, and the alarm is not where that ceiling lives: a
+ * Durable Object alarm on a sub-hour interval gets 30 s. The 10 ms limit is
+ * per HTTP request, so what it governs is restore(), which runs this same scan
+ * inside a cold client request. That path is the one with a real budget, and
+ * at rush-hour feed sizes it is not comfortable in it -- see the note on
+ * restore().
  *
  * Boundaries are always read in two steps -- `const n = varint(); const end =
  * p + n;` -- never `p + varint()`. The one-liner reads `p` before the varint

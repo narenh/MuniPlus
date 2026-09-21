@@ -40,6 +40,18 @@ POLL_SECONDS = 60
 # cheaper -- protobuf cannot skip a field without reading its tag first. On a
 # 683 KB feed: 3.88 ms at 90 min, 1.81 ms at 45. Coverage barely moves, 3,051
 # of 3,061 stops still carry predictions at 45 min.
+#
+# Whose CPU, though: this was cut from 5400 to protect the alarm, and the alarm
+# never needed protecting. A Durable Object alarm on a sub-hour interval gets
+# 30 s; measured cost there is 22 ms at rush hour, so 90 min would have been
+# free. The 10 ms ceiling is per HTTP request, which means the path this knob
+# really governs is the cold-restore scan inside a client request -- see
+# restore() in src/index.js. Keep it at 2700 for that reason, not the old one.
+#
+# Both measurements above are from a Sunday-evening feed of 683 KB, which the
+# commit that made them called close to the smallest of the week. Monday
+# midday is 1,091 KB and rush hour is ~1.6 MB, so the coverage figure is due a
+# recheck at a size the system actually runs at before it is trusted again.
 HORIZON_SECONDS = 2700
 
 # TEMPORARY, REMOVE BEFORE THIS PATH SERVES ANYONE.
@@ -62,7 +74,13 @@ QUIET_TO_HOUR = 9
 # invocation rather than a sample, which matters here because the interesting
 # invocation is the once-a-minute alarm, not the requests: sampling would throw
 # away exactly the one whose CPU time is in question. Free plan carries 200k
-# events a day against maybe 2k from this Worker, and keeps them 3 days.
+# events a day and keeps them 3 days.
+#
+# The estimate that used to sit here -- "maybe 2k a day from this Worker" -- was
+# out by an order of magnitude. Measured: 1,112 events in a single midday hour,
+# so 20-27k a day depending on how much of it falls in the quiet window. Still
+# 8x under the cap, so head_sampling_rate = 1 stands, but it is 8x of headroom
+# and not 100x, and the Worker's own traffic is what moves it.
 [observability]
 enabled = true
 head_sampling_rate = 1
