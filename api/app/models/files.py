@@ -53,9 +53,15 @@ def write_if_changed(path: Path, text: str) -> bool:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp")
+    # mkstemp creates 0600, and os.replace would carry that onto the data file.
+    # These files are public and read by other processes on the volume (git, a
+    # shell, a backup), so they get an ordinary file's 0644, or keep the mode the
+    # file already had.
+    mode = path.stat().st_mode & 0o777 if path.exists() else 0o644
     try:
         with os.fdopen(fd, "wb") as f:
             f.write(data)
+        os.chmod(tmp, mode)
         os.replace(tmp, path)
     except BaseException:
         Path(tmp).unlink(missing_ok=True)

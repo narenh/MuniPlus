@@ -136,3 +136,9 @@ def test_editor_lines_carry_directions():
     from app.models.editor import Derived
     from typing import get_args
     assert get_args(Derived.model_fields["lines"].annotation)[1] is LineDetail
+
+
+def test_written_files_are_world_readable(tmp_path):
+    root = tmp_path / "transit"
+    files.write_curation(root, files.read_curation(FIXTURE))
+    assert ((root / files.STATIONS).stat().st_mode & 0o777) == 0o644
