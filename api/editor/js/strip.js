@@ -1,25 +1,40 @@
-// The route strip: a vertical line diagram of the active line whose stops can
-// be dragged into a new order. This is the thing that should feel like editing
-// a route rather than a list.
+// The line strip: a vertical diagram of the focused line, one list per
+// direction, each headed by its headsign. It is read-only. What it shows is the
+// server's `derived.lines[id].directions`, the most-run 511 pattern per
+// direction (PLAN.md, "line diagrams"), so stop order is 511's to say and there
+// is nothing here to reorder.
 
-import { store, edit, select, stationById, linesOf, lineById, esc, platformsOf } from './store.js';
+import {
+  store, select, stationById, linesOf, lineById, esc, upstream, ownerOf,
+} from './store.js';
 import { flyToStation } from './map.js';
 
 let onPickStation = () => {};
-let onRequestAdd = () => {};
+let onDetails = () => {};
 
-export function initStrip({ onPick, onAdd }) {
+/** Other lines shown as pips on a row. A downtown stop can have twenty. */
+const MAX_PIPS = 6;
+
+export function initStrip({ onPick, onLineDetails }) {
   onPickStation = onPick || (() => {});
-  onRequestAdd = onAdd || (() => {});
+  onDetails = onLineDetails || (() => {});
+  document.getElementById('strip-details').onclick = () => onDetails();
+}
 
-  document.getElementById('strip-reverse').onclick = () => {
-    const ln = lineById(store.activeLine);
-    if (!ln) return;
-    edit(`Reverse ${ln.id}`, d => {
-      d.lines.find(l => l.id === ln.id).stationIds.reverse();
-    });
-  };
-  document.getElementById('strip-add').onclick = () => onRequestAdd();
+/**
+ * A direction's platforms, grouped into consecutive runs owned by the same
+ * station: `[{ sid, pids }]`. The server's `stations` list drops the same
+ * repeats, so this is that list with the platforms each stop used.
+ */
+export function stopsOf(dir) {
+  const out = [];
+  for (const pid of dir.platforms) {
+    const sid = ownerOf(pid);
+    const last = out[out.length - 1];
+    if (last && last.sid === sid) last.pids.push(pid);
+    else out.push({ sid, pids: [pid] });
+  }
+  return out;
 }
 
 export function renderStrip() {
@@ -28,135 +43,95 @@ export function renderStrip() {
 
   if (!ln) { strip.classList.add('closed'); return; }
   strip.classList.remove('closed');
-  strip.style.setProperty('--c', ln.color);
+  const color = ln.color || '#6ea8fe';
+  strip.style.setProperty('--c', color);
 
-  document.getElementById('strip-badge').textContent = ln.shortName || ln.id;
-  document.getElementById('strip-badge').style.setProperty('--c', ln.color);
+  const badge = document.getElementById('strip-badge');
+  badge.textContent = ln.shortName || upstream(ln.id);
+  badge.style.setProperty('--c', color);
+  if (ln.textColor) badge.style.color = ln.textColor; else badge.style.removeProperty('color');
   document.getElementById('strip-name').textContent = ln.name;
 
-  const nplat = ln.stationIds.reduce((n, id) => n + platformsOf(stationById(id)).length, 0);
-  document.getElementById('strip-sub').textContent =
-    `${ln.stationIds.length} stations · ${nplat} platforms`;
+  const dirs = ln.directions || [];
+  const nst = new Set(dirs.flatMap(d => d.stations)).size;
+  document.getElementById('strip-sub').textContent = [
+    ln.mode,
+    `${nst} station${nst === 1 ? '' : 's'}`,
+    ln.hidden ? 'hidden' : '',
+    ln.replaces?.length ? `replaces ${ln.replaces.map(upstream).join(', ')}` : '',
+  ].filter(Boolean).join(' · ');
 
   const list = document.getElementById('strip-list');
   list.innerHTML = '';
 
-  ln.stationIds.forEach((sid, i) => {
-    const st = stationById(sid);
-    const row = document.createElement('div');
-    row.className = 'stop';
-    row.dataset.index = String(i);
-    row.dataset.sid = sid;
-    if (store.selStation === sid) row.classList.add('sel');
+  if (!dirs.length) {
+    list.innerHTML = '<div class="empty" style="padding:14px 16px">511 lists no trips for this line, or none of its stops belongs to a station.</div>';
+    return;
+  }
+  if (store.activeDir >= dirs.length) store.activeDir = 0;
 
-    if (!st) {
-      row.innerHTML = `<div class="node"><i></i></div>
-        <div class="stop-main"><div class="stop-name" style="color:var(--bad)">Missing station</div>
-        <div class="stop-meta"><span class="tag mono">${esc(sid)}</span></div></div><div class="stop-side"></div>`;
-      list.appendChild(row);
-      return;
-    }
+  dirs.forEach((dir, di) => {
+    const head = document.createElement('div');
+    head.className = 'dir-head' + (di === store.activeDir ? ' on' : '');
+    const stops = stopsOf(dir);
+    head.innerHTML = `
+      <span class="dir-arrow">→</span>
+      <span class="dir-sign">${esc(dir.headsign || `Direction ${dir.direction}`)}</span>
+      <span class="dir-count">${stops.length}</span>`;
+    head.title = `Direction ${dir.direction}. ↑/↓ walk the highlighted direction.`;
+    head.onclick = () => { store.activeDir = di; renderStrip(); };
+    list.appendChild(head);
 
-    const others = linesOf(sid).filter(l => l.id !== ln.id);
-    const terminal = i === 0 || i === ln.stationIds.length - 1;
-    const nodeCls = ['node',
-      others.length ? 'interchange' : '',
-      terminal ? 'terminal' : ''].filter(Boolean).join(' ');
-
-    row.innerHTML = `
-      <div class="${nodeCls}"><i></i></div>
-      <div class="stop-main">
-        <div class="stop-name">${esc(st.name)}</div>
-        <div class="stop-meta">
-          <span class="tag">${platformsOf(st).length} PLAT</span>
-          ${others.map(l => `<span class="pip" style="background:${l.color}" title="${esc(l.name)}"></span>`).join('')}
-          ${(st.transfers || []).length ? '<span class="tag">↔</span>' : ''}
-        </div>
-      </div>
-      <div class="stop-side">
-        <button class="icon-btn grip" title="Drag to reorder" data-act="grip">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><circle cx="6" cy="4" r="1.3"/><circle cx="10" cy="4" r="1.3"/><circle cx="6" cy="8" r="1.3"/><circle cx="10" cy="8" r="1.3"/><circle cx="6" cy="12" r="1.3"/><circle cx="10" cy="12" r="1.3"/></svg>
-        </button>
-        <button class="icon-btn danger" title="Remove from this line" data-act="remove">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </button>
-      </div>`;
-
-    row.addEventListener('click', ev => {
-      const act = ev.target.closest('[data-act]')?.dataset.act;
-      if (act === 'remove') {
-        ev.stopPropagation();
-        edit(`Remove ${st.name} from ${ln.id}`, d => {
-          const L = d.lines.find(l => l.id === ln.id);
-          L.stationIds = L.stationIds.filter(x => x !== sid);
-          const S = d.stations.find(x => x.id === sid);
-          if (S) S.lines = (S.lines || []).filter(x => x !== ln.id);
-        });
-        return;
-      }
-      if (act === 'grip') return;
-      select(sid, null);
-      onPickStation(sid);
-      flyToStation(sid);
-    });
-
-    attachDrag(row, list, ln);
-    list.appendChild(row);
+    const box = document.createElement('div');
+    box.className = 'dir-list';
+    stops.forEach(({ sid, pids }) => box.appendChild(stopRow(ln, di, sid, pids)));
+    list.appendChild(box);
   });
+
+  list.querySelector('.dir-head.on + .dir-list .stop.sel')?.scrollIntoView({ block: 'nearest' });
 }
 
-// ------------------------------------------------------------------- drag
-function attachDrag(row, list, ln) {
-  const grip = row.querySelector('[data-act="grip"]');
-  if (!grip) return;
+function stopRow(ln, di, sid, pids) {
+  const st = stationById(sid);
+  const row = document.createElement('div');
+  row.className = 'stop';
+  row.dataset.sid = sid || '';
+  if (sid && store.selStation === sid) row.classList.add('sel');
 
-  grip.addEventListener('pointerdown', ev => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    grip.setPointerCapture(ev.pointerId);
+  const codes = pids.map(p => `<span class="tag mono">${esc(upstream(p))}</span>`).join('');
+  if (!st) {
+    // Only possible between an edit and the validate answer that redraws this.
+    row.innerHTML = `<div class="node"><i></i></div>
+      <div class="stop-main"><div class="stop-name" style="color:var(--ink-faint)">No station</div>
+      <div class="stop-meta">${codes}</div></div>`;
+    return row;
+  }
 
-    const from = Number(row.dataset.index);
-    let to = from;
-    row.classList.add('drag-src');
+  const others = linesOf(sid).filter(l => l.id !== ln.id);
+  const nodeCls = ['node', others.length ? 'interchange' : ''].filter(Boolean).join(' ');
+  const pips = others.slice(0, MAX_PIPS).map(l =>
+    `<span class="pip" style="background:${esc(l.color || '#7c8598')}" title="${esc(l.name)}"></span>`).join('');
+  const more = others.length > MAX_PIPS ? `<span class="tag">+${others.length - MAX_PIPS}</span>` : '';
 
-    const clear = () => list.querySelectorAll('.stop')
-      .forEach(r => r.classList.remove('drag-over-top', 'drag-over-bottom'));
+  row.innerHTML = `
+    <div class="${nodeCls}"><i></i></div>
+    <div class="stop-main">
+      <div class="stop-name">${esc(st.name)}</div>
+      <div class="stop-meta">
+        ${codes}
+        ${pips}${more}
+        ${(st.transfers || []).length ? '<span class="tag">↔</span>' : ''}
+      </div>
+    </div>
+    <div class="stop-side">${st.verified
+      ? `<span class="vmark" title="Verified ${esc(st.verified)}">✓</span>`
+      : '<span class="vmark off" title="Not verified">•</span>'}</div>`;
 
-    const move = e => {
-      const rows = [...list.querySelectorAll('.stop')];
-      clear();
-      const target = rows.find(r => {
-        const b = r.getBoundingClientRect();
-        return e.clientY >= b.top && e.clientY <= b.bottom;
-      });
-      if (!target || target === row) return;
-      const b = target.getBoundingClientRect();
-      const after = e.clientY > b.top + b.height / 2;
-      target.classList.add(after ? 'drag-over-bottom' : 'drag-over-top');
-      const ti = Number(target.dataset.index);
-      to = after ? ti + 1 : ti;
-    };
-
-    const up = () => {
-      grip.releasePointerCapture(ev.pointerId);
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-      clear();
-      row.classList.remove('drag-src');
-
-      let dest = to;
-      if (dest > from) dest -= 1;
-      if (dest === from || dest < 0) return;
-
-      const name = stationById(row.dataset.sid)?.name || row.dataset.sid;
-      edit(`Move ${name} in ${ln.id}`, d => {
-        const L = d.lines.find(l => l.id === ln.id);
-        const [moved] = L.stationIds.splice(from, 1);
-        L.stationIds.splice(dest, 0, moved);
-      });
-    };
-
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
+  row.addEventListener('click', () => {
+    store.activeDir = di;
+    select(sid, pids.length === 1 ? pids[0] : null);
+    onPickStation(sid);
+    flyToStation(sid);
   });
+  return row;
 }
