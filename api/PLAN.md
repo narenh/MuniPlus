@@ -171,7 +171,16 @@ Editor endpoints (track F), all under `/editor/api/` and all requiring the sessi
 | `GET state` | `EditorState` |
 | `POST validate` | `ValidateRequest` → `ValidateResponse` (validation + derived for the unsaved curation) |
 | `POST save` | `SaveRequest` → `SaveResponse`; `409 conflict` if the rebase does not apply |
-| `GET history` | recent sf-transit commits touching `curation/`: sha, message, author, date, GitHub URL. No diff endpoint: the URL is the diff |
+| `GET history` | recent sf-transit commits touching `curation/`: `{commits: [{sha, subject, author, date, url}]}`. No diff endpoint: the URL is the diff |
+
+Error bodies beyond `Problem` live in `app/editor/models.py`: a 422 save is
+`InvalidSave` (`Problem` + `validation`), a 409 is `SaveConflict` (`Problem` +
+the `version` to reload + the conflicting `paths`). Every POST must be
+`Content-Type: application/json` (415 otherwise): with `SameSite=Strict`, that is
+the CSRF defence. Login attempts are throttled by the **last** `X-Forwarded-For`
+entry, the one our own proxy adds; the first is client-controlled. With no
+`EDITOR_PASSWORD`, `GET state` and `GET history` are open (the data is public)
+and every POST is refused.
 
 There is no discard endpoint: unsaved edits live only in the browser, and a save
 writes and commits in one step, so the checkout is never left dirty.

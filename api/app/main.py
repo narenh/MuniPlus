@@ -23,6 +23,7 @@ from .data.loader import load_checkout
 from .data.repo import Repo, RepoError
 from .db import Database
 from .endpoints import alerts, arrivals, health, lines, stations, vehicles
+from .editor.install import install_editor
 from .endpoints.stations import DataUnavailable
 from .models.api import Problem
 from .realtime.pollers import Pollers
@@ -93,6 +94,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     for module in (stations, lines, arrivals, vehicles, alerts, health):
         app.include_router(module.router)
+    install_editor(app, settings)
     return app
 
 
