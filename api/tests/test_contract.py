@@ -117,3 +117,22 @@ def test_curation_round_trips_through_json():
     curation = files.read_curation(FIXTURE)
     again = Curation.model_validate_json(curation.model_dump_json())
     assert files.dumps(again.stations) == files.dumps(curation.stations)
+
+
+def test_duplicate_keys_are_refused(tmp_path):
+    # json would keep the second "clayDrumm" and drop the first without a word.
+    root = tmp_path / "transit"
+    shutil.copytree(FIXTURE, root)
+    path = root / files.STATIONS
+    text = path.read_text()
+    block = text[text.index('    "clayDrumm": {'):text.index('    "embarcadero": {')]
+    path.write_text(text.replace(block, block + block))
+    with pytest.raises(files.DuplicateKeyError, match="clayDrumm"):
+        files.read_curation(root)
+
+
+def test_editor_lines_carry_directions():
+    from app.models.api import LineDetail
+    from app.models.editor import Derived
+    from typing import get_args
+    assert get_args(Derived.model_fields["lines"].annotation)[1] is LineDetail

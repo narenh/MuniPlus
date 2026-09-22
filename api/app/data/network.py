@@ -314,7 +314,7 @@ class Network:
         self._derived = Derived(
             stations=derived_stations,
             platforms=derived_platforms,
-            lines={line.id: line for line in ordered},
+            lines={line.id: self._line_details[line.id] for line in ordered},
         )
 
     # MARK: Interface for realtime (PLAN.md, "Interfaces between tracks")

@@ -97,9 +97,11 @@ def test_unknown_station_in_a_subway(curation, snapshots):
     assert "Market Subway" in issue.message and "'vanNess'" in issue.message
 
 
-def test_unknown_line_in_replaces(curation, snapshots):
+def test_unknown_line_in_replaces_warns_but_never_blocks(curation, snapshots):
     curation.lines.root["SF:LOWL"].replaces.append("SF:Q")
-    issue = only(validate(curation, snapshots).errors, "unknown-line")
+    result = validate(curation, snapshots)
+    assert "unknown-line" not in codes(result.errors)
+    issue = only(result.warnings, "unknown-line")
     assert issue.line == "SF:LOWL"
     assert "SF:Q" in issue.message
 
@@ -187,7 +189,6 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
         "platform-listed-twice",
         "platform-assigned-and-ignored",
         "unknown-station",
-        "unknown-line",
         "indoor-transfer-not-reciprocated",
         "station-has-no-platforms",
     }
@@ -196,6 +197,7 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
         "station-has-no-live-platforms",
         "unassigned-stop",
         "unknown-line-override",
+        "unknown-line",
     }
     assert all(i.level == "error" for i in result.errors)
     assert all(i.level == "warning" for i in result.warnings)

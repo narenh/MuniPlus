@@ -74,22 +74,36 @@ and `/transit/lines` (for `mode`, which the zip lacks). Checked 2026-09-22:
 
 ### Validation (`Issue.code` values are stable identifiers)
 
+The rule for choosing: **nothing a snapshot refresh can cause is an error.** 511
+dropping a stop or a line must never block every save until someone fixes it by
+hand, so anything that depends on the snapshot is a warning.
+
 Errors, which block a save:
 
-* `duplicate-station-id`, `former-id-collides` (a former id reused, or equal to a live id)
+* `duplicate-station-id`: two ids differing only in case (`powell` / `Powell`).
+  An exact duplicate key cannot get this far: `files.py` refuses the file.
+* `former-id-collides`: a former id reused, or equal to a current id
 * `platform-in-two-stations`, `platform-listed-twice`, `platform-assigned-and-ignored`
-* `unknown-station` (a transfer, subway or former-id target), `unknown-line` (`replaces`)
+* `unknown-station`: a transfer or subway naming a station that does not exist
 * `indoor-transfer-not-reciprocated`
 * `station-has-no-platforms`
 
 Warnings, which never block:
 
 * `platform-not-in-snapshot` (dropped from the API output)
-* `station-has-no-live-platforms`
+* `station-has-no-live-platforms` (left out of the public API; still in `derived`)
 * `unassigned-stop` (in the snapshot, in no station, not ignored: this is the review queue)
 * `unknown-line-override` (`lines.json` names a line 511 does not have, e.g. `S`)
+* `unknown-line` (`replaces` names a line 511 does not have)
 
-Ids, headings and non-blank names are already enforced by the models.
+Ids, headings and non-blank names are already enforced by the models; duplicate
+JSON keys by `files.loads`.
+
+`Derived.platforms` covers every curated platform **and** every snapshot stop, so
+the review queue can show what serves an unassigned stop. There `live` means "in
+the snapshot", so an unassigned stop is `live: true`. `Network.is_live` is
+stricter: assigned *and* in the snapshot. `Derived.lines` carries full
+`LineDetail`, directions included.
 
 ## API
 
@@ -97,16 +111,16 @@ Response models: `app/models/api.py`. camelCase. Realtime times are epoch second
 
 | endpoint | notes |
 |---|---|
-| `GET /api/stations` | summaries + `formerIds` map + `version`; ETag = `version` |
-| `GET /api/stations/{id}` | detail; a former id → `308` to the current one |
-| `GET /api/lines` | includes `mode`, `hidden`, `replaces` |
+| `GET /api/stations` | summaries + `formerIds` map + `version`; ETag = `version`, `Cache-Control: no-cache` |
+| `GET /api/stations/{id}` | detail; a former id → `308` to the current one. **No ETag**: its `alerts` change without the version changing |
+| `GET /api/lines` | includes `mode`, `hidden`, `replaces`; ETag = `version`. Hidden lines are included with the flag set |
 | `GET /api/lines/{id}` | + `directions` |
 | `GET /api/arrivals?platforms=a,b&limit=6` | 1–50 platforms; malformed id → 400; unknown id → empty list |
 | `GET /api/vehicles?line=a,b` | `line` optional; in-service vehicles only |
 | `GET /api/alerts?line=&station=&platforms=` | active now |
 | `GET /health` | `app.models.api.Health` |
 
-Errors: `app.models.api.Problem` (`{error, message}`).
+Errors: `app.models.api.Problem` (`{error, message}`). `error` is one of `not-found`, `bad-request`, `unauthorized`, `conflict`, `unavailable`.
 
 ## Realtime rules
 
@@ -149,6 +163,18 @@ matches if any of its lines does); line rail grouped by mode; verification
 line editing (name, colour, mode, hidden, replaces); notes; review queue (wave 3);
 **live vehicle layer**, off by default, toggled from the layer controls, drawn
 from `/api/vehicles`, following the mode and line filters; `/map` read-only mode.
+
+Editor endpoints (track F), all under `/editor/api/` and all requiring the session:
+
+| endpoint | |
+|---|---|
+| `GET state` | `EditorState` |
+| `POST validate` | `ValidateRequest` → `ValidateResponse` (validation + derived for the unsaved curation) |
+| `POST save` | `SaveRequest` → `SaveResponse`; `409 conflict` if the rebase does not apply |
+| `GET history` | recent sf-transit commits touching `curation/`: sha, message, author, date, GitHub URL. No diff endpoint: the URL is the diff |
+
+There is no discard endpoint: unsaved edits live only in the browser, and a save
+writes and commits in one step, so the checkout is never left dirty.
 
 Save = write the changed curation files → `git pull --rebase` → commit (author
 from env) → push. A rebase conflict is a 409 with the details, never resolved

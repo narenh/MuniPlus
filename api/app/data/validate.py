@@ -160,7 +160,9 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
             )
         for replaced in override.replaces:
             if replaced not in known_lines:
-                error(
+                # A warning, not an error: 511 dropping a line in a service change
+                # must never block every save until someone edits lines.json.
+                warn(
                     "unknown-line",
                     f"{line_id} replaces {replaced}, which 511 does not list.",
                     line=line_id,

@@ -9,7 +9,7 @@ edits. Nothing here is secret: sf-transit is a public repo, so the curation
 
 from typing import Literal
 
-from .api import LineSummary
+from .api import LineDetail
 from .base import Wire
 from .curation import Curation, NonBlank
 from .ids import LineId, Mode, Operator, PlatformId, StationId
@@ -42,7 +42,8 @@ class Derived(Wire):
 
     stations: dict[StationId, DerivedStation]
     platforms: dict[PlatformId, DerivedPlatform]
-    lines: dict[LineId, LineSummary]
+    lines: dict[LineId, LineDetail]
+    """With ``directions``, so the line strip never re-derives diagrams in the browser."""
 
 
 # MARK: - Validation

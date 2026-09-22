@@ -63,11 +63,37 @@ def write_if_changed(path: Path, text: str) -> bool:
     return True
 
 
+class DuplicateKeyError(ValueError):
+    pass
+
+
+def _no_duplicate_keys(pairs: list[tuple[str, object]]) -> dict:
+    # json keeps the last of two identical keys and says nothing, so a hand-edit
+    # that pastes a station in twice would lose one copy on the next save without
+    # anyone seeing it. Refusing the file is the only place this can be caught:
+    # once parsed, the duplicate is already gone.
+    out: dict = {}
+    for key, value in pairs:
+        if key in out:
+            raise DuplicateKeyError(f"duplicate key {key!r}")
+        out[key] = value
+    return out
+
+
+def loads(text: str | bytes) -> object:
+    """``json.loads`` that refuses duplicate keys. Use it for anything hand-edited."""
+    return json.loads(text, object_pairs_hook=_no_duplicate_keys)
+
+
 def _read(root: Path, rel: str, model: type[BaseModel], *, missing_ok: bool = False):
     path = root / rel
     if missing_ok and not path.exists():
         return model()
-    return model.model_validate_json(path.read_bytes())
+    try:
+        data = loads(path.read_bytes())
+    except DuplicateKeyError as err:
+        raise DuplicateKeyError(f"{rel}: {err}") from None
+    return model.model_validate(data)
 
 
 # MARK: - Curation
