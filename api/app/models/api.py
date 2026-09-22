@@ -217,10 +217,16 @@ class BudgetHealth(Wire):
 
 class Health(Wire):
     ok: bool
+    """The data is loaded and, where polling is on, every feed is fresh (fetched
+    within three of its intervals). The HTTP status is 200 either way: this is
+    for a person reading it, not for a container restart policy."""
     version: str | None
     fixtures: bool
     feeds: dict[str, FeedHealth]
+    """Keyed ``<operator>:<feed>``, e.g. ``SF:tripupdates``."""
     budget: BudgetHealth
+    problems: list[str]
+    """Why ``ok`` is false, in words: a missing checkout, a stale feed."""
 
 
 class Problem(Wire):

@@ -52,8 +52,16 @@ def not_found(message: str) -> JSONResponse:
     return JSONResponse(status_code=404, content=Problem(error="not-found", message=message).model_dump())
 
 
+class DataUnavailable(Exception):
+    """No network is loaded: the sf-transit checkout could not be cloned or read at
+    startup. ``app.main`` turns it into a 503; ``/health`` says why."""
+
+
 def network(request: Request) -> Network:
-    return request.app.state.network
+    net = getattr(request.app.state, "network", None)
+    if net is None:
+        raise DataUnavailable
+    return net
 
 
 # MARK: - Stations
