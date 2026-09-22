@@ -223,7 +223,7 @@ class Realtime:
     ) -> AlertsResponse:
         """Alerts active at ``now``. With no filter, all of them; otherwise those
         naming any of ``lines`` or ``platforms``, or a platform of any of
-        ``stations``. An empty filter matches nothing, as opposed to None."""
+        ``stations``, plus agency-wide alerts, which match every filter."""
         want_lines = set(lines) if lines is not None else None
         want_stations = set(stations) if stations is not None else None
         want_platforms = set(platforms) if platforms is not None else None
@@ -241,7 +241,11 @@ class Realtime:
                 if not alert.active_at(at):
                     continue
                 alert_stations = _stations(network, alert.platforms)
-                if not unfiltered and not (
+                # An alert naming no line and no stop is agency-wide (the fixture's
+                # SF_15898, the Folsom Street Fair). It affects every station, so it
+                # matches every filter; otherwise no station board could ever show it.
+                agency_wide = not alert.lines and not alert.platforms
+                if not unfiltered and not agency_wide and not (
                     (want_lines and want_lines.intersection(alert.lines))
                     or (want_platforms and want_platforms.intersection(alert.platforms))
                     or (want_stations and want_stations.intersection(alert_stations))

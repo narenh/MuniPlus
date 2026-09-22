@@ -182,13 +182,13 @@ def test_alert_filters(settings, db):
 
     assert "SF_15874" in ids(lines={"SF:9"})
     assert "SF_15874" in ids(platforms={"SF:13240"})
-    assert ids(stations={"eleventhMission"}) == {"SF_15874"}
-    assert ids(lines={"SF:NOPE"}, stations={"eleventhMission"}) == {"SF_15874"}  # any filter may match
-    assert ids(lines=set()) == set()
-    # The agency-wide alert names no line or platform, so only an unfiltered
-    # request sees it.
+    # The agency-wide alert (SF_15898) names no line or platform: it affects every
+    # station, so it rides along with every filtered answer.
+    assert ids(stations={"eleventhMission"}) == {"SF_15874", "SF_15898"}
+    assert ids(lines={"SF:NOPE"}, stations={"eleventhMission"}) == {"SF_15874", "SF_15898"}  # any filter may match
+    assert ids(lines=set()) == {"SF_15898"}
     assert "SF_15898" in ids()
-    assert "SF_15898" not in ids(lines={"SF:9"})
+    assert "SF_15898" in ids(lines={"SF:9"})
 
     moved = next(a for a in realtime.alerts(now=NOW, lines={"SF:9"}).alerts if a.id == "SF_15874")
     assert moved.stations == ["eleventhMission"]

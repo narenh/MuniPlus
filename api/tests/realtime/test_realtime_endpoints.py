@@ -121,7 +121,7 @@ def test_alerts(client):
     assert response.status_code == 200 and response.headers["cache-control"] == "no-store"
     assert len(response.json()["alerts"]) == 41
     by_station = client.get("/api/alerts", params={"station": "eleventhMission"}).json()["alerts"]
-    assert [a["id"] for a in by_station] == ["SF_15874"]
+    assert [a["id"] for a in by_station] == ["SF_15874", "SF_15898"]  # plus the agency-wide one
     assert by_station[0]["stations"] == ["eleventhMission"]
     assert set(by_station[0]) == {"id", "header", "description", "activePeriods", "lines", "platforms", "stations", "url"}
     assert "SF_15874" in {a["id"] for a in client.get("/api/alerts", params={"line": "SF:9"}).json()["alerts"]}
@@ -138,7 +138,7 @@ def test_alerts_bad_requests(client, params):
 
 def test_no_realtime_is_a_503_but_bad_input_is_still_a_400():
     client = TestClient(make_app(None))
-    assert assert_problem(client.get("/api/vehicles"), 503)["error"] == "realtime_unavailable"
+    assert assert_problem(client.get("/api/vehicles"), 503)["error"] == "unavailable"
     assert_problem(client.get("/api/arrivals", params={"platforms": "SF:1"}), 503)
     assert_problem(client.get("/api/arrivals"), 400)
 

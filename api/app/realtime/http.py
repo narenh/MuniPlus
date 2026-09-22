@@ -43,18 +43,18 @@ def parse_ids(raw: str | None, *, param: str, kind: str, required: bool, max_cou
     blank) and not required."""
     if raw is None or raw.strip() == "":
         if required:
-            raise BadRequest(f"bad_{param}", f"{param} is required: 1-{max_count} comma-separated {kind} ids.")
+            raise BadRequest("bad-request", f"{param} is required: 1-{max_count} comma-separated {kind} ids.")
         return None
     ids = list(dict.fromkeys(raw.split(",")))
     if not 1 <= len(ids) <= max_count:
-        raise BadRequest(f"bad_{param}", f"{param} takes 1-{max_count} comma-separated {kind} ids.")
+        raise BadRequest("bad-request", f"{param} takes 1-{max_count} comma-separated {kind} ids.")
     adapter = _ADAPTERS[kind]
     for value in ids:
         try:
             adapter.validate_python(value)
         except ValidationError:
             example = "SF:16992" if kind == "platform" else "SF:N" if kind == "line" else "embarcadero"
-            raise BadRequest(f"bad_{param}", f"{value!r} is not a {kind} id (like {example}).") from None
+            raise BadRequest("bad-request", f"{value!r} is not a {kind} id (like {example}).") from None
     return ids
 
 
@@ -66,9 +66,9 @@ def parse_int(raw: str | None, *, param: str, default: int, maximum: int) -> int
     try:
         value = int(raw)
     except ValueError:
-        raise BadRequest(f"bad_{param}", f"{param} must be a whole number from 1 to {maximum}.") from None
+        raise BadRequest("bad-request", f"{param} must be a whole number from 1 to {maximum}.") from None
     if value < 1:
-        raise BadRequest(f"bad_{param}", f"{param} must be a whole number from 1 to {maximum}.")
+        raise BadRequest("bad-request", f"{param} must be a whole number from 1 to {maximum}.")
     return min(value, maximum)
 
 
@@ -101,4 +101,4 @@ def answer(build: Callable[[], BaseModel]) -> JSONResponse:
     except BadRequest as bad:
         return problem(400, bad.error, bad.message)
     except Unavailable:
-        return problem(503, "realtime_unavailable", "Realtime data is not configured on this server.")
+        return problem(503, "unavailable", "Realtime data is not configured on this server.")
