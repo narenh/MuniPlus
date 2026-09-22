@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Muni+ Atlas - data.json editor
+   Muni+ Editor
    A dark control-room surface. The basemap is desaturated to near-monochrome
    so that the only saturated colour anywhere is a Muni line colour.
    ========================================================================== */
@@ -304,7 +304,6 @@ body.no-inspector .maplibregl-ctrl-bottom-right { margin-right: 12px; }
 }
 .stop:hover .node i { transform: scale(1.22); }
 .stop.sel .node i { transform: scale(1.35); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 30%, transparent); }
-.node.multilevel i { width: 14px; height: 14px; margin: -7px 0 0 -7px; border-width: 3px; }
 /* metro convention: a station on more than one line is a white disc with a
    black ring, whatever line's spine it happens to be drawn on */
 .node.interchange i {
@@ -398,17 +397,6 @@ body.no-inspector .maplibregl-ctrl-bottom-right { margin-right: 12px; }
 select.inp { appearance: none; cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239aa1b4' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 9px center; padding-right: 26px; }
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-/* segmented control */
-.seg { display: grid; grid-auto-flow: column; gap: 2px; padding: 2px;
-  background: rgba(0,0,0,.4); border: 1px solid var(--line); border-radius: 9px; }
-.seg button {
-  height: 25px; border-radius: 7px; font-size: 11px; font-weight: 560; color: var(--ink-faint);
-  transition: background .16s, color .16s;
-}
-.seg button:hover { color: var(--ink); }
-.seg button.on { background: var(--panel-hi); color: var(--ink); box-shadow: 0 1px 0 rgba(255,255,255,.07) inset; }
 
 /* --- platform cards ------------------------------------------------------ */
 .plat {
@@ -434,16 +422,6 @@ select.inp { appearance: none; cursor: pointer;
 .plat-code { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .01em; }
 .plat-sub { font-size: 10px; color: var(--ink-faint); margin-top: 1px; }
 .plat-actions { margin-left: auto; display: flex; gap: 2px; }
-
-.drift-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  margin-top: 8px; padding: 6px 8px; border-radius: 7px;
-  font-size: 10.5px; line-height: 1.35;
-}
-.drift-badge.moved { background: rgba(251,191,36,.12); color: #fcd34d; border: 1px solid rgba(251,191,36,.25); }
-.drift-badge.missing { background: rgba(251,113,133,.12); color: #fda4af; border: 1px solid rgba(251,113,133,.25); }
-.drift-badge.ok { background: rgba(52,211,153,.1); color: #6ee7b7; border: 1px solid rgba(52,211,153,.22); }
-.drift-badge button { color: inherit; text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
 
 /* chips list (transfers) */
 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
@@ -491,33 +469,6 @@ select.inp { appearance: none; cursor: pointer;
   color: var(--ink-dim); font-size: 11.5px;
 }
 .derived code { color: var(--ink); font-family: var(--mono); }
-
-/* --- a level: a card that owns its platforms ----------------------------- */
-.level {
-  border: 1px solid var(--line); border-radius: var(--r);
-  background: rgba(255,255,255,.022);
-  padding: 11px 11px 10px; margin-bottom: 10px;
-}
-.level-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.level-head .depth {
-  width: 34px; height: 28px; flex: none; border-radius: 8px;
-  display: grid; place-items: center;
-  background: rgba(0,0,0,.45); border: 1px solid var(--line);
-  font-size: 12.5px; font-weight: 650; color: var(--accent);
-}
-.level-head .level-name { height: 28px; font-weight: 550; }
-.level-move { display: flex; flex-direction: column; gap: 1px; flex: none; }
-.level-move .icon-btn { width: 20px; height: 13px; border-radius: 4px; }
-.level-move .icon-btn:disabled { opacity: .25; cursor: default; background: none; }
-.level-head .depth.above  { color: #fcd34d; }   /* elevated */
-.level-head .depth.street { color: var(--ink); }
-.level .plat { background: rgba(255,255,255,.035); }
-
-/* --- an exit ------------------------------------------------------------- */
-.plat.exit .compass { color: var(--ok); }
-.plat.exit.closed .compass { color: var(--bad); }
-.plat.exit.closed { border-color: rgba(251,113,133,.3); background: rgba(251,113,133,.06); }
-.plat.exit .exit-name { height: 28px; font-weight: 550; }
 
 /* ==========================================================================
    Map overlays
@@ -646,7 +597,6 @@ body.inspector-open #map-tools { right: calc(var(--inspect-w) + 14px); }
 .k.add { background: rgba(52,211,153,.16); color: #6ee7b7; }
 .k.edit { background: rgba(96,165,250,.16); color: #93c5fd; }
 .k.del { background: rgba(251,113,133,.16); color: #fda4af; }
-.k.move { background: rgba(167,139,250,.16); color: #c4b5fd; }
 .change .body { min-width: 0; flex: 1; }
 .change .t { font-size: 12.5px; font-weight: 520; }
 .change .d { font-size: 11px; color: var(--ink-dim); margin-top: 2px; line-height: 1.45; }
@@ -719,7 +669,6 @@ body.read-only .tchip.add,
 body.read-only .tchip .x { display: none !important; }
 
 body.read-only .inp,
-body.read-only .seg button,
 body.read-only .mini-bullet { pointer-events: none; opacity: .75; }
 body.read-only .inp { background: rgba(0,0,0,.24); border-style: dashed; }
 

@@ -8,7 +8,6 @@ export const api = {
   state: () => fetch('api/state').then(j),
   history: () => fetch('api/history').then(j),
   diff: () => fetch('api/diff').then(j),
-  drift: (force = false) => fetch(`api/drift${force ? '?force=1' : ''}`).then(j),
   write: (doc) => fetch('api/doc', {
     method: 'PUT', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ doc }),

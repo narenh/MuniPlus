@@ -1,24 +1,22 @@
-// Right-hand inspector. Two shapes: a multilevel station is levels and exits, a
-// street station is a flat list of platforms. Station coordinates are shown but
-// never editable - derived from exits at a multilevel station, from platforms at
-// a street one.
+// Right-hand inspector: the selected station, its flat list of platforms and
+// its transfers. Coordinates, stop names and the lines serving a platform are
+// shown but never editable: they come from 511, not from a person.
 
 import {
   store, edit, select, stationById, linesOf, esc, metresBetween,
-  platformsOf, levelOf, hasCoord, anchorOf, isMultilevel,
+  platformsOf, hasCoord,
 } from './store.js';
 import { flyToStation, refresh, hint, map, highlightLink } from './map.js';
 
 const HEADINGS = ['northbound', 'southbound', 'eastbound', 'westbound'];
 const AGENCIES = ['bart', 'caltrain'];
-const LEVEL_AGENCIES = ['muni', 'bart'];
 const ARROW = { northbound: 0, eastbound: 90, southbound: 180, westbound: 270 };
 
 let pickStationFor = null;
 
 export function initInspector({ onNeedStationPicker }) {
   pickStationFor = onNeedStationPicker;
-  document.getElementById('insp-close').onclick = () => { select(null, null, null); renderInspector(); };
+  document.getElementById('insp-close').onclick = () => { select(null, null); renderInspector(); };
 }
 
 export function renderInspector() {
@@ -39,9 +37,8 @@ export function renderInspector() {
   el.style.setProperty('--accent', ls[0]?.color || '#6ea8fe');
 
   document.getElementById('insp-name').textContent = st.name;
-  document.getElementById('insp-id').textContent = isMultilevel(st)
-    ? `${st.id} · ${st.levels.length} level${st.levels.length === 1 ? '' : 's'} · ${(st.exits || []).length} exit${(st.exits || []).length === 1 ? '' : 's'}`
-    : `${st.id} · ${st.platforms.length} platform${st.platforms.length === 1 ? '' : 's'}`;
+  const n = platformsOf(st).length;
+  document.getElementById('insp-id').textContent = `${st.id} · ${n} platform${n === 1 ? '' : 's'}`;
 
   const box = document.getElementById('insp-lines');
   box.innerHTML = '';
@@ -58,7 +55,7 @@ export function renderInspector() {
 
   document.getElementById('insp-body').innerHTML =
     sectionStation(st) +
-    (isMultilevel(st) ? sectionLevels(st) + sectionExits(st) : sectionPlatforms(st, null)) +
+    sectionPlatforms(st) +
     sectionTransfers(st) +
     sectionDanger(st);
   wire(st);
@@ -66,10 +63,9 @@ export function renderInspector() {
 
 // ------------------------------------------------------------------ station
 function sectionStation(st) {
-  const src = isMultilevel(st) ? 'exits' : 'platforms';
   const coord = hasCoord(st)
     ? `<code>${st.latitude}, ${st.longitude}</code>`
-    : `<span style="color:var(--warn)">no ${src} with coordinates yet</span>`;
+    : `<span style="color:var(--warn)">no platforms with coordinates</span>`;
   return `
   <div class="sect">
     <div class="sect-head"><div class="micro">Station</div></div>
@@ -82,201 +78,36 @@ function sectionStation(st) {
       <input class="inp mono" id="f-id" value="${esc(st.id)}">
     </div>
     <div class="field">
-      <label class="micro">Structure <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— not stored; it is whichever shape the record has</span></label>
-      <div class="seg" id="f-kind">
-        <button data-v="flat"   class="${isMultilevel(st) ? '' : 'on'}">Street platforms</button>
-        <button data-v="levels" class="${isMultilevel(st) ? 'on' : ''}">Multilevel</button>
-      </div>
-    </div>
-    <div class="field">
-      <label class="micro">Coordinate <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— derived from ${src}, not editable</span></label>
+      <label class="micro">Coordinate <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— derived from platforms, not editable</span></label>
       <div class="derived mono">${coord}</div>
     </div>
   </div>`;
 }
 
-// ------------------------------------------------------------------- levels
-function sectionLevels(st) {
-  const levels = [...(st.levels || [])].sort((a, b) => b.id - a.id);
-  const cards = levels.map((lv, i) => {
-    const island = lv.isIsland === true ? 'island' : lv.isIsland === false ? 'sep' : 'unset';
-    return `
-    <div class="level" data-level="${lv.id}">
-      <div class="level-head">
-        <div class="depth mono ${lv.id > 0 ? 'above' : lv.id === 0 ? 'street' : ''}"
-           title="${lv.id > 0 ? 'above street' : lv.id === 0 ? 'street level' : 'below street'}">${lv.id > 0 ? '+' : ''}${lv.id}</div>
-        <input class="inp level-name" data-lf="name" data-level="${lv.id}" value="${esc(lv.name)}">
-        <div class="level-move">
-          <button class="icon-btn" data-act="lv-up" data-level="${lv.id}" title="Move up the stack"
-                  ${i === 0 ? 'disabled' : ''}>
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 10l4-4 4 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="icon-btn" data-act="lv-down" data-level="${lv.id}" title="Move down the stack"
-                  ${i === levels.length - 1 ? 'disabled' : ''}>
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-        <button class="icon-btn danger" data-act="del-level" data-level="${lv.id}" title="Remove this level">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-      <div class="pair" style="margin-bottom:9px">
-        <div>
-          <label class="micro">Depth</label>
-          <input class="inp mono" type="number" data-lf="id" data-level="${lv.id}" value="${lv.id}" step="1">
-        </div>
-        <div>
-          <label class="micro">Agency</label>
-          <select class="inp" data-lf="agency" data-level="${lv.id}">
-            <option value="">none</option>
-            ${LEVEL_AGENCIES.map(a => `<option value="${a}" ${lv.agency === a ? 'selected' : ''}>${a}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label class="micro">Platforms on this level</label>
-        <div class="seg" data-island="${lv.id}">
-          <button data-v="unset" class="${island === 'unset' ? 'on' : ''}">Unset</button>
-          <button data-v="island" class="${island === 'island' ? 'on' : ''}">Island</button>
-          <button data-v="sep"    class="${island === 'sep' ? 'on' : ''}">Separated</button>
-        </div>
-      </div>
-      ${platformCards(st, lv)}
-      <button class="tchip add" data-act="add-plat" data-level="${lv.id}"
-              style="width:100%;justify-content:center;height:27px;margin-top:2px">
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        Add platform here
-      </button>
-    </div>`;
-  }).join('');
-
-  return `
-  <div class="sect">
-    <div class="sect-head">
-      <div class="micro">Levels · ${levels.length}</div>
-      <button class="icon-btn" id="add-level" title="Add a level">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-    ${cards || '<div class="empty">No levels.</div>'}
-  </div>`;
-}
-
-// -------------------------------------------------------------------- exits
-function sectionExits(st) {
-  const levels = [...(st.levels || [])].sort((a, b) => b.id - a.id);
-  const cards = (st.exits || []).map(ex => {
-    const sel = store.selExit === ex.id;
-    const placed = Number.isFinite(ex.latitude);
-    return `
-    <div class="plat exit ${sel ? 'sel' : ''} ${ex.closed ? 'closed' : ''}" data-exit="${esc(ex.id)}">
-      <div class="plat-head">
-        <div class="compass" title="${ex.closed ? 'closed' : 'open'}">
-          <svg width="13" height="13" viewBox="0 0 18 18" fill="none">
-            <path d="M11 3H5v12h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 9h7M12 5.6L15.4 9 12 12.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div style="min-width:0;flex:1">
-          <input class="inp exit-name" data-xf="name" data-exit="${esc(ex.id)}" value="${esc(ex.name)}">
-        </div>
-        <div class="plat-actions">
-          <button class="icon-btn" data-act="locate-exit" data-exit="${esc(ex.id)}" title="Show on the map">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14.5S13 10 13 6.4A5 5 0 003 6.4C3 10 8 14.5 8 14.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.3" r="1.8" fill="currentColor"/></svg>
-          </button>
-          <button class="icon-btn danger" data-act="del-exit" data-exit="${esc(ex.id)}" title="Delete this exit">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.6 8h4.8l.6-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="pair" style="margin-bottom:9px">
-        <div>
-          <label class="micro">Lands on</label>
-          <select class="inp" data-xf="level" data-exit="${esc(ex.id)}">
-            ${levels.map(l => `<option value="${l.id}" ${l.id === ex.level ? 'selected' : ''}>${l.id} · ${esc(l.name)}</option>`).join('')}
-          </select>
-        </div>
-        <div>
-          <label class="micro">Status</label>
-          <div class="seg">
-            <button data-xtog="closed" data-exit="${esc(ex.id)}" data-v="0" class="${ex.closed ? '' : 'on'}">Open</button>
-            <button data-xtog="closed" data-exit="${esc(ex.id)}" data-v="1" class="${ex.closed ? 'on' : ''}">Closed</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="micro">Access</label>
-        <div class="chips">
-          ${['stairs', 'escalator', 'elevator'].map(f => `
-            <button class="tchip ${ex[f] ? 'agency-on' : 'add'}" data-xtog="${f}" data-exit="${esc(ex.id)}">${f}</button>`).join('')}
-        </div>
-      </div>
-
-      <div class="field" style="margin-bottom:0">
-        <label class="micro">Coordinate — drag the door on the map</label>
-        ${placed ? `<div class="pair">
-          <input class="inp mono" data-xf="latitude"  data-exit="${esc(ex.id)}" value="${ex.latitude}" inputmode="decimal">
-          <input class="inp mono" data-xf="longitude" data-exit="${esc(ex.id)}" value="${ex.longitude}" inputmode="decimal">
-        </div>`
-        : `<button class="btn" data-act="place-exit" data-exit="${esc(ex.id)}" style="width:100%;justify-content:center">
-             Place this exit on the map
-           </button>`}
-      </div>
-    </div>`;
-  }).join('');
-
-  const open = (st.exits || []).filter(e => !e.closed).length;
-  return `
-  <div class="sect">
-    <div class="sect-head">
-      <div class="micro">Exits · ${(st.exits || []).length}${open !== (st.exits || []).length ? ` · ${open} open` : ''}</div>
-      <button class="icon-btn" id="add-exit" title="Add an exit">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-    ${cards || '<div class="empty">No exits yet. Until one has coordinates this station has no position.</div>'}
-  </div>`;
-}
-
 // ---------------------------------------------------------------- platforms
-function sectionPlatforms(st, level) {
+function sectionPlatforms(st) {
   return `
   <div class="sect">
     <div class="sect-head">
-      <div class="micro">Platforms · ${st.platforms.length}</div>
+      <div class="micro">Platforms · ${platformsOf(st).length}</div>
       <button class="icon-btn" data-act="add-plat" title="Add a platform">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       </button>
     </div>
-    ${platformCards(st, null) || '<div class="empty">No platforms.</div>'}
+    ${platformCards(st) || '<div class="empty">No platforms.</div>'}
   </div>`;
 }
 
-function platformCards(st, level) {
-  const list = level ? (level.platforms || []) : (st.platforms || []);
-  return list.map(p => {
-    const d = store.drift?.get(String(p.id));
+function platformCards(st) {
+  return platformsOf(st).map(p => {
     const sel = store.selPlatform === String(p.id);
-    let badge = '';
-    if (d?.kind === 'missing') badge = `<div class="drift-badge missing">Not in the current SFMTA feed</div>`;
-    else if (d?.kind === 'moved') badge = `<div class="drift-badge moved">Feed places this ${d.metres} m away
-      <button data-act="snap" data-code="${esc(p.id)}">snap to feed</button></div>`;
-    else if (d?.kind === 'ok') badge = `<div class="drift-badge ok">Matches the feed${d.metres ? ` (${d.metres} m)` : ''}</div>`;
+    const placed = Number.isFinite(p.latitude) && Number.isFinite(p.longitude);
 
-    const lines = store.doc.lines.map(ln => {
-      const on = (p.lines || []).includes(ln.id);
-      return `<button class="mini-bullet ${on ? '' : 'off'}" style="${on ? `background:${ln.color}` : ''}"
-        data-act="tog-line" data-code="${esc(p.id)}" data-line="${ln.id}"
-        title="${on ? `${esc(ln.name)} — click to remove` : `Add ${esc(ln.name)}`}">${esc(ln.shortName || ln.id)}</button>`;
-    }).join('');
-
-    const term = (p.lines || []).map(l => {
-      const on = (p.terminates || []).includes(l);
-      return `<button class="tchip ${on ? 'agency-on' : 'add'}" data-act="tog-term"
-        data-code="${esc(p.id)}" data-line="${l}">${l}</button>`;
-    }).join('') || '<span class="empty">no lines yet</span>';
+    // Which lines serve a platform is 511's to say, so these are a readout.
+    const lines = store.doc.lines.filter(ln => (p.lines || []).includes(ln.id)).map(ln =>
+      `<button class="mini-bullet" style="background:${ln.color}" disabled
+        title="${esc(ln.name)}">${esc(ln.shortName || ln.id)}</button>`).join('')
+      || '<span class="empty">none</span>';
 
     return `
     <div class="plat ${sel ? 'sel' : ''}" data-code="${esc(p.id)}">
@@ -303,11 +134,6 @@ function platformCards(st, level) {
         <label class="micro">Stop code</label>
         <input class="inp mono" data-pf="id" data-code="${esc(p.id)}" value="${esc(p.id)}">
       </div>
-      ${isMultilevel(st) ? '' : `
-      <div class="field">
-        <label class="micro">Stop name</label>
-        <input class="inp" data-pf="stopName" data-code="${esc(p.id)}" value="${esc(p.stopName || '')}">
-      </div>`}
       <div class="field">
         <label class="micro">Label <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— signage, e.g. Platform 1</span></label>
         <input class="inp" data-pf="name" data-code="${esc(p.id)}" value="${esc(p.name ?? '')}" placeholder="none">
@@ -322,18 +148,12 @@ function platformCards(st, level) {
         <label class="micro">Lines</label>
         <div class="insp-lines">${lines}</div>
       </div>
-      <div class="field">
-        <label class="micro">Terminates here</label>
-        <div class="chips">${term}</div>
-      </div>
       <div class="field" style="margin-bottom:0">
-        <label class="micro">Coordinate — drag the pole on the map</label>
-        <div class="pair">
-          <input class="inp mono" data-pf="latitude"  data-code="${esc(p.id)}" value="${p.latitude}"  inputmode="decimal">
-          <input class="inp mono" data-pf="longitude" data-code="${esc(p.id)}" value="${p.longitude}" inputmode="decimal">
-        </div>
+        <label class="micro">Coordinate <span style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— from 511, not editable</span></label>
+        <div class="derived mono">${placed
+          ? `<code>${p.latitude}, ${p.longitude}</code>`
+          : '<span style="color:var(--warn)">none</span>'}</div>
       </div>
-      ${badge}
     </div>`;
   }).join('');
 }
@@ -422,7 +242,6 @@ function wire(st) {
   const commit = (label, fn) => edit(label, d => fn(d.stations.find(s => s.id === sid), d));
 
   const plat = (s2, code) => platformsOf(s2).find(x => String(x.id) === String(code));
-  const exitOf = (s2, eid) => (s2.exits || []).find(x => x.id === eid);
 
   // ---------------------------------------------------------------- station
   const name = body.querySelector('#f-name');
@@ -443,123 +262,14 @@ function wire(st) {
       for (const s of d.subways || []) s.stationIds = s.stationIds.map(x => x === sid ? v : x);
       for (const s of d.stations) for (const t of s.transfers || []) if (t.to === sid) t.to = v;
     });
-    select(v, store.selPlatform, store.selExit);
+    select(v, store.selPlatform);
   };
-
-  // Changing kind restructures the record, so it is deliberate and confirmed.
-  body.querySelectorAll('#f-kind button').forEach(b => {
-    b.onclick = () => {
-      const toLevels = b.dataset.v === 'levels';
-      if (toLevels === isMultilevel(st)) return;
-      const msg = toLevels
-        ? `Give "${st.name}" levels and exits?\n\nIts ${platformsOf(st).length} platform(s) move onto a new level at depth -1, and it gains an empty exits list. Until an exit has coordinates the station has no position.`
-        : `Flatten "${st.name}" to street platforms?\n\nIts levels and exits are removed and every platform moves to a flat list. Level names, agencies, isIsland and all exits are lost.`;
-      if (!confirm(msg)) return;
-      commit(toLevels ? `${sid} → levels` : `${sid} → flat`, s => {
-        const ps = platformsOf(s);
-        if (toLevels) {
-          delete s.platforms;
-          s.levels = [{ id: -1, name: 'Platforms', agency: 'muni', isIsland: null, platforms: ps }];
-          s.exits = [];
-          for (const p of ps) delete p.stopName;
-        } else {
-          delete s.levels; delete s.exits;
-          s.platforms = ps;
-          for (const p of ps) if (p.stopName === undefined) p.stopName = s.name;
-        }
-      });
-    };
-  });
-
-  // ----------------------------------------------------------------- levels
-  body.querySelector('#add-level')?.addEventListener('click', () => {
-    const used = new Set((st.levels || []).map(l => l.id));
-    let depth = -1;
-    while (used.has(depth)) depth--;
-    commit(`Add level ${depth}`, s => {
-      (s.levels || (s.levels = [])).push({ id: depth, name: 'New level', agency: null, isIsland: null, platforms: [] });
-    });
-    hint(`Level ${depth} added — rename it and set its depth`);
-  });
-
-  body.querySelectorAll('[data-lf]').forEach(el => {
-    el.onchange = () => {
-      const id = Number(el.dataset.level), f = el.dataset.lf;
-      if (f === 'id') {
-        const to = Math.trunc(Number(el.value));
-        if (!Number.isInteger(to)) { hint('A level depth must be a whole number'); renderInspector(); return; }
-        if (to !== id && (st.levels || []).some(l => l.id === to)) { hint(`Depth ${to} is already used here`); renderInspector(); return; }
-        // exits reference levels by depth, so they move with it
-        commit(`Level ${id} → ${to}`, s => {
-          s.levels.find(l => l.id === id).id = to;
-          for (const e of s.exits || []) if (e.level === id) e.level = to;
-        });
-        return;
-      }
-      const v = f === 'agency' ? (el.value || null) : el.value.trim();
-      commit(`Edit level ${id}`, s => { s.levels.find(l => l.id === id)[f] = v; });
-    };
-  });
-
-  body.querySelectorAll('[data-island]').forEach(seg => {
-    seg.querySelectorAll('button').forEach(b => {
-      b.onclick = () => {
-        const id = Number(seg.dataset.island);
-        const v = b.dataset.v === 'unset' ? null : b.dataset.v === 'island';
-        commit(`Level ${id} isIsland → ${v}`, s => { s.levels.find(l => l.id === id).isIsland = v; });
-      };
-    });
-  });
-
-  // ------------------------------------------------------------------ exits
-  body.querySelector('#add-exit')?.addEventListener('click', () => {
-    const levels = st.levels || [];
-    if (!levels.length) { hint('Add a level first — an exit has to land somewhere'); return; }
-    const level = Math.max(...levels.map(l => l.id));   // the shallowest
-    const eid = freshExitId(st);
-    commit('Add exit', s => {
-      (s.exits || (s.exits = [])).push({
-        id: eid, name: 'New exit', level,
-        stairs: true, escalator: false, elevator: false, closed: false,
-        latitude: null, longitude: null,
-      });
-    });
-    select(sid, null, eid);
-    hint('Exit added — name it, then place it on the map');
-  });
-
-  body.querySelectorAll('[data-xf]').forEach(el => {
-    el.onchange = () => {
-      const eid = el.dataset.exit, f = el.dataset.xf;
-      let v = el.value;
-      if (f === 'level') v = Number(v);
-      else if (f === 'latitude' || f === 'longitude') {
-        v = Number(v);
-        if (!Number.isFinite(v)) { renderInspector(); return; }
-      } else v = v.trim();
-      if (f === 'name' && !v) { renderInspector(); return; }
-      commit(`Edit exit ${eid}`, s => { exitOf(s, eid)[f] = v; });
-    };
-  });
-
-  body.querySelectorAll('[data-xtog]').forEach(b => {
-    b.onclick = ev => {
-      ev.stopPropagation();
-      const eid = b.dataset.exit, f = b.dataset.xtog;
-      const v = b.dataset.v !== undefined ? b.dataset.v === '1' : !exitOf(st, eid)[f];
-      commit(`Exit ${eid} ${f} → ${v}`, s => { exitOf(s, eid)[f] = v; });
-    };
-  });
 
   // -------------------------------------------------------------- platforms
   body.querySelectorAll('[data-pf]').forEach(el => {
     el.onchange = () => {
       const code = el.dataset.code, f = el.dataset.pf;
-      let v = el.value;
-      if (f === 'latitude' || f === 'longitude') {
-        v = Number(v);
-        if (!Number.isFinite(v)) { renderInspector(); return; }
-      } else v = v.trim();
+      let v = el.value.trim();
 
       if (f === 'id') {
         if (!v || v === code) { renderInspector(); return; }
@@ -567,7 +277,7 @@ function wire(st) {
           platformsOf(s2).some(p => String(p.id) === v && !(s2.id === sid && String(p.id) === code)));
         if (clash) { el.classList.add('bad'); hint(`Stop code ${v} is already used`); return; }
         commit(`Stop code ${code} → ${v}`, s => { plat(s, code).id = v; });
-        select(sid, v, null);
+        select(sid, v);
         return;
       }
       if (f === 'name') v = v === '' ? null : v;
@@ -575,55 +285,15 @@ function wire(st) {
     };
   });
 
-  body.querySelectorAll('[data-act="tog-line"]').forEach(b => {
-    b.onclick = ev => {
-      ev.stopPropagation();
-      const code = b.dataset.code, line = b.dataset.line;
-      const on = (plat(st, code).lines || []).includes(line);
-      commit(`${on ? 'Remove' : 'Add'} ${line} at ${code}`, s => {
-        const p = plat(s, code);
-        p.lines = on ? (p.lines || []).filter(x => x !== line)
-                     : [...(p.lines || []), line].sort();
-        if (on && p.terminates) {
-          p.terminates = p.terminates.filter(x => x !== line);
-          if (!p.terminates.length) delete p.terminates;
-        }
-      });
-    };
-  });
-
-  body.querySelectorAll('[data-act="tog-term"]').forEach(b => {
-    b.onclick = ev => {
-      ev.stopPropagation();
-      const code = b.dataset.code, line = b.dataset.line;
-      const on = (plat(st, code).terminates || []).includes(line);
-      commit(`${line} ${on ? 'passes through' : 'terminates'} at ${code}`, s => {
-        const p = plat(s, code);
-        const next = on ? (p.terminates || []).filter(x => x !== line)
-                        : [...(p.terminates || []), line].sort();
-        if (next.length) p.terminates = next; else delete p.terminates;
-      });
-    };
-  });
-
   body.querySelectorAll('[data-act="add-plat"]').forEach(b => {
     b.onclick = () => {
       const code = freshCode();
-      const anchor = platformsOf(st)[0];
-      const base = {
-        id: code, heading: 'northbound', name: null,
-        lines: [...(st.lines || [])].slice(0, 1),
-        latitude: anchor?.latitude ?? st.latitude ?? 37.7749,
-        longitude: anchor?.longitude ?? st.longitude ?? -122.4194,
-      };
-      if (!isMultilevel(st)) base.stopName = st.name;
-      const levelId = b.dataset.level !== undefined ? Number(b.dataset.level) : null;
+      // Only what a person decides. Its coordinate, stop name and lines are 511's.
       commit('Add platform', s => {
-        if (levelId !== null) s.levels.find(l => l.id === levelId).platforms.push(base);
-        else s.platforms.push(base);
+        s.platforms.push({ id: code, heading: 'northbound', name: null });
       });
-      select(sid, code, null);
-      hint(`Platform ${code} added — set its real stop code, then drag it into place`);
+      select(sid, code);
+      hint(`Platform ${code} added — set its real stop code`);
     };
   });
 
@@ -631,15 +301,8 @@ function wire(st) {
   body.querySelectorAll('.plat[data-code]').forEach(card => {
     card.addEventListener('click', ev => {
       if (ev.target.closest('[data-act]') || ev.target.closest('input,select,button')) return;
-      select(sid, card.dataset.code, null);
+      select(sid, card.dataset.code);
       renderInspector(); refresh('platforms');
-    });
-  });
-  body.querySelectorAll('.plat[data-exit]').forEach(card => {
-    card.addEventListener('click', ev => {
-      if (ev.target.closest('[data-act]') || ev.target.closest('input,select,button')) return;
-      select(sid, null, card.dataset.exit);
-      renderInspector(); refresh('exits');
     });
   });
 
@@ -650,96 +313,24 @@ function wire(st) {
 
   body.querySelectorAll('[data-act]').forEach(b => {
     const act = b.dataset.act;
-    if (['tog-line', 'tog-term', 'add-plat', 'hover-link'].includes(act)) return;
+    if (['add-plat', 'hover-link'].includes(act)) return;
     b.onclick = ev => {
       ev.stopPropagation();
-      const code = b.dataset.code, eid = b.dataset.exit;
+      const code = b.dataset.code;
 
       if (act === 'locate') {
         const p = plat(st, code);
-        select(sid, code, null);
-        map.easeTo({ center: [p.longitude, p.latitude], zoom: Math.max(map.getZoom(), 17.4), duration: 800 });
+        select(sid, code);
+        if (Number.isFinite(p.latitude) && Number.isFinite(p.longitude)) {
+          map.easeTo({ center: [p.longitude, p.latitude], zoom: Math.max(map.getZoom(), 17.4), duration: 800 });
+        } else hint(`${code} has no coordinate`);
         renderInspector(); refresh('platforms');
-      }
-
-      if (act === 'locate-exit' || act === 'place-exit') {
-        const e0 = exitOf(st, eid);
-        select(sid, null, eid);
-        if (Number.isFinite(e0.latitude)) {
-          map.easeTo({ center: [e0.longitude, e0.latitude], zoom: Math.max(map.getZoom(), 18), duration: 800 });
-        } else {
-          // No coordinate yet. Drop it on the station itself - its platforms if
-          // it has no position yet - and fly there, rather than wherever the
-          // camera happens to be pointing.
-          const at = anchorOf(st);
-          if (!at) { hint('Nothing to anchor this exit to yet'); return; }
-          commit(`Place exit ${e0.name}`, s2 => {
-            const x = exitOf(s2, eid);
-            x.latitude = Math.round(at[1] * 1e6) / 1e6;
-            x.longitude = Math.round(at[0] * 1e6) / 1e6;
-          });
-          map.easeTo({ center: at, zoom: Math.max(map.getZoom(), 18), duration: 700 });
-          hint('Dropped on the station — drag it onto the real door');
-        }
-        renderInspector(); refresh('exits');
-      }
-
-      if (act === 'del-exit') {
-        const e0 = exitOf(st, eid);
-        if (!confirm(`Delete exit "${e0.name}"?`)) return;
-        commit(`Delete exit ${e0.name}`, s => { s.exits = s.exits.filter(x => x.id !== eid); });
-        select(sid, null, null);
-      }
-
-      if (act === 'lv-up' || act === 'lv-down') {
-        const id = Number(b.dataset.level);
-        const order = [...st.levels].sort((x, y) => y.id - x.id);   // top first
-        const i = order.findIndex(l => l.id === id);
-        const j = act === 'lv-up' ? i - 1 : i + 1;
-        if (j < 0 || j >= order.length) return;
-        const other = order[j].id;
-        // A level's depth is its identity, so a move is a swap of the two
-        // depths - and every exit that lands on either one has to follow the
-        // level it belongs to, not the number it used to carry.
-        commit(`Swap levels ${id} and ${other}`, s2 => {
-          const A = s2.levels.find(l => l.id === id);
-          const B = s2.levels.find(l => l.id === other);
-          A.id = other; B.id = id;
-          for (const e of s2.exits || []) {
-            if (e.level === id) e.level = other;
-            else if (e.level === other) e.level = id;
-          }
-        });
-        return;
-      }
-
-      if (act === 'del-level') {
-        const id = Number(b.dataset.level);
-        const lv = st.levels.find(l => l.id === id);
-        const n = (lv.platforms || []).length;
-        const refs = (st.exits || []).filter(e => e.level === id).length;
-        if (!confirm(`Delete level ${id} "${lv.name}"?` +
-          (n ? `\n\n${n} platform(s) on it will be deleted too.` : '') +
-          (refs ? `\n${refs} exit(s) land here and will need a new level.` : ''))) return;
-        commit(`Delete level ${id}`, s => { s.levels = s.levels.filter(l => l.id !== id); });
-      }
-
-      if (act === 'snap') {
-        const d = store.drift?.get(String(code));
-        if (!d) return;
-        commit(`Snap ${code} to the feed`, s => {
-          const p = plat(s, code);
-          p.latitude = d.feedLat; p.longitude = d.feedLon;
-        });
-        hint(`Snapped ${code} to the SFMTA coordinate`);
       }
 
       if (act === 'del-plat') {
         if (platformsOf(st).length === 1) { hint('A station must keep at least one platform'); return; }
         commit(`Remove platform ${code}`, s => {
-          if (isMultilevel(s)) {
-            for (const l of s.levels) l.platforms = l.platforms.filter(p => String(p.id) !== String(code));
-          } else s.platforms = s.platforms.filter(p => String(p.id) !== String(code));
+          s.platforms = s.platforms.filter(p => String(p.id) !== String(code));
         });
       }
 
@@ -805,13 +396,8 @@ function wire(st) {
       for (const s of d.subways || []) s.stationIds = s.stationIds.filter(x => x !== sid);
       for (const s of d.stations) s.transfers = (s.transfers || []).filter(t => t.to !== sid);
     });
-    select(null, null, null);
+    select(null, null);
   };
-}
-
-function freshExitId(st) {
-  const used = new Set((st.exits || []).map(e => e.id));
-  for (let n = 1; ; n++) if (!used.has(`exit${n}`)) return `exit${n}`;
 }
 
 /** A placeholder code that cannot collide with a real one already in the file. */

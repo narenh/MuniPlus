@@ -16,7 +16,7 @@ import {
 } from './ui.js';
 
 const $ = id => document.getElementById(id);
-const DRAFT_KEY = 'muniplus.atlas.draft.v1';
+const DRAFT_KEY = 'muniplus.editor.draft.v1';
 
 // ============================================================ boot
 (async function boot() {
@@ -56,8 +56,6 @@ const DRAFT_KEY = 'muniplus.atlas.draft.v1';
 
     $('boot').classList.add('gone');
     setTimeout(() => $('boot').remove(), 600);
-
-    checkDrift(false);
   } catch (err) {
     console.error(err);
     $('boot-msg').innerHTML =
@@ -85,7 +83,6 @@ function renderChrome() {
   const s = store.doc;
   $('n-stations').textContent = s.stations.length;
   $('n-platforms').textContent = s.stations.reduce((n, x) => n + platformsOf(x).length, 0);
-  $('n-exits').textContent = s.stations.reduce((n, x) => n + (x.exits || []).length, 0);
   $('n-lines').textContent = s.lines.length;
 
   const list = changes();
@@ -115,8 +112,7 @@ function renderChrome() {
     : `${m.file} on ${m.branch} — click for history`;
 
   for (const [k, id] of Object.entries({
-    platforms: 'tool-platforms', labels: 'tool-labels',
-    transfers: 'tool-transfers', drift: 'tool-drift',
+    platforms: 'tool-platforms', labels: 'tool-labels', transfers: 'tool-transfers',
   })) $(id).classList.toggle('on', store.layers[k]);
 }
 
@@ -165,13 +161,7 @@ function wireChrome() {
   $('tool-platforms').onclick = () => toggleLayer('platforms');
   $('tool-labels').onclick = () => toggleLayer('labels');
   $('tool-transfers').onclick = () => toggleLayer('transfers');
-  $('tool-drift').onclick = () => {
-    toggleLayer('drift');
-    if (store.layers.drift && !store.drift) checkDrift(true);
-  };
   $('tool-north').onclick = resetNorth;
-
-  $('drift-chip').onclick = () => checkDrift(true);
 
   $('branch-chip').onclick = async () => {
     if (!store.meta.git) {
@@ -260,34 +250,6 @@ function addStationToLine() {
     select(sid, null);
     hint(`${name} added at the end — drag it into position`);
   });
-}
-
-// ============================================================ drift
-async function checkDrift(force) {
-  const dot = $('drift-dot'), txt = $('drift-text');
-  txt.textContent = 'Checking…';
-  dot.className = 'dot';
-  try {
-    const d = await api.drift(force);
-    store.drift = new Map(d.platforms.map(p => [String(p.platform), p]));
-    store.driftAt = d.fetchedAt;
-    const bad = d.platforms.filter(p => p.kind !== 'ok');
-    dot.className = 'dot ' + (bad.length ? 'warn' : 'live');
-    txt.textContent = bad.length
-      ? `${bad.length} drifted`
-      : `Feed matches`;
-    $('drift-chip').title = `${d.feedStops} stops in the feed · checked ${new Date(d.fetchedAt).toLocaleTimeString()}`;
-    renderAll();
-    if (force) {
-      toast(bad.length
-        ? `${bad.length} platform${bad.length === 1 ? '' : 's'} differ from the SFMTA feed`
-        : 'Every platform matches the SFMTA feed', bad.length ? 'info' : 'ok');
-    }
-  } catch (err) {
-    dot.className = 'dot bad';
-    txt.textContent = 'Feed offline';
-    if (force) toast(esc(err.message), 'err');
-  }
 }
 
 // ============================================================ saving

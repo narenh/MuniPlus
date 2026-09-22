@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muni+ Atlas</title>
+<title>Muni+ Editor</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Cpath d='M8 22c0-8 4-12 8-12s8 4 8 12' stroke='%2300529C' stroke-width='3.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='22' r='3' fill='%23FAA633'/%3E%3Ccircle cx='24' cy='22' r='3' fill='%23D60F45'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css">
 <link rel="stylesheet" href="css/app.css">
@@ -33,7 +33,7 @@
         <path d="M16 31c0-12 6-18 14-18s14 7 14 18" stroke="#FAA633" stroke-width="5.5" stroke-linecap="round" opacity=".9"/>
         <circle cx="6" cy="30" r="4.5" fill="#D60F45"/><circle cx="44" cy="31" r="4.5" fill="#008552"/>
       </svg>
-      <div><b>Atlas</b> <span>data.json</span></div>
+      <div><b>Muni+ Editor</b> <span>data.json</span></div>
     </div>
 
     <div class="divider"></div>
@@ -47,15 +47,10 @@
     <div class="stat-group">
       <div class="stat"><b id="n-stations">–</b><i>stations</i></div>
       <div class="stat"><b id="n-platforms">–</b><i>platforms</i></div>
-      <div class="stat"><b id="n-exits">–</b><i>exits</i></div>
       <div class="stat"><b id="n-lines">–</b><i>lines</i></div>
     </div>
 
     <div class="grow"></div>
-
-    <button class="chip button" id="drift-chip" title="Check every platform against the live SFMTA feed">
-      <span class="dot" id="drift-dot"></span><span id="drift-text">Check feed</span>
-    </button>
 
     <button class="chip button" id="issues-chip" title="Validation issues">
       <span class="dot live" id="issues-dot"></span><span id="issues-text">Valid</span>
@@ -129,9 +124,6 @@
         </button>
         <button class="tool" id="tool-transfers" title="Show transfer links">
           <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 6h7a3 3 0 010 6H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1 2.6"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="6" cy="12" r="2" fill="currentColor"/></svg>
-        </button>
-        <button class="tool" id="tool-drift" title="Highlight platforms that drifted from the feed">
-          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 3.2l6 10.6H3L9 3.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 7.6v2.8M9 12.2v.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         </button>
         <button class="tool" id="tool-north" title="Reset bearing and pitch">
           <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2.4l3.4 9.4L9 9.9l-3.4 1.9L9 2.4z" fill="currentColor"/><path d="M5.6 14.4h6.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/></svg>
