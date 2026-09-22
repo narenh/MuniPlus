@@ -1,8 +1,13 @@
 // The map. A desaturated dark basemap with the Muni network drawn on top:
 // a glow pass and a solid pass per line, transfer arcs, station nodes and
-// platform poles. Nothing here moves a coordinate: they come from 511.
+// platform poles. Nothing here moves a coordinate: they come from 511, by way
+// of the server's `derived` values.
 
-import { store, select, stationById, linesOf, platformsOf, positionOf } from './store.js';
+import {
+  store, select, stationById, stationIds, linesOf, lineById, allLines, platformsOf,
+  stationPos, platformPos, derivedPlatform, stationMatches, platformMatches,
+  lineMatches, upstream, metresBetween, unclaimedNear,
+} from './store.js';
 
 const STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 // A walking path is meaningless at city zoom; it only means something once the
@@ -11,32 +16,41 @@ const TRANSFER_MINZOOM = 13.6;
 // Where poles stop being a cluster of dots and become individually legible.
 const POLE_MINZOOM = 15;
 const SF = { center: [-122.4355, 37.7605], zoom: 11.9 };
+const GREY = '#7c8598';
 
 export let map = null;
 let litLink = null;           // a transfer chip is being hovered in the inspector
 let hoverId = null;
-const listeners = { pick: [], hover: [] };
+const listeners = { pick: [], candidate: [] };
 
 export function onPick(fn) { listeners.pick.push(fn); }
+/** A candidate stop was clicked while the add-platform picker is open. */
+export function onCandidate(fn) { listeners.candidate.push(fn); }
 
 // ---------------------------------------------------------------- geometry
 const HEADING_DEG = { northbound: 0, eastbound: 90, southbound: 180, westbound: 270 };
 
-function routeFeatures() {
+/**
+ * Each line as the platforms of its most-run pattern per direction, which is
+ * where the vehicles actually stop, so the two directions of a street line run
+ * down either side of the street. Hidden lines (owl copies of a day line) are
+ * left off unless focused, as the app leaves them off.
+ */
+function lineFeatures() {
   const feats = [];
-  for (const ln of store.doc.lines) {
-    const coords = ln.stationIds
-      .map(id => stationById(id))
-      .filter(Boolean)
-      .map(positionOf)
-      .filter(Boolean);
-    if (coords.length < 2) continue;
-    const active = !store.activeLine || store.activeLine === ln.id;
-    feats.push({
-      type: 'Feature',
-      properties: { id: ln.id, color: ln.color, active: active ? 1 : 0, name: ln.name },
-      geometry: { type: 'LineString', coordinates: coords },
-    });
+  for (const ln of allLines()) {
+    const focused = store.activeLine === ln.id;
+    if (!focused && (ln.hidden || !lineMatches(ln.id))) continue;
+    const active = !store.activeLine || focused;
+    for (const dir of ln.directions || []) {
+      const coords = dir.platforms.map(platformPos).filter(Boolean);
+      if (coords.length < 2) continue;
+      feats.push({
+        type: 'Feature',
+        properties: { id: ln.id, dir: dir.direction, color: ln.color || GREY, active: active ? 1 : 0, name: ln.name },
+        geometry: { type: 'LineString', coordinates: coords },
+      });
+    }
   }
   // draw the active line last so it sits on top
   return { type: 'FeatureCollection', features: feats.sort((a, b) => a.properties.active - b.properties.active) };
@@ -44,23 +58,23 @@ function routeFeatures() {
 
 /**
  * Transfers as walking paths. A transfer is one-way unless the other station
- * lists it back, and that asymmetry is deliberate in data.json, so each pair is
- * drawn once with an arrowhead at whichever end(s) it actually points to:
+ * lists it back, and that asymmetry is deliberate in the curation, so each pair
+ * is drawn once with an arrowhead at whichever end(s) it actually points to:
  * one chevron for a one-way link, one at each end for a mutual one.
  *
- * Straight lines are the honest shape here. data.json records that a walk
- * exists, never its route, and this is an editor - inventing a path through the
- * streets would be drawing a claim the file does not make.
+ * Straight lines are the honest shape here. The curation records that a walk
+ * exists, never its path, and this is an editor - inventing a path through the
+ * streets would be drawing a claim the data does not make.
  */
 export function transferLinks() {
   const links = new Map();      // "a|b" with a < b  ->  { a, b, fwd, rev, indoor }
-  for (const st of store.doc.stations) {
-    for (const t of st.transfers || []) {
+  for (const sid of stationIds()) {
+    for (const t of stationById(sid).transfers || []) {
       if (!stationById(t.to)) continue;
-      const [a, b] = st.id < t.to ? [st.id, t.to] : [t.to, st.id];
+      const [a, b] = sid < t.to ? [sid, t.to] : [t.to, sid];
       const key = `${a}|${b}`;
       const rec = links.get(key) || { a, b, fwd: false, rev: false, indoor: false };
-      if (st.id === a) rec.fwd = true; else rec.rev = true;   // fwd means a -> b
+      if (sid === a) rec.fwd = true; else rec.rev = true;   // fwd means a -> b
       if (t.mode === 'indoor') rec.indoor = true;
       links.set(key, rec);
     }
@@ -68,30 +82,23 @@ export function transferLinks() {
   return links;
 }
 
-const indoorLink = (a, b) => {
-  const k = a < b ? `${a}|${b}` : `${b}|${a}`;
-  return transferLinks().get(k)?.indoor;
-};
-
 function transferFeatures() {
   const lines = [], heads = [];
   const sel = store.selStation;
 
-  for (const { a, b, fwd, rev } of transferLinks().values()) {
-    const pa = positionOf(stationById(a)), pb = positionOf(stationById(b));
+  for (const { a, b, fwd, rev, indoor } of transferLinks().values()) {
+    if (!shown(a) && !shown(b)) continue;
+    const pa = stationPos(a), pb = stationPos(b);
     if (!pa || !pb) continue;
     const both = fwd && rev ? 1 : 0;
     const touches = sel === a || sel === b ? 1 : 0;
+    const lit = isLit(a, b) ? 1 : 0;
 
     lines.push({
       type: 'Feature',
-      properties: { a, b, both, touches,
-                    lit: isLit(a, b) ? 1 : 0,
-                    indoor: indoorLink(a, b) ? 1 : 0,
-                    metres: Math.round(metresBetween(pa, pb)) },
+      properties: { a, b, both, touches, lit, indoor: indoor ? 1 : 0, metres: metresBetween(pa, pb) },
       geometry: { type: 'LineString', coordinates: [pa, pb] },
     });
-    const lit = isLit(a, b) ? 1 : 0;
     if (fwd) heads.push(chevron(pa, pb, both, touches, lit));
     if (rev) heads.push(chevron(pb, pa, both, touches, lit));
   }
@@ -127,67 +134,88 @@ function chevron(from, to, both, touches, lit) {
 }
 
 const M_LAT = 110540, M_LON = 111320 * Math.cos(37.76 * Math.PI / 180);
-const metresBetween = (a, b) => Math.hypot((a[0] - b[0]) * M_LON, (a[1] - b[1]) * M_LAT);
 /** Bearing in degrees clockwise from north, for icon-rotate. */
 const bearingDeg = (a, b) =>
   (Math.atan2((b[0] - a[0]) * M_LON, (b[1] - a[1]) * M_LAT) * 180 / Math.PI + 360) % 360;
 
-function stationFeatures() {
+/** Whether the filters show a station. The selected one always shows, so a
+ *  filter never hides what the inspector is editing. */
+const shown = sid => sid === store.selStation || stationMatches(sid);
+
+/** The colour a station or pole is drawn in: the focused line's if it is on
+ *  it, else its first line's. */
+function tint(lines, on) {
   const active = store.activeLine;
-  return {
-    type: 'FeatureCollection',
-    features: store.doc.stations.map(s => {
-      const ls = linesOf(s.id);
-      const on = !active || ls.some(l => l.id === active);
-      const primary = (active && on ? ls.find(l => l.id === active) : ls[0]) || null;
-      const at = positionOf(s);
-      if (!at) return null;
-      return {
-        type: 'Feature',
-        id: hashId(s.id),
-        properties: {
-          sid: s.id,
-          name: s.name,
-          color: primary?.color || '#7c8598',
-          active: on ? 1 : 0,
-          interchange: ls.length > 1 ? 1 : 0,
-          selected: store.selStation === s.id ? 1 : 0,
-          nplat: platformsOf(s).length,
-        },
-        geometry: { type: 'Point', coordinates: at },
-      };
-    }).filter(Boolean),
-  };
+  const primary = (active && on ? lines.find(l => l.id === active) : lines[0]) || null;
+  return primary?.color || GREY;
 }
 
-/** A platform with no coordinate (not in 511's snapshot) has nothing to draw. */
-const hasPosition = p => Number.isFinite(p.latitude) && Number.isFinite(p.longitude);
-
-function platformFeatures() {
+function stationFeatures() {
   const active = store.activeLine;
   const feats = [];
-  for (const s of store.doc.stations) {
-    const ls = linesOf(s.id);
+  for (const sid of stationIds()) {
+    if (!shown(sid)) continue;
+    const at = stationPos(sid);
+    if (!at) continue;
+    const s = stationById(sid);
+    const ls = linesOf(sid);
     const on = !active || ls.some(l => l.id === active);
-    const primary = (active && on ? ls.find(l => l.id === active) : ls[0]) || null;
-    for (const p of platformsOf(s)) {
-      if (!hasPosition(p)) continue;
-      feats.push({
-        type: 'Feature',
-        id: hashId(String(p.id)),
-        properties: {
-          code: String(p.id),
-          sid: s.id,
-          heading: p.heading,
-          bearing: HEADING_DEG[p.heading] ?? 0,
-          color: primary?.color || '#7c8598',
-          active: on ? 1 : 0,
-          selected: store.selPlatform === String(p.id) ? 1 : 0,
-          label: p.stopName || s.name,
-        },
-        geometry: { type: 'Point', coordinates: [p.longitude, p.latitude] },
-      });
+    feats.push({
+      type: 'Feature',
+      id: hashId(sid),
+      properties: {
+        sid,
+        name: s.name,
+        color: tint(ls, on),
+        active: on ? 1 : 0,
+        interchange: ls.length > 1 ? 1 : 0,
+        selected: store.selStation === sid ? 1 : 0,
+        // a platform 511 no longer lists: flagged, never removed automatically
+        stale: platformsOf(s).some(p => !derivedPlatform(p.id)?.live) ? 1 : 0,
+      },
+      geometry: { type: 'Point', coordinates: at },
+    });
+  }
+  return { type: 'FeatureCollection', features: feats };
+}
+
+/** Poles of shown stations whose own lines pass the mode chips. A platform with
+ *  no coordinate (not in 511's snapshot) has nothing to draw. */
+function* shownPoles() {
+  const active = store.activeLine;
+  for (const sid of stationIds()) {
+    if (!shown(sid)) continue;
+    const ls = linesOf(sid);
+    const on = !active || ls.some(l => l.id === active);
+    const color = tint(ls, on);
+    for (const p of platformsOf(stationById(sid))) {
+      const at = platformPos(p.id);
+      if (!at) continue;
+      if (sid !== store.selStation && !platformMatches(p.id)) continue;
+      yield { sid, p, at, on, color };
     }
+  }
+}
+
+function platformFeatures() {
+  const feats = [];
+  for (const { sid, p, at, on, color } of shownPoles()) {
+    feats.push({
+      type: 'Feature',
+      id: hashId(p.id),
+      properties: {
+        pid: p.id,
+        code: upstream(p.id),
+        sid,
+        heading: p.heading,
+        bearing: HEADING_DEG[p.heading] ?? 0,
+        color,
+        active: on ? 1 : 0,
+        selected: store.selPlatform === p.id ? 1 : 0,
+        label: derivedPlatform(p.id)?.stopName || stationById(sid).name,
+      },
+      geometry: { type: 'Point', coordinates: at },
+    });
   }
   return { type: 'FeatureCollection', features: feats };
 }
@@ -200,28 +228,64 @@ function platformFeatures() {
  * dot, and nothing shows which station a stray pole belongs to.
  */
 function leaderFeatures() {
-  const active = store.activeLine;
   const feats = [];
-  for (const s of store.doc.stations) {
-    const ls = linesOf(s.id);
-    const on = !active || ls.some(l => l.id === active);
-    const primary = (active && on ? ls.find(l => l.id === active) : ls[0]) || null;
-    const at = positionOf(s);
-    if (!at) continue;
-    for (const p of platformsOf(s)) {
-      if (!hasPosition(p)) continue;
-      feats.push({
-        type: 'Feature',
-        properties: {
-          color: primary?.color || '#7c8598',
-          selected: store.selStation === s.id ? 1 : 0,
-          active: on ? 1 : 0,
-        },
-        geometry: { type: 'LineString', coordinates: [at, [p.longitude, p.latitude]] },
-      });
-    }
+  for (const { sid, at, on, color } of shownPoles()) {
+    const centre = stationPos(sid);
+    if (!centre) continue;
+    feats.push({
+      type: 'Feature',
+      properties: { color, selected: store.selStation === sid ? 1 : 0, active: on ? 1 : 0 },
+      geometry: { type: 'LineString', coordinates: [centre, at] },
+    });
   }
   return { type: 'FeatureCollection', features: feats };
+}
+
+/**
+ * Unclaimed snapshot stops near a station, while its add-platform picker is
+ * open. They are the only stops a platform can be added from, and which one is
+ * right is usually obvious only on the map.
+ */
+let candidateFor = null;
+export const CANDIDATE_LIMIT = 40;
+
+export function showCandidates(sid) {
+  candidateFor = sid;
+  refresh('candidates');
+}
+
+function candidateFeatures() {
+  if (!candidateFor || !map) return { type: 'FeatureCollection', features: [] };
+  const at = stationPos(candidateFor) || map.getCenter().toArray();
+  return {
+    type: 'FeatureCollection',
+    features: unclaimedNear(at, CANDIDATE_LIMIT).map(c => ({
+      type: 'Feature',
+      id: hashId(c.id),
+      properties: { pid: c.id, code: upstream(c.id), label: c.p.stopName || '' },
+      geometry: { type: 'Point', coordinates: [c.p.lon, c.p.lat] },
+    })),
+  };
+}
+
+/**
+ * One stop ringed on the map: an issue about a 511 stop no station owns
+ * (`unassigned-stop`) has no pole to select, so without this the camera would
+ * fly to an empty street.
+ */
+let spotPid = null;
+export function spotlight(pid) {
+  if (spotPid === pid) return;
+  spotPid = pid;
+  refresh('spot');
+}
+
+function spotFeatures() {
+  const at = spotPid && platformPos(spotPid);
+  return {
+    type: 'FeatureCollection',
+    features: at ? [{ type: 'Feature', properties: { code: upstream(spotPid) }, geometry: { type: 'Point', coordinates: at } }] : [],
+  };
 }
 
 /** Stable small int id, because MapLibre feature-state needs numeric ids. */
@@ -307,21 +371,23 @@ function makeArrowImage() {
 }
 
 function addSources() {
-  map.addSource('routes', { type: 'geojson', data: routeFeatures() });
+  map.addSource('lines', { type: 'geojson', data: lineFeatures() });
   const tf = transferFeatures();
   map.addSource('transfers', { type: 'geojson', data: tf.lines });
   map.addSource('transfer-heads', { type: 'geojson', data: tf.heads });
   map.addSource('stations', { type: 'geojson', data: stationFeatures() });
   map.addSource('platforms', { type: 'geojson', data: platformFeatures() });
   map.addSource('leaders', { type: 'geojson', data: leaderFeatures() });
+  map.addSource('candidates', { type: 'geojson', data: candidateFeatures() });
+  map.addSource('spot', { type: 'geojson', data: spotFeatures() });
 }
 
 const dimmed = (on, a, b) => ['case', ['==', ['get', 'active'], 1], a, b];
 
 function addLayers() {
-  // --- route glow, then casing, then the line itself
+  // --- line glow, then casing, then the line itself
   map.addLayer({
-    id: 'muni-route-glow', type: 'line', source: 'routes',
+    id: 'muni-line-glow', type: 'line', source: 'lines',
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': ['get', 'color'],
@@ -331,7 +397,7 @@ function addLayers() {
     },
   });
   map.addLayer({
-    id: 'muni-route-case', type: 'line', source: 'routes',
+    id: 'muni-line-case', type: 'line', source: 'lines',
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': '#05060a',
@@ -340,7 +406,7 @@ function addLayers() {
     },
   });
   map.addLayer({
-    id: 'muni-route', type: 'line', source: 'routes',
+    id: 'muni-line', type: 'line', source: 'lines',
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': ['get', 'color'],
@@ -376,7 +442,7 @@ function addLayers() {
   });
   // An in-station passage, drawn the way metro maps draw one: a solid white
   // connector with a black casing, so it reads as structure rather than as a
-  // route or a street walk. The casing goes first so it sits underneath.
+  // line or a street walk. The casing goes first so it sits underneath.
   map.addLayer({
     id: 'muni-transfer-indoor-case', type: 'line', source: 'transfers',
     filter: ['==', ['get', 'indoor'], 1],
@@ -444,6 +510,20 @@ function addLayers() {
       'circle-color': ['get', 'color'],
       'circle-opacity': ['case', ['==', ['get', 'selected'], 1], 0.75, 0],
       'circle-blur': 0.55,
+    },
+  });
+  // A station holding a platform 511 no longer lists gets an amber ring, so a
+  // snapshot refresh that drops stops is visible at a glance on the map.
+  map.addLayer({
+    id: 'muni-station-stale', type: 'circle', source: 'stations',
+    filter: ['==', ['get', 'stale'], 1],
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 7, 14, 11, 18, 18],
+      'circle-color': 'rgba(0,0,0,0)',
+      'circle-stroke-color': '#fbbf24',
+      'circle-stroke-width': 2,
+      'circle-opacity': dimmed(true, 1, 0.3),
+      'circle-stroke-opacity': dimmed(true, 0.95, 0.3),
     },
   });
   map.addLayer({
@@ -558,6 +638,53 @@ function addLayers() {
     },
   });
 
+  // --- candidate stops for the add-platform picker: hollow and dashed, so
+  // they never read as poles a station already has
+  map.addLayer({
+    id: 'muni-candidate', type: 'circle', source: 'candidates',
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 12, 3, 16, 7, 19, 11],
+      'circle-color': 'rgba(0,0,0,0)',
+      'circle-stroke-color': '#60a5fa',
+      'circle-stroke-width': ['case', ['boolean', ['feature-state', 'hover'], false], 3, 2],
+    },
+  });
+  map.addLayer({
+    id: 'muni-candidate-label', type: 'symbol', source: 'candidates',
+    minzoom: 14.5,
+    layout: {
+      'text-field': ['get', 'code'],
+      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      'text-size': 11,
+      'text-offset': [0, 1.2],
+      'text-anchor': 'top',
+      'text-optional': true,
+    },
+    paint: { 'text-color': '#93c5fd', 'text-halo-color': '#05060a', 'text-halo-width': 1.8 },
+  });
+
+  map.addLayer({
+    id: 'muni-spot', type: 'circle', source: 'spot',
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 12, 8, 16, 14, 19, 20],
+      'circle-color': 'rgba(251,191,36,.18)',
+      'circle-stroke-color': '#fbbf24',
+      'circle-stroke-width': 2.5,
+    },
+  });
+  map.addLayer({
+    id: 'muni-spot-label', type: 'symbol', source: 'spot',
+    layout: {
+      'text-field': ['get', 'code'],
+      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+      'text-size': 12,
+      'text-offset': [0, 1.6],
+      'text-anchor': 'top',
+      'text-allow-overlap': true,
+    },
+    paint: { 'text-color': '#fcd34d', 'text-halo-color': '#05060a', 'text-halo-width': 1.8 },
+  });
+
   map.addLayer({
     id: 'muni-label', type: 'symbol', source: 'stations',
     minzoom: 12.2,
@@ -583,7 +710,7 @@ function addLayers() {
 
 // ------------------------------------------------------------ interactions
 function wireInteractions() {
-  const SRC = { 'muni-station': 'stations', 'muni-platform': 'platforms' };
+  const SRC = { 'muni-station': 'stations', 'muni-platform': 'platforms', 'muni-candidate': 'candidates' };
 
   for (const layer of Object.keys(SRC)) {
     const src = SRC[layer];
@@ -591,14 +718,17 @@ function wireInteractions() {
     map.on('mousemove', layer, e => {
       map.getCanvas().style.cursor = 'pointer';
       const f = e.features[0];
-      if (hoverId && (hoverId.id !== f.id || hoverId.src !== src)) {
-        map.setFeatureState({ source: hoverId.src, id: hoverId.id }, { hover: false });
+      if (f.id != null) {
+        if (hoverId && (hoverId.id !== f.id || hoverId.src !== src)) {
+          map.setFeatureState({ source: hoverId.src, id: hoverId.id }, { hover: false });
+        }
+        hoverId = { src, id: f.id };
+        map.setFeatureState({ source: src, id: f.id }, { hover: true });
       }
-      hoverId = { src, id: f.id };
-      map.setFeatureState({ source: src, id: f.id }, { hover: true });
-      showCoords(f.properties.code
-        ? `${f.properties.label} · ${f.properties.code} · ${f.properties.heading}`
-        : f.properties.name);
+      const p = f.properties;
+      showCoords(src === 'candidates' ? `${p.label} · ${p.code} · unclaimed`
+        : p.code ? `${p.label} · ${p.code} · ${p.heading}`
+        : p.name);
     });
 
     map.on('mouseleave', layer, () => {
@@ -609,25 +739,37 @@ function wireInteractions() {
     });
   }
 
+  map.on('click', 'muni-candidate', e => {
+    e.originalEvent.stopPropagation();
+    const pid = e.features[0].properties.pid;
+    listeners.candidate.forEach(f => f(pid));
+  });
+
   map.on('click', 'muni-station', e => {
+    if (hitCandidate(e)) return;
     const sid = e.features[0].properties.sid;
     select(sid, null);
     listeners.pick.forEach(f => f(sid, null));
   });
 
   map.on('click', 'muni-platform', e => {
+    if (hitCandidate(e)) return;
     e.originalEvent.stopPropagation();
-    const { sid, code } = e.features[0].properties;
-    select(sid, code);
-    listeners.pick.forEach(f => f(sid, code));
+    const { sid, pid } = e.features[0].properties;
+    select(sid, pid);
+    listeners.pick.forEach(f => f(sid, pid));
   });
 
   map.on('click', e => {
     const hits = map.queryRenderedFeatures(e.point,
-      { layers: ['muni-station', 'muni-platform'] });
+      { layers: ['muni-station', 'muni-platform', 'muni-candidate'] });
     if (!hits.length) { select(null, null); listeners.pick.forEach(f => f(null, null)); }
   });
 }
+
+/** A candidate drawn over a station or pole takes the click. */
+const hitCandidate = e =>
+  !!candidateFor && map.queryRenderedFeatures(e.point, { layers: ['muni-candidate'] }).length > 0;
 
 // ------------------------------------------------------------------- HUD
 const hud = () => document.getElementById('hud-coords');
@@ -648,31 +790,42 @@ export function hint(text, ms = 2400) {
 
 // ---------------------------------------------------------------- refresh
 export function refresh(which = 'all') {
-  if (!map || !map.getSource('routes')) return;
-  if (which === 'all' || which === 'routes') map.getSource('routes').setData(routeFeatures());
-  if (which === 'all' || which === 'transfers') {
+  if (!map || !map.getSource('lines')) return;
+  const all = which === 'all';
+  if (all || which === 'lines') map.getSource('lines').setData(lineFeatures());
+  if (all || which === 'transfers') {
     const tf = transferFeatures();
     map.getSource('transfers').setData(tf.lines);
     map.getSource('transfer-heads').setData(tf.heads);
   }
-  if (which === 'all' || which === 'stations') map.getSource('stations').setData(stationFeatures());
-  if (which === 'all' || which === 'platforms') {
+  if (all || which === 'stations') map.getSource('stations').setData(stationFeatures());
+  if (all || which === 'platforms') {
     map.getSource('platforms').setData(platformFeatures());
     map.getSource('leaders').setData(leaderFeatures());
   }
+  if (all || which === 'candidates') map.getSource('candidates').setData(candidateFeatures());
+  if (all || which === 'spot') map.getSource('spot').setData(spotFeatures());
 }
+
+/**
+ * Map layers the tool buttons switch, by `store.layers` key. A new overlay (the
+ * live vehicle layer) adds its layer ids here and a button in main.js's
+ * LAYER_TOOLS; nothing else needs to know about it.
+ */
+export const LAYER_IDS = {
+  platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-arrow',
+              'muni-platform-label', 'muni-leader'],
+  labels: ['muni-label'],
+  transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',
+              'muni-transfer-head', 'muni-transfer-label'],
+};
 
 export function applyLayerToggles() {
   if (!map?.getLayer('muni-platform')) return;
-  const L = store.layers;
-  for (const id of ['muni-platform', 'muni-platform-halo', 'muni-platform-arrow',
-                    'muni-platform-label', 'muni-leader']) {
-    map.setLayoutProperty(id, 'visibility', L.platforms ? 'visible' : 'none');
-  }
-  map.setLayoutProperty('muni-label', 'visibility', L.labels ? 'visible' : 'none');
-  for (const id of ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',
-                    'muni-transfer-head', 'muni-transfer-label']) {
-    map.setLayoutProperty(id, 'visibility', L.transfers ? 'visible' : 'none');
+  for (const [key, ids] of Object.entries(LAYER_IDS)) {
+    for (const id of ids) {
+      if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', store.layers[key] ? 'visible' : 'none');
+    }
   }
 }
 
@@ -687,9 +840,7 @@ function padding() {
   };
 }
 
-export function flyToStation(id, zoom = 16.4) {
-  const s = stationById(id);
-  const at = positionOf(s);
+export function flyTo(at, zoom = 16.4) {
   if (!at || !map) return;
   map.easeTo({
     center: at,
@@ -700,10 +851,12 @@ export function flyToStation(id, zoom = 16.4) {
   });
 }
 
+export const flyToStation = (id, zoom) => flyTo(stationPos(id), zoom);
+
 export function fitLine(lineId) {
-  const ln = store.doc.lines.find(l => l.id === lineId);
+  const ln = lineById(lineId);
   if (!ln || !map) return;
-  const pts = ln.stationIds.map(stationById).filter(Boolean).map(positionOf).filter(Boolean);
+  const pts = (ln.directions || []).flatMap(d => d.platforms.map(platformPos)).filter(Boolean);
   if (!pts.length) return;
   const b = new maplibregl.LngLatBounds();
   for (const at of pts) b.extend(at);
@@ -714,11 +867,15 @@ export function fitAll() {
   if (!map) return;
   const b = new maplibregl.LngLatBounds();
   let any = false;
-  for (const s of store.doc.stations) {
-    const at = positionOf(s);
+  for (const sid of stationIds()) {
+    const at = stationPos(sid);
     if (at) { b.extend(at); any = true; }
   }
   if (any) map.fitBounds(b, { padding: padding(), duration: 1000 });
+}
+
+export function mapCentre() {
+  return map ? map.getCenter().toArray() : null;
 }
 
 export function resetNorth() {
