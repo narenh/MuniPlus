@@ -33,7 +33,7 @@
         <path d="M16 31c0-12 6-18 14-18s14 7 14 18" stroke="#FAA633" stroke-width="5.5" stroke-linecap="round" opacity=".9"/>
         <circle cx="6" cy="30" r="4.5" fill="#D60F45"/><circle cx="44" cy="31" r="4.5" fill="#008552"/>
       </svg>
-      <div><b>Muni+ Editor</b> <span>data.json</span></div>
+      <div><b>Muni+ Editor</b> <span>sf-transit</span></div>
     </div>
 
     <div class="divider"></div>
@@ -48,27 +48,28 @@
       <div class="stat"><b id="n-stations">–</b><i>stations</i></div>
       <div class="stat"><b id="n-platforms">–</b><i>platforms</i></div>
       <div class="stat"><b id="n-lines">–</b><i>lines</i></div>
+      <div class="stat verified" id="stat-verified"><b id="n-verified">–</b><i>verified</i></div>
     </div>
 
     <div class="grow"></div>
 
-    <button class="chip button" id="issues-chip" title="Validation issues">
+    <button class="chip button" id="issues-chip" title="Validation issues" hidden>
       <span class="dot live" id="issues-dot"></span><span id="issues-text">Valid</span>
     </button>
 
     <div class="divider"></div>
 
-    <button class="btn ghost" id="btn-undo" title="Undo (⌘Z)" disabled>
+    <button class="btn ghost edit-only" id="btn-undo" title="Undo (⌘Z)" disabled>
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4L3 7l3 3M3 7h7a3 3 0 010 6H8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <button class="btn ghost" id="btn-redo" title="Redo (⇧⌘Z)" disabled>
+    <button class="btn ghost edit-only" id="btn-redo" title="Redo (⇧⌘Z)" disabled>
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 4l3 3-3 3M13 7H6a3 3 0 000 6h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <button class="btn ghost" id="btn-search" title="Find anything (⌘K)">
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.3" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 10.2L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       <span class="kbd">⌘K</span>
     </button>
-    <button class="btn primary" id="btn-save" disabled>
+    <button class="btn primary edit-only" id="btn-save" disabled>
       Save<span class="count" id="save-count">0</span>
     </button>
   </header>
@@ -79,11 +80,11 @@
     <!-- line rail -->
     <nav id="rail">
       <div class="micro rail-label">LINES</div>
-      <button class="bullet all on" id="bullet-all" data-line="">ALL<span class="tip">Show every line</span></button>
+      <button class="bullet all on" id="bullet-all" data-line="" title="Show every line (A)">ALL</button>
       <div id="rail-lines"></div>
     </nav>
 
-    <!-- route strip -->
+    <!-- line strip: read-only, both directions of the focused line -->
     <aside id="strip" class="closed">
       <div class="strip-head">
         <div class="strip-title">
@@ -98,13 +99,9 @@
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 2H2v4M10 2h4v4M10 14h4v-4M6 14H2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Fit
           </button>
-          <button class="btn" id="strip-reverse" title="Reverse the stop order">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M5 3v10M5 13l-2.5-2.5M5 13l2.5-2.5M11 13V3M11 3L8.5 5.5M11 3l2.5 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Reverse
-          </button>
-          <button class="btn" id="strip-add" title="Add a station to this line">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            Add
+          <button class="btn" id="strip-details" title="Name, colour, mode, visibility and replacements">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M3 8h10M3 11.5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Line details
           </button>
         </div>
       </div>
@@ -115,20 +112,9 @@
     <div style="position:relative;flex:1 1 auto;min-width:0">
       <div id="map"></div>
 
-      <div id="map-tools">
-        <button class="tool" id="tool-platforms" title="Show platform poles">
-          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.6" fill="currentColor"/><circle cx="9" cy="9" r="6.4" stroke="currentColor" stroke-width="1.5" opacity=".55"/></svg>
-        </button>
-        <button class="tool" id="tool-labels" title="Show station labels">
-          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M3 9h12M3 13h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        </button>
-        <button class="tool" id="tool-transfers" title="Show transfer links">
-          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 6h7a3 3 0 010 6H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1 2.6"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="6" cy="12" r="2" fill="currentColor"/></svg>
-        </button>
-        <button class="tool" id="tool-north" title="Reset bearing and pitch">
-          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2.4l3.4 9.4L9 9.9l-3.4 1.9L9 2.4z" fill="currentColor"/><path d="M5.6 14.4h6.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/></svg>
-        </button>
-      </div>
+      <div id="filters"></div>
+      <!-- filled from LAYER_TOOLS in main.js -->
+      <div id="map-tools"></div>
 
       <div class="map-hud" id="hud-coords"><span id="hud-coords-text">—</span></div>
       <div class="map-hud" id="hud-hint"></div>
@@ -157,8 +143,10 @@
 <!-- ===================== OVERLAYS ===================== -->
 <div id="scrim"></div>
 
+<div id="rail-tip"></div>
+
 <div class="modal glass" id="palette">
-  <input id="pal-input" placeholder="Jump to a station, line, or stop code…" autocomplete="off" spellcheck="false">
+  <input id="pal-input" placeholder="Jump to a station, line, or stop id…" autocomplete="off" spellcheck="false">
   <div class="pal-list" id="pal-list"></div>
   <div class="pal-foot">
     <span><span class="kbd">↑↓</span> navigate</span>
@@ -172,21 +160,26 @@
 <div class="modal glass" id="sheet">
   <div class="sheet-head">
     <h3 id="sheet-title">Review changes</h3>
-    <p id="sheet-sub">These edits will be written to appdata/data.json and committed.</p>
+    <p id="sheet-sub">These edits will be committed to sf-transit.</p>
   </div>
   <div class="sheet-body" id="sheet-body"></div>
   <div class="sheet-foot">
     <button class="btn" id="sheet-cancel">Cancel</button>
     <div class="grow"></div>
-    <button class="btn" id="sheet-write" title="Write the file without committing">Write only</button>
-    <button class="btn primary" id="sheet-commit">Commit</button>
+    <button class="btn primary" id="sheet-commit">Save and commit</button>
   </div>
 </div>
 
 <div class="modal glass" id="history" style="top:10vh;width:min(680px,94vw);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;max-height:80vh">
-  <div class="sheet-head"><h3>History</h3><p id="hist-sub">Commits touching appdata/data.json</p></div>
+  <div class="sheet-head"><h3>History</h3><p id="hist-sub">Recent sf-transit commits touching curation/</p></div>
   <div class="sheet-body" id="hist-body"></div>
   <div class="sheet-foot"><button class="btn" id="hist-close">Close</button></div>
+</div>
+
+<div class="modal glass" id="issues" style="top:8vh;width:min(760px,94vw);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;max-height:84vh">
+  <div class="sheet-head"><h3>Issues</h3><p id="issues-sub"></p></div>
+  <div class="sheet-body" id="issues-body"></div>
+  <div class="sheet-foot"><span class="micro">Click an issue to go to it</span><div class="grow"></div><button class="btn" id="issues-close">Close</button></div>
 </div>
 
 <div id="toasts"></div>

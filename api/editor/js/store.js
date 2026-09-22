@@ -407,7 +407,9 @@ export function canon(v) {
 
 export const isDirty = () => !!store.base && canon(store.base) !== canon(store.curation);
 
-const same = (a, b) => canon(a ?? null) === canon(b ?? null);
+/** "Not stated" in any of its spellings: absent, null, false or empty. */
+const blank = v => (v === undefined || v === null || v === false || (Array.isArray(v) && !v.length) ? null : v);
+const same = (a, b) => canon(blank(a)) === canon(blank(b));
 const code = s => `<code>${esc(s)}</code>`;
 const list = xs => (xs || []).length ? xs.map(code).join(' ') : code('none');
 
