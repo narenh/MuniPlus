@@ -1,0 +1,97 @@
+{
+  "SF:13311": {
+    "name": "17th St & Castro St",
+    "lat": 37.762576,
+    "lon": -122.434979
+  },
+  "SF:13510": {
+    "name": "25th St & Noe St",
+    "lat": 37.749727,
+    "lon": -122.431624
+  },
+  "SF:14015": {
+    "name": "Clay St & Drumm St",
+    "lat": 37.79532,
+    "lon": -122.397473
+  },
+  "SF:15417": {
+    "name": "Metro Powell Station/Downtown",
+    "lat": 37.784653,
+    "lon": -122.407086
+  },
+  "SF:15418": {
+    "name": "Balboa Park BART/Mezzanine Level",
+    "lat": 37.721809,
+    "lon": -122.447425
+  },
+  "SF:15661": {
+    "name": "Market St & Church St",
+    "lat": 37.767705,
+    "lon": -122.428778
+  },
+  "SF:15662": {
+    "name": "Market St & Church St",
+    "lat": 37.76725,
+    "lon": -122.429214
+  },
+  "SF:15688": {
+    "name": "Market St & Powell St",
+    "lat": 37.784474,
+    "lon": -122.407544
+  },
+  "SF:15731": {
+    "name": "Metro Montgomery Station/Downtown",
+    "lat": 37.789219,
+    "lon": -122.401351
+  },
+  "SF:16063": {
+    "name": "Powell St & Market St",
+    "lat": 37.784698,
+    "lon": -122.407682
+  },
+  "SF:16064": {
+    "name": "Powell St & Market St",
+    "lat": 37.784635,
+    "lon": -122.407785
+  },
+  "SF:16992": {
+    "name": "Metro Embarcadero Station",
+    "lat": 37.793134,
+    "lon": -122.396431
+  },
+  "SF:16994": {
+    "name": "Metro Montgomery Station/Outbound",
+    "lat": 37.788791,
+    "lon": -122.402127
+  },
+  "SF:16995": {
+    "name": "Metro Powell Station/Outbound",
+    "lat": 37.7843,
+    "lon": -122.407822
+  },
+  "SF:17073": {
+    "name": "Church St & Market St",
+    "lat": 37.767509,
+    "lon": -122.428927
+  },
+  "SF:17217": {
+    "name": "Metro Embarcadero Station",
+    "lat": 37.79271,
+    "lon": -122.39715
+  },
+  "SF:17874": {
+    "name": "Union Square/Market St Station Southbound",
+    "lat": 37.787133,
+    "lon": -122.406523
+  },
+  "SF:17877": {
+    "name": "Union Square/Market St Station Northbound",
+    "lat": 37.787151,
+    "lon": -122.406477
+  },
+  "SF:18059": {
+    "name": "Church St & Market St",
+    "lat": 37.767286,
+    "lon": -122.429053
+  }
+}

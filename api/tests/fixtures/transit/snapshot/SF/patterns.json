@@ -1,0 +1,227 @@
+{
+  "SF:1": [
+    {
+      "direction": 0,
+      "headsign": "Geary + 33rd Ave",
+      "trips": 200,
+      "stops": [
+        "SF:14015"
+      ]
+    }
+  ],
+  "SF:5": [
+    {
+      "direction": 0,
+      "headsign": "Ocean Beach",
+      "trips": 150,
+      "stops": [
+        "SF:15688"
+      ]
+    }
+  ],
+  "SF:5R": [
+    {
+      "direction": 0,
+      "headsign": "Ocean Beach",
+      "trips": 140,
+      "stops": [
+        "SF:15688"
+      ]
+    }
+  ],
+  "SF:F": [
+    {
+      "direction": 0,
+      "headsign": "Castro",
+      "trips": 90,
+      "stops": [
+        "SF:15661"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Fisherman's Wharf",
+      "trips": 90,
+      "stops": [
+        "SF:13311",
+        "SF:15662"
+      ]
+    }
+  ],
+  "SF:J": [
+    {
+      "direction": 0,
+      "headsign": "Balboa Park",
+      "trips": 120,
+      "stops": [
+        "SF:17217",
+        "SF:16994",
+        "SF:16995",
+        "SF:18059"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Embarcadero",
+      "trips": 120,
+      "stops": [
+        "SF:17073",
+        "SF:15417",
+        "SF:15731",
+        "SF:16992"
+      ]
+    }
+  ],
+  "SF:K": [
+    {
+      "direction": 0,
+      "headsign": "Balboa Park",
+      "trips": 110,
+      "stops": [
+        "SF:17217",
+        "SF:16994",
+        "SF:16995"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Embarcadero",
+      "trips": 110,
+      "stops": [
+        "SF:15417",
+        "SF:15731",
+        "SF:16992"
+      ]
+    }
+  ],
+  "SF:L": [
+    {
+      "direction": 0,
+      "headsign": "SF Zoo",
+      "trips": 130,
+      "stops": [
+        "SF:17217",
+        "SF:16994",
+        "SF:16995"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Embarcadero",
+      "trips": 130,
+      "stops": [
+        "SF:15417",
+        "SF:15731",
+        "SF:16992"
+      ]
+    }
+  ],
+  "SF:M": [
+    {
+      "direction": 0,
+      "headsign": "Balboa Park",
+      "trips": 125,
+      "stops": [
+        "SF:17217",
+        "SF:16994",
+        "SF:16995"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Embarcadero",
+      "trips": 125,
+      "stops": [
+        "SF:15417",
+        "SF:15731",
+        "SF:16992"
+      ]
+    }
+  ],
+  "SF:N": [
+    {
+      "direction": 0,
+      "headsign": "Ocean Beach",
+      "trips": 175,
+      "stops": [
+        "SF:17217",
+        "SF:16994",
+        "SF:16995"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Caltrain",
+      "trips": 175,
+      "stops": [
+        "SF:15417",
+        "SF:15731",
+        "SF:16992"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Embarcadero",
+      "trips": 12,
+      "stops": [
+        "SF:15417",
+        "SF:15731",
+        "SF:16992"
+      ]
+    }
+  ],
+  "SF:PH": [
+    {
+      "direction": 0,
+      "headsign": "Hyde & Beach",
+      "trips": 80,
+      "stops": [
+        "SF:16063"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Powell & Market",
+      "trips": 80,
+      "stops": [
+        "SF:16064"
+      ]
+    }
+  ],
+  "SF:PM": [
+    {
+      "direction": 0,
+      "headsign": "Bay & Taylor",
+      "trips": 80,
+      "stops": [
+        "SF:16063"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Powell & Market",
+      "trips": 80,
+      "stops": [
+        "SF:16064"
+      ]
+    }
+  ],
+  "SF:T": [
+    {
+      "direction": 0,
+      "headsign": "Sunnydale",
+      "trips": 140,
+      "stops": [
+        "SF:17874"
+      ]
+    },
+    {
+      "direction": 1,
+      "headsign": "Chinatown",
+      "trips": 140,
+      "stops": [
+        "SF:17877"
+      ]
+    }
+  ]
+}

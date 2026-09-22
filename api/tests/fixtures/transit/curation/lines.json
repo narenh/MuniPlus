@@ -1,0 +1,19 @@
+{
+  "SF:F": {
+    "mode": "streetcar",
+    "note": "511 calls the F metro, like J-T. It is a heritage streetcar."
+  },
+  "SF:J": {
+    "color": "#FAA633"
+  },
+  "SF:LOWL": {
+    "replaces": [
+      "SF:L"
+    ]
+  },
+  "SF:NOWL": {
+    "replaces": [
+      "SF:N"
+    ]
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "SF:1": {
+    "shortName": "1",
+    "longName": "CALIFORNIA",
+    "mode": "bus",
+    "routeType": 3,
+    "color": "#005B95",
+    "textColor": "#FFFFFF"
+  },
+  "SF:5": {
+    "shortName": "5",
+    "longName": "FULTON",
+    "mode": "bus",
+    "routeType": 3,
+    "color": "#005B95",
+    "textColor": "#FFFFFF"
+  },
+  "SF:5R": {
+    "shortName": "5R",
+    "longName": "FULTON RAPID",
+    "mode": "bus",
+    "routeType": 3,
+    "color": "#BF2B45",
+    "textColor": "#FFFFFF"
+  },
+  "SF:F": {
+    "shortName": "F",
+    "longName": "MARKET & WHARVES",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#B49A36",
+    "textColor": "#FFFFFF"
+  },
+  "SF:J": {
+    "shortName": "J",
+    "longName": "CHURCH",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#FAA633",
+    "textColor": "#FFFFFF"
+  },
+  "SF:K": {
+    "shortName": "K",
+    "longName": "INGLESIDE",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#579EBF",
+    "textColor": "#FFFFFF"
+  },
+  "SF:L": {
+    "shortName": "L",
+    "longName": "TARAVAL",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#91268F",
+    "textColor": "#FFFFFF"
+  },
+  "SF:LOWL": {
+    "shortName": "LOWL",
+    "longName": "OWL TARAVAL",
+    "mode": "bus",
+    "routeType": 3,
+    "color": "#666666",
+    "textColor": "#FFFFFF"
+  },
+  "SF:M": {
+    "shortName": "M",
+    "longName": "OCEAN VIEW",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#008552",
+    "textColor": "#FFFFFF"
+  },
+  "SF:N": {
+    "shortName": "N",
+    "longName": "JUDAH",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#00529C",
+    "textColor": "#FFFFFF"
+  },
+  "SF:NOWL": {
+    "shortName": "NOWL",
+    "longName": "OWL JUDAH",
+    "mode": "bus",
+    "routeType": 3,
+    "color": "#666666",
+    "textColor": "#FFFFFF"
+  },
+  "SF:PH": {
+    "shortName": "PH",
+    "longName": "POWELL-HYDE CABLE CAR",
+    "mode": "cableway",
+    "routeType": 5,
+    "color": "#B49A36",
+    "textColor": "#FFFFFF"
+  },
+  "SF:PM": {
+    "shortName": "PM",
+    "longName": "POWELL-MASON CABLE CAR",
+    "mode": "cableway",
+    "routeType": 5,
+    "color": "#B49A36",
+    "textColor": "#FFFFFF"
+  },
+  "SF:T": {
+    "shortName": "T",
+    "longName": "THIRD",
+    "mode": "metro",
+    "routeType": 0,
+    "color": "#D60F45",
+    "textColor": "#FFFFFF"
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "subways": {
+    "marketStreetSubway": {
+      "name": "Market Subway",
+      "stations": [
+        "embarcadero",
+        "montgomery",
+        "powell"
+      ]
+    }
+  },
+  "stations": {
+    "castroPlaza": {
+      "name": "Castro Plaza",
+      "platforms": [
+        {
+          "id": "SF:13311",
+          "heading": "eastbound"
+        }
+      ],
+      "verified": "2026-09-22"
+    },
+    "churchMarket": {
+      "name": "Church & Market",
+      "platforms": [
+        {
+          "id": "SF:17073",
+          "heading": "northbound"
+        },
+        {
+          "id": "SF:18059",
+          "heading": "southbound"
+        },
+        {
+          "id": "SF:15662",
+          "heading": "eastbound"
+        },
+        {
+          "id": "SF:15661",
+          "heading": "westbound"
+        }
+      ],
+      "verified": "2026-09-22"
+    },
+    "clayDrumm": {
+      "name": "Clay & Drumm",
+      "platforms": [
+        {
+          "id": "SF:14015",
+          "heading": "westbound"
+        }
+      ]
+    },
+    "embarcadero": {
+      "name": "Embarcadero",
+      "platforms": [
+        {
+          "id": "SF:16992",
+          "heading": "eastbound"
+        },
+        {
+          "id": "SF:17217",
+          "heading": "westbound"
+        }
+      ],
+      "transferAgencies": [
+        "BA"
+      ],
+      "verified": "2026-09-22"
+    },
+    "montgomery": {
+      "name": "Montgomery",
+      "platforms": [
+        {
+          "id": "SF:15731",
+          "heading": "eastbound"
+        },
+        {
+          "id": "SF:16994",
+          "heading": "westbound"
+        }
+      ],
+      "transferAgencies": [
+        "BA"
+      ],
+      "formerIds": [
+        "mongomery"
+      ],
+      "verified": "2026-09-22",
+      "note": "Renamed from the typo 'mongomery' on 2026-09-22. App Store favourites store the old id; the client must migrate."
+    },
+    "powell": {
+      "name": "Powell",
+      "platforms": [
+        {
+          "id": "SF:15417",
+          "heading": "eastbound"
+        },
+        {
+          "id": "SF:16995",
+          "heading": "westbound"
+        }
+      ],
+      "transfers": [
+        {
+          "to": "unionSquare",
+          "mode": "indoor"
+        },
+        {
+          "to": "powellMarket",
+          "mode": "street"
+        }
+      ],
+      "verified": "2026-09-22"
+    },
+    "powellMarket": {
+      "name": "Powell & Market",
+      "platforms": [
+        {
+          "id": "SF:16063",
+          "heading": "northbound"
+        },
+        {
+          "id": "SF:16064",
+          "heading": "southbound"
+        },
+        {
+          "id": "SF:15688",
+          "heading": "westbound"
+        }
+      ],
+      "transfers": [
+        {
+          "to": "powell",
+          "mode": "street"
+        }
+      ]
+    },
+    "unionSquare": {
+      "name": "Union Square",
+      "platforms": [
+        {
+          "id": "SF:17877",
+          "heading": "northbound"
+        },
+        {
+          "id": "SF:17874",
+          "heading": "southbound"
+        }
+      ],
+      "transfers": [
+        {
+          "to": "powell",
+          "mode": "indoor"
+        }
+      ],
+      "verified": "2026-09-22"
+    }
+  }
+}

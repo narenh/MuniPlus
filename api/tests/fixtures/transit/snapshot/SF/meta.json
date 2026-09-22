@@ -1,0 +1,8 @@
+{
+  "operator": "SF",
+  "serviceFrom": "2026-08-29",
+  "serviceTo": "2027-01-15",
+  "fetchedAt": "2026-09-22T21:48:36Z",
+  "source": "fixture: assembled by hand from real 511 values",
+  "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+}

@@ -3,3 +3,10 @@ __pycache__/
 .dev.vars
 .wrangler/
 node_modules/
+
+# api/
+api/.env
+api/.venv/
+api/.local/
+api/*.egg-info/
+api/.pytest_cache/
