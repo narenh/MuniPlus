@@ -268,7 +268,7 @@ function suggestMessage(list) {
 }
 
 // ------------------------------------------------------------------ history
-/** `GET api/history` returns commits as `{sha, message, author, date, url}`;
+/** `GET api/history` returns commits as `{sha, subject, author, date, url}`;
  *  a bare list or `{commits: [...]}` both work. The GitHub page is the diff. */
 export function renderHistory(res) {
   const commits = Array.isArray(res) ? res : res?.commits || [];
