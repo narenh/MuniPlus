@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muni+ Atlas</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Cpath d='M8 22c0-8 4-12 8-12s8 4 8 12' stroke='%2300529C' stroke-width='3.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='22' r='3' fill='%23FAA633'/%3E%3Ccircle cx='24' cy='22' r='3' fill='%23D60F45'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="no-inspector">
+
+<div id="boot">
+  <div class="boot-in">
+    <svg class="worm" width="56" height="38" viewBox="0 0 56 38" fill="none">
+      <path d="M6 30C6 14 14 7 24 7s16 8 16 23" stroke="#00529C" stroke-width="5" stroke-linecap="round"/>
+      <path d="M16 31c0-12 6-18 14-18s14 7 14 18" stroke="#FAA633" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+      <circle cx="6" cy="30" r="4.5" fill="#D60F45"/>
+      <circle cx="44" cy="31" r="4.5" fill="#008552"/>
+    </svg>
+    <div class="boot-bar"><i></i></div>
+    <p id="boot-msg">Loading the network…</p>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ===================== TOP BAR ===================== -->
+  <header id="topbar">
+    <div class="brand">
+      <svg width="26" height="20" viewBox="0 0 56 38" fill="none" aria-hidden="true">
+        <path d="M6 30C6 14 14 7 24 7s16 8 16 23" stroke="#00529C" stroke-width="5.5" stroke-linecap="round"/>
+        <path d="M16 31c0-12 6-18 14-18s14 7 14 18" stroke="#FAA633" stroke-width="5.5" stroke-linecap="round" opacity=".9"/>
+        <circle cx="6" cy="30" r="4.5" fill="#D60F45"/><circle cx="44" cy="31" r="4.5" fill="#008552"/>
+      </svg>
+      <div><b>Atlas</b> <span>data.json</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="chip button" id="branch-chip" title="Commit history">
+      <span class="dot live"></span><span id="branch-name">…</span>
+    </button>
+
+    <div class="divider"></div>
+
+    <div class="stat-group">
+      <div class="stat"><b id="n-stations">–</b><i>stations</i></div>
+      <div class="stat"><b id="n-platforms">–</b><i>platforms</i></div>
+      <div class="stat"><b id="n-exits">–</b><i>exits</i></div>
+      <div class="stat"><b id="n-lines">–</b><i>lines</i></div>
+    </div>
+
+    <div class="grow"></div>
+
+    <button class="chip button" id="drift-chip" title="Check every platform against the live SFMTA feed">
+      <span class="dot" id="drift-dot"></span><span id="drift-text">Check feed</span>
+    </button>
+
+    <button class="chip button" id="issues-chip" title="Validation issues">
+      <span class="dot live" id="issues-dot"></span><span id="issues-text">Valid</span>
+    </button>
+
+    <div class="divider"></div>
+
+    <button class="btn ghost" id="btn-undo" title="Undo (⌘Z)" disabled>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4L3 7l3 3M3 7h7a3 3 0 010 6H8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="btn ghost" id="btn-redo" title="Redo (⇧⌘Z)" disabled>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 4l3 3-3 3M13 7H6a3 3 0 000 6h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="btn ghost" id="btn-search" title="Find anything (⌘K)">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.3" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 10.2L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="btn primary" id="btn-save" disabled>
+      Save<span class="count" id="save-count">0</span>
+    </button>
+  </header>
+
+  <!-- ===================== BODY ===================== -->
+  <div id="body">
+
+    <!-- line rail -->
+    <nav id="rail">
+      <div class="micro rail-label">LINES</div>
+      <button class="bullet all on" id="bullet-all" data-line="">ALL<span class="tip">Show every line</span></button>
+      <div id="rail-lines"></div>
+    </nav>
+
+    <!-- route strip -->
+    <aside id="strip" class="closed">
+      <div class="strip-head">
+        <div class="strip-title">
+          <div class="badge" id="strip-badge">J</div>
+          <div style="min-width:0">
+            <h2 id="strip-name">J Church</h2>
+            <div class="sub" id="strip-sub">25 stations</div>
+          </div>
+        </div>
+        <div class="strip-tools">
+          <button class="btn" id="strip-fit" title="Zoom the map to this line">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 2H2v4M10 2h4v4M10 14h4v-4M6 14H2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Fit
+          </button>
+          <button class="btn" id="strip-reverse" title="Reverse the stop order">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M5 3v10M5 13l-2.5-2.5M5 13l2.5-2.5M11 13V3M11 3L8.5 5.5M11 3l2.5 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reverse
+          </button>
+          <button class="btn" id="strip-add" title="Add a station to this line">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Add
+          </button>
+        </div>
+      </div>
+      <div class="strip-scroll" id="strip-list"></div>
+    </aside>
+
+    <!-- map -->
+    <div style="position:relative;flex:1 1 auto;min-width:0">
+      <div id="map"></div>
+
+      <div id="map-tools">
+        <button class="tool" id="tool-platforms" title="Show platform poles">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.6" fill="currentColor"/><circle cx="9" cy="9" r="6.4" stroke="currentColor" stroke-width="1.5" opacity=".55"/></svg>
+        </button>
+        <button class="tool" id="tool-labels" title="Show station labels">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M3 9h12M3 13h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <button class="tool" id="tool-transfers" title="Show transfer links">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 6h7a3 3 0 010 6H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1 2.6"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="6" cy="12" r="2" fill="currentColor"/></svg>
+        </button>
+        <button class="tool" id="tool-drift" title="Highlight platforms that drifted from the feed">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 3.2l6 10.6H3L9 3.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 7.6v2.8M9 12.2v.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <button class="tool" id="tool-north" title="Reset bearing and pitch">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2.4l3.4 9.4L9 9.9l-3.4 1.9L9 2.4z" fill="currentColor"/><path d="M5.6 14.4h6.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/></svg>
+        </button>
+      </div>
+
+      <div class="map-hud" id="hud-coords"><span id="hud-coords-text">—</span></div>
+      <div class="map-hud" id="hud-hint"></div>
+    </div>
+
+    <!-- inspector -->
+    <aside id="inspector" class="closed">
+      <div class="insp-head">
+        <div class="row1">
+          <div style="flex:1;min-width:0">
+            <h2 id="insp-name">—</h2>
+            <div class="insp-id mono" id="insp-id">—</div>
+          </div>
+          <button class="icon-btn" id="insp-close" title="Close (Esc)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="insp-lines" id="insp-lines"></div>
+      </div>
+      <div class="insp-scroll" id="insp-body"></div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ===================== OVERLAYS ===================== -->
+<div id="scrim"></div>
+
+<div class="modal glass" id="palette">
+  <input id="pal-input" placeholder="Jump to a station, line, or stop code…" autocomplete="off" spellcheck="false">
+  <div class="pal-list" id="pal-list"></div>
+  <div class="pal-foot">
+    <span><span class="kbd">↑↓</span> navigate</span>
+    <span><span class="kbd">↵</span> open</span>
+    <span><span class="kbd">esc</span> close</span>
+    <span class="grow"></span>
+    <span id="pal-count"></span>
+  </div>
+</div>
+
+<div class="modal glass" id="sheet">
+  <div class="sheet-head">
+    <h3 id="sheet-title">Review changes</h3>
+    <p id="sheet-sub">These edits will be written to appdata/data.json and committed.</p>
+  </div>
+  <div class="sheet-body" id="sheet-body"></div>
+  <div class="sheet-foot">
+    <button class="btn" id="sheet-cancel">Cancel</button>
+    <div class="grow"></div>
+    <button class="btn" id="sheet-write" title="Write the file without committing">Write only</button>
+    <button class="btn primary" id="sheet-commit">Commit</button>
+  </div>
+</div>
+
+<div class="modal glass" id="history" style="top:10vh;width:min(680px,94vw);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;max-height:80vh">
+  <div class="sheet-head"><h3>History</h3><p id="hist-sub">Commits touching appdata/data.json</p></div>
+  <div class="sheet-body" id="hist-body"></div>
+  <div class="sheet-foot"><button class="btn" id="hist-close">Close</button></div>
+</div>
+
+<div id="toasts"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
