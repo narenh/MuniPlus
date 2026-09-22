@@ -18,7 +18,7 @@ import re
 import zipfile
 from collections import Counter, defaultdict
 from collections.abc import Iterator
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 from app.models.ids import ref
@@ -51,8 +51,9 @@ def build_snapshot(gtfs_zip: Path, lines_json: Path, operator: str, fetched_at: 
         stops = _stops(zf, operator)
         routes = {row["route_id"]: row for row in _rows(zf, "routes.txt")}
         lines = _lines(routes, modes, operator)
-        patterns = _patterns(zf, routes, stops, operator)
         service_from, service_to = _service_period(zf)
+        days = service_days(zf, service_from, service_to)
+        patterns = _patterns(zf, routes, stops, days, operator)
 
     meta = SnapshotMeta(
         operator=operator,
@@ -164,19 +165,28 @@ def _patterns(
     zf: zipfile.ZipFile,
     routes: dict[str, dict[str, str]],
     stops: SnapshotStops,
+    days: dict[str, int],
     operator: str,
 ) -> SnapshotPatterns:
-    trips: dict[str, tuple[str, int, str]] = {}
+    """``trips`` on a pattern counts trips run in the service period: each trip row
+    once per date its service_id runs. A plain row count weighs a service that runs
+    13 days the same as one that runs 82, and 511's SF feed has exactly that
+    (weekday services 79714 and 78968), which picks a different most-run pattern
+    for the TBUS."""
+    trips: dict[str, tuple[str, int, str, int]] = {}
     for row in _rows(zf, "trips.txt"):
         route_id = row["route_id"]
         if route_id not in routes:
             raise GtfsError(f"trip {row['trip_id']} is on route {route_id}, which routes.txt does not list")
+        service_id = row["service_id"]
+        if service_id not in days:
+            raise GtfsError(f"trip {row['trip_id']} has service_id {service_id}, which no calendar file defines")
         # The realtime feeds key directions on this same 0/1, so a trip without one
         # could never be matched to a pattern. 511's SF trips all have it (34,668).
         direction = row.get("direction_id", "")
         if direction not in ("0", "1"):
             raise GtfsError(f"trip {row['trip_id']} has direction_id {direction!r}")
-        trips[row["trip_id"]] = (route_id, int(direction), row.get("trip_headsign", ""))
+        trips[row["trip_id"]] = (route_id, int(direction), row.get("trip_headsign", ""), days[service_id])
 
     # stop_times.txt is 73 MB for SF (1,302,039 rows), so it is streamed with a plain
     # reader rather than loaded. Rows are grouped by trip in 511's file, but GTFS does
@@ -203,20 +213,24 @@ def _patterns(
             sequences[trip_id].append((int(row[seq_col]), platform))
 
     groups: dict[tuple[str, int, tuple[str, ...]], Counter[str]] = defaultdict(Counter)
-    for trip_id, (route_id, direction, headsign) in trips.items():
+    for trip_id, (route_id, direction, headsign, runs) in trips.items():
         seq = sequences.get(trip_id)
         if not seq:
             raise GtfsError(f"trip {trip_id} has no stop times")
         seq.sort()
         if any(a[0] == b[0] for a, b in zip(seq, seq[1:])):
             raise GtfsError(f"trip {trip_id} repeats a stop_sequence")
-        groups[(route_id, direction, tuple(p for _, p in seq))][headsign] += 1
+        # A trip whose service runs on no date in the period is not part of it. It
+        # is still validated above: a malformed trip is a feed problem either way.
+        if runs:
+            groups[(route_id, direction, tuple(p for _, p in seq))][headsign] += runs
 
     out: dict[str, list[Pattern]] = defaultdict(list)
     for (route_id, direction, seq), headsigns in groups.items():
         # Trips running one sequence can still carry different headsigns. The most
-        # common one names the pattern; a tie goes to the lexicographically first so
-        # that a rebuild of the same zip is byte-identical.
+        # common one, weighted by days run like ``trips``, names the pattern; a tie
+        # goes to the lexicographically first so a rebuild of the same zip is
+        # byte-identical.
         headsign = min(headsigns.items(), key=lambda kv: (-kv[1], kv[0]))[0]
         out[ref(operator, route_id)].append(
             Pattern(direction=direction, headsign=headsign, trips=headsigns.total(), stops=list(seq))
@@ -251,3 +265,41 @@ def _service_period(zf: zipfile.ZipFile) -> tuple[date, date]:
     if not days:
         raise GtfsError("no service period: feed_info.txt, calendar.txt and calendar_dates.txt give no dates")
     return min(days), max(days)
+
+
+def service_days(zf: zipfile.ZipFile, start: date, end: date) -> dict[str, int]:
+    """service_id -> how many dates in ``start..end`` (inclusive) it runs.
+
+    calendar.txt gives weekday flags over a date range; calendar_dates.txt then adds
+    (exception_type 1) or removes (2) single dates. Both are needed: 511's SF feed
+    defines Saturday and Sunday service in calendar.txt but weekday service only
+    through calendar_dates.txt. A service_id that appears in either file but never
+    runs in the period maps to 0.
+    """
+    names = ("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+    weekly: dict[str, tuple[date, date, tuple[bool, ...]]] = {}
+    if _has(zf, "calendar.txt"):
+        for row in _rows(zf, "calendar.txt"):
+            flags = tuple(row[n].strip() == "1" for n in names)
+            weekly[row["service_id"]] = (_date(row["start_date"]), _date(row["end_date"]), flags)
+    exceptions: dict[date, dict[str, str]] = defaultdict(dict)
+    if _has(zf, "calendar_dates.txt"):
+        for row in _rows(zf, "calendar_dates.txt"):
+            kind = row["exception_type"].strip()
+            if kind not in ("1", "2"):
+                raise GtfsError(f"calendar_dates.txt: exception_type {kind!r} for {row['service_id']} on {row['date']}")
+            exceptions[_date(row["date"])][row["service_id"]] = kind
+
+    counts = dict.fromkeys(weekly, 0) | {sid: 0 for on_day in exceptions.values() for sid in on_day}
+    day = start
+    while day <= end:
+        running = {sid for sid, (lo, hi, flags) in weekly.items() if lo <= day <= hi and flags[day.weekday()]}
+        for sid, kind in exceptions.get(day, {}).items():
+            if kind == "1":
+                running.add(sid)
+            else:
+                running.discard(sid)
+        for sid in running:
+            counts[sid] += 1
+        day += timedelta(days=1)
+    return counts

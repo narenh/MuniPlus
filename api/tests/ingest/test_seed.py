@@ -68,14 +68,14 @@ OVERRIDES = {
 }
 
 
-def run():
+def run(bus=BUS, typo_merges=None):
     inputs = Inputs(
-        metro=METRO, metro_source="test", bus=BUS, overrides=OVERRIDES,
+        metro=METRO, metro_source="test", bus=bus, overrides=OVERRIDES,
         snapshot=files.read_snapshot(FIXTURE, "SF"), sources={},
     )
     report = Report()
-    seed = convert(inputs, DAY, report)
-    return seed, report, check(inputs, seed, report)
+    seed = convert(inputs, DAY, report, typo_merges=typo_merges or {})
+    return seed, report, check(inputs, seed, report, needs_a_person={})
 
 
 def test_merge_and_rename():
@@ -108,7 +108,8 @@ def test_agencies_verified_notes_and_ignored():
     assert stations["montgomery"].transfer_agencies == ["BA"]
     assert "mongomery: 'ferry'" in report.render()
     assert {k: v.verified for k, v in stations.items()} == {
-        "embarcadero": DAY, "montgomery": DAY, "churchMarket": DAY, "marketMontgomery": None,
+        # churchMarket gained 15662 from bus.json, a pole nobody checked by hand.
+        "embarcadero": DAY, "montgomery": DAY, "churchMarket": None, "marketMontgomery": None,
     }
     assert stations["marketMontgomery"].platforms[0].note == "Checked on the street."
     assert {k: v.note for k, v in seed.curation.ignored.root.items()} == {"SF:13510": "1 of the 48's 869 trips."}
@@ -131,3 +132,41 @@ def test_what_is_dropped_is_reported():
     assert "level id(depth)=-1 name='Muni Metro'" in text
     assert "embarcadero 16992: ['J']" in text  # terminates
     assert "churchMarket 17073: 'Church St & Market St'" in text  # stopName
+
+
+# MARK: - Typo stations
+
+# 16063 and 16064 are 11 m apart at Powell & Market. Filed as two bus.json stations
+# whose ids differ only in case, the way a feed typo split bayshoreLeland.
+def powell(sid, code, heading, transfers):
+    return {"id": sid, "name": "Powell & Market", "kind": "streetLevel", "lines": [], "latitude": 0, "longitude": 0,
+            "transferStations": transfers, "transferAgencies": [], "platforms": [b(code, heading)]}
+
+
+TYPO_BUS = {
+    **BUS,
+    "stations": BUS["stations"] + [
+        powell("powellMarket", "16063", "northbound", ["embarcadero"]),
+        powell("powellMARKET", "16064", "southbound", ["embarcadero", "montgomery"]),
+    ],
+}
+
+
+def test_ids_that_differ_only_in_case_fail_the_seed():
+    _, _, errors = run(bus=TYPO_BUS)
+    assert "station ids differ only in case: powellMARKET, powellMarket" in errors
+
+
+def test_a_typo_station_is_folded_into_the_real_one():
+    seed, report, errors = run(bus=TYPO_BUS, typo_merges={"powellMARKET": ("powellMarket", "the feed shouts")})
+    assert errors == []
+    stations = seed.curation.stations.stations
+    assert "powellMARKET" not in stations
+    real = stations["powellMarket"]
+    assert [p.id for p in real.platforms] == ["SF:16063", "SF:16064"]
+    assert real.former_ids == ["powellMARKET"]
+    note = real.platforms[1].note
+    assert "powellMARKET" in note and "the feed shouts" in note and "11 m from SF:16063" in note
+    # Its transfers are carried over once, never duplicated.
+    assert [t.to for t in real.transfers] == ["embarcadero", "montgomery"]
+    assert "retired into formerIds: mongomery -> montgomery, powellMARKET -> powellMarket, all kept" in report.render()

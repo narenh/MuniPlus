@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from app.ingest.gtfs_static import SOURCE, GtfsError, build_snapshot, normalise_color
+from app.ingest.gtfs_static import SOURCE, GtfsError, build_snapshot, normalise_color, service_days
 from app.models import files
 
 FETCHED = datetime(2026, 9, 22, 23, 12, 36, tzinfo=UTC)
@@ -56,9 +56,28 @@ def stop_times() -> str:
     return "\n".join(rows) + "\n"
 
 
-FEED_INFO = "feed_publisher_name,feed_start_date,feed_end_date\n511 SF Bay,20260829,20270115"
-CALENDAR = "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date\nwk,1,1,1,1,1,0,0,20260901,20261201\n"
-CALENDAR_DATES = "service_id,date,exception_type\nwk,20260831,1\nwk,20261225,2\n"
+# The period is two weeks, Monday 2026-09-07 to Sunday 2026-09-20. In it:
+#   wk   runs weekdays from calendar.txt (10), less Monday the 14th, removed in
+#        calendar_dates.txt: 9 days
+#   sat  runs Saturdays from calendar.txt: the 12th and the 19th, 2 days
+#   hol  exists only in calendar_dates.txt, the way 511 defines SF weekday
+#        service: the 12th and 13th, 2 days (its 1 Oct date is outside the period)
+#   gone exists only in calendar_dates.txt, on a date outside the period: 0 days
+# The calendar deliberately runs past the period, which must not count.
+FEED_INFO = "feed_publisher_name,feed_start_date,feed_end_date\n511 SF Bay,20260907,20260920"
+CALENDAR = (
+    "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date\n"
+    "wk,1,1,1,1,1,0,0,20260901,20261231\n"
+    "sat,0,0,0,0,0,1,0,20260901,20261231\n"
+)
+CALENDAR_DATES = (
+    "service_id,date,exception_type\n"
+    "wk,20260914,2\n"
+    "hol,20260912,1\nhol,20260913,1\nhol,20261001,1\n"
+    "gone,20261002,1\n"
+    "wk,20270301,2\n"
+)
+WK_DAYS = 9
 
 LINES = [
     {"Id": "F", "Name": "MARKET & WHARVES", "TransportMode": "metro", "PublicCode": "F"},
@@ -142,12 +161,46 @@ def test_bad_colours(raw):
 def test_patterns(tmp_path):
     patterns = build(tmp_path).patterns.root
     f = [(p.direction, p.trips, p.headsign, p.stops) for p in patterns["SF:F"]]
+    # Every trip here is on wk, so trips = trip rows x 9 days.
     assert f == [
-        (0, 4, "Fisherman's Wharf", ["SF:100", "SF:101", "SF:102"]),
-        (0, 1, "Wharf", ["SF:100", "SF:102"]),
-        (1, 1, "Castro", ["SF:100", "SF:101", "SF:102"]),
+        (0, 4 * WK_DAYS, "Fisherman's Wharf", ["SF:100", "SF:101", "SF:102"]),
+        (0, 1 * WK_DAYS, "Wharf", ["SF:100", "SF:102"]),
+        (1, 1 * WK_DAYS, "Castro", ["SF:100", "SF:101", "SF:102"]),
     ]
     assert [p.stops for p in patterns["SF:5"]] == [["SF:103", "SF:102", "SF:101"]]
+
+
+# The 5 gets a second sequence (101, 102), run by three Saturday trips and one trip
+# on hol. By trip rows it has 4 against the weekday pattern's 1 and would be the
+# most-run; by days run it has 3 x 2 + 1 x 2 = 8 against 1 x 9. A trip on gone runs
+# no day in the period and must not appear at all.
+WEIGHTED_TRIPS = TRIPS + "5,sat,t8,Ocean Beach,0\n5,sat,t9,Ocean Beach,0\n5,sat,t10,Ocean Beach,0\n5,hol,t11,Ocean Beach,0\n5,gone,t12,Nowhere,1\n"
+
+
+def weighted_stop_times() -> str:
+    rows = [f"{t},10:00:00,10:00:00,101,1\n{t},10:05:00,10:05:00,102,2" for t in ("t8", "t9", "t10", "t11")]
+    return stop_times() + "\n".join(rows) + "\nt12,11:00:00,11:00:00,100,1\nt12,11:05:00,11:05:00,103,2\n"
+
+
+def test_trips_are_weighted_by_the_days_they_run(tmp_path):
+    patterns = build(tmp_path, trips=WEIGHTED_TRIPS, stop_times=weighted_stop_times()).patterns.root["SF:5"]
+    assert [(p.direction, p.trips, p.stops) for p in patterns] == [
+        (0, 9, ["SF:103", "SF:102", "SF:101"]),
+        (0, 8, ["SF:101", "SF:102"]),
+    ]
+
+
+def test_service_days(tmp_path):
+    zip_path, _ = make_feed(tmp_path)
+    with zipfile.ZipFile(zip_path) as zf:
+        assert service_days(zf, date(2026, 9, 7), date(2026, 9, 20)) == {"wk": 9, "sat": 2, "hol": 2, "gone": 0}
+        # The whole of 2026-09: calendar.txt starts on the 1st, a Tuesday.
+        assert service_days(zf, date(2026, 9, 1), date(2026, 9, 30))["wk"] == 22 - 1
+
+
+def test_trip_on_an_undefined_service_is_an_error(tmp_path):
+    with pytest.raises(GtfsError, match="no calendar file defines"):
+        build(tmp_path, trips=TRIPS + "F,nosuch,t8,Wharf,0\n")
 
 
 def test_headsign_is_the_most_common(tmp_path):
@@ -182,22 +235,28 @@ def test_repeated_stop_sequence_is_an_error(tmp_path):
 def test_meta(tmp_path):
     zip_path, lines_path = make_feed(tmp_path)
     meta = build_snapshot(zip_path, lines_path, "SF", FETCHED).meta
-    assert (meta.operator, meta.service_from, meta.service_to) == ("SF", date(2026, 8, 29), date(2027, 1, 15))
+    assert (meta.operator, meta.service_from, meta.service_to) == ("SF", date(2026, 9, 7), date(2026, 9, 20))
     assert meta.sha256 == hashlib.sha256(zip_path.read_bytes()).hexdigest()
     assert meta.source == SOURCE
     assert meta.fetched_at == FETCHED
 
 
 def test_service_period_falls_back_to_the_calendar(tmp_path):
-    # calendar.txt runs 09-01..12-01; calendar_dates adds 08-31 and removes 12-25,
-    # and a removal must not stretch the period.
+    # calendar.txt runs 09-01..12-31; calendar_dates.txt adds dates inside that and
+    # removes 2027-03-01, and a removal must not stretch the period.
     meta = build(tmp_path, feed_info=None).meta
-    assert (meta.service_from, meta.service_to) == (date(2026, 8, 31), date(2026, 12, 1))
+    assert (meta.service_from, meta.service_to) == (date(2026, 9, 1), date(2026, 12, 31))
 
 
 def test_service_period_with_blank_feed_info_dates(tmp_path):
     meta = build(tmp_path, feed_info="feed_publisher_name,feed_start_date,feed_end_date\n511 SF Bay,,\n").meta
-    assert meta.service_from == date(2026, 8, 31)
+    assert meta.service_from == date(2026, 9, 1)
+
+
+def test_calendar_dates_alone_define_the_period(tmp_path):
+    # A feed with no calendar.txt and no feed_info: the period is the added dates.
+    meta = build(tmp_path, feed_info=None, calendar=None, trips=TRIPS.replace(",wk,", ",hol,")).meta
+    assert (meta.service_from, meta.service_to) == (date(2026, 9, 12), date(2026, 10, 2))
 
 
 def test_fetched_at_must_be_aware(tmp_path):

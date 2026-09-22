@@ -59,6 +59,26 @@ RENAMES = {"mongomery": "montgomery"}
 """The one station rename. ``mongomery`` was a typo that shipped, so it lives on in
 App Store users' favourites and must survive as a former id."""
 
+TYPO_MERGES = {
+    "bayshoreLEland": ("bayshoreLeland", "the feed spells its stop 'Bayshore Blvd &L eland Ave', a misplaced space"),
+    "middlePointFairFax": ("middlePointFairfax", "the feed spells its stop 'Middle Point Rd & Fair Fax Ave'"),
+}
+"""Stations the old generator minted only because a feed typo made one corner look
+like two, keyed by the typo id, with the station they belong to and the typo. Found
+by the validator's check for station ids that differ only in case. The typo ids
+shipped in bus.json, so they survive as former ids."""
+
+NEEDS_A_PERSON = {
+    "SF:17181": (
+        "columbusChestnut",
+        "SFMTA's summer feed (2026-07-23 to 08-28, what bus.json was built from) names it "
+        "'Columbus Ave & Chestnut St'; 511's current feed names it '{name}' with the same "
+        "coordinates. Rebuilding bus.json from 511 files it under columbusLombard instead. "
+        "Left in columbusChestnut until someone checks the pole.",
+    ),
+}
+"""Platforms kept where they are but flagged, with the evidence, for a person to check."""
+
 AGENCIES = {"bart": "BA", "caltrain": "CT"}
 """data.json's agency names -> 511 operator codes."""
 
@@ -185,9 +205,11 @@ class Seed:
     """data.json stations that bus.json added platforms to."""
     dropped: dict[str, list[str]]
     """What data.json said that has no place in the new model, by kind."""
+    typo_merges: dict[str, tuple[str, str]]
+    """The ``TYPO_MERGES`` this seed applied."""
 
 
-def convert(inputs: Inputs, verified_on: date, report: Report) -> Seed:
+def convert(inputs: Inputs, verified_on: date, report: Report, typo_merges: dict = TYPO_MERGES) -> Seed:
     metro, bus, snapshot = inputs.metro, inputs.bus, inputs.snapshot
     overrides = inputs.overrides
     stations: dict[str, Station] = {}
@@ -282,7 +304,11 @@ def convert(inputs: Inputs, verified_on: date, report: Report) -> Seed:
             station.platforms += fresh
             origin[sid] = "metro+bus"
             if fresh:
+                # The rule is that a change to the platform list clears verified. These
+                # bus poles were never checked by hand, so the station is not verified
+                # as a whole.
                 gained.append(sid)
+                station.verified = None
             if s["name"] != station.name:
                 name_conflicts.append(f"{sid}: data.json {station.name!r}, bus.json {s['name']!r}")
             if transfers or agencies:
@@ -291,8 +317,52 @@ def convert(inputs: Inputs, verified_on: date, report: Report) -> Seed:
             stations[sid] = Station(name=s["name"], platforms=fresh, transfers=transfers, transfer_agencies=agencies)
             origin[sid] = "bus"
 
+    # --- one corner split in two by a feed typo: fold the typo station into the real one.
+    typo_notes = []
+    for old, (new, typo) in typo_merges.items():
+        if old not in stations or new not in stations:
+            raise SystemExit(f"TYPO_MERGES: {old} -> {new}, but one of them is not a station any more")
+        gone, target = stations.pop(old), stations[new]
+        origin.pop(old)
+        for p in gone.platforms:
+            here = snapshot.stops.root.get(p.id)
+            if here is None:
+                raise SystemExit(f"TYPO_MERGES: {p.id} is not in the 511 snapshot, so the distance cannot be checked")
+            dist, near = min(
+                (metres(here.lat, here.lon, s.lat, s.lon), q.id)
+                for q in target.platforms if (s := snapshot.stops.root.get(q.id))
+            )
+            if dist > 50:
+                raise SystemExit(f"TYPO_MERGES: {p.id} is {dist:.0f} m from {new}; that is not one corner")
+            p.note = (
+                f"Was the only platform of station '{old}', which existed only because {typo}. "
+                f"One corner: {dist:.0f} m from {near}. Merged on {verified_on.isoformat()}; '{old}' is in formerIds."
+            )
+            target.platforms.append(p)
+            owner[upstream_of(p.id)] = new
+            typo_notes.append(f"{p.id} ({p.heading}) moved {old} -> {new}: {dist:.0f} m from {near}")
+        for t in gone.transfers:
+            if t.to != new and all(t.to != u.to for u in target.transfers):
+                target.transfers.append(t)
+                typo_notes.append(f"{old}'s transfer to {t.to} carried over to {new}")
+            else:
+                typo_notes.append(f"{old}'s transfer to {t.to} dropped: {new} already has it")
+        target.former_ids.append(old)
+        target.verified = None
+    # Anything that pointed at a typo station now points at the real one, once.
+    for sid, st in stations.items():
+        seen, kept = set(), []
+        for t in st.transfers:
+            to = typo_merges[t.to][0] if t.to in typo_merges else t.to
+            if to != sid and to not in seen:
+                seen.add(to)
+                kept.append(t if to == t.to else Transfer(to=to, mode=t.mode, note=t.note))
+            if to != t.to:
+                typo_notes.append(f"{sid}'s transfer to {t.to} now points at {to}")
+        st.transfers = kept
+
     # --- station-overrides.json: the record of what a person checked on the street.
-    by_code = {upstream_of(p.id): (sid, p) for sid, st in stations.items() for p in st.platforms}
+    by_code ={upstream_of(p.id): (sid, p) for sid, st in stations.items() for p in st.platforms}
     override_notes = []
     for code, entry in real(overrides.get("stations", {})).items():
         hit = by_code.get(code)
@@ -354,14 +424,15 @@ def convert(inputs: Inputs, verified_on: date, report: Report) -> Seed:
         "transferAgencies values with no operator code (dropped, not guessed):",
         *(f"  - {x}" for x in agencies_unknown or ["none"]),
     ])
-    report.section("station-overrides.json", [f"- {x}" for x in override_notes] + [f"- exclude: {len(ignored)} entries -> ignored.json"])
-    return Seed(curation=curation, origin=origin, gained=gained, dropped=dropped)
+    report.section("Stations that existed only because of a feed typo (merged)", [f"- {x}" for x in typo_notes])
+    report.section("station-overrides.json",[f"- {x}" for x in override_notes] + [f"- exclude: {len(ignored)} entries -> ignored.json"])
+    return Seed(curation=curation, origin=origin, gained=gained, dropped=dropped, typo_merges=typo_merges)
 
 
 # MARK: - Checks
 
 
-def check(inputs: Inputs, seed: Seed, report: Report) -> list[str]:
+def check(inputs: Inputs, seed: Seed, report: Report, needs_a_person: dict = NEEDS_A_PERSON) -> list[str]:
     """Everything the report asserts. Returns the problems that should fail the run."""
     metro, bus, snapshot = inputs.metro, inputs.bus, inputs.snapshot
     stations = seed.curation.stations.stations
@@ -384,7 +455,8 @@ def check(inputs: Inputs, seed: Seed, report: Report) -> list[str]:
         "|---|---|---|",
         f"| data.json stations | {len(metro_ids)} | {origin['metro'] + origin['metro+bus']}, verified: {dict(Counter(str(stations[rid(s['id'])].verified) for s in metro['stations']))} |",
         f"| bus.json-only stations | | {origin['bus']}, verified: {dict(Counter(str(st.verified) for sid, st in stations.items() if seed.origin[sid] == 'bus'))} |",
-        f"| bus.json stations | {len(bus_ids)} | {origin['bus']} standalone + {origin['metro+bus']} merged into a data.json station of the same id |",
+        f"| bus.json stations | {len(bus_ids)} | {origin['bus']} standalone + {origin['metro+bus']} merged into a data.json station of the same id "
+        f"+ {len(seed.typo_merges)} typo stations merged into another bus.json station |",
         f"| stations, total | {len(metro_ids | bus_ids)} distinct ids | {len(stations)} |",
         f"| data.json platforms | {len(metro_codes)} | |",
         f"| bus.json platforms | {len(bus_codes)} ({len(set(bus_codes) & set(metro_codes))} also in data.json) | |",
@@ -397,9 +469,9 @@ def check(inputs: Inputs, seed: Seed, report: Report) -> list[str]:
         f"| 511 lines | {len(snapshot.lines.root)} | |",
         f"| 511 patterns | {sum(len(v) for v in snapshot.patterns.root.values())} ({sum(p.trips for v in snapshot.patterns.root.values() for p in v)} trips) | |",
         "",
-        f"data.json stations that gained platforms from bus.json: {len(seed.gained)}. They are marked verified like every "
-        "data.json station, although the added bus poles were never hand-checked: "
-        + ", ".join(seed.gained),
+        f"verified {sum(1 for s in stations.values() if s.verified)}, unverified {sum(1 for s in stations.values() if not s.verified)}. "
+        f"Only data.json stations whose platform list the merge left unchanged are verified. The {len(seed.gained)} that gained "
+        "bus.json platforms are not, because those poles were never checked by hand: " + ", ".join(seed.gained),
     ])
 
     # --- every old platform exactly once
@@ -420,18 +492,32 @@ def check(inputs: Inputs, seed: Seed, report: Report) -> list[str]:
     refs = [(f"{sid} transfer", t.to) for sid, st in stations.items() for t in st.transfers]
     refs += [(f"subway {k}", x) for k, sub in subways.items() for x in sub.stations]
     refs += [("station id", sid) for sid in stations]
-    stale = [f"{where} -> {x}" for where, x in refs if x in RENAMES]
+    stale = [f"{where} -> {x}" for where, x in refs if x in RENAMES or x in seed.typo_merges]
     errors += [f"stale reference {x}" for x in stale]
-    expected = {rid(x) for x in old}
+    expected = {rid(x) for x in old} - set(seed.typo_merges)
     lost_ids = sorted(expected - set(stations))
     extra_ids = sorted(set(stations) - expected)
+    retired = {**{a: b for a, b in RENAMES.items() if a in old}, **{a: b for a, (b, _) in seed.typo_merges.items() if a in old}}
+    unkept = sorted(a for a, b in retired.items() if a not in stations.get(b, Station(name="x", platforms=[])).former_ids)
     errors += [f"station id {x} lost" for x in lost_ids] + [f"station id {x} appeared from nowhere" for x in extra_ids]
-    report.section("Every old station id is preserved, except the one rename", [
+    errors += [f"retired id {x} is not in its station's formerIds" for x in unkept]
+
+    # Two live ids that differ only in case are one corner split by a feed typo
+    # (bayshoreLEland / bayshoreLeland), and would collide on a case-insensitive
+    # filesystem or URL. Fatal, so it cannot come back silently.
+    by_folded = defaultdict(list)
+    for sid in stations:
+        by_folded[sid.lower()].append(sid)
+    clashes = sorted(sorted(g) for g in by_folded.values() if len(g) > 1)
+    errors += [f"station ids differ only in case: {', '.join(g)}" for g in clashes]
+    report.section("Every old station id is preserved, as a live id or a former id", [
         f"- old ids: {len(old)}; output ids: {len(stations)}",
-        f"- renamed: {', '.join(f'{a} -> {b}' for a, b in RENAMES.items() if a in old)}",
-        f"- old ids missing (other than renames): {', '.join(lost_ids) or 'none'}",
-        f"- output ids that were not old ids (other than renames): {', '.join(extra_ids) or 'none'}",
-        f"- references to a renamed id outside formerIds (transfers, subways, station ids): {', '.join(stale) or 'none'}",
+        f"- retired into formerIds: {', '.join(f'{a} -> {b}' for a, b in retired.items())}"
+        + (f" (NOT in formerIds: {', '.join(unkept)})" if unkept else ", all kept"),
+        f"- old ids missing (other than retired): {', '.join(lost_ids) or 'none'}",
+        f"- output ids that were not old ids: {', '.join(extra_ids) or 'none'}",
+        f"- references to a retired id outside formerIds (transfers, subways, station ids): {', '.join(stale) or 'none'}",
+        f"- live station ids that differ only in case: {'; '.join(', '.join(g) for g in clashes) or 'none'}",
     ])
 
     # --- platforms not in 511
@@ -473,6 +559,36 @@ def check(inputs: Inputs, seed: Seed, report: Report) -> list[str]:
     report.section(f"Stations with no live platforms ({len(dead)})", [
         f"- {sid} ({seed.origin[sid]}): {[upstream_of(p.id) for p in stations[sid].platforms]}" for sid in dead
     ])
+
+    # --- needs a person: first in the report, because it is the part to act on
+    owner = {p.id: sid for sid, st in stations.items() for p in st.platforms}
+    flagged = []
+    for platform, (where, evidence) in needs_a_person.items():
+        if owner.get(platform) != where:
+            errors.append(f"NEEDS_A_PERSON: {platform} expected in {where}, is in {owner.get(platform)}")
+            continue
+        stop = snap_stops[platform]
+        dists = sorted(
+            (metres(stop.lat, stop.lon, s.lat, s.lon), q.id, sid)
+            for sid in stations for q in stations[sid].platforms
+            if q.id != platform and (s := snap_stops.get(q.id)) and metres(stop.lat, stop.lon, s.lat, s.lon) < 150
+        )
+        flagged.append(
+            f"- **{platform}** in `{where}`: {evidence.format(name=stop.name)} Nearest other platforms: "
+            + ", ".join(f"{q} in {sid} {d:.0f} m" for d, q, sid in dists[:4])
+        )
+    report.sections.insert(0, (f"Needs a person ({len(flagged) + len(dead) + len(unassigned)})", [
+        "Platforms whose station is in doubt:",
+        *flagged,
+        "",
+        f"Stations with no live platform ({len(dead)}): all their stops are gone from 511's current feed, "
+        "so they drop out of the API. Delete, or wait for the stops to return:",
+        *(f"- `{sid}`: {', '.join(p.id for p in stations[sid].platforms)}" for sid in dead),
+        "",
+        f"511 stops in no station and not ignored ({len(unassigned)}): the review queue. Assign each to a station "
+        "or ignore it (details in the section below):",
+        *(f"- {s} {snap_stops[s].name!r}" for s in unassigned),
+    ]))
 
     # --- integrity: the errors track B's validator will raise, checked here too
     integrity = []
@@ -587,19 +703,23 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.report.resolve().is_relative_to(args.out.resolve()):
         ap.error("--report must be outside --out: it is not part of sf-transit")
-    if args.out.exists() and any(args.out.iterdir()):
-        if not args.replace:
-            ap.error(f"{args.out} is not empty; pass --replace to start it fresh")
-        shutil.rmtree(args.out)
+    if args.out.exists() and any(args.out.iterdir()) and not args.replace:
+        ap.error(f"{args.out} is not empty; pass --replace to start it fresh")
 
     inputs = load(args)
     report = Report()
     seed = convert(inputs, args.date, report)
     errors = check(inputs, seed, report)
 
-    written = files.write_curation(args.out, seed.curation) + files.write_snapshot(args.out, inputs.snapshot)
-    changed = round_trip(args.out)
-    errors += [f"round trip changed {x}" for x in changed]
+    # A seed that fails its own checks writes the report and nothing else, and leaves
+    # any existing tree alone: a half-right tree is worse than none.
+    written, changed = [], []
+    if not errors:
+        if args.out.exists():
+            shutil.rmtree(args.out)
+        written = files.write_curation(args.out, seed.curation) + files.write_snapshot(args.out, inputs.snapshot)
+        changed = round_trip(args.out)
+        errors += [f"round trip changed {x}" for x in changed]
 
     head = [
         "# sf-transit seed: reconciliation report",
@@ -613,17 +733,17 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "## Output",
         "",
-        f"- tree: {args.out.resolve()}",
+        f"- tree: {args.out.resolve()}" + ("" if written else " (NOT written: the checks failed)"),
         *(f"- wrote {x}" for x in written),
         f"- round trip (read_curation/read_snapshot, written back): "
-        + ("byte-identical, nothing rewritten" if not changed else "CHANGED " + ", ".join(changed)),
+        + ("not run" if not written else "byte-identical, nothing rewritten" if not changed else "CHANGED " + ", ".join(changed)),
         f"- problems: {len(errors)}",
         *(f"  - {x}" for x in errors),
         "",
     ]
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text("\n".join(head) + "\n" + report.render())
-    print(f"wrote {args.out} and {args.report}; {len(errors)} problem(s)")
+    print(f"wrote {args.out if written else 'NO tree'} and {args.report}; {len(errors)} problem(s)")
     for x in errors:
         print("  " + x)
     return 1 if errors else 0
