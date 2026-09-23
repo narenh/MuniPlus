@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from ..endpoints import map as map_endpoint
 from ..settings import Settings
-from . import api, auth, pages
+from . import api, auth, pages, refresh, review
 from .state import EDITOR_DIR, Editor
 
 
@@ -23,6 +23,8 @@ def install_editor(app: FastAPI, settings: Settings, *, editor_dir: Path = EDITO
     app.state.editor = editor
     app.include_router(auth.router)
     app.include_router(api.router)
+    app.include_router(review.router)
+    app.include_router(refresh.router)
     app.include_router(map_endpoint.router)
     app.include_router(pages.router)
     pages.mount_assets(app, editor_dir)
