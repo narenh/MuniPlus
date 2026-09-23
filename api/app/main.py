@@ -44,6 +44,13 @@ def load_network(app: FastAPI) -> None:
         # Keep going: an existing checkout is still worth serving.
         log.warning("sf-transit sync failed, serving what is on disk: %s", err)
         app.state.data_error = f"sync failed: {err}"
+    if not (repo.path / ".git").is_dir():
+        # Nothing to load, and trying would only replace the sync error, which says
+        # why (a rejected deploy key, say), with a less useful one about a missing
+        # directory.
+        app.state.network = None
+        app.state.data_error = app.state.data_error or "no sf-transit checkout"
+        return
     try:
         app.state.network = load_checkout(repo, settings.operators)
         app.state.data_error = None

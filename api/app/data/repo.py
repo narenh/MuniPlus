@@ -16,6 +16,7 @@ git's own stderr.
 """
 
 import os
+import re
 import shlex
 import subprocess
 import tempfile
@@ -131,12 +132,33 @@ class Repo:
             # since ssh refuses a key others can read.
             os.fchmod(fd, 0o600)
             with os.fdopen(fd, "w") as f:
-                # Some OpenSSH versions reject a key file without its trailing
-                # newline ("invalid format"), and an env var loses it easily.
-                f.write(self._deploy_key if self._deploy_key.endswith("\n") else self._deploy_key + "\n")
+                f.write(normalise_key(self._deploy_key))
             env["GIT_SSH_COMMAND"] = (
                 f"ssh -i {shlex.quote(key_path)} -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
             )
             yield env
         finally:
             Path(key_path).unlink(missing_ok=True)
+
+
+_PEM = re.compile(r"(-----BEGIN [A-Z ]+-----)(.*?)(-----END [A-Z ]+-----)", re.S)
+
+
+def normalise_key(key: str) -> str:
+    """Put back the line breaks an env var strips from a private key.
+
+    ssh parses an OpenSSH key by its lines, and a multi-line value is the thing an
+    env var UI is most likely to mangle: into literal ``\\n``, or with every newline
+    collapsed to a space. Either makes ssh fail with ``error in libcrypto``, which
+    is exactly what the first staging deploy logged. The base64 body has no spaces
+    of its own, so rebuilding it as 70-column lines between the armour lines gives
+    back the original file; a key that already has its newlines passes through.
+    """
+    key = key.strip().replace("\\r\\n", "\n").replace("\\n", "\n").replace("\r\n", "\n")
+    match = _PEM.search(key)
+    if match and "\n" not in match.group(2).strip():
+        body = "".join(match.group(2).split())
+        lines = [body[i : i + 70] for i in range(0, len(body), 70)]
+        key = "\n".join([match.group(1), *lines, match.group(3)])
+    # Some OpenSSH versions also reject a key file without its trailing newline.
+    return key if key.endswith("\n") else key + "\n"

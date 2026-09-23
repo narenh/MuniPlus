@@ -187,3 +187,22 @@ def test_clone_and_pull_with_a_key_set(tmp_path, origin):
     with pytest.raises(RepoError) as failure:
         broken.ensure_cloned()
     assert "not-a-real-key" not in str(failure.value)
+
+
+def test_deploy_keys_survive_env_var_mangling():
+    # The first staging deploy failed with "error in libcrypto": the key's newlines
+    # did not survive the trip through the env var.
+    import subprocess, tempfile
+    from pathlib import Path
+    from app.data.repo import normalise_key
+
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "k"
+        subprocess.run(["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-f", str(path)], check=True)
+        original = path.read_text()
+        for mangled in (original, original.strip(), original.replace("\n", "\\n"), original.replace("\n", " ").strip()):
+            fixed = normalise_key(mangled)
+            path.write_text(fixed)
+            path.chmod(0o600)
+            # ssh-keygen -y only succeeds on a key file ssh can actually load.
+            assert subprocess.run(["ssh-keygen", "-y", "-f", str(path)], capture_output=True).returncode == 0, repr(mangled[:60])
