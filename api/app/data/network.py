@@ -333,9 +333,13 @@ class Network:
         # Curated patches first (curation/shapes.json): what the map draws is 511's
         # path wherever a person has not said otherwise.
         patched, _ = patch_shapes(curation.shapes, drawn, shapes)
-        # Then cut at the terminals: a stop missing from the snapshot is skipped.
+        # Then cut at the terminals riders use. A stop missing from the snapshot is
+        # skipped, and so is an ignored one: SF:15418 at Balboa Park is where 511
+        # ends every J and K from downtown, and SFMTA's own page calls it a timing
+        # point nobody boards at. Those lines end at their last real stop instead.
+        ignored = curation.ignored.root
         for sid, stop_ids in drawn_stops.items():
-            at = [(stops[p].lon, stops[p].lat) for p in stop_ids if p in stops]
+            at = [(stops[p].lon, stops[p].lat) for p in stop_ids if p in stops and p not in ignored]
             patched[sid] = clip_to_stops(patched[sid], at)
         self._shape_points = dict(sorted(patched.items()))
         self._shapes: tuple[ShapesResponse, str] | None = None
