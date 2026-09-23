@@ -255,6 +255,29 @@ function alignPills(pills) {
   return pills;
 }
 
+/**
+ * How a station is drawn (STATION_PAINT). Stations in a curated subway are
+ * underground, whatever buses also stop above them:
+ *  - `metro`: a metro interchange. Two or more metro lines in a subway, or an
+ *    indoor transfer from one (Union Square's passage to Powell makes it one),
+ *    or an interchange served by metro lines only.
+ *  - `underground`: a subway station on one metro line (Chinatown).
+ *  - `surface`: an interchange with any bus, streetcar or cable car line.
+ *  - `stop`: one line, at street level.
+ */
+function stationKind(sid, station, ls) {
+  const subways = Object.values(store.curation?.stations?.subways || {});
+  const underground = subways.some(sw => sw.stations.includes(sid));
+  const metro = ls.filter(isMetro).length;
+  if (underground) {
+    const indoor = (station.transfers || []).some(t => t.mode === 'indoor');
+    if (metro >= 2 || indoor) return 'metro';
+    if (metro === 1) return 'underground';
+  }
+  if (ls.length > 1) return metro === ls.length ? 'metro' : 'surface';
+  return 'stop';
+}
+
 function stationFeatures() {
   const active = store.activeLine;
   const feats = [], pills = [];
@@ -283,10 +306,7 @@ function stationFeatures() {
         pill: pill ? 1 : 0,
         color: tint(ls, on),
         active: on ? 1 : 0,
-        interchange: ls.length > 1 ? 1 : 0,
-        // An interchange with any line that is not metro is above ground, and is
-        // drawn apart from the metro-only ones (see STATION_PAINT).
-        surface: ls.length > 1 && ls.some(l => !isMetro(l)) ? 1 : 0,
+        kind: stationKind(sid, s, ls),
         selected: store.selStation === sid ? 1 : 0,
         // a platform 511 no longer lists: flagged, never removed automatically
         stale: platformsOf(s).some(p => !derivedPlatform(p.id)?.live) ? 1 : 0,
@@ -553,18 +573,19 @@ function addSources() {
 const dimmed = (on, a, b) => ['case', ['==', ['get', 'active'], 1], a, b];
 const isSel = ['==', ['get', 'selected'], 1];
 const isHover = ['boolean', ['feature-state', 'hover'], false];
-const isInterchange = ['==', ['get', 'interchange'], 1];
-const isSurface = ['==', ['get', 'surface'], 1];
+const isSurface = ['==', ['get', 'kind'], 'surface'];
+const isUnderground = ['==', ['get', 'kind'], 'underground'];
+const isInterchange = ['in', ['get', 'kind'], ['literal', ['metro', 'surface']]];
 
 /**
- * Station nodes, three kinds:
- *  - an interchange served only by metro lines: a white disc with a black ring,
- *    the metro convention;
- *  - an interchange with any bus, streetcar or cable car line, which puts it at
- *    street level: a black disc with a white ring, so Church & 16th never reads
- *    as the Church St subway station;
- *  - a stop on one line: a solid dot in that line's colour, with a thin dark
- *    edge so it still shows on its own line.
+ * Station nodes, by `kind` (stationKind):
+ *  - metro: a white disc with a black ring, the metro convention;
+ *  - underground: a white dot ringed in its line's colour, a subway station on
+ *    one line;
+ *  - surface: a black disc with a white ring, so Church & 16th never reads as
+ *    the Church St subway station;
+ *  - stop: a solid dot in its line's colour, with a thin dark edge so it still
+ *    shows on its own line.
  * Interchanges are drawn larger, as on a real map.
  *
  * At city zoom SF's 1,805 stations sit closer together than the dots were
@@ -574,25 +595,28 @@ const isSurface = ['==', ['get', 'surface'], 1];
  */
 const STATION_PAINT = {
   'circle-radius': ['interpolate', ['linear'], ['zoom'],
-    10, ['case', ['==', ['get', 'interchange'], 1], 1.8, 1.2],
-    12, ['case', ['==', ['get', 'interchange'], 1], 2.8, 1.8],
-    13, ['case', ['==', ['get', 'interchange'], 1], 4.6, 3.1],
-    14, ['case', ['==', ['get', 'interchange'], 1], 8, 5.2],
-    18, ['case', ['==', ['get', 'interchange'], 1], 14, 9]],
+    10, ['case', isInterchange, 1.8, 1.2],
+    12, ['case', isInterchange, 2.8, 1.8],
+    13, ['case', isInterchange, 4.6, 3.1],
+    14, ['case', isInterchange, 8, 5.2],
+    18, ['case', isInterchange, 14, 9]],
   'circle-color': ['case',
     isSurface, '#05060a',
     isInterchange, '#ffffff',
+    isUnderground, '#ffffff',
     ['get', 'color']],
   'circle-stroke-width': ['interpolate', ['linear'], ['zoom'],
-    10, ['case', isSel, 1.6, isInterchange, 0.6, 0.4],
-    12, ['case', isSel, 2.4, isHover, 1.6, isInterchange, 0.9, 0.6],
-    14, ['case', isSel, 4, isHover, 3.2, isInterchange, 2.4, 1.3]],
+    10, ['case', isSel, 1.6, isInterchange, 0.6, isUnderground, 0.8, 0.4],
+    12, ['case', isSel, 2.4, isHover, 1.6, isInterchange, 0.9, isUnderground, 1.2, 0.6],
+    14, ['case', isSel, 4, isHover, 3.2, isInterchange, 2.4, isUnderground, 2.4, 1.3]],
   'circle-stroke-color': ['case',
     // A white ring on a white disc would have no edge, so a selected metro
     // interchange keeps its black ring and is marked by the glow beneath. A
     // street-level one's white ring already is the edge.
     isSurface, '#ffffff',
     isInterchange, '#05060a',
+    // The line's colour is what says which subway line this station is on.
+    isUnderground, ['get', 'color'],
     isSel, '#ffffff',
     '#05060a'],
   // A station drawn as a pill keeps its disc for clicks and hover, unseen.
