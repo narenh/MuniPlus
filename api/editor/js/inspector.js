@@ -11,7 +11,8 @@ import {
   store, edit, select, stationById, stationIds, linesOf, lineById, allLines, esc,
   metresBetween, platformsOf, stopsOf, platformIdOf, derivedStation, derivedStop, stationPos,
   stopPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
-  setLineOverride, knownModes, setActiveLine, inboundTransfers, deleteStationIn,
+  setLineOverride, knownModes, setActiveLine, transferPartners, deleteStationIn,
+  transfersOf, findTransfer, addTransferIn, removeTransferIn,
 } from './store.js';
 import { hint, highlightLink, flyTo, showCandidates, onCandidate, fitLine } from './map.js';
 
@@ -355,44 +356,33 @@ function stopsField(p, all) {
 }
 
 // ---------------------------------------------------------------- transfers
+// Both-ways by construction: a transfer is one pair, so there is no direction to
+// show and nothing to reciprocate.
 const TMODE = {
-  street: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M10.5 1.8L14 5l-3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  indoor: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M1 5h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M10.5 1.8L14 5l-3.5 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  street: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M3 5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.1 2.6"/><path d="M11.5 2L14.5 5l-3 3M4.5 2L1.5 5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  indoor: '<svg width="13" height="9" viewBox="0 0 16 10" fill="none"><path d="M3 5h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M11.5 2L14.5 5l-3 3M4.5 2L1.5 5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
 
 function sectionTransfers(st, sid) {
-  const inbound = stationIds()
-    .filter(id => id !== sid && (stationById(id).transfers || []).some(t => t.to === sid));
   const here = stationPos(sid);
 
-  const rows = (st.transfers || []).map(t => {
+  const rows = transfersOf(sid).map(t => {
     const to = stationById(t.to);
-    const mutual = inbound.includes(t.to);
     const there = stationPos(t.to);
     const away = here && there ? `${metresBetween(here, there)} m` : '—';
     return `
-    <span class="tchip link ${mutual ? 'both' : 'out'}" data-act="hover-link" data-id="${esc(t.to)}">
+    <span class="tchip link both" data-act="hover-link" data-id="${esc(t.to)}">
       <i class="dir">${TMODE[t.mode] || TMODE.street}</i>
       <span class="nm">${esc(to ? to.name : t.to)}</span>
       <em>${t.mode === 'indoor' ? 'indoor' : away}</em>
       <button class="x" data-act="cycle-mode" data-id="${esc(t.to)}" title="Switch to ${t.mode === 'indoor' ? 'street' : 'indoor'}">
         <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 4.5h6.5M6.5 2.5L8.8 4.5 6.5 6.5M10 7.5H3.5M5.5 5.5L3.2 7.5 5.5 9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button class="x" data-act="untransfer" data-id="${esc(t.to)}" title="Remove">
+      <button class="x" data-act="untransfer" data-id="${esc(t.to)}" title="Remove the transfer (both ways)">
         <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </button>
     </span>`;
   }).join('');
-
-  const inOnly = inbound.filter(id => !(st.transfers || []).some(t => t.to === id)).map(id => `
-    <span class="tchip link in" data-act="hover-link" data-id="${esc(id)}">
-      <i class="dir">${TMODE.street}</i>
-      <span class="nm">${esc(stationById(id)?.name || id)}</span>
-      <em>links here</em>
-      <button class="x mk" data-act="reciprocate" data-id="${esc(id)}" title="Link back">
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      </button>
-    </span>`).join('');
 
   const agencies = AGENCIES.map(([ag, label]) => {
     const on = (st.transferAgencies || []).includes(ag);
@@ -404,13 +394,11 @@ function sectionTransfers(st, sid) {
   return `
   <div class="sect">
     <div class="sect-head"><div class="micro">Transfers</div></div>
-    ${rows ? `<div class="field"><div class="chips">${rows}</div></div>` : ''}
-    ${inOnly ? `<div class="field"><label class="micro">One way in ${sub('they link here; this station does not link back')}</label><div class="chips">${inOnly}</div></div>` : ''}
-    ${!rows && !inOnly ? '<div class="empty" style="margin-bottom:10px">No transfer links.</div>' : ''}
+    ${rows ? `<div class="field"><div class="chips">${rows}</div></div>` : '<div class="empty" style="margin-bottom:10px">No transfers.</div>'}
     <div class="field">
       <button class="tchip add" data-act="add-transfer" style="width:100%;justify-content:center;height:29px">
         <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7M2.5 6h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        Link a station
+        Add a transfer
       </button>
     </div>
     ${store.readOnly && !anyAgency ? '' : `<div class="field" style="margin-top:12px">
@@ -591,36 +579,14 @@ function wireStation(st, sid) {
       }
 
       if (act === 'untransfer') {
-        commit(`Unlink ${b.dataset.id}`, s => {
-          s.transfers = (s.transfers || []).filter(t => t.to !== b.dataset.id);
-        });
+        const other = b.dataset.id;
+        commit(`Remove transfer ${sid} ↔ ${other}`, (s, c) => removeTransferIn(c, sid, other));
       }
 
-      // An indoor passage cannot be one-way, so switching to indoor sets both
-      // sides; switching away only touches this one.
       if (act === 'cycle-mode') {
         const other = b.dataset.id;
-        const cur = (st.transfers || []).find(t => t.to === other)?.mode;
-        const to = cur === 'indoor' ? 'street' : 'indoor';
-        commit(`${other} transfer → ${to}`, (s, c) => {
-          const t = s.transfers.find(x => x.to === other);
-          t.mode = to;
-          if (to === 'indoor') {
-            const os = c.stations.stations[other];
-            const back = (os.transfers || (os.transfers = [])).find(x => x.to === sid);
-            if (back) back.mode = 'indoor';
-            else os.transfers.push({ to: sid, mode: 'indoor' });
-          }
-        });
-        if (to === 'indoor') hint('Indoor links work both ways, so the reciprocal was added too');
-      }
-
-      if (act === 'reciprocate') {
-        const other = b.dataset.id;
-        const mode = (stationById(other)?.transfers || []).find(t => t.to === sid)?.mode || 'street';
-        commit(`Link ${sid} back to ${other}`, s => {
-          (s.transfers || (s.transfers = [])).push({ to: other, mode });
-        });
+        const to = findTransfer(sid, other)?.mode === 'indoor' ? 'street' : 'indoor';
+        commit(`Transfer ${sid} ↔ ${other} → ${to}`, (s, c) => { findTransfer(sid, other, c).mode = to; });
       }
 
       if (act === 'agency') {
@@ -635,10 +601,8 @@ function wireStation(st, sid) {
       if (act === 'add-transfer') {
         pickStationFor?.(target => {
           if (!target || target === sid) return;
-          if ((st.transfers || []).some(t => t.to === target)) { hint('Already linked'); return; }
-          commit(`Link ${sid} → ${target}`, s => {
-            (s.transfers || (s.transfers = [])).push({ to: target, mode: 'street' });
-          });
+          if (findTransfer(sid, target)) { hint('Already a transfer'); return; }
+          commit(`Transfer ${sid} ↔ ${target}`, (s, c) => addTransferIn(c, sid, target));
         });
       }
     };
@@ -646,9 +610,9 @@ function wireStation(st, sid) {
 
   const del = body.querySelector('#del-station');
   if (del) del.onclick = () => {
-    const inbound = inboundTransfers(sid).map(id => stationById(id)?.name || id);
-    const links = inbound.length
-      ? `\n\n${inbound.length} station${inbound.length === 1 ? ' transfers' : 's transfer'} to it (${inbound.join(', ')}); those links go too.`
+    const partners = transferPartners(sid).map(id => stationById(id)?.name || id);
+    const links = partners.length
+      ? `\n\nIts transfer${partners.length === 1 ? '' : 's'} with ${partners.join(', ')} go${partners.length === 1 ? 'es' : ''} too.`
       : '';
     if (!confirm(`Delete "${st.name}"?${links}\n\nIt is also removed from every subway and transfer that references it. Its id cannot be reused by another station without breaking saved favourites.`)) return;
     edit(`Delete ${sid}`, c => deleteStationIn(c, sid));

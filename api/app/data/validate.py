@@ -147,24 +147,26 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
 
     # MARK: References
 
-    for sid, station in stations.items():
-        for transfer in station.transfers:
-            if transfer.to not in stations:
+    seen_pairs: dict[frozenset[str], int] = {}
+    for i, transfer in enumerate(curation.stations.transfers):
+        a, b = transfer.between
+        pair = " and ".join(repr(x) for x in sorted(transfer.between))
+        for end in dict.fromkeys(transfer.between):
+            if end not in stations:
                 error(
                     "unknown-station",
-                    f"{station.name} ({sid}) has a transfer to {transfer.to!r}, which is not a station.",
-                    station=sid,
+                    f"The transfer between {pair} names {end!r}, which is not a station.",
+                    station=end if a == b else (b if end == a else a),
                 )
-            elif transfer.mode == "indoor" and not any(
-                back.to == sid and back.mode == "indoor" for back in stations[transfer.to].transfers
-            ):
-                # Street links may be one-way on purpose; an indoor passage cannot be.
-                error(
-                    "indoor-transfer-not-reciprocated",
-                    f"{station.name} ({sid}) has an indoor transfer to {transfer.to!r}, "
-                    "which has no indoor transfer back.",
-                    station=sid,
-                )
+        if a == b:
+            error("transfer-to-itself", f"A transfer joins {a!r} to itself.", station=a)
+            continue
+        key = frozenset(transfer.between)
+        if key in seen_pairs:
+            # Both would be served, and a mode change to one would leave the other.
+            error("duplicate-transfer", f"The transfer between {pair} is listed twice.", station=min(a, b))
+        else:
+            seen_pairs[key] = i
     for subway_id, subway in subways.items():
         for sid in subway.stations:
             if sid not in stations:

@@ -12,7 +12,7 @@
 
 import {
   store, edit, select, esc, upstream, lineById, stationById, platformsOf, stopsOf, ownerOf,
-  stationIdProblem, inboundTransfers, subwaysWith, deleteStationIn,
+  stationIdProblem, transferPartners, subwaysWith, deleteStationIn,
 } from './store.js';
 import { api } from './api.js';
 import { flyTo, flyToStation, spotlight, hint } from './map.js';
@@ -351,7 +351,7 @@ function removal(d) {
 
 function stationRow(d) {
   const done = stationDone(d);
-  const inbound = done ? [] : inboundTransfers(d.station);
+  const inbound = done ? [] : transferPartners(d.station);
   const subways = done ? [] : subwaysWith(d.station);
   const exp = expanded?.key === d.station && expanded.kind === 'delete';
   const names = ids => ids.map(id => esc(stationById(id)?.name || id)).join(', ');
@@ -363,10 +363,10 @@ function stationRow(d) {
     </div>
     <div class="rv-reason">Stops ${d.stops.map(p => `<code>${esc(upstream(p))}</code>`).join(' ')}, none in 511</div>
     ${done ? `<div class="rv-done">✓ ${done} <span>· unsaved</span></div>` : `
-      ${inbound.length ? `<div class="rv-warn-box">${inbound.length} station${inbound.length === 1 ? ' transfers' : 's transfer'} here: ${names(inbound)}</div>` : ''}
+      ${inbound.length ? `<div class="rv-warn-box">Transfers here from ${names(inbound)}</div>` : ''}
       ${exp ? `<div class="rv-form">
           <div>Deleting <b>${esc(d.name)}</b> also removes
-            ${[inbound.length ? `the transfer${inbound.length === 1 ? '' : 's'} from ${names(inbound)}` : '',
+            ${[inbound.length ? `the transfer${inbound.length === 1 ? '' : 's'} with ${names(inbound)}` : '',
                subways.length ? `its place in subway${subways.length === 1 ? '' : 's'} ${subways.map(s => `<code>${esc(s)}</code>`).join(', ')}` : '']
               .filter(Boolean).join(', and ')}.
             Its id <code>${esc(d.station)}</code> is retired with it.</div>
@@ -468,7 +468,7 @@ function act(what, row, button) {
   if (what === 'delete-station') {
     const sid = row.dataset.sid;
     // Only worth a second step when the deletion reaches past the station itself.
-    if (inboundTransfers(sid).length || subwaysWith(sid).length) {
+    if (transferPartners(sid).length || subwaysWith(sid).length) {
       expanded = { key: sid, kind: 'delete' };
       renderReview();
     } else {

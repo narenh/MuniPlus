@@ -85,7 +85,7 @@ def test_platform_assigned_and_ignored(curation, snapshots):
 
 
 def test_unknown_station_in_a_transfer(curation, snapshots):
-    curation.stations.stations["clayDrumm"].transfers.append(Transfer(to="nowhere", mode="street"))
+    curation.stations.transfers.append(Transfer(between=["clayDrumm", "nowhere"], mode="street"))
     issue = only(validate(curation, snapshots).errors, "unknown-station")
     assert issue.station == "clayDrumm"
     assert "'nowhere'" in issue.message
@@ -106,22 +106,17 @@ def test_unknown_line_in_replaces_warns_but_never_blocks(curation, snapshots):
     assert "SF:Q" in issue.message
 
 
-def test_indoor_transfer_not_reciprocated(curation, snapshots):
-    curation.stations.stations["unionSquare"].transfers.clear()
-    issue = only(validate(curation, snapshots).errors, "indoor-transfer-not-reciprocated")
-    assert issue.station == "powell"
-    assert "'unionSquare'" in issue.message
-
-
-def test_indoor_answered_by_street_is_not_reciprocated(curation, snapshots):
-    curation.stations.stations["unionSquare"].transfers[0].mode = "street"
-    issue = only(validate(curation, snapshots).errors, "indoor-transfer-not-reciprocated")
+def test_transfer_to_itself(curation, snapshots):
+    curation.stations.transfers.append(Transfer(between=["powell", "powell"], mode="street"))
+    issue = only(validate(curation, snapshots).errors, "transfer-to-itself")
     assert issue.station == "powell"
 
 
-def test_street_transfers_may_be_one_way(curation, snapshots):
-    curation.stations.stations["powellMarket"].transfers.clear()
-    assert validate(curation, snapshots).errors == []
+def test_duplicate_transfer_in_either_order(curation, snapshots):
+    # A pair has no direction, so listing it again the other way round is the same pair.
+    curation.stations.transfers.append(Transfer(between=["unionSquare", "powell"], mode="street"))
+    issue = only(validate(curation, snapshots).errors, "duplicate-transfer")
+    assert "'powell' and 'unionSquare'" in issue.message
 
 
 def test_station_has_no_platforms(curation, snapshots):
@@ -173,9 +168,10 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
     s["powell"].platforms.append(Platform(id="SF:15731", heading="eastbound"))
     s["montgomery"].platforms.append(Platform(id="SF:16994", heading="westbound"))
     curation.ignored.root["SF:14015"] = IgnoredStop(note="test")
-    s["clayDrumm"].transfers.append(Transfer(to="nowhere", mode="street"))
+    curation.stations.transfers.append(Transfer(between=["clayDrumm", "nowhere"], mode="street"))
     curation.lines.root["SF:LOWL"].replaces.append("SF:Q")
-    s["unionSquare"].transfers.clear()
+    curation.stations.transfers.append(Transfer(between=["powell", "powell"], mode="street"))
+    curation.stations.transfers.append(Transfer(between=["unionSquare", "powell"], mode="indoor"))
     s["castroPlaza"].platforms.clear()
     s["churchMarket"].platforms = [Platform(id="SF:99999", heading="eastbound")]
     curation.lines.root["SF:S"] = LineOverride()
@@ -189,7 +185,8 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
         "stop-listed-twice",
         "stop-assigned-and-ignored",
         "unknown-station",
-        "indoor-transfer-not-reciprocated",
+        "transfer-to-itself",
+        "duplicate-transfer",
         "station-has-no-platforms",
     }
     assert set(codes(result.warnings)) == {
@@ -205,7 +202,7 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
 
 
 def test_output_is_deterministic(curation, snapshots):
-    curation.stations.stations["unionSquare"].transfers.clear()
+    curation.stations.transfers.append(Transfer(between=["powell", "powell"], mode="street"))
     curation.stations.stations["clayDrumm"].platforms.clear()
     first = validate(curation, snapshots)
     again = validate(curation.model_copy(deep=True), snapshots)

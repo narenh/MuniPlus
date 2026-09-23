@@ -309,9 +309,45 @@ export function unclaimedNear(at, limit = Infinity) {
 }
 
 // ------------------------------------------------------------------ stations
-/** Stations whose transfers point at `sid`: deleting it cuts those links. */
-export function inboundTransfers(sid) {
-  return stationIds().filter(id => id !== sid && (stations()[id].transfers || []).some(t => t.to === sid));
+// ----------------------------------------------------------------- transfers
+// A transfer is one pair of stations, walkable either way, listed once in
+// `curation.stations.transfers` (app/models/curation.py). There is no per-station
+// list to keep in step, so a one-way transfer cannot be made.
+
+/** Every transfer. */
+export const transfers = () => store.curation?.stations.transfers || [];
+
+const joins = (t, a, b) => (t.between[0] === a && t.between[1] === b) || (t.between[0] === b && t.between[1] === a);
+
+/** The transfer between `a` and `b` in curation `c` (the live one by default), or null. */
+export function findTransfer(a, b, c = store.curation) {
+  return (c?.stations.transfers || []).find(t => joins(t, a, b)) || null;
+}
+
+/** The transfers at `sid`, as `{to, mode, note}`, by the other station's name. */
+export function transfersOf(sid) {
+  const out = [];
+  for (const t of transfers()) {
+    const [a, b] = t.between;
+    if (a === b || (a !== sid && b !== sid)) continue;
+    out.push({ to: a === sid ? b : a, mode: t.mode, note: t.note || null });
+  }
+  const name = id => stations()[id]?.name || id;
+  return out.sort((x, y) => name(x.to).localeCompare(name(y.to)) || x.to.localeCompare(y.to));
+}
+
+/** The stations `sid` has a transfer with: deleting it cuts those links. */
+export const transferPartners = sid => transfersOf(sid).map(t => t.to);
+
+/** Add a street transfer between two stations inside an edit() mutator, sorted
+ *  as the file writes it. Callers check `findTransfer` first. */
+export function addTransferIn(c, a, b, mode = 'street') {
+  (c.stations.transfers || (c.stations.transfers = [])).push({ between: [a, b].sort(), mode });
+}
+
+/** Remove the transfer between `a` and `b` inside an edit() mutator. */
+export function removeTransferIn(c, a, b) {
+  c.stations.transfers = (c.stations.transfers || []).filter(t => !joins(t, a, b));
 }
 
 /** Subways listing `sid`, by id. */
@@ -327,9 +363,7 @@ export function subwaysWith(sid) {
 export function deleteStationIn(c, sid) {
   delete c.stations.stations[sid];
   for (const s of Object.values(c.stations.subways || {})) s.stations = s.stations.filter(x => x !== sid);
-  for (const s of Object.values(c.stations.stations)) {
-    if (s.transfers) s.transfers = s.transfers.filter(t => t.to !== sid);
-  }
+  c.stations.transfers = (c.stations.transfers || []).filter(t => !t.between.includes(sid));
 }
 
 const STATION_ID = /^[A-Za-z0-9]+$/;
@@ -520,16 +554,26 @@ export function changes() {
       push('edit', T, b.verified ? `Verified ${code(b.verified)}` : `No longer verified (was ${code(a.verified)})`);
     }
 
-    const tkey = ts => (ts || []).map(t => `${t.to}:${t.mode}:${t.note || ''}`).sort().join(',');
-    if (tkey(a.transfers) !== tkey(b.transfers)) {
-      push('edit', T, `Transfers → ${list((b.transfers || []).map(t => `${t.to} (${t.mode})`))}`);
-    }
     if (!same([...(a.transferAgencies || [])].sort(), [...(b.transferAgencies || [])].sort())) {
       push('edit', T, `Transfer agencies → ${list(b.transferAgencies)}`);
     }
     if (!same(a.formerIds, b.formerIds)) push('edit', T, `Former ids → ${list(b.formerIds)}`);
   }
   for (const [id, a] of Object.entries(A)) if (!B[id]) push('del', a.name, `Deleted station ${code(id)}`);
+
+  // Transfers, once per pair, named by their stations.
+  const pairKey = t => [...t.between].sort().join('|');
+  const pairName = t => [...t.between].sort().map(id => B[id]?.name || A[id]?.name || id).join(' ↔ ');
+  const TA = new Map((store.base.stations.transfers || []).map(t => [pairKey(t), t]));
+  const TB = new Map((store.curation.stations.transfers || []).map(t => [pairKey(t), t]));
+  for (const [k, b] of TB) {
+    const a = TA.get(k);
+    const T = `${pairName(b)} · transfer`;
+    if (!a) { push('add', T, `New ${esc(b.mode)} transfer`); continue; }
+    if (a.mode !== b.mode) push('edit', T, `Mode ${code(a.mode)} → ${code(b.mode)}`);
+    if (!same(a.note, b.note)) push('edit', T, b.note ? `Note → ${code(b.note)}` : 'Note removed');
+  }
+  for (const [k, a] of TA) if (!TB.has(k)) push('del', `${pairName(a)} · transfer`, 'Transfer removed');
 
   const SA = store.base.stations.subways || {}, SB = store.curation.stations.subways || {};
   for (const [id, b] of Object.entries(SB)) {

@@ -198,10 +198,14 @@ def test_platform_order_is_the_curated_order(net):
 
 def test_station_detail(net):
     powell = net.station("powell")
+    # Ordered by the other station's name.
     assert [(t.to, t.name, t.mode) for t in powell.transfers] == [
-        ("unionSquare", "Union Square", "indoor"),
         ("powellMarket", "Powell & Market", "street"),
+        ("unionSquare", "Union Square", "indoor"),
     ]
+    # One pair, both ends.
+    assert [(t.to, t.mode) for t in net.station("unionSquare").transfers] == [("powell", "indoor")]
+    assert [(t.to, t.mode) for t in net.station("powellMarket").transfers] == [("powell", "street")]
     assert [(s.id, s.name) for s in powell.subways] == [("marketStreetSubway", "Market Subway")]
     assert net.station("embarcadero").transfer_agencies == ["BA"]
     assert net.station("clayDrumm").subways == []
@@ -236,7 +240,7 @@ def test_former_id_never_shadows_a_live_id(curation, snapshots):
 def test_station_without_live_platforms_is_public_nowhere_but_derived(curation, snapshots):
     curation.stations.stations["clayDrumm"].platforms = [Platform(id="SF:99999", heading="westbound")]
     curation.stations.stations["clayDrumm"].former_ids = ["drumm"]
-    curation.stations.stations["powell"].transfers.append(Transfer(to="clayDrumm", mode="street"))
+    curation.stations.transfers.append(Transfer(between=["powell", "clayDrumm"], mode="street"))
     net = Network(curation, snapshots, "v")
     assert "clayDrumm" not in [s.id for s in net.stations().stations]
     assert net.station("clayDrumm") is None
@@ -277,7 +281,8 @@ def test_builds_from_invalid_curation(curation, snapshots):
     s = curation.stations.stations
     s["powell"].platforms.append(Platform(id="SF:15731", heading="eastbound"))  # also Montgomery's
     s["montgomery"].platforms.append(Platform(id="SF:16994", heading="westbound"))  # listed twice
-    s["clayDrumm"].transfers.append(Transfer(to="nowhere", mode="indoor"))
+    curation.stations.transfers.append(Transfer(between=["clayDrumm", "nowhere"], mode="indoor"))
+    curation.stations.transfers.append(Transfer(between=["powell", "unionSquare"], mode="street"))  # a duplicate
     s["castroPlaza"].platforms.clear()
     s["empty"] = Station(name="Empty", platforms=[])
     curation.stations.subways["marketStreetSubway"].stations.append("nowhere")
@@ -289,6 +294,8 @@ def test_builds_from_invalid_curation(curation, snapshots):
     assert [p.id for p in net.station("powell").platforms] == ["SF:15417", "SF:16995"]
     assert [p.id for p in net.station("montgomery").platforms] == ["SF:15731", "SF:16994"]
     assert net.station("clayDrumm").transfers == []
+    # The first listing of a duplicated pair wins, and it shows once.
+    assert [(t.to, t.mode) for t in net.station("unionSquare").transfers] == [("powell", "indoor")]
     assert net.station("castroPlaza") is None
     assert net.derived().stations["empty"].lat is None
     assert net.line("SF:LOWL").replaces == ["SF:L", "SF:Q"]

@@ -42,6 +42,7 @@ read-only as a reference until the app moves over.
 | ids | `<511 operator>:<upstream id>` for stops and lines (`SF:16992`, `SF:LOWL`), no mapping table. A platform's id is its primary stop's. Station ids are ours, `[A-Za-z0-9]+`, permanent |
 | renames | `mongomery` → `montgomery`; the old id lives in `formerIds` and is flagged as a client favourites migration |
 | stations | one flat platform list; a platform may take in several stops (`stops`), curated by hand, never by distance. Levels/exits come later as an optional `layout` field. All hand-curated station info is in `curation/stations.json` |
+| transfers | always both ways: one entry per pair of stations, in `stations.json`'s top-level `transfers` (`{between: [a, b], mode}`), so a one-way transfer cannot be written. Only the 12 pairs from the iOS app's data were kept; the generator's one-way links were dropped (2026-09-23) |
 | coordinates | never curated. Stops take 511's; a platform is the centroid of its live stops, a station of all its live stops |
 | modes | 511's line `TransportMode` verbatim (`metro`, `bus`, `cableway`). One curated override: the F is `streetcar` |
 | replacements | `replaces` on a line (`SF:LOWL` replaces `SF:L`). **No** replacement platforms, no station-level mapping |
@@ -104,7 +105,7 @@ Errors, which block a save:
 * `stop-in-two-stations`, `stop-listed-twice`, `stop-assigned-and-ignored` (a stop
   counts wherever a platform lists it, as its id or in its `stops`)
 * `unknown-station`: a transfer or subway naming a station that does not exist
-* `indoor-transfer-not-reciprocated`
+* `transfer-to-itself`, `duplicate-transfer` (the same pair twice, in either order)
 * `station-has-no-platforms`
 
 Warnings, which never block:
@@ -242,7 +243,7 @@ dependency says so in its report instead of editing `pyproject.toml`.
 | wave | track | owns | done when |
 |---|---|---|---|
 | 0 | contract | `app/models/`, `app/settings.py`, `tests/test_contract.py`, `tests/fixtures/`, this file | reviewed |
-| 1 | **A** seed + static ingest | `scripts/seed.py`, `app/ingest/gtfs_static.py`, `tests/ingest/` | every old platform appears exactly once or is reported with a reason; every station id kept except the rename; zero validation errors; 511 vs SFMTA GTFS difference explained |
+| 1 | **A** seed + static ingest | `scripts/seed.py` (one-off, applied as sf-transit's first commit, then retired), `app/ingest/gtfs_static.py`, `tests/ingest/` | every old platform appears exactly once or is reported with a reason; every station id kept except the rename; zero validation errors; 511 vs SFMTA GTFS difference explained |
 | 1 | **B** server core | `app/data/`, `app/endpoints/{stations,lines}.py`, `tests/data/`, `tests/endpoints/` | loader + validator + endpoints pass against `tests/fixtures/transit` |
 | 1 | **C** realtime | `app/upstream/`, `app/realtime/`, `app/db.py`, `app/endpoints/{arrivals,vehicles,alerts}.py`, `tests/realtime/` | fixtures replay; restart does not re-fetch fresh feeds; the budget ceiling holds under a simulated burst |
 | 1 | **D** frontend removals | `editor/` | removals done; the frontend still loads |

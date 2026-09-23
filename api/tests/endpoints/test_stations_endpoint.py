@@ -85,7 +85,7 @@ def test_detail_has_no_etag(client):
     assert "etag" not in client.get("/api/stations/montgomery").headers
 
 
-def test_indoor_transfer_both_ways(client):
+def test_transfers_serve_both_stations(client):
     powell = client.get("/api/stations/powell").json()["station"]
     union = client.get("/api/stations/unionSquare").json()["station"]
     assert {"to": "unionSquare", "name": "Union Square", "mode": "indoor"} in powell["transfers"]

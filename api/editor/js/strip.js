@@ -5,7 +5,7 @@
 // is nothing here to reorder.
 
 import {
-  store, select, stationById, linesOf, lineById, esc, upstream, ownerOf,
+  store, select, stationById, linesOf, lineById, esc, upstream, ownerOf, transfersOf,
 } from './store.js';
 import { flyToStation } from './map.js';
 
@@ -120,7 +120,7 @@ function stopRow(ln, di, sid, pids) {
       <div class="stop-meta">
         ${codes}
         ${pips}${more}
-        ${(st.transfers || []).length ? '<span class="tag">↔</span>' : ''}
+        ${transfersOf(sid).length ? '<span class="tag">↔</span>' : ''}
       </div>
     </div>
     <div class="stop-side">${st.verified

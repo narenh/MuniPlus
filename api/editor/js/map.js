@@ -6,7 +6,7 @@
 import {
   store, select, stationById, stationIds, linesOf, lineById, allLines, platformsOf, stopsOf, platformIdOf,
   stationPos, stopPos, derivedStop, stationMatches, stopMatches,
-  lineMatches, upstream, metresBetween, unclaimedNear,
+  lineMatches, upstream, metresBetween, unclaimedNear, transfers,
 } from './store.js';
 import { bundle } from './bundle.js';
 
@@ -116,55 +116,41 @@ function lineFeatures() {
 }
 
 /**
- * Transfers as walking paths. A transfer is one-way unless the other station
- * lists it back, and that asymmetry is deliberate in the curation, so each pair
- * is drawn once with an arrowhead at whichever end(s) it actually points to:
- * one chevron for a one-way link, one at each end for a mutual one.
+ * Transfers as walking paths, one per pair of stations. Every transfer works both
+ * ways (a pair in the curation), so there is no direction to draw.
  *
  * Straight lines are the honest shape here. The curation records that a walk
  * exists, never its path, and this is an editor - inventing a path through the
  * streets would be drawing a claim the data does not make.
  */
 export function transferLinks() {
-  const links = new Map();      // "a|b" with a < b  ->  { a, b, fwd, rev, indoor }
-  for (const sid of stationIds()) {
-    for (const t of stationById(sid).transfers || []) {
-      if (!stationById(t.to)) continue;
-      const [a, b] = sid < t.to ? [sid, t.to] : [t.to, sid];
-      const key = `${a}|${b}`;
-      const rec = links.get(key) || { a, b, fwd: false, rev: false, indoor: false };
-      if (sid === a) rec.fwd = true; else rec.rev = true;   // fwd means a -> b
-      if (t.mode === 'indoor') rec.indoor = true;
-      links.set(key, rec);
-    }
+  const links = new Map();      // "a|b" with a < b  ->  { a, b, indoor }
+  for (const t of transfers()) {
+    const [a, b] = [...t.between].sort();
+    if (a === b || !stationById(a) || !stationById(b)) continue;
+    const key = `${a}|${b}`;
+    if (!links.has(key)) links.set(key, { a, b, indoor: t.mode === 'indoor' });
   }
   return links;
 }
 
 function transferFeatures() {
-  const lines = [], heads = [];
+  const lines = [];
   const sel = store.selStation;
 
-  for (const { a, b, fwd, rev, indoor } of transferLinks().values()) {
+  for (const { a, b, indoor } of transferLinks().values()) {
     if (!shown(a) && !shown(b)) continue;
     const pa = stationPos(a), pb = stationPos(b);
     if (!pa || !pb) continue;
-    const both = fwd && rev ? 1 : 0;
     const touches = sel === a || sel === b ? 1 : 0;
     const lit = isLit(a, b) ? 1 : 0;
-
     lines.push({
       type: 'Feature',
-      properties: { a, b, both, touches, lit, indoor: indoor ? 1 : 0, metres: metresBetween(pa, pb) },
+      properties: { a, b, touches, lit, indoor: indoor ? 1 : 0, metres: metresBetween(pa, pb) },
       geometry: { type: 'LineString', coordinates: [pa, pb] },
     });
-    if (fwd) heads.push(chevron(pa, pb, both, touches, lit));
-    if (rev) heads.push(chevron(pb, pa, both, touches, lit));
   }
-  return {
-    lines: { type: 'FeatureCollection', features: lines },
-    heads: { type: 'FeatureCollection', features: heads },
-  };
+  return { lines: { type: 'FeatureCollection', features: lines } };
 }
 
 const isLit = (a, b) =>
@@ -177,19 +163,6 @@ export function highlightLink(a, b) {
   if (same) return;
   litLink = next;
   refresh('transfers');
-}
-
-/** An arrowhead just short of the station it points at, clear of the dot. */
-function chevron(from, to, both, touches, lit) {
-  const t = 0.8;
-  return {
-    type: 'Feature',
-    properties: { both, touches, lit, bearing: bearingDeg(from, to) },
-    geometry: {
-      type: 'Point',
-      coordinates: [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t],
-    },
-  };
 }
 
 const M_LAT = 110540, M_LON = 111320 * Math.cos(37.76 * Math.PI / 180);
@@ -578,27 +551,12 @@ function makeArrowImage() {
   g.fill();
   map.addImage('heading-arrow', { width: S, height: S, data: g.getImageData(0, 0, S, S).data }, { sdf: true });
 
-  // An open chevron for transfer direction. Deliberately a different shape from
-  // the solid heading arrow, so a walking path never reads as a platform heading.
-  const c2 = document.createElement('canvas');
-  c2.width = c2.height = S;
-  const h = c2.getContext('2d');
-  h.translate(S / 2, S / 2);
-  h.strokeStyle = '#fff';
-  h.lineWidth = 3.8;
-  h.lineCap = 'round';
-  h.lineJoin = 'round';
-  h.beginPath();
-  h.moveTo(-7.5, 5.5); h.lineTo(0, -5.5); h.lineTo(7.5, 5.5);
-  h.stroke();
-  map.addImage('transfer-arrow', { width: S, height: S, data: h.getImageData(0, 0, S, S).data }, { sdf: true });
 }
 
 function addSources() {
   map.addSource('lines', { type: 'geojson', data: lineFeatures() });
   const tf = transferFeatures();
   map.addSource('transfers', { type: 'geojson', data: tf.lines });
-  map.addSource('transfer-heads', { type: 'geojson', data: tf.heads });
   const st = stationFeatures();
   map.addSource('stations', { type: 'geojson', data: st.stations });
   map.addSource('pills', { type: 'geojson', data: st.pills });
@@ -720,8 +678,7 @@ function addLayers() {
     id: 'muni-transfer', type: 'line', source: 'transfers',
     filter: ['!=', ['get', 'indoor'], 1],
     // Visibility is driven entirely by the opacity ramp below, not by minzoom,
-    // so a link lit from the inspector shows its line and its arrowheads
-    // together at any zoom.
+    // so a link lit from the inspector shows at any zoom.
     layout: { 'line-cap': 'round' },
     paint: {
       'line-color': lit('#ffffff', ['case', ['==', ['get', 'touches'], 1], '#d8e6ff', '#8fa3ca']),
@@ -757,31 +714,13 @@ function addLayers() {
     },
   });
   map.addLayer({
-    id: 'muni-transfer-head', type: 'symbol', source: 'transfer-heads',
-    layout: {
-      'icon-image': 'transfer-arrow',
-      'icon-size': ['interpolate', ['linear'], ['zoom'],
-        14, lit(0.62, 0.4), 18, lit(0.85, 0.7)],
-      'icon-rotate': ['get', 'bearing'],
-      'icon-rotation-alignment': 'map',
-      'icon-allow-overlap': true,
-      'icon-ignore-placement': true,
-    },
-    paint: {
-      'icon-color': lit('#ffffff', ['case', ['==', ['get', 'touches'], 1], '#eef4ff', '#8fa3ca']),
-      'icon-opacity': fadeIn(1, 0.55),
-      'icon-halo-color': '#05060a',
-      'icon-halo-width': 1.3,
-    },
-  });
-  map.addLayer({
     id: 'muni-transfer-label', type: 'symbol', source: 'transfers',
     minzoom: 15,
     filter: ['==', ['get', 'touches'], 1],
     layout: {
       'symbol-placement': 'line-center',
       'text-field': ['concat',
-        ['case', ['==', ['get', 'both'], 1], 'both ways · ', 'one way · '],
+        ['case', ['==', ['get', 'indoor'], 1], 'indoor · ', ''],
         ['to-string', ['get', 'metres']], ' m'],
       'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
       'text-size': 10.5,
@@ -1125,7 +1064,6 @@ export function refresh(which = 'all') {
   if (all || which === 'transfers') {
     const tf = transferFeatures();
     map.getSource('transfers').setData(tf.lines);
-    map.getSource('transfer-heads').setData(tf.heads);
   }
   if (all || which === 'stations' || which === 'lines') {
     // Pills depend on which metro lines are drawn, so a line filter moves them.
@@ -1150,8 +1088,7 @@ export const LAYER_IDS = {
   platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-ring', 'muni-platform-arrow',
               'muni-platform-label', 'muni-leader', 'muni-leader-tie'],
   labels: ['muni-label'],
-  transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',
-              'muni-transfer-head', 'muni-transfer-label'],
+  transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case', 'muni-transfer-label'],
   vehicles: ['muni-vehicle'],
 };
 

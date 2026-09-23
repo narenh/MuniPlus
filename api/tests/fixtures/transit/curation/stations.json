@@ -9,6 +9,22 @@
       ]
     }
   },
+  "transfers": [
+    {
+      "between": [
+        "powell",
+        "powellMarket"
+      ],
+      "mode": "street"
+    },
+    {
+      "between": [
+        "powell",
+        "unionSquare"
+      ],
+      "mode": "indoor"
+    }
+  ],
   "stations": {
     "castroPlaza": {
       "name": "Castro Plaza",
@@ -101,16 +117,6 @@
           "heading": "westbound"
         }
       ],
-      "transfers": [
-        {
-          "to": "unionSquare",
-          "mode": "indoor"
-        },
-        {
-          "to": "powellMarket",
-          "mode": "street"
-        }
-      ],
       "verified": "2026-09-22"
     },
     "powellMarket": {
@@ -128,12 +134,6 @@
           "id": "SF:15688",
           "heading": "westbound"
         }
-      ],
-      "transfers": [
-        {
-          "to": "powell",
-          "mode": "street"
-        }
       ]
     },
     "unionSquare": {
@@ -146,12 +146,6 @@
         {
           "id": "SF:17874",
           "heading": "southbound"
-        }
-      ],
-      "transfers": [
-        {
-          "to": "powell",
-          "mode": "indoor"
         }
       ],
       "verified": "2026-09-22"

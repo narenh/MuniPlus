@@ -54,14 +54,16 @@ class Platform(FileModel):
 
 
 class Transfer(FileModel):
-    """A walk from this station to another.
+    """A walk between two stations, usable either way.
 
-    Deliberately one-way: a link from A to B says nothing about B to A, and many
-    are left unreciprocated on purpose. Only ``indoor`` links must be mutual,
-    because a passage cannot be walkable in one direction only.
+    Stored once per pair, in ``StationsFile.transfers``, rather than on each
+    station: a walk from A to B is a walk from B to A, and a per-station list held
+    every link twice, free to disagree with itself about the mode or to exist in
+    one direction only. As a pair, a one-way transfer cannot be written down.
     """
 
-    to: StationId
+    between: Annotated[list[StationId], Field(min_length=2, max_length=2)]
+    """The two stations. Order carries no meaning; files list them sorted."""
     mode: TransferMode
     note: str | None = None
 
@@ -72,7 +74,6 @@ class Station(FileModel):
     """Flat, in the order the app should list them. Levels and exits arrive later
     as an optional ``layout`` field that assigns these platforms to levels; this
     list does not change when they do."""
-    transfers: list[Transfer] = []
     transfer_agencies: list[Operator] = []
     """Operators reachable here that have no platforms in the data yet (``BA`` at
     Embarcadero). A stopgap: once an operator's platforms are ingested, its
@@ -101,6 +102,8 @@ class StationsFile(FileModel):
     """``curation/stations.json``: everything hand-curated about stations, in one place."""
 
     subways: dict[SubwayId, Subway] = {}
+    transfers: list[Transfer] = []
+    """Every transfer, once per pair of stations."""
     stations: dict[StationId, Station]
 
     @model_serializer(mode="wrap")
@@ -110,6 +113,11 @@ class StationsFile(FileModel):
         for key in ("subways", "stations"):
             if key in out:
                 out[key] = dict(sorted(out[key].items()))
+        if "transfers" in out:
+            # Each pair sorted, then the list by pair: a transfer has one spelling,
+            # and adding one lands in the same place whoever adds it.
+            pairs = [{**t, "between": sorted(t["between"])} for t in out["transfers"]]
+            out["transfers"] = sorted(pairs, key=lambda t: t["between"])
         return out
 
 

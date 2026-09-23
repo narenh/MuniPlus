@@ -275,6 +275,22 @@ class Network:
                 ],
             )
 
+        # A transfer is one pair serving both its stations. The first listing of a
+        # pair wins, as the first claim on a stop does: a duplicate is the
+        # validator's to report, and must not show twice meanwhile. Each station's
+        # list is ordered by the other station's name.
+        transfers_of: dict[str, dict[str, str]] = {}
+        for t in curation.stations.transfers:
+            a, b = t.between
+            if a == b or a not in stations or b not in stations:
+                continue
+            for here, there in ((a, b), (b, a)):
+                transfers_of.setdefault(here, {}).setdefault(there, t.mode)
+        transfers_of = {
+            sid: sorted(links.items(), key=lambda link: (stations[link[0]].name, link[0]))
+            for sid, links in transfers_of.items()
+        }
+
         for sid, summary in summaries.items():
             station = stations[sid]
             live = [(p, [s for s in mine if s in stops]) for p, mine in owned[sid]]
@@ -300,9 +316,9 @@ class Network:
                 # A transfer to a station the API does not serve (unknown, or with no
                 # live platforms) would be a link to a 404, so it is left out.
                 transfers=[
-                    TransferOut(to=t.to, name=stations[t.to].name, mode=t.mode)
-                    for t in station.transfers
-                    if t.to in summaries
+                    TransferOut(to=there, name=stations[there].name, mode=mode)
+                    for there, mode in transfers_of.get(sid, [])
+                    if there in summaries
                 ],
                 transfer_agencies=list(station.transfer_agencies),
                 subways=subways_of.get(sid, []),
