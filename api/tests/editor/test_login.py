@@ -69,6 +69,16 @@ def test_assets_need_no_session(world):
         assert world.client.get(path).status_code == 200, path
 
 
+def test_assets_are_revalidated_not_cached(world):
+    # Otherwise Cloudflare's default TTL caches them for hours past a deploy.
+    for path in ("/editor/js/main.js", "/map/css/app.css"):
+        res = world.client.get(path)
+        assert res.headers["cache-control"] == "no-cache", path
+        again = world.client.get(path, headers={"If-None-Match": res.headers["etag"]})
+        assert again.status_code == 304, path
+        assert again.headers["cache-control"] == "no-cache", path
+
+
 def test_forged_and_foreign_cookies_are_refused(world):
     forged = URLSafeTimedSerializer("not-the-secret", salt=SALT).dumps({"pw": "whatever"})
     world.client.cookies.set(COOKIE, forged, domain="testserver", path="/editor")
