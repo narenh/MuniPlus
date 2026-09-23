@@ -12,10 +12,16 @@ The push can still race another writer between our fetch and our push. Then the
 commit is rebased once onto what arrived and pushed again. That rebase is
 textual, so the combination is validated before it is pushed: two edits that
 each pass can together put one platform in two stations.
+
+Everything after validation (the lock, fetch, base check, push, retry and network
+swap) is shared with a snapshot commit, ``refresh.commit``, which differs only in
+which files it writes and which paths it guards.
 """
 
 import logging
 import re
+from collections.abc import Callable
+from typing import TypeVar
 
 from fastapi import FastAPI
 
@@ -29,6 +35,8 @@ from .state import Editor, loaded
 
 log = logging.getLogger(__name__)
 
+T = TypeVar("T")
+
 SHA = re.compile(r"[0-9a-f]{7,64}")
 """A commit id, abbreviated or full (SHA-1 or SHA-256). Checked before it reaches
 git, which would read a value starting with ``-`` as an option."""
@@ -41,11 +49,7 @@ def conflict(editor: Editor, message: str, paths: list[str] | None = None) -> Pr
 
 
 def save(editor: Editor, app: FastAPI, request: SaveRequest) -> SaveResponse:
-    if reason := editor.read_only_reason():
-        raise ProblemError(503, "unavailable", f"The editor is read-only: {reason}.")
-    if not SHA.fullmatch(request.base_version):
-        raise ProblemError(400, "bad-request", f"baseVersion {request.base_version!r} is not a commit id.")
-    checkout = editor.checkout
+    check_writable(editor, request.base_version)
 
     # 1. Validate before touching git. Errors never depend on the snapshot (PLAN.md,
     # "Validation"), so the checkout's current snapshot is good enough to reject on,
@@ -57,9 +61,27 @@ def save(editor: Editor, app: FastAPI, request: SaveRequest) -> SaveResponse:
         raise ProblemError(422, "bad-request", message, body=body)
 
     # 2. One save at a time.
-    with checkout.save_lock:
+    return run_locked(editor, app, lambda: _save(editor, request))
+
+
+def check_writable(editor: Editor, base_version: str) -> None:
+    """Refuse before any work if the editor cannot write, or ``baseVersion`` is not
+    even shaped like a commit."""
+    if reason := editor.read_only_reason():
+        raise ProblemError(503, "unavailable", f"The editor is read-only: {reason}.")
+    if not SHA.fullmatch(base_version):
+        raise ProblemError(400, "bad-request", f"baseVersion {base_version!r} is not a commit id.")
+
+
+def run_locked(editor: Editor, app: FastAPI, work: Callable[[], T]) -> T:
+    """Run ``work`` under the save lock, then swap the network if HEAD moved.
+
+    Everything that writes the checkout goes through here (saves and snapshot
+    commits), so two writers never interleave, and the public API always ends up
+    serving whatever the checkout holds."""
+    with editor.checkout.save_lock:
         try:
-            return _save(editor, request)
+            return work()
         finally:
             # 8. Whatever happened, HEAD may have moved (a commit, or only the
             # fast-forward before a refusal): the public API serves the checkout.
@@ -70,6 +92,28 @@ def _save(editor: Editor, request: SaveRequest) -> SaveResponse:
     checkout = editor.checkout
 
     # 3. Fetch, and fast-forward (or replay an earlier save that never got pushed).
+    head = fetch_and_rebase(editor)
+
+    # 4. Refuse if the curation changed underneath the edit.
+    require_base(editor, request.base_version)
+    if changed := checkout.curation_changed(request.base_version, head):
+        raise conflict(
+            editor,
+            "The curation changed since this edit started. Reload, then redo the edit.",
+            changed,
+        )
+
+    # 5 and 6. Write through ``files`` and commit what changed.
+    commit = checkout.commit_curation(request.curation, request.message)
+
+    # 7. Push whatever the remote lacks.
+    return push_and_respond(editor, before=head, commit=commit)
+
+
+def fetch_and_rebase(editor: Editor) -> str:
+    """Bring the checkout up to the remote; returns the new HEAD. Callers hold the
+    save lock."""
+    checkout = editor.checkout
     try:
         checkout.fetch()
     except RepoError as err:
@@ -84,24 +128,19 @@ def _save(editor: Editor, request: SaveRequest) -> SaveResponse:
             "An earlier save that was never pushed conflicts with sf-transit. "
             "It is still committed in the server's checkout and needs resolving by hand.",
         ) from None
+    return checkout.head()
 
-    # 4. Refuse if the curation changed underneath the edit.
-    head = checkout.head()
-    if not checkout.is_commit(request.base_version):
-        raise conflict(editor, f"baseVersion {request.base_version} is not in sf-transit's history. Reload.")
-    if changed := checkout.curation_changed(request.base_version, head):
-        raise conflict(
-            editor,
-            "The curation changed since this edit started. Reload, then redo the edit.",
-            changed,
-        )
 
-    # 5 and 6. Write through ``files`` and commit what changed.
-    before = head
-    commit = checkout.commit_curation(request.curation, request.message)
+def require_base(editor: Editor, base_version: str) -> None:
+    if not editor.checkout.is_commit(base_version):
+        raise conflict(editor, f"baseVersion {base_version} is not in sf-transit's history. Reload.")
 
-    # 7. Push whatever the remote lacks: this commit, or one left from an earlier
-    # save whose push failed.
+
+def push_and_respond(editor: Editor, *, before: str, commit: str | None) -> SaveResponse:
+    """Push whatever the remote lacks: this commit, or one left from an earlier save
+    whose push failed. ``before`` is the fetched HEAD this commit was made on, where
+    the checkout goes back to if a retry has to be refused."""
+    checkout = editor.checkout
     pushed, push_error = True, None
     if checkout.ahead() > 0:
         result = checkout.push()
@@ -136,7 +175,7 @@ def _rebase_and_retry(editor: Editor, before: str) -> PushResult:
             checkout.rebase_onto_upstream()
         except RebaseConflict:
             checkout.reset(before)
-            raise conflict(editor, "Someone else saved the same part of the curation at the same time. Reload.") from None
+            raise conflict(editor, "Someone else changed the same files at the same time. Reload.") from None
         if checkout.loaded().validation().errors:
             checkout.reset(before)
             raise conflict(
