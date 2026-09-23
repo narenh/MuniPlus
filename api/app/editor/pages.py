@@ -135,3 +135,22 @@ def mount_assets(app: FastAPI, editor_dir: Path) -> None:
             name = f"{prefix.strip('/')}-{folder.name}"
             app.mount(f"{prefix}/{VERSIONED}/{version}/{folder.name}", current, name=f"{name}-versioned")
             app.mount(f"{prefix}/{folder.name}", plain, name=name)
+    for prefix in ("/editor", "/map"):
+        # After the mounts above, so only a version this server does not have
+        # gets here.
+        app.add_api_route(f"{prefix}/{VERSIONED}/{{version}}/{{path:path}}", _other_version, include_in_schema=False)
+
+
+def _other_version(version: str, path: str) -> Response:
+    """Another deploy's asset. Coolify runs the old container alongside the new
+    one until the new one is healthy, and requests alternate between them, so the
+    new page's assets reach the old server for a minute or two. A 404 there was
+    cached: by Cloudflare's edge for minutes, and by the browser for Cloudflare's
+    four hours. A 503 with no-store is cached by neither, and the next reload
+    lands on the server that has it."""
+    return Response(
+        f"Asset version {version} is not on this server; reload.",
+        status_code=503,
+        media_type="text/plain",
+        headers={"Cache-Control": "no-store", "Retry-After": "5"},
+    )

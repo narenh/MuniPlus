@@ -85,8 +85,11 @@ def test_the_page_loads_its_assets_from_a_versioned_folder(world):
         assert res.status_code == 200, path
         assert res.headers["cache-control"] == "public, max-age=31536000, immutable", path
 
-    # Another version's folder is not served: its files would not match its name.
-    assert world.client.get("/map/v/000000000000/js/main.js").status_code == 404
+    # Another deploy's version, as the old container sees the new page's assets
+    # mid-deploy: refused in a way nothing caches, rather than a cacheable 404.
+    other = world.client.get("/map/v/000000000000/js/main.js")
+    assert other.status_code == 503
+    assert other.headers["cache-control"] == "no-store"
 
 
 def test_plain_asset_paths_are_revalidated(world):
