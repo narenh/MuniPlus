@@ -210,48 +210,62 @@ function tint(lines, on) {
 }
 
 /**
- * A station with three or more metro lines on shared track is drawn as a
- * capsule across the bundle, as on the printed map, instead of a disc that
- * would sit on one line of it. Where on the track, and at what angle, comes
- * from the nearest shared stretch those lines run. Cached with the bundle.
+ * A station where three or more metro lines stop is drawn as a capsule, as on
+ * the printed map, instead of a disc. Lines are counted by their drawn diagrams
+ * (each direction's most-run pattern): a few K, L and M runs through Embarcadero
+ * & Folsom do not make it a three-line station.
+ *
+ * The capsule sits on the nearest stretch those lines share, so it lies across
+ * the bundle on Market. Where they share none, as at Balboa Park, where the M
+ * arrives apart from the J and K, it sits on the station. Its angle comes from
+ * alignPills either way. The shared stretch is cached with the bundle.
  */
 const PILL_LINES = 3;
 const PILL_REACH_M = 120;
-function pillOf(sid, ls, at) {
-  if (ls.filter(isMetro).length < PILL_LINES) return null;
+function pillOf(sid, metroHere, at) {
+  if (metroHere < PILL_LINES) return null;
   const b = metroBundle();
   if (!b.pills.has(sid)) b.pills.set(sid, b.value.nodeNear(at, PILL_REACH_M, PILL_LINES));
-  return b.pills.get(sid);
+  return b.pills.get(sid) || { at, bearing: 0 };
+}
+
+/** Station id -> how many drawn metro lines stop there, by their diagrams. */
+function metroStops() {
+  const lines = new Map();
+  for (const ln of drawnLines().filter(isMetro)) {
+    for (const dir of ln.directions || []) {
+      for (const sid of dir.stations) {
+        if (!lines.has(sid)) lines.set(sid, new Set());
+        lines.get(sid).add(ln.id);
+      }
+    }
+  }
+  return new Map([...lines].map(([sid, set]) => [sid, set.size]));
 }
 
 /**
- * One angle for every pill in a curated subway, so the Market St stations read
- * as a row rather than following each bend of the tunnel. The angle is the one
- * most of the subway's pills already have (within ALIGN_DEG, compared modulo
- * 180 since a pill is symmetric), averaged; a tie goes to the cluster met first
- * in the subway's own order. Stations in no subway keep their own.
+ * One angle for every capsule on the map, so they read as one family rather
+ * than each following its own bend of track. The angle is the one most capsules
+ * already have (within ALIGN_DEG, compared modulo 180 since a capsule is
+ * symmetric), averaged: on Muni that is Market St's.
  */
 const ALIGN_DEG = 10;
 function alignPills(pills) {
-  const bySid = new Map(pills.map(f => [f.properties.sid, f]));
   const half = b => ((b % 180) + 180) % 180;
   const gap = (a, b) => { const d = Math.abs(half(a) - half(b)); return Math.min(d, 180 - d); };
-  for (const subway of Object.values(store.curation?.stations?.subways || {})) {
-    const members = subway.stations.map(sid => bySid.get(sid)).filter(Boolean);
-    if (members.length < 2) continue;
-    let best = [];
-    for (const f of members) {
-      const near = members.filter(g => gap(f.properties.bearing, g.properties.bearing) <= ALIGN_DEG);
-      if (near.length > best.length) best = near;
-    }
-    // Average as vectors on the doubled angle, so 179 and 1 average to 0, not 90.
-    const [x, y] = best.reduce(([x, y], f) => {
-      const r = half(f.properties.bearing) * 2 * Math.PI / 180;
-      return [x + Math.cos(r), y + Math.sin(r)];
-    }, [0, 0]);
-    const bearing = Math.atan2(y, x) * 180 / Math.PI / 2;
-    for (const f of members) f.properties.bearing = bearing;
+  if (pills.length < 2) return pills;
+  let best = [];
+  for (const f of pills) {
+    const near = pills.filter(g => gap(f.properties.bearing, g.properties.bearing) <= ALIGN_DEG);
+    if (near.length > best.length) best = near;
   }
+  // Average as vectors on the doubled angle, so 179 and 1 average to 0, not 90.
+  const [x, y] = best.reduce(([x, y], f) => {
+    const r = half(f.properties.bearing) * 2 * Math.PI / 180;
+    return [x + Math.cos(r), y + Math.sin(r)];
+  }, [0, 0]);
+  const bearing = Math.atan2(y, x) * 180 / Math.PI / 2;
+  for (const f of pills) f.properties.bearing = bearing;
   return pills;
 }
 
@@ -281,7 +295,7 @@ function stationStyle(sid, station, ls) {
 function stationFeatures() {
   const active = store.activeLine;
   const feats = [], pills = [];
-  const drawn = new Set(drawnLines().map(ln => ln.id));
+  const metroHere = metroStops();
   for (const sid of stationIds()) {
     if (!shown(sid)) continue;
     const at = stationPos(sid);
@@ -289,7 +303,7 @@ function stationFeatures() {
     const s = stationById(sid);
     const ls = linesOf(sid);
     const on = !active || ls.some(l => l.id === active);
-    const pill = pillOf(sid, ls.filter(l => drawn.has(l.id)), at);
+    const pill = pillOf(sid, metroHere.get(sid) || 0, at);
     if (pill) {
       pills.push({
         type: 'Feature',
