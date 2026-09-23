@@ -102,7 +102,7 @@ function buildPalette(q) {
         kind: 'station', id: sid,
         lead: ls.length ? (ls[0].shortName || upstream(ls[0].id)) : '·',
         leadBg: ls[0]?.color || 'rgba(255,255,255,.08)', leadFg: ls[0]?.textColor,
-        t1: st.name + (st.verified ? ' ✓' : ''),
+        t1: st.name + (st.verified && !store.publicMap ? ' ✓' : ''),
         t2: `${sid} · ${ps.map(p => upstream(p.id)).join(' ')}`,
         lines: ls.slice(0, 8).map(l => l.color),
       });

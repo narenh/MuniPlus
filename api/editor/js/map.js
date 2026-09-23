@@ -383,6 +383,41 @@ function addSources() {
 }
 
 const dimmed = (on, a, b) => ['case', ['==', ['get', 'active'], 1], a, b];
+const isSel = ['==', ['get', 'selected'], 1];
+const isHover = ['boolean', ['feature-state', 'hover'], false];
+
+/**
+ * Station nodes. Metro convention: a station served by more than one line is a
+ * white disc with a black ring; a single-line stop is a small dot ringed in
+ * that line's colour. Interchanges are drawn larger, as on a real map.
+ *
+ * At city zoom SF's 1,805 stations sit closer together than the dots were
+ * wide, so the lines drowned under a blanket of rings. Below z14 the dots and
+ * their rings shrink with the zoom, down to specks along the lines at z10;
+ * from z14 up they are the size they always were.
+ */
+const STATION_PAINT = {
+  'circle-radius': ['interpolate', ['linear'], ['zoom'],
+    10, ['case', ['==', ['get', 'interchange'], 1], 1.8, 1.2],
+    12, ['case', ['==', ['get', 'interchange'], 1], 2.8, 1.8],
+    13, ['case', ['==', ['get', 'interchange'], 1], 4.6, 3.1],
+    14, ['case', ['==', ['get', 'interchange'], 1], 8, 5.2],
+    18, ['case', ['==', ['get', 'interchange'], 1], 14, 9]],
+  'circle-color': ['case',
+    ['==', ['get', 'interchange'], 1], '#ffffff', '#0a0c12'],
+  'circle-stroke-width': ['interpolate', ['linear'], ['zoom'],
+    10, ['case', isSel, 1.6, 0.6],
+    12, ['case', isSel, 2.4, isHover, 1.6, 0.9],
+    14, ['case', isSel, 4, isHover, 3.2, 2.4]],
+  'circle-stroke-color': ['case',
+    // a white ring on a white disc would have no edge, so a selected
+    // interchange keeps its black ring and is marked by the glow beneath
+    ['==', ['get', 'interchange'], 1], '#05060a',
+    isSel, '#ffffff',
+    ['get', 'color']],
+  'circle-opacity': dimmed(true, 1, 0.3),
+  'circle-stroke-opacity': dimmed(true, 1, 0.28),
+};
 
 function addLayers() {
   // --- line glow, then casing, then the line itself
@@ -503,54 +538,21 @@ function addLayers() {
   });
 
   // --- station nodes
-  map.addLayer({
-    id: 'muni-station-glow', type: 'circle', source: 'stations',
-    paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 9, 15, 21, 18, 32],
-      'circle-color': ['get', 'color'],
-      'circle-opacity': ['case', ['==', ['get', 'selected'], 1], 0.75, 0],
-      'circle-blur': 0.55,
-    },
-  });
   // A station holding a platform 511 no longer lists gets an amber ring, so a
   // snapshot refresh that drops stops is visible at a glance on the map.
   map.addLayer({
     id: 'muni-station-stale', type: 'circle', source: 'stations',
     filter: ['==', ['get', 'stale'], 1],
     paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 7, 14, 11, 18, 18],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 2.6, 12, 4, 14, 11, 18, 18],
       'circle-color': 'rgba(0,0,0,0)',
       'circle-stroke-color': '#fbbf24',
-      'circle-stroke-width': 2,
+      'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 10, 1, 13, 2],
       'circle-opacity': dimmed(true, 1, 0.3),
       'circle-stroke-opacity': dimmed(true, 0.95, 0.3),
     },
   });
-  map.addLayer({
-    id: 'muni-station', type: 'circle', source: 'stations',
-    paint: {
-      // Metro convention: a station served by more than one line is a white
-      // disc with a black ring; a single-line stop is a small dot ringed in
-      // that line's colour. Interchanges are drawn larger, as on a real map.
-      'circle-radius': ['interpolate', ['linear'], ['zoom'],
-        11, ['case', ['==', ['get', 'interchange'], 1], 5, 3.2],
-        14, ['case', ['==', ['get', 'interchange'], 1], 8, 5.2],
-        18, ['case', ['==', ['get', 'interchange'], 1], 14, 9]],
-      'circle-color': ['case',
-        ['==', ['get', 'interchange'], 1], '#ffffff', '#0a0c12'],
-      'circle-stroke-width': ['case',
-        ['==', ['get', 'selected'], 1], 4,
-        ['boolean', ['feature-state', 'hover'], false], 3.2, 2.4],
-      'circle-stroke-color': ['case',
-        // a white ring on a white disc would have no edge, so a selected
-        // interchange keeps its black ring and is marked by the glow beneath
-        ['==', ['get', 'interchange'], 1], '#05060a',
-        ['==', ['get', 'selected'], 1], '#ffffff',
-        ['get', 'color']],
-      'circle-opacity': dimmed(true, 1, 0.3),
-      'circle-stroke-opacity': dimmed(true, 1, 0.28),
-    },
-  });
+  map.addLayer({ id: 'muni-station', type: 'circle', source: 'stations', paint: STATION_PAINT });
 
   // --- leaders from a station to each of its poles
   map.addLayer({
@@ -573,7 +575,7 @@ function addLayers() {
   map.addLayer({
     id: 'muni-platform-halo', type: 'circle', source: 'platforms',
     paint: {
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 12, 4, 16, 13, 19, 20],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 1.2, 13, 4, 16, 13, 19, 20],
       'circle-color': ['get', 'color'],
       'circle-opacity': ['case',
         ['==', ['get', 'selected'], 1], 0.35,
@@ -584,17 +586,23 @@ function addLayers() {
   map.addLayer({
     id: 'muni-platform', type: 'circle', source: 'platforms',
     paint: {
+      // Shrunk and faded at city zoom for the same reason as the stations:
+      // 3,000 poles at their street-level size bury the lines.
       'circle-radius': ['interpolate', ['linear'], ['zoom'],
-        12, 2.4, 14, 4, 16, 6.5, 19, 11],
+        11, 0.8, 13, 2, 14, 4, 16, 6.5, 19, 11],
       'circle-color': '#0a0c12',
       'circle-stroke-width': ['interpolate', ['linear'], ['zoom'],
-        14, ['case', ['==', ['get', 'selected'], 1], 3, 2],
-        19, ['case', ['==', ['get', 'selected'], 1], 5, 3.5]],
+        11, 0.5,
+        13, ['case', isSel, 2, 1.1],
+        14, ['case', isSel, 3, 2],
+        19, ['case', isSel, 5, 3.5]],
       'circle-stroke-color': ['case',
         ['==', ['get', 'selected'], 1], '#ffffff',
         ['get', 'color']],
-      'circle-opacity': dimmed(true, 1, 0.25),
-      'circle-stroke-opacity': dimmed(true, 1, 0.3),
+      'circle-opacity': ['interpolate', ['linear'], ['zoom'],
+        12, dimmed(true, 0.5, 0.12), 14, dimmed(true, 1, 0.25)],
+      'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+        12, dimmed(true, 0.5, 0.12), 14, dimmed(true, 1, 0.3)],
     },
   });
   map.addLayer({
@@ -637,6 +645,20 @@ function addLayers() {
       'text-opacity': dimmed(true, 1, 0.2),
     },
   });
+
+  // --- the selected station again, over the poles and the live vehicles
+  // (vehicles.js inserts its layer just below these), so whatever is being
+  // inspected is never hidden by a bus stopped on it
+  map.addLayer({
+    id: 'muni-station-sel-glow', type: 'circle', source: 'stations', filter: isSel,
+    paint: {
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 9, 15, 21, 18, 32],
+      'circle-color': ['get', 'color'],
+      'circle-opacity': 0.75,
+      'circle-blur': 0.55,
+    },
+  });
+  map.addLayer({ id: 'muni-station-sel', type: 'circle', source: 'stations', filter: isSel, paint: STATION_PAINT });
 
   // --- candidate stops for the add-platform picker: hollow and dashed, so
   // they never read as poles a station already has
@@ -746,14 +768,14 @@ function wireInteractions() {
   });
 
   map.on('click', 'muni-station', e => {
-    if (hitCandidate(e)) return;
+    if (hitOverlay(e)) return;
     const sid = e.features[0].properties.sid;
     select(sid, null);
     listeners.pick.forEach(f => f(sid, null));
   });
 
   map.on('click', 'muni-platform', e => {
-    if (hitCandidate(e)) return;
+    if (hitOverlay(e)) return;
     e.originalEvent.stopPropagation();
     const { sid, pid } = e.features[0].properties;
     select(sid, pid);
@@ -761,15 +783,25 @@ function wireInteractions() {
   });
 
   map.on('click', e => {
-    const hits = map.queryRenderedFeatures(e.point,
-      { layers: ['muni-station', 'muni-platform', 'muni-candidate'] });
+    const layers = ['muni-station', 'muni-platform', 'muni-candidate', ...claimed]
+      .filter(id => map.getLayer(id));
+    const hits = map.queryRenderedFeatures(e.point, { layers });
     if (!hits.length) { select(null, null); listeners.pick.forEach(f => f(null, null)); }
   });
 }
 
-/** A candidate drawn over a station or pole takes the click. */
-const hitCandidate = e =>
-  !!candidateFor && map.queryRenderedFeatures(e.point, { layers: ['muni-candidate'] }).length > 0;
+/** Layers drawn over the stations that handle their own clicks (the live
+ *  vehicles). A click on one neither selects what is under it nor clears the
+ *  selection. */
+const claimed = [];
+export function claimClicks(layerIds) { claimed.push(...layerIds); }
+
+/** A candidate or a claimed overlay drawn over a station or pole takes the
+ *  click. A hidden layer renders nothing, so it hits nothing. */
+function hitOverlay(e) {
+  const layers = [...(candidateFor ? ['muni-candidate'] : []), ...claimed].filter(id => map.getLayer(id));
+  return layers.length > 0 && map.queryRenderedFeatures(e.point, { layers }).length > 0;
+}
 
 // ------------------------------------------------------------------- HUD
 const hud = () => document.getElementById('hud-coords');
@@ -818,6 +850,7 @@ export const LAYER_IDS = {
   labels: ['muni-label'],
   transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',
               'muni-transfer-head', 'muni-transfer-label'],
+  vehicles: ['muni-vehicle'],
 };
 
 export function applyLayerToggles() {
@@ -831,6 +864,19 @@ export function applyLayerToggles() {
 
 // ------------------------------------------------------------------ camera
 function padding() {
+  // On a phone both panels are sheets over the bottom of the map (app.css,
+  // "Phone"), so what they hide is the bottom, not a side. Whether one is open
+  // comes from the state, not its class: a tap that focuses a line fits the
+  // camera at once, and the sheet only opens on the next frame's render. Its
+  // height is the cap, which its content always reaches (a line's stops, a
+  // station's platform cards) and which is known before it has rendered.
+  if (narrow()) {
+    const stripOpen = !!lineById(store.activeLine);
+    const inspOpen = !!stationById(store.selStation) || (store.lineInspector && stripOpen && !store.publicMap);
+    const h = document.getElementById('body')?.clientHeight || window.innerHeight;
+    const sheet = Math.max(stripOpen ? SHEET.strip : 0, inspOpen ? SHEET.inspector : 0) * h;
+    return { left: 16, right: 16, top: 16, bottom: 16 + sheet };
+  }
   const strip = document.getElementById('strip');
   const insp = document.getElementById('inspector');
   return {
@@ -839,6 +885,11 @@ function padding() {
     top: 24, bottom: 24,
   };
 }
+
+/** The width at which app.css turns the panels into bottom sheets, and their
+ *  max-height there, as a share of the area below the top bar. */
+export const narrow = () => window.matchMedia('(max-width: 640px)').matches;
+const SHEET = { strip: 0.44, inspector: 0.58 };
 
 export function flyTo(at, zoom = 16.4) {
   if (!at || !map) return;
