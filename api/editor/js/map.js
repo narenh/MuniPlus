@@ -256,26 +256,26 @@ function alignPills(pills) {
 }
 
 /**
- * How a station is drawn (STATION_PAINT). Stations in a curated subway are
- * underground, whatever buses also stop above them:
- *  - `metro`: a metro interchange. Two or more metro lines in a subway, or an
- *    indoor transfer from one (Union Square's passage to Powell makes it one),
- *    or an interchange served by metro lines only.
- *  - `underground`: a subway station on one metro line (Chinatown).
- *  - `surface`: an interchange with any bus, streetcar or cable car line.
- *  - `stop`: one line, at street level.
+ * How a station is drawn (STATION_PAINT), on two independent axes:
+ *  - fill: white underground (a station in a curated subway), black at street
+ *    level;
+ *  - size: big for a transfer, small otherwise. A transfer is two or more lines
+ *    with at least one of them rail (metro, streetcar, cable car), so a stop
+ *    shared only by buses stays small: downtown nearly every stop is.
+ * The ring is the station's first line in line order, metro before everything
+ * else, so a metro-bus transfer is ringed in the metro colour.
+ * A curated hub (4th & King, Union Square, Balboa Park) is big and white with a
+ * black ring, whatever the rest says. Capsules are drawn separately.
  */
-function stationKind(sid, station, ls) {
-  const subways = Object.values(store.curation?.stations?.subways || {});
-  const underground = subways.some(sw => sw.stations.includes(sid));
-  const metro = ls.filter(isMetro).length;
-  if (underground) {
-    const indoor = (station.transfers || []).some(t => t.mode === 'indoor');
-    if (metro >= 2 || indoor) return 'metro';
-    if (metro === 1) return 'underground';
-  }
-  if (ls.length > 1) return metro === ls.length ? 'metro' : 'surface';
-  return 'stop';
+function stationStyle(sid, station, ls) {
+  const underground = Object.values(store.curation?.stations?.subways || {})
+    .some(sw => sw.stations.includes(sid));
+  const transfer = ls.length > 1 && ls.some(l => l.mode !== 'bus');
+  return {
+    hub: station.hub ? 1 : 0,
+    white: station.hub || underground ? 1 : 0,
+    big: station.hub || transfer ? 1 : 0,
+  };
 }
 
 function stationFeatures() {
@@ -306,7 +306,7 @@ function stationFeatures() {
         pill: pill ? 1 : 0,
         color: tint(ls, on),
         active: on ? 1 : 0,
-        kind: stationKind(sid, s, ls),
+        ...stationStyle(sid, s, ls),
         selected: store.selStation === sid ? 1 : 0,
         // a platform 511 no longer lists: flagged, never removed automatically
         stale: platformsOf(s).some(p => !derivedPlatform(p.id)?.live) ? 1 : 0,
@@ -573,20 +573,14 @@ function addSources() {
 const dimmed = (on, a, b) => ['case', ['==', ['get', 'active'], 1], a, b];
 const isSel = ['==', ['get', 'selected'], 1];
 const isHover = ['boolean', ['feature-state', 'hover'], false];
-const isSurface = ['==', ['get', 'kind'], 'surface'];
-const isUnderground = ['==', ['get', 'kind'], 'underground'];
-const isInterchange = ['in', ['get', 'kind'], ['literal', ['metro', 'surface']]];
+const isBig = ['==', ['get', 'big'], 1];
+const isWhite = ['==', ['get', 'white'], 1];
+const isHub = ['==', ['get', 'hub'], 1];
 
 /**
- * Station nodes, by `kind` (stationKind):
- *  - metro: a white disc with a black ring, the metro convention;
- *  - underground: a white dot ringed in its line's colour, a subway station on
- *    one line;
- *  - surface: a black disc with a white ring, so Church & 16th never reads as
- *    the Church St subway station;
- *  - stop: a solid dot in its line's colour, with a thin dark edge so it still
- *    shows on its own line.
- * Interchanges are drawn larger, as on a real map.
+ * Station nodes (stationStyle): white underground, black at street level; big
+ * for a transfer, small otherwise; ringed in the station's first line's colour,
+ * or black for a hub.
  *
  * At city zoom SF's 1,805 stations sit closer together than the dots were
  * wide, so the lines drowned under a blanket of rings. Below z14 the dots and
@@ -595,30 +589,22 @@ const isInterchange = ['in', ['get', 'kind'], ['literal', ['metro', 'surface']]]
  */
 const STATION_PAINT = {
   'circle-radius': ['interpolate', ['linear'], ['zoom'],
-    10, ['case', isInterchange, 1.8, 1.2],
-    12, ['case', isInterchange, 2.8, 1.8],
-    13, ['case', isInterchange, 4.6, 3.1],
-    14, ['case', isInterchange, 8, 5.2],
-    18, ['case', isInterchange, 14, 9]],
-  'circle-color': ['case',
-    isSurface, '#05060a',
-    isInterchange, '#ffffff',
-    isUnderground, '#ffffff',
-    ['get', 'color']],
+    10, ['case', isBig, 1.8, 1.2],
+    12, ['case', isBig, 2.8, 1.8],
+    13, ['case', isBig, 4.6, 3.1],
+    14, ['case', isBig, 8, 5.2],
+    18, ['case', isBig, 14, 9]],
+  'circle-color': ['case', isWhite, '#ffffff', '#0a0c12'],
   'circle-stroke-width': ['interpolate', ['linear'], ['zoom'],
-    10, ['case', isSel, 1.6, isInterchange, 0.6, isUnderground, 0.8, 0.4],
-    12, ['case', isSel, 2.4, isHover, 1.6, isInterchange, 0.9, isUnderground, 1.2, 0.6],
-    14, ['case', isSel, 4, isHover, 3.2, isInterchange, 2.4, isUnderground, 2.4, 1.3]],
+    10, ['case', isSel, 1.6, isBig, 0.6, 0.5],
+    12, ['case', isSel, 2.4, isHover, 1.6, isBig, 0.9, 0.8],
+    14, ['case', isSel, 4, isHover, 3.2, isBig, 2.4, 2]],
   'circle-stroke-color': ['case',
-    // A white ring on a white disc would have no edge, so a selected metro
-    // interchange keeps its black ring and is marked by the glow beneath. A
-    // street-level one's white ring already is the edge.
-    isSurface, '#ffffff',
-    isInterchange, '#05060a',
-    // The line's colour is what says which subway line this station is on.
-    isUnderground, ['get', 'color'],
-    isSel, '#ffffff',
-    '#05060a'],
+    isHub, '#05060a',
+    // A selected station is ringed white, unless it is white already: then the
+    // ring stays and the glow beneath marks it.
+    ['all', isSel, ['!', isWhite]], '#ffffff',
+    ['get', 'color']],
   // A station drawn as a pill keeps its disc for clicks and hover, unseen.
   'circle-opacity': ['case', ['==', ['get', 'pill'], 1], 0, dimmed(true, 1, 0.3)],
   'circle-stroke-opacity': ['case', ['==', ['get', 'pill'], 1], 0, dimmed(true, 1, 0.28)],

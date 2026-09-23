@@ -453,6 +453,7 @@ export function changes() {
     for (const pid of ap.keys()) if (!bp.has(pid)) push('del', T, `Removed platform ${code(upstream(pid))}`);
 
     if (!same(a.note, b.note)) push('edit', T, b.note ? `Note → ${code(b.note)}` : 'Note removed');
+    if (!!a.hub !== !!b.hub) push('edit', T, b.hub ? 'Marked a hub' : 'No longer a hub');
     if (!same(a.verified, b.verified)) {
       push('edit', T, b.verified ? `Verified ${code(b.verified)}` : `No longer verified (was ${code(a.verified)})`);
     }
