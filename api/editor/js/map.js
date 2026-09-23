@@ -8,6 +8,7 @@ import {
   stationPos, platformPos, derivedPlatform, stationMatches, platformMatches,
   lineMatches, upstream, metresBetween, unclaimedNear,
 } from './store.js';
+import { bundle } from './bundle.js';
 
 const STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 // A walking path is meaningless at city zoom; it only means something once the
@@ -30,29 +31,85 @@ export function onCandidate(fn) { listeners.candidate.push(fn); }
 // ---------------------------------------------------------------- geometry
 const HEADING_DEG = { northbound: 0, eastbound: 90, southbound: 180, westbound: 270 };
 
+/** The lines on the map: hidden lines (owl copies of a day line) are left off
+ *  unless focused, as the app leaves them off. */
+function drawnLines() {
+  return allLines().filter(ln => store.activeLine === ln.id || (!ln.hidden && lineMatches(ln.id)));
+}
+
+/** The path a direction drives: the GTFS shape, so it follows the street and
+ *  the curves of the track. Until the shapes arrive, or for a direction the
+ *  feed has no shape for, the line through the platforms it stops at instead,
+ *  which cuts corners but is never missing. */
+const pathOf = dir => store.shapes[dir.shape] || dir.platforms.map(platformPos).filter(Boolean);
+
 /**
- * Each line as the path its most-run pattern per direction drives: the GTFS
- * shape, so it follows the street and the curves of the track. Until the shapes
- * arrive, or for a direction the feed has no shape for, the line is drawn
- * through the platforms it stops at instead, which cuts corners but is never
- * missing. Hidden lines (owl copies of a day line) are left off unless focused,
- * as the app leaves them off.
+ * Metro lines are drawn side by side where they share track, in this order
+ * from the north side of Market St, the order of the printed Muni map. Lines
+ * not named here follow, in the usual line order.
+ */
+const METRO_ORDER = ['N', 'J', 'L', 'M', 'K', 'T'];
+const isMetro = ln => ln.mode === 'metro';
+
+let bundled = { key: null, value: null };
+/** The drawn metro lines, bundled (bundle.js). Built only when the lines drawn
+ *  or their paths change: it takes a couple of hundred milliseconds, and the
+ *  map refreshes on every edit. */
+function metroBundle() {
+  const lines = drawnLines().filter(isMetro);
+  const traversals = [];
+  const key = [];
+  for (const ln of lines) {
+    for (const dir of ln.directions || []) {
+      const coords = pathOf(dir);
+      if (coords.length < 2) continue;
+      traversals.push({ line: ln.id, dir: dir.direction, coords });
+      key.push(`${ln.id}/${dir.direction}/${store.shapes[dir.shape] ? dir.shape : dir.platforms.join()}`);
+    }
+  }
+  const k = key.join(';') + (Object.keys(store.shapes).length ? '' : ';no-shapes');
+  if (bundled.key !== k) {
+    const rank = ln => {
+      const i = METRO_ORDER.indexOf(ln.shortName);
+      return i < 0 ? METRO_ORDER.length : i;
+    };
+    const order = [...lines].sort((a, b) => rank(a) - rank(b)).map(ln => ln.id);
+    bundled = { key: k, value: { ...bundle(traversals, order), traversals }, pills: new Map() };
+  }
+  return bundled;
+}
+
+/**
+ * Each line as the path its most-run pattern per direction drives. Metro lines
+ * come in pieces, each with the offset and width factor that put it beside the
+ * others on shared track; every other line is one piece at its own centre.
  */
 function lineFeatures() {
   const feats = [];
-  for (const ln of allLines()) {
-    const focused = store.activeLine === ln.id;
-    if (!focused && (ln.hidden || !lineMatches(ln.id))) continue;
-    const active = !store.activeLine || focused;
+  const props = ln => {
+    const active = !store.activeLine || store.activeLine === ln.id;
+    return { id: ln.id, color: ln.color || GREY, active: active ? 1 : 0, name: ln.name };
+  };
+  for (const ln of drawnLines()) {
+    if (isMetro(ln)) continue;
     for (const dir of ln.directions || []) {
-      const coords = store.shapes[dir.shape] || dir.platforms.map(platformPos).filter(Boolean);
+      const coords = pathOf(dir);
       if (coords.length < 2) continue;
       feats.push({
         type: 'Feature',
-        properties: { id: ln.id, dir: dir.direction, color: ln.color || GREY, active: active ? 1 : 0, name: ln.name },
+        properties: { ...props(ln), dir: dir.direction, k: 1, off: 0 },
         geometry: { type: 'LineString', coordinates: coords },
       });
     }
+  }
+  const { value } = metroBundle();
+  for (const piece of value.pieces) {
+    const tr = value.traversals[piece.t];
+    feats.push({
+      type: 'Feature',
+      properties: { ...props(lineById(piece.line)), dir: tr.dir, k: piece.k, off: piece.off },
+      geometry: { type: 'LineString', coordinates: piece.coords },
+    });
   }
   // draw the active line last so it sits on top
   return { type: 'FeatureCollection', features: feats.sort((a, b) => a.properties.active - b.properties.active) };
@@ -152,9 +209,25 @@ function tint(lines, on) {
   return primary?.color || GREY;
 }
 
+/**
+ * A station with three or more metro lines on shared track is drawn as a
+ * capsule across the bundle, as on the printed map, instead of a disc that
+ * would sit on one line of it. Where on the track, and at what angle, comes
+ * from the nearest shared stretch those lines run. Cached with the bundle.
+ */
+const PILL_LINES = 3;
+const PILL_REACH_M = 120;
+function pillOf(sid, ls, at) {
+  if (ls.filter(isMetro).length < PILL_LINES) return null;
+  const b = metroBundle();
+  if (!b.pills.has(sid)) b.pills.set(sid, b.value.nodeNear(at, PILL_REACH_M, PILL_LINES));
+  return b.pills.get(sid);
+}
+
 function stationFeatures() {
   const active = store.activeLine;
-  const feats = [];
+  const feats = [], pills = [];
+  const drawn = new Set(drawnLines().map(ln => ln.id));
   for (const sid of stationIds()) {
     if (!shown(sid)) continue;
     const at = stationPos(sid);
@@ -162,12 +235,21 @@ function stationFeatures() {
     const s = stationById(sid);
     const ls = linesOf(sid);
     const on = !active || ls.some(l => l.id === active);
+    const pill = pillOf(sid, ls.filter(l => drawn.has(l.id)), at);
+    if (pill) {
+      pills.push({
+        type: 'Feature',
+        properties: { sid, bearing: pill.bearing, active: on ? 1 : 0, selected: store.selStation === sid ? 1 : 0 },
+        geometry: { type: 'Point', coordinates: pill.at },
+      });
+    }
     feats.push({
       type: 'Feature',
       id: hashId(sid),
       properties: {
         sid,
         name: s.name,
+        pill: pill ? 1 : 0,
         color: tint(ls, on),
         active: on ? 1 : 0,
         interchange: ls.length > 1 ? 1 : 0,
@@ -178,7 +260,10 @@ function stationFeatures() {
       geometry: { type: 'Point', coordinates: at },
     });
   }
-  return { type: 'FeatureCollection', features: feats };
+  return {
+    stations: { type: 'FeatureCollection', features: feats },
+    pills: { type: 'FeatureCollection', features: pills },
+  };
 }
 
 /** Poles of shown stations whose own lines pass the mode chips. A platform with
@@ -319,6 +404,7 @@ export async function initMap(container) {
 
   desaturateBasemap();
   makeArrowImage();
+  makeStationImages();
   addSources();
   addLayers();
   wireInteractions();
@@ -341,6 +427,50 @@ function desaturateBasemap() {
       }
     } catch { /* some layers have data-driven values we should not clobber */ }
   }
+}
+
+/**
+ * The pill for a station on three or more metro lines, and the dashed ring of
+ * a platform pole.
+ *
+ * The pill is drawn for a 10 px line, across a bundle at its widest (MAX_SPREAD
+ * lines): long enough to cover it with a margin, about as thick as an
+ * interchange disc is wide, white with a black edge like one. Drawn at twice the
+ * size it shows at, so it stays crisp on a phone.
+ *
+ * The ring is dashed so a pole never reads as a single-line station, which is
+ * the same dark dot ringed in its line's colour. Circle layers cannot dash
+ * their stroke, so it is an icon, tinted per line like the heading arrows.
+ */
+function makeStationImages() {
+  const R = 2, W = 10, t = 2.4 * W, len = 2.5 * W + t, edge = 0.42 * W;
+  const pill = document.createElement('canvas');
+  pill.width = Math.ceil((len + edge) * R);
+  pill.height = Math.ceil((t + edge) * R);
+  const g = pill.getContext('2d');
+  g.scale(R, R);
+  g.translate(edge / 2, edge / 2);
+  g.beginPath();
+  g.roundRect(0, 0, len, t, t / 2);
+  g.fillStyle = '#ffffff';
+  g.fill();
+  g.lineWidth = edge;
+  g.strokeStyle = '#05060a';
+  g.stroke();
+  map.addImage('station-pill', { width: pill.width, height: pill.height, data: g.getImageData(0, 0, pill.width, pill.height).data }, { pixelRatio: R });
+
+  const S = 56, r = 20, ring = document.createElement('canvas');
+  ring.width = ring.height = S;
+  const h = ring.getContext('2d');
+  h.strokeStyle = '#fff';
+  h.lineWidth = 0.38 * r;
+  // Eight dashes, gaps a little shorter than the dashes.
+  const dash = (2 * Math.PI * r) / 8;
+  h.setLineDash([dash * 0.58, dash * 0.42]);
+  h.beginPath();
+  h.arc(S / 2, S / 2, r, 0, 2 * Math.PI);
+  h.stroke();
+  map.addImage('platform-ring', { width: S, height: S, data: h.getImageData(0, 0, S, S).data }, { sdf: true });
 }
 
 /** A small triangular arrow drawn to a canvas, used for platform headings. */
@@ -377,7 +507,9 @@ function addSources() {
   const tf = transferFeatures();
   map.addSource('transfers', { type: 'geojson', data: tf.lines });
   map.addSource('transfer-heads', { type: 'geojson', data: tf.heads });
-  map.addSource('stations', { type: 'geojson', data: stationFeatures() });
+  const st = stationFeatures();
+  map.addSource('stations', { type: 'geojson', data: st.stations });
+  map.addSource('pills', { type: 'geojson', data: st.pills });
   map.addSource('platforms', { type: 'geojson', data: platformFeatures() });
   map.addSource('leaders', { type: 'geojson', data: leaderFeatures() });
   map.addSource('candidates', { type: 'geojson', data: candidateFeatures() });
@@ -417,8 +549,34 @@ const STATION_PAINT = {
     ['==', ['get', 'interchange'], 1], '#05060a',
     isSel, '#ffffff',
     ['get', 'color']],
-  'circle-opacity': dimmed(true, 1, 0.3),
-  'circle-stroke-opacity': dimmed(true, 1, 0.28),
+  // A station drawn as a pill keeps its disc for clicks and hover, unseen.
+  'circle-opacity': ['case', ['==', ['get', 'pill'], 1], 0, dimmed(true, 1, 0.3)],
+  'circle-stroke-opacity': ['case', ['==', ['get', 'pill'], 1], 0, dimmed(true, 1, 0.28)],
+};
+
+
+/**
+ * A line's width at a zoom, and where it sits: `k` and `off` (bundle.js) scale
+ * a single line's width and offset it from the track's centre, in widths. The
+ * casing adds a fixed margin, so a bundle has one black edge round it rather
+ * than one round each line.
+ */
+const LINE_W = [[10, 2.6], [14, 5.4], [18, 10]];
+const CASE_EXTRA = { 10: 2, 14: 3.1, 18: 5 };
+const byZoom = f => ['interpolate', ['linear'], ['zoom'], ...LINE_W.flatMap(([z, w]) => [z, f(w, z)])];
+const LINE_WIDTH = byZoom(w => ['*', w, ['get', 'k']]);
+const LINE_OFFSET = byZoom(w => ['*', w, ['get', 'off']]);
+
+/** A pill's size: its image is drawn for a 10 px line, so this is the line
+ *  width over ten. */
+const PILL_SIZE = ['interpolate', ['linear'], ['zoom'], ...LINE_W.flatMap(([z, w]) => [z, w / 10])];
+const PILL_LAYOUT = {
+  'icon-image': 'station-pill',
+  'icon-size': PILL_SIZE,
+  'icon-rotate': ['get', 'bearing'],
+  'icon-rotation-alignment': 'map',
+  'icon-allow-overlap': true,
+  'icon-ignore-placement': true,
 };
 
 function addLayers() {
@@ -428,7 +586,9 @@ function addLayers() {
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': ['get', 'color'],
-      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 11, 14, 24, 18, 44],
+      'line-width': ['interpolate', ['linear'], ['zoom'],
+        10, ['*', 11, ['get', 'k']], 14, ['*', 24, ['get', 'k']], 18, ['*', 44, ['get', 'k']]],
+      'line-offset': LINE_OFFSET,
       'line-blur': ['interpolate', ['linear'], ['zoom'], 10, 8, 16, 24],
       'line-opacity': dimmed(true, 0.55, 0.05),
     },
@@ -438,7 +598,8 @@ function addLayers() {
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': '#05060a',
-      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 4.6, 14, 8.5, 18, 15],
+      'line-width': byZoom((w, z) => ['+', ['*', w, ['get', 'k']], CASE_EXTRA[z]]),
+      'line-offset': LINE_OFFSET,
       'line-opacity': dimmed(true, 0.9, 0.2),
     },
   });
@@ -447,7 +608,8 @@ function addLayers() {
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: {
       'line-color': ['get', 'color'],
-      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2.6, 14, 5.4, 18, 10],
+      'line-width': LINE_WIDTH,
+      'line-offset': LINE_OFFSET,
       'line-opacity': dimmed(true, 1, 0.16),
     },
   });
@@ -555,6 +717,11 @@ function addLayers() {
     },
   });
   map.addLayer({ id: 'muni-station', type: 'circle', source: 'stations', paint: STATION_PAINT });
+  map.addLayer({
+    id: 'muni-station-pill', type: 'symbol', source: 'pills',
+    layout: PILL_LAYOUT,
+    paint: { 'icon-opacity': dimmed(true, 1, 0.3) },
+  });
 
   // --- leaders from a station to each of its poles
   map.addLayer({
@@ -603,7 +770,24 @@ function addLayers() {
         ['get', 'color']],
       'circle-opacity': ['interpolate', ['linear'], ['zoom'],
         12, dimmed(true, 0.5, 0.12), 14, dimmed(true, 1, 0.25)],
-      'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'],
+      // The ring is the dashed icon below; the stroke stays, unseen, so a
+      // click or hover on the rim still finds the pole.
+      'circle-stroke-opacity': 0,
+    },
+  });
+  map.addLayer({
+    id: 'muni-platform-ring', type: 'symbol', source: 'platforms',
+    layout: {
+      'icon-image': 'platform-ring',
+      // The circle's radius plus half its stroke, over the image's radius of 20.
+      'icon-size': ['interpolate', ['linear'], ['zoom'],
+        11, 0.053, 13, 0.13, 14, 0.25, 16, 0.39, 19, 0.64],
+      'icon-allow-overlap': true,
+      'icon-ignore-placement': true,
+    },
+    paint: {
+      'icon-color': ['case', ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
+      'icon-opacity': ['interpolate', ['linear'], ['zoom'],
         12, dimmed(true, 0.5, 0.12), 14, dimmed(true, 1, 0.3)],
     },
   });
@@ -661,6 +845,7 @@ function addLayers() {
     },
   });
   map.addLayer({ id: 'muni-station-sel', type: 'circle', source: 'stations', filter: isSel, paint: STATION_PAINT });
+  map.addLayer({ id: 'muni-station-pill-sel', type: 'symbol', source: 'pills', filter: isSel, layout: PILL_LAYOUT });
 
   // --- candidate stops for the add-platform picker: hollow and dashed, so
   // they never read as poles a station already has
@@ -832,7 +1017,12 @@ export function refresh(which = 'all') {
     map.getSource('transfers').setData(tf.lines);
     map.getSource('transfer-heads').setData(tf.heads);
   }
-  if (all || which === 'stations') map.getSource('stations').setData(stationFeatures());
+  if (all || which === 'stations' || which === 'lines') {
+    // Pills depend on which metro lines are drawn, so a line filter moves them.
+    const st = stationFeatures();
+    map.getSource('stations').setData(st.stations);
+    map.getSource('pills').setData(st.pills);
+  }
   if (all || which === 'platforms') {
     map.getSource('platforms').setData(platformFeatures());
     map.getSource('leaders').setData(leaderFeatures());
@@ -847,7 +1037,7 @@ export function refresh(which = 'all') {
  * LAYER_TOOLS; nothing else needs to know about it.
  */
 export const LAYER_IDS = {
-  platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-arrow',
+  platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-ring', 'muni-platform-arrow',
               'muni-platform-label', 'muni-leader'],
   labels: ['muni-label'],
   transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',

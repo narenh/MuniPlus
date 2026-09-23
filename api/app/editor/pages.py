@@ -7,41 +7,90 @@ state it loads.
 
 Only ``index.html`` is gated. The scripts and styles are served to anyone: they
 are the same files as in the public repo, and the login page must not need them.
+
+Cache busting: the page is served with its script and stylesheet under
+``v/<version>/``, a hash of every frontend file. The modules import each other
+by relative path, so the whole graph loads from that one versioned folder, and a
+deploy that changes any file changes every URL. Those URLs never change content,
+so they are cached for good. That is also what makes a deploy show up at once:
+on staging, Cloudflare replaced the ``no-cache`` these files used to carry with
+its own ``max-age=14400``, so a reload ran four-hour-old modules. A browser can
+hold an old file for as long as it likes under an old version's URL, and never
+asks for that URL again. The page itself stays ``no-cache``, and Cloudflare
+leaves that alone. ``fetch("api/state")`` resolves against the page's URL, not
+the module's, so the API paths are unaffected.
 """
 
+import functools
+import hashlib
 from pathlib import Path
 
 from fastapi import APIRouter, FastAPI, Request
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import Response
 
+from ..endpoints.stations import etag_of, not_modified
 from .state import editor_of
 
 # The page is small and changes with every frontend deploy; no-cache has the
 # browser revalidate it (a 304 via its ETag) rather than run a stale one against a
 # newer API.
 NO_CACHE = {"Cache-Control": "no-cache"}
+FOREVER = {"Cache-Control": "public, max-age=31536000, immutable"}
+VERSIONED = "v"
+
+# The references index.html makes to its own assets, rewritten into the
+# versioned folder. Each must be found: a page edited so one no longer matches
+# would silently stop busting that asset.
+ASSET_REFS = ('href="css/', 'src="js/')
 
 router = APIRouter(include_in_schema=False)
 
 
-class _Revalidated(StaticFiles):
-    """The scripts and styles, revalidated on every load like the page.
+class _Assets(StaticFiles):
+    """Static files with a Cache-Control of our own."""
 
-    Without a Cache-Control of our own, Cloudflare's default browser TTL gives them
-    ``max-age=14400``, and a reload then runs the new page against four-hour-old
-    modules: the shapes deploy was invisible on staging until a hard refresh. The
-    files are small, and a revalidation is a 304 from their ETag."""
+    def __init__(self, *, headers: dict[str, str], **kwargs):
+        super().__init__(**kwargs)
+        self.headers = headers
 
     def file_response(self, *args, **kwargs) -> Response:
         response = super().file_response(*args, **kwargs)
-        response.headers.update(NO_CACHE)
+        response.headers.update(self.headers)
         return response
 
 
-def _index(request: Request) -> FileResponse:
-    return FileResponse(editor_of(request).editor_dir / "index.html", headers=NO_CACHE)
+@functools.cache
+def asset_version(editor_dir: Path) -> str:
+    """A hash of every file the page loads. The frontend ships in the image and
+    never changes while the server runs, so it is computed once."""
+    digest = hashlib.sha256()
+    for path in sorted(p for p in editor_dir.rglob("*") if p.is_file()):
+        digest.update(path.relative_to(editor_dir).as_posix().encode() + b"\0")
+        digest.update(path.read_bytes())
+    return digest.hexdigest()[:12]
+
+
+@functools.cache
+def _page(editor_dir: Path) -> tuple[str, str]:
+    """``index.html`` pointing into the versioned folder, and its ETag."""
+    version = asset_version(editor_dir)
+    html = (editor_dir / "index.html").read_text(encoding="utf-8")
+    for ref in ASSET_REFS:
+        if ref not in html:
+            raise RuntimeError(f"index.html no longer contains {ref!r}; update pages.ASSET_REFS")
+        attr, path = ref.split('"')
+        html = html.replace(ref, f'{attr}"{VERSIONED}/{version}/{path}')
+    return html, hashlib.sha256(html.encode()).hexdigest()[:16]
+
+
+def _index(request: Request) -> Response:
+    html, etag = _page(editor_of(request).editor_dir)
+    headers = {**NO_CACHE, "ETag": etag_of(etag)}
+    if not_modified(request, etag):
+        return Response(status_code=304, headers=headers)
+    return HTMLResponse(html, headers=headers)
 
 
 @router.get("/editor")
@@ -76,7 +125,13 @@ def mount_assets(app: FastAPI, editor_dir: Path) -> None:
     under both prefixes. Folders are read once, at startup."""
     if not editor_dir.is_dir():
         return
+    version = asset_version(editor_dir)
     for folder in sorted(p for p in editor_dir.iterdir() if p.is_dir()):
-        static = _Revalidated(directory=folder)
+        # Unversioned too, revalidated on every load, for anything that still asks
+        # for a file by its plain path.
+        current = _Assets(directory=folder, headers=FOREVER)
+        plain = _Assets(directory=folder, headers=NO_CACHE)
         for prefix in ("/editor", "/map"):
-            app.mount(f"{prefix}/{folder.name}", static, name=f"{prefix.strip('/')}-{folder.name}")
+            name = f"{prefix.strip('/')}-{folder.name}"
+            app.mount(f"{prefix}/{VERSIONED}/{version}/{folder.name}", current, name=f"{name}-versioned")
+            app.mount(f"{prefix}/{folder.name}", plain, name=name)

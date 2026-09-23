@@ -56,6 +56,7 @@ const modeLabel = m => MODE_LABEL[m] || m.charAt(0).toUpperCase() + m.slice(1);
 async function loadShapes() {
   try {
     store.shapes = (await api.shapes()).shapes;
+    // 'lines' also redraws the stations, whose pills sit on the new paths.
     refresh('lines');
   } catch (err) {
     console.warn('No line shapes; drawing through platforms instead.', err);
