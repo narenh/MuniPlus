@@ -689,7 +689,7 @@ function wireStation(st, sid) {
           merging = { sid, other, keep: sid, name: st.name };
           renderInspector();
           document.getElementById('insp-body')?.scrollTo?.(0, 0);
-        }, { near: stationPos(sid), placeholder: `Merge ${st.name} with…` });
+        }, { near: stationPos(sid), placeholder: `Merge ${st.name} with…`, exclude: [sid] });
       }
       if (act === 'merge-cancel') { merging = null; renderInspector(); }
       if (act === 'merge-confirm') {
@@ -717,7 +717,7 @@ function wireStation(st, sid) {
           if (!to || to === sid) return;
           const ok = edit(`Move ${upstream(pid)} to ${to}`, c => movePlatformIn(c, sid, pid, to));
           if (ok) { moving = null; select(to, pid); hint(`${upstream(pid)} moved to ${stationById(to)?.name || to}`); }
-        }, { near: stopPos(pid), placeholder: `Move ${upstream(pid)} to…` });
+        }, { near: stopPos(pid), placeholder: `Move ${upstream(pid)} to…`, exclude: [sid] });
       }
       if (act === 'move-new') {
         if (onlyOne()) return;
@@ -764,6 +764,12 @@ function wireStation(st, sid) {
           if (!target || target === sid) return;
           if (findTransfer(sid, target)) { hint('Already a transfer'); return; }
           commit(`Transfer ${sid} ↔ ${target}`, (s, c) => addTransferIn(c, sid, target));
+        }, {
+          // Nearest first by straight-line distance: a transfer is a walk, so the
+          // station wanted is almost always one of the closest few.
+          near: stationPos(sid),
+          placeholder: `Transfer between ${st.name} and…`,
+          exclude: [sid, ...transferPartners(sid)],
         });
       }
     };

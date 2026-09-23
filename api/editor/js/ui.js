@@ -54,7 +54,7 @@ scrim().addEventListener('click', hideModal);
 // ------------------------------------------------------------------- palette
 // Modes: 'jump' (lines and stations), 'station' (pick a station, for a
 // transfer) and 'line' (pick a line, for `replaces`).
-let palItems = [], palIndex = 0, palPick = null, palMode = 'jump', palNear = null;
+let palItems = [], palIndex = 0, palPick = null, palMode = 'jump', palNear = null, palExclude = new Set();
 
 const PLACEHOLDER = {
   jump: 'Jump to a station, line, or stop id…',
@@ -65,12 +65,14 @@ const PLACEHOLDER = {
 /**
  * `opts.near` (`[lng, lat]`) lists stations nearest first, with their distance:
  * placing a stop, the right station is almost always one of the closest few.
- * `opts.placeholder` replaces the mode's prompt.
+ * `opts.placeholder` replaces the mode's prompt. `opts.exclude` (station ids)
+ * leaves stations out: the one being edited, and any already chosen.
  */
 export function openPalette(mode = 'jump', onPick = null, opts = {}) {
   palPick = onPick;
   palMode = mode;
   palNear = opts.near || null;
+  palExclude = new Set(opts.exclude || []);
   const input = document.getElementById('pal-input');
   input.placeholder = opts.placeholder || PLACEHOLDER[mode] || PLACEHOLDER.jump;
   input.value = '';
@@ -100,6 +102,7 @@ function buildPalette(q) {
     const near = palMode === 'station' ? palNear : null;
     const found = [];
     for (const [sid, st] of Object.entries(stations())) {
+      if (palMode === 'station' && palExclude.has(sid)) continue;
       const ps = platformsOf(st);
       const codes = ps.map(p => p.id).join(' ');
       const names = ps.map(p => `${derivedStop(p.id)?.name || ''} ${p.name || ''}`).join(' ');
