@@ -1,6 +1,7 @@
 """``/map``: the public, read-only copy of the editor."""
 
 from editor_world import commit_file, git
+from app.endpoints.stations import etag_of
 
 
 def test_map_state_needs_no_session(world):
@@ -20,7 +21,7 @@ def test_map_state_needs_no_session(world):
     f1 = state["derived"]["lines"]["SF:F"]["directions"][1]
     assert f1["shape"] == "SF:F1"
     assert state["derived"]["stations"]["castroPlaza"]["lat"] is not None
-    assert res.headers["etag"] == f'"{world.seed}"'
+    assert res.headers["etag"] == etag_of(world.seed)
     assert res.headers["cache-control"] == "no-cache"
 
 
@@ -38,7 +39,7 @@ def test_map_state_honours_if_none_match(world):
     commit = world.save(curation).json()["commit"]
     res = world.client.get("/map/api/state", headers={"If-None-Match": etag})
     assert res.status_code == 200
-    assert res.headers["etag"] == f'"{commit}"'
+    assert res.headers["etag"] == etag_of(commit)
     assert res.json()["curation"]["stations"]["stations"]["castroPlaza"]["name"] == "Castro Square"
 
 

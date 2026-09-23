@@ -1,8 +1,12 @@
-"""``GET /api/stations`` and ``GET /api/stations/{id}``.
+"""``GET /api/v1/stations`` and ``GET /api/v1/stations/{id}``.
 
 Both read ``request.app.state.network``, which is replaced whole on a reload, so a
 handler takes it once and uses that one value throughout.
 """
+
+import functools
+import hashlib
+import json
 
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse
@@ -10,30 +14,52 @@ from fastapi.responses import JSONResponse
 from ..data.network import Network
 from ..models.api import Problem, StationDetailResponse, StationsResponse
 
-router = APIRouter(prefix="/api", tags=["stations"])
+router = APIRouter(prefix="/api/v1", tags=["stations"])
 
 # MARK: - Shared with lines.py
 
-# The ETag is the sf-transit commit: every byte of these responses is a function of
-# it, so a client holding the current version can skip the body. It is quoted, as
-# RFC 9110 requires; ``no-cache`` makes clients revalidate every time instead of
-# guessing a freshness lifetime, since a data edit can land at any moment.
+# The ETag is the sf-transit commit plus a hash of the response schemas. The
+# commit alone said nothing about shape: after a deploy that changed a response
+# without changing the data, a client revalidating would get a 304 and keep an
+# old-shaped body (URLSession's default cache does exactly this). It is quoted,
+# as RFC 9110 requires; ``no-cache`` makes clients revalidate every time instead
+# of guessing a freshness lifetime, since a data edit can land at any moment.
 CACHE_CONTROL = "no-cache"
 
 
+@functools.cache
+def schema_hash() -> str:
+    """Of every response a cached endpoint sends, so any change to any of them
+    moves every ETag. Computed once: the schema cannot change while running."""
+    from ..models.api import (
+        LineDetailResponse, LinesResponse, ShapesResponse, StationDetailResponse, StationsResponse,
+    )
+    from ..models.editor import EditorState
+
+    models = (StationsResponse, StationDetailResponse, LinesResponse, LineDetailResponse, ShapesResponse, EditorState)
+    text = json.dumps([m.model_json_schema(by_alias=True) for m in models], sort_keys=True)
+    return hashlib.sha256(text.encode()).hexdigest()[:8]
+
+
+def _tag(version: str) -> str:
+    return f"{version}.{schema_hash()}"
+
+
 def etag_of(version: str) -> str:
-    return f'"{version}"'
+    return f'"{_tag(version)}"'
 
 
 def not_modified(request: Request, version: str) -> bool:
-    """Whether ``If-None-Match`` already names this version. Lenient about ``W/`` and
-    missing quotes, since for a 304 a false negative only costs a body."""
+    """Whether ``If-None-Match`` already names this version of this schema. Lenient
+    about ``W/`` (Cloudflare weakens every ETag) and missing quotes, since for a
+    304 a false negative only costs a body."""
     header = request.headers.get("if-none-match")
     if not header:
         return False
+    current = _tag(version)
     for tag in header.split(","):
         tag = tag.strip().removeprefix("W/").strip('"')
-        if tag == "*" or tag == version:
+        if tag == "*" or tag == current:
             return True
     return False
 
@@ -96,4 +122,9 @@ def get_station(station_id: str, request: Request):
     realtime = getattr(request.app.state, "realtime", None)
     if realtime is not None:
         station = station.model_copy(update={"alerts": realtime.alerts(stations={station_id}).alerts})
-    return StationDetailResponse(version=net.version, station=station)
+    # No ETag: ``alerts`` change with the realtime feed, not with the version. And
+    # no-store, so no cache keeps a copy whose alerts have gone stale.
+    return JSONResponse(
+        StationDetailResponse(version=net.version, station=station).model_dump(mode="json"),
+        headers={"Cache-Control": "no-store"},
+    )

@@ -1,12 +1,13 @@
 """``/api/lines``, ``/api/lines/{id}`` and ``/api/shapes`` against tests/fixtures/transit."""
 
 from app.models.api import LineDetailResponse, LinesResponse, ShapesResponse
+from app.endpoints.stations import etag_of
 
 VERSION = "0123456789abcdef0123456789abcdef01234567"
 
 
 def test_list(client):
-    r = client.get("/api/lines")
+    r = client.get("/api/v1/lines")
     assert r.status_code == 200
     body = r.json()
     LinesResponse.model_validate(body)
@@ -28,13 +29,13 @@ def test_list(client):
 
 
 def test_list_etag(client):
-    r = client.get("/api/lines")
-    assert r.headers["etag"] == f'"{VERSION}"'
-    assert client.get("/api/lines", headers={"If-None-Match": r.headers["etag"]}).status_code == 304
+    r = client.get("/api/v1/lines")
+    assert r.headers["etag"] == etag_of(VERSION)
+    assert client.get("/api/v1/lines", headers={"If-None-Match": r.headers["etag"]}).status_code == 304
 
 
 def test_detail(client):
-    r = client.get("/api/lines/SF:F")
+    r = client.get("/api/v1/lines/SF:F")
     assert r.status_code == 200
     body = r.json()
     LineDetailResponse.model_validate(body)
@@ -53,19 +54,19 @@ def test_detail(client):
 
 
 def test_detail_most_run_pattern(client):
-    n = client.get("/api/lines/SF:N").json()["line"]
+    n = client.get("/api/v1/lines/SF:N").json()["line"]
     assert [d["headsign"] for d in n["directions"]] == ["Ocean Beach", "Caltrain"]
 
 
 def test_detail_etag(client):
-    r = client.get("/api/lines/SF:J")
-    assert r.headers["etag"] == f'"{VERSION}"'
-    assert client.get("/api/lines/SF:J", headers={"If-None-Match": r.headers["etag"]}).status_code == 304
+    r = client.get("/api/v1/lines/SF:J")
+    assert r.headers["etag"] == etag_of(VERSION)
+    assert client.get("/api/v1/lines/SF:J", headers={"If-None-Match": r.headers["etag"]}).status_code == 304
 
 
 def test_unknown_line(client):
     for line_id in ("SF:Q", "J", "SF:j"):
-        r = client.get(f"/api/lines/{line_id}")
+        r = client.get(f"/api/v1/lines/{line_id}")
         assert r.status_code == 404
         assert r.json() == {"error": "not-found", "message": f"No line {line_id!r}."}
 
@@ -74,7 +75,7 @@ def test_unknown_line(client):
 
 
 def test_shapes(client):
-    r = client.get("/api/shapes")
+    r = client.get("/api/v1/shapes")
     assert r.status_code == 200
     body = r.json()
     ShapesResponse.model_validate(body)
@@ -88,9 +89,9 @@ def test_shapes(client):
 
 
 def test_shapes_etag_is_the_shapes_not_the_version(client):
-    r = client.get("/api/shapes")
+    r = client.get("/api/v1/shapes")
     etag = r.headers["etag"]
-    assert etag != f'"{VERSION}"'
+    assert etag != etag_of(VERSION)
     assert r.headers["cache-control"] == "no-cache"
-    assert client.get("/api/shapes", headers={"If-None-Match": etag}).status_code == 304
-    assert client.get("/api/shapes", headers={"If-None-Match": f'"{VERSION}"'}).status_code == 200
+    assert client.get("/api/v1/shapes", headers={"If-None-Match": etag}).status_code == 304
+    assert client.get("/api/v1/shapes", headers={"If-None-Match": etag_of(VERSION)}).status_code == 200

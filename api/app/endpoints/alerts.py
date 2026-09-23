@@ -1,4 +1,4 @@
-"""``GET /api/alerts?line=&station=&platforms=``
+"""``GET /api/v1/v1/alerts?line=&station=&platforms=``
 
 Each parameter is optional and takes a comma-separated list. With none, every
 alert active now; otherwise those touching any line, station or platform named.
@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 from app.models.api import AlertsResponse
 from app.realtime.http import answer, parse_ids, realtime_of
 
-router = APIRouter(prefix="/api", tags=["realtime"])
+router = APIRouter(prefix="/api/v1", tags=["realtime"])
 
 MAX_IDS = 50
 

@@ -1,5 +1,5 @@
 // The live vehicle layer: where 511 says each in-service vehicle is, drawn over
-// the network on both /editor/ and /map/. It is a view of `GET /api/vehicles`
+// the network on both /editor/ and /map/. It is a view of `GET /api/v1/vehicles`
 // and nothing else, so it never touches the curation.
 //
 // Off by default: it polls, and an editor working through platforms does not
@@ -15,10 +15,11 @@ import { map, claimClicks, LAYER_IDS } from './map.js';
 /** One per page: both share an origin, and turning vehicles on to look around
  *  /map/ is no reason for them to be on the next time someone edits. */
 const storageKey = () => `muniplus.${store.publicMap ? 'map' : 'editor'}.layer.vehicles`;
-/** The server refreshes from 511 every 180 s, so polling faster than this only
- *  re-reads the same positions; 30 s keeps a fresh fetch on screen within half a
- *  minute of the server having it. */
+/** How long to wait when the server has not said (an error, or no answer yet).
+ *  Otherwise the wait is the answer's own `refreshAfter`: the server knows when
+ *  it next fetches from 511, and asking sooner only re-reads the same positions. */
 const POLL_MS = 30_000;
+const nextPollMs = () => (res?.refreshAfter ? res.refreshAfter * 1000 : POLL_MS);
 /** A request naming more lines than this asks for all of them instead: with the
  *  bus chip on it would list ~55 of SF's 68 lines, and trimming the other dozen
  *  saves nothing. What is drawn is filtered here either way. */
@@ -134,7 +135,7 @@ async function poll() {
     if (inflight === ctl) {
       inflight = null;
       renderNote();
-      if (store.layers.vehicles && !document.hidden) timer = setTimeout(poll, POLL_MS);
+      if (store.layers.vehicles && !document.hidden) timer = setTimeout(poll, problem?.text?.startsWith('Offline') ? POLL_MS : nextPollMs());
     }
   }
 }
@@ -143,7 +144,7 @@ async function poll() {
  * The feed's own clock: `feedAt`, 511's header time for the feed. Not
  * `fetchedAt`, which is when the server downloaded it; under FIXTURES=1 the
  * server replays positions recorded on 2026-09-22 and fetches them "now". And
- * not any vehicle's `reportedAt`: 511 gives every vehicle in a feed the same one.
+ * any per-vehicle time: 511 stamps a whole feed with one, so the API sends none.
  */
 const feedClock = r => r?.feedAt || r?.fetchedAt || 0;
 
@@ -176,7 +177,9 @@ function visible() {
 }
 
 function features(pos) {
-  const clock = feedClock(res);
+  // One age for the whole feed: 511 stamps every vehicle in it with the same time.
+  const age = feedAge(res);
+  const stale = age != null && age > STALE_S;
   const feats = [];
   for (const v of visible()) {
     const at = pos.get(v.id) || [v.lon, v.lat];
@@ -192,7 +195,7 @@ function features(pos) {
         // is a dot, never a guessed direction.
         arrow: v.bearing == null ? 0 : 1,
         bearing: v.bearing ?? 0,
-        stale: clock - v.reportedAt > STALE_S ? 1 : 0,
+        stale: stale ? 1 : 0,
       },
       geometry: { type: 'Point', coordinates: at },
     });
@@ -409,7 +412,7 @@ function popupHtml(v) {
     ${where}
     <div class="vp-meta">
       <span>Vehicle <code>${esc(upstream(v.id))}</code></span>
-      <span class="${stale ? 'vp-stale' : ''}" title="511 built this feed at ${esc(clockTime(res.feedAt || v.reportedAt))}">${age == null ? '' : `position ${esc(ago(age))} old`}</span>
+      <span class="${stale ? 'vp-stale' : ''}" title="511 built this feed at ${esc(clockTime(res.feedAt))}">${age == null ? '' : `position ${esc(ago(age))} old`}</span>
     </div>
     ${v.bearing == null ? '<div class="vp-note">511 sent no heading for this vehicle</div>' : ''}`;
 }

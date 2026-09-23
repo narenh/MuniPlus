@@ -22,6 +22,7 @@ import re
 from collections.abc import Iterable, Mapping
 
 from ..names import ACRONYMS, FIXUPS, MINOR_WORDS
+from ..models.ids import operator_of
 from ..models.api import (
     Direction,
     LineDetail,
@@ -131,6 +132,16 @@ def _most_run(patterns: Iterable[Pattern]) -> dict[int, Pattern]:
         if pattern.direction not in best or pattern.trips > best[pattern.direction].trips:
             best[pattern.direction] = pattern
     return best
+
+
+def operators_of(station: Station) -> list[str]:
+    """511 operator codes serving a station: those its platforms' stops belong to,
+    in order of first appearance, then ``transferAgencies`` for operators with no
+    platforms in the data yet. The API's meaning stays the same once those
+    operators' platforms are ingested and the stopgap entries go."""
+    seen = dict.fromkeys(operator_of(stop) for p in station.platforms for stop in p.all_stops)
+    seen.update(dict.fromkeys(station.transfer_agencies))
+    return list(seen)
 
 
 class Network:
@@ -270,6 +281,7 @@ class Network:
                 lon=centre[1],
                 lines=station_lines,
                 modes=modes,
+                operators=operators_of(station),
                 platforms=[
                     PlatformSummary(id=p.id, heading=p.heading, lines=union(ss), stops=ss) for p, ss in live
                 ],
@@ -320,7 +332,6 @@ class Network:
                     for there, mode in transfers_of.get(sid, [])
                     if there in summaries
                 ],
-                transfer_agencies=list(station.transfer_agencies),
                 subways=subways_of.get(sid, []),
                 alerts=[],
             )

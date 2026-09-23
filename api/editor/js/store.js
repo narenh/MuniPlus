@@ -26,7 +26,7 @@ export const store = {
   base: null,           // curation as last loaded or saved: the change-list baseline
   snapshots: {},
   derived: { stations: {}, platforms: {}, lines: {} },
-  shapes: {},           // GET /api/shapes, keyed by the shape id a direction names
+  shapes: {},           // GET /api/v1/shapes, keyed by the shape id a direction names
   validation: null,     // null on /map
   repo: null,           // null on /map
 

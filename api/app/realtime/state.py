@@ -67,7 +67,15 @@ class NetworkView(Protocol):
 
     def stops_of(self, stop_id: str) -> list[str]: ...
 
+    def platform_of(self, stop_id: str) -> str | None: ...
+
     def headsign(self, line_id: str, direction: int) -> str | None: ...
+
+
+REFRESH_MARGIN_S = 5
+"""A fetch from 511 takes one to three seconds; the next answer is ready after that."""
+REFRESH_MIN_S = 10
+"""The shortest ``refreshAfter``: a client asking sooner could only get the same answer."""
 
 
 DIRECTION_NAMES: dict[int, str] = {0: "Outbound", 1: "Inbound"}
@@ -166,15 +174,20 @@ class Realtime:
 
         An id may be any stop of a platform: the answer is the whole platform's,
         its stops' arrivals merged, a trip predicted at two of them counted once,
-        at its earlier time. It is keyed by the id as asked for. Every requested id
-        is in the answer, as an empty list when nothing is due or it is unknown. The
-        vehicle is the TripUpdate's own, else the one VehiclePositions places on the
-        same trip."""
+        at its earlier time. It is keyed by the platform's id, so two stops of one
+        platform are one entry; a stop no platform claims is keyed by itself. Every
+        requested platform is in the answer, as an empty list when nothing is due or
+        it is unknown. The vehicle is the TripUpdate's own, else the one
+        VehiclePositions places on the same trip."""
         network = self._network()
         platforms: dict[str, list[Arrival]] = {}
         fetched: list[int] = []
         feed_times: list[int] = []
         for asked in ids:
+            key = (network.platform_of(asked) if network is not None else None) or asked
+            if key in platforms:
+                continue
+            asked = key
             operator = operator_of(asked)
             index = self._state.get((operator, "tripupdates"))
             positions = self._state.get((operator, "vehiclepositions"))
@@ -208,6 +221,7 @@ class Realtime:
                 for event in merged
             ]
         return ArrivalsResponse(
+            refresh_after=self._refresh_after("tripupdates"),
             fetched_at=min(fetched) if fetched else None,
             feed_at=min(feed_times) if feed_times else None,
             platforms=platforms,
@@ -228,10 +242,11 @@ class Realtime:
                     continue
                 out.append(Vehicle(
                     id=v.id, line=v.line, direction=v.direction, trip=v.trip, lat=v.lat, lon=v.lon,
-                    bearing=v.bearing, speed=v.speed, stop=v.stop, status=v.status, reported_at=v.reported_at,
+                    bearing=v.bearing, speed=v.speed, stop=v.stop, status=v.status,
                 ))
         out.sort(key=lambda v: (v.line, v.id))
         return VehiclesResponse(
+            refresh_after=self._refresh_after("vehiclepositions"),
             fetched_at=min(fetched) if fetched else None,
             feed_at=min(feed_times) if feed_times else None,
             vehicles=out,
@@ -292,6 +307,7 @@ class Realtime:
                     url=alert.url,
                 ))
         return AlertsResponse(
+            refresh_after=self._refresh_after("servicealerts"),
             fetched_at=min(fetched) if fetched else None,
             feed_at=min(feed_times) if feed_times else None,
             alerts=out,
@@ -318,6 +334,18 @@ class Realtime:
             last_rate_limit_remaining=self.db.last_rate_limit_remaining(),
         )
         return feeds, budget
+
+    def _refresh_after(self, feed: Feed) -> int:
+        """Seconds until any operator's copy of ``feed`` can be newer: its next
+        fetch is due ``interval`` after the last, and takes a few seconds. A feed
+        never fetched, or overdue (511 failing), is worth asking again soon, but
+        not constantly. Measured on the wall clock, even in fixtures mode."""
+        wall = int(self._clock())
+        due = [
+            state.fetched_at + self.interval(feed) + REFRESH_MARGIN_S - wall
+            for (_, f), state in self._state.items() if f == feed
+        ]
+        return max(REFRESH_MIN_S, min(due)) if due else REFRESH_MIN_S
 
     def interval(self, feed: Feed) -> int:
         return {

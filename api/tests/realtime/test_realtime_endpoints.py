@@ -47,7 +47,7 @@ def assert_problem(response, status=400):
 
 
 def test_arrivals(client):
-    response = client.get("/api/arrivals", params={"platforms": "SF:15621,SF:13243,SF:99999"})
+    response = client.get("/api/v1/arrivals", params={"platforms": "SF:15621,SF:13243,SF:99999"})
     assert response.status_code == 200
     assert response.headers["cache-control"] == "no-store"
     body = response.json()
@@ -62,14 +62,14 @@ def test_arrivals(client):
 
 def test_arrivals_limit(client):
     def count(limit):
-        return len(client.get("/api/arrivals", params={"platforms": "SF:15621", "limit": limit}).json()["platforms"]["SF:15621"])
+        return len(client.get("/api/v1/arrivals", params={"platforms": "SF:15621", "limit": limit}).json()["platforms"]["SF:15621"])
 
     assert count("1") == 1
     assert count("1000") == arrivals.MAX_LIMIT  # capped, not refused
 
 
 def test_duplicate_platforms_are_answered_once(client):
-    body = client.get("/api/arrivals", params={"platforms": "SF:15621,SF:15621"}).json()
+    body = client.get("/api/v1/arrivals", params={"platforms": "SF:15621,SF:15621"}).json()
     assert list(body["platforms"]) == ["SF:15621"]
 
 
@@ -86,51 +86,51 @@ def test_duplicate_platforms_are_answered_once(client):
     {"platforms": "SF:15621", "limit": "-3"},
 ])
 def test_arrivals_bad_requests(client, params):
-    assert_problem(client.get("/api/arrivals", params=params))
+    assert_problem(client.get("/api/v1/arrivals", params=params))
 
 
 def test_fifty_platforms_is_allowed(client):
-    assert client.get("/api/arrivals", params={"platforms": ",".join(f"SF:{n}" for n in range(50))}).status_code == 200
+    assert client.get("/api/v1/arrivals", params={"platforms": ",".join(f"SF:{n}" for n in range(50))}).status_code == 200
 
 
 # MARK: - Vehicles
 
 
 def test_vehicles(client):
-    response = client.get("/api/vehicles")
+    response = client.get("/api/v1/vehicles")
     assert response.status_code == 200 and response.headers["cache-control"] == "no-store"
     body = response.json()
     assert len(body["vehicles"]) == 532
     assert set(body["vehicles"][0]) == {
-        "id", "line", "direction", "trip", "lat", "lon", "bearing", "speed", "stop", "status", "reportedAt"
+        "id", "line", "direction", "trip", "lat", "lon", "bearing", "speed", "stop", "status"
     }
-    only = client.get("/api/vehicles", params={"line": "SF:N,SF:PH"}).json()["vehicles"]
+    only = client.get("/api/v1/vehicles", params={"line": "SF:N,SF:PH"}).json()["vehicles"]
     assert only and {v["line"] for v in only} == {"SF:N", "SF:PH"}
 
 
 @pytest.mark.parametrize("line", ["N", "SF:N,bad", "SF:"])
 def test_vehicles_bad_line(client, line):
-    assert_problem(client.get("/api/vehicles", params={"line": line}))
+    assert_problem(client.get("/api/v1/vehicles", params={"line": line}))
 
 
 # MARK: - Alerts
 
 
 def test_alerts(client):
-    response = client.get("/api/alerts")
+    response = client.get("/api/v1/alerts")
     assert response.status_code == 200 and response.headers["cache-control"] == "no-store"
     assert len(response.json()["alerts"]) == 41
-    by_station = client.get("/api/alerts", params={"station": "eleventhMission"}).json()["alerts"]
+    by_station = client.get("/api/v1/alerts", params={"station": "eleventhMission"}).json()["alerts"]
     assert [a["id"] for a in by_station] == ["SF_15874", "SF_15898"]  # plus the agency-wide one
     assert by_station[0]["stations"] == ["eleventhMission"]
     assert set(by_station[0]) == {"id", "header", "description", "activePeriods", "lines", "stops", "stations", "url"}
-    assert "SF_15874" in {a["id"] for a in client.get("/api/alerts", params={"line": "SF:9"}).json()["alerts"]}
-    assert "SF_15874" in {a["id"] for a in client.get("/api/alerts", params={"platforms": "SF:13240"}).json()["alerts"]}
+    assert "SF_15874" in {a["id"] for a in client.get("/api/v1/alerts", params={"line": "SF:9"}).json()["alerts"]}
+    assert "SF_15874" in {a["id"] for a in client.get("/api/v1/alerts", params={"platforms": "SF:13240"}).json()["alerts"]}
 
 
 @pytest.mark.parametrize("params", [{"line": "9"}, {"station": "eleventh-mission"}, {"platforms": "13240"}])
 def test_alerts_bad_requests(client, params):
-    assert_problem(client.get("/api/alerts", params=params))
+    assert_problem(client.get("/api/v1/alerts", params=params))
 
 
 # MARK: - Without realtime
@@ -138,9 +138,9 @@ def test_alerts_bad_requests(client, params):
 
 def test_no_realtime_is_a_503_but_bad_input_is_still_a_400():
     client = TestClient(make_app(None))
-    assert assert_problem(client.get("/api/vehicles"), 503)["error"] == "unavailable"
-    assert_problem(client.get("/api/arrivals", params={"platforms": "SF:1"}), 503)
-    assert_problem(client.get("/api/arrivals"), 400)
+    assert assert_problem(client.get("/api/v1/vehicles"), 503)["error"] == "unavailable"
+    assert_problem(client.get("/api/v1/arrivals", params={"platforms": "SF:1"}), 503)
+    assert_problem(client.get("/api/v1/arrivals"), 400)
 
 
 # MARK: - Wired as app/main.py will wire it
@@ -165,10 +165,10 @@ def test_lifespan_wiring_in_fixtures_mode(tmp_path):
 
     with TestClient(app) as client:
         deadline = time.monotonic() + 5
-        while not client.get("/api/vehicles").json()["vehicles"]:
+        while not client.get("/api/v1/vehicles").json()["vehicles"]:
             assert time.monotonic() < deadline, "fixtures were never replayed"
             time.sleep(0.02)
-        board = client.get("/api/arrivals", params={"platforms": "SF:15621"}).json()
+        board = client.get("/api/v1/arrivals", params={"platforms": "SF:15621"}).json()
         assert board["platforms"]["SF:15621"]
         assert {a["headsign"] for a in board["platforms"]["SF:15621"]} <= {"Outbound", "Inbound"}
-        assert len(client.get("/api/alerts").json()["alerts"]) == 41
+        assert len(client.get("/api/v1/alerts").json()["alerts"]) == 41

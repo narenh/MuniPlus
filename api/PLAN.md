@@ -148,16 +148,18 @@ stricter: assigned *and* in the snapshot. `Derived.lines` carries full
 
 Response models: `app/models/api.py`. camelCase. Realtime times are epoch seconds.
 
+Versioned: everything public is under `/api/v1/`. Within v1 changes are additive only; a breaking change is `/api/v2/`, served alongside. ETags carry a hash of the response schemas as well as the data version, so a deploy that changes a shape never answers an old-shaped cache with a 304. Realtime answers carry `refreshAfter`, seconds until the server can have newer data: clients poll on that, never on a constant.
+
 | endpoint | notes |
 |---|---|
-| `GET /api/stations` | summaries + `formerIds` map + `version`; ETag = `version`, `Cache-Control: no-cache` |
-| `GET /api/stations/{id}` | detail; a former id → `308` to the current one. **No ETag**: its `alerts` change without the version changing |
-| `GET /api/lines` | includes `mode`, `hidden`, `replaces`; ETag = `version`. Hidden lines are included with the flag set |
-| `GET /api/lines/{id}` | + `directions`, each naming its `shape` (or null) |
-| `GET /api/shapes` | every shape a direction names, `[lon, lat]`, patched (curation), cut at the direction's first and last stops (511's shapes run on to where vehicles turn: 600 m past Embarcadero for J K L M), simplified to 0.5 m. ETag = hash of the shapes, so it survives curation edits and changes only with a snapshot refresh. Not in `EditorState` |
-| `GET /api/arrivals?platforms=a,b&limit=6` | 1–50 platforms, each given by any of its stops; the answer is the whole platform's, merged across its stops (a trip at two of them once), keyed by the id asked for. Malformed id → 400; unknown id → empty list |
-| `GET /api/vehicles?line=a,b` | `line` optional; in-service vehicles only |
-| `GET /api/alerts?line=&station=&platforms=` | active now. Alerts name `stops`, as 511 does; a platform filter takes in all of its stops |
+| `GET /api/v1/stations` | summaries (with `operators`) + `formerIds` map + `version`; ETag = `version`.`schemaHash`, `Cache-Control: no-cache` |
+| `GET /api/v1/stations/{id}` | detail; a former id → `308` to the current one. `Cache-Control: no-store`, no ETag: its `alerts` are live |
+| `GET /api/v1/lines` | includes `mode`, `hidden`, `replaces`; ETag as stations. Hidden lines are included with the flag set |
+| `GET /api/v1/lines/{id}` | + `directions` |
+| `GET /api/v1/shapes` | every direction's path, `[lon, lat]` pairs; ETag = the shapes' own hash + schema hash |
+| `GET /api/v1/arrivals?platforms=a,b&limit=6` | 1–50 platform ids; keyed by platform id (another stop of a platform answers under the platform's id); `refreshAfter` |
+| `GET /api/v1/vehicles?line=a,b` | `line` optional; in-service vehicles only; `refreshAfter`; no per-vehicle time (511 stamps a feed with one) |
+| `GET /api/v1/alerts?line=&station=&platforms=` | active now; `refreshAfter` |
 | `GET /health` | `app.models.api.Health` |
 
 Errors: `app.models.api.Problem` (`{error, message}`). `error` is one of `not-found`, `bad-request`, `unauthorized`, `conflict`, `unavailable`.

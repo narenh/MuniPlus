@@ -43,6 +43,10 @@ class StationSummary(Wire):
     """The centroid of the station's live platforms. Never null."""
     lines: list[LineId]
     modes: list[Mode]
+    operators: list[Operator]
+    """Every operator serving the station, as 511 codes (``SF``, ``BA``): those
+    with platforms here, then those with none in the data yet (BART at
+    Embarcadero). Stable in meaning as other operators' platforms are added."""
     platforms: list[PlatformSummary]
 
 
@@ -78,7 +82,6 @@ class SubwayRef(Wire):
 class StationDetail(StationSummary):
     platforms: list[PlatformDetail]
     transfers: list[TransferOut]
-    transfer_agencies: list[Operator]
     subways: list[SubwayRef]
     alerts: list["Alert"]
     """Alerts active now that touch this station's platforms."""
@@ -164,10 +167,15 @@ class ArrivalsResponse(Wire):
     """511's own time for the feed behind this answer (its header timestamp): how
     old the data is, as opposed to ``fetchedAt``, when this server downloaded it.
     With several operators, the oldest. Null before the first successful fetch."""
+    refresh_after: int
+    """Seconds until the server can have newer data (its next fetch from 511, plus
+    a margin). Poll no sooner: the answer cannot change before then."""
     platforms: dict[StopId, list[Arrival]]
-    """Keyed by each id asked for. Every one is present, as an empty list when
-    nothing is coming. An id may be any stop of a platform: the answer is the
-    whole platform's, merged across its stops."""
+    """Keyed by platform id. Ask with platform ids (the ``id`` of each platform in
+    ``/stations``). Another stop of a platform is answered under the platform's
+    id, the whole platform's arrivals merged across its stops, so two stops of one
+    platform are one entry; a stop no platform claims is answered under itself.
+    Every one is present, as an empty list when nothing is coming."""
 
 
 VehicleStatus = Literal["incomingAt", "stoppedAt", "inTransitTo"]
@@ -188,11 +196,6 @@ class Vehicle(Wire):
     """Metres per second. Null where 511 sends 0 for the same reason."""
     stop: StopId | None
     status: VehicleStatus | None
-    reported_at: int
-    """The vehicle's own report time, as 511 sends it. In practice 511 stamps every
-    vehicle in one feed with the same time (all 677 in each recording), so this is
-    when the batch was built, not when this vehicle last reported: it cannot show
-    one vehicle that has gone quiet. ``feedAt`` is the honest age of the data."""
 
 
 class VehiclesResponse(Wire):
@@ -201,8 +204,12 @@ class VehiclesResponse(Wire):
     """511's own time for the feed behind this answer (its header timestamp): how
     old the data is, as opposed to ``fetchedAt``, when this server downloaded it.
     With several operators, the oldest. Null before the first successful fetch."""
+    refresh_after: int
+    """Seconds until the server can have newer positions. See ``ArrivalsResponse``."""
     vehicles: list[Vehicle]
-    """In-service vehicles only: those on a trip with a line."""
+    """In-service vehicles only: those on a trip with a line. There is no
+    per-vehicle report time: 511 stamps a whole feed with one, so ``feedAt`` is
+    the age of every position here."""
 
 
 class ActivePeriod(Wire):
@@ -229,6 +236,8 @@ class AlertsResponse(Wire):
     """511's own time for the feed behind this answer (its header timestamp): how
     old the data is, as opposed to ``fetchedAt``, when this server downloaded it.
     With several operators, the oldest. Null before the first successful fetch."""
+    refresh_after: int
+    """Seconds until the server can have newer alerts. See ``ArrivalsResponse``."""
     alerts: list[Alert]
     """Alerts active now."""
 

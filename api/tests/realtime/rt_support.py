@@ -57,6 +57,10 @@ class FakeNetwork:
     def headsign(self, line_id: str, direction: int) -> str | None:
         return self.headsigns.get((line_id, direction))
 
+    def platform_of(self, stop_id: str) -> str | None:
+        group = self.platforms.get(stop_id)
+        return group[0] if group else None
+
 
 async def until(condition, timeout: float = 3.0) -> None:
     """Wait for background tasks to reach a state, without a fixed sleep."""

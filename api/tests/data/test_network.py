@@ -207,7 +207,9 @@ def test_station_detail(net):
     assert [(t.to, t.mode) for t in net.station("unionSquare").transfers] == [("powell", "indoor")]
     assert [(t.to, t.mode) for t in net.station("powellMarket").transfers] == [("powell", "street")]
     assert [(s.id, s.name) for s in powell.subways] == [("marketStreetSubway", "Market Subway")]
-    assert net.station("embarcadero").transfer_agencies == ["BA"]
+    # Operators with platforms here first, then those with none in the data yet.
+    assert net.station("embarcadero").operators == ["SF", "BA"]
+    assert net.station("powell").operators == ["SF"]
     assert net.station("clayDrumm").subways == []
     p = powell.platforms[0]
     assert (p.id, p.heading, p.stop_name, p.name) == ("SF:15417", "eastbound", "Metro Powell Station/Downtown", None)

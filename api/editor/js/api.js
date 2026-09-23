@@ -44,12 +44,12 @@ export const api = {
    *  /editor/ and /map/ share its origin. */
   vehicles: (lines, signal) => {
     const q = lines ? `?line=${lines.map(encodeURIComponent).join(',')}` : '';
-    return fetch(`/api/vehicles${q}`, { cache: 'no-store', signal }).then(j);
+    return fetch(`/api/v1/vehicles${q}`, { cache: 'no-store', signal }).then(j);
   },
   /** ShapesResponse: every line direction's path, `{shapes: {id: [[lon, lat]...]}}`.
    *  Absolute like vehicles. The browser's own cache is left on: the server's
    *  ETag is a hash of the shapes, so a reload costs a 304 until 511 redraws. */
-  shapes: () => fetch('/api/shapes').then(j),
+  shapes: () => fetch('/api/v1/shapes').then(j),
   /** Health (app/models/api.py), public like vehicles. The snapshot refresh reads
    *  its `budget` just before asking, since the budget moves every few minutes and
    *  EditorState is loaded once. */

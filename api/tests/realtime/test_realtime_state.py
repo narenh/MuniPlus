@@ -244,16 +244,19 @@ def test_a_platforms_arrivals_are_its_stops_merged(settings, db):
     realtime = Realtime(lambda: network, settings, db=db)
     realtime.ingest("SF", "tripupdates", TU1, fetched_at=NOW + 1)
 
+    # Asked for by either stop, the answer is the platform's, keyed by its id (the
+    # primary stop), so a client always finds it under the id /stations gave it.
     apart = {
-        stop: realtime.arrivals([stop], limit=1000, now=NOW).platforms[stop]
+        stop: realtime.arrivals([stop], limit=1000, now=NOW).platforms
         for stop in (BUSIEST, "SF:13243")
     }
+    assert all(list(answer) == [BUSIEST] for answer in apart.values())
+    apart = {stop: answer[BUSIEST] for stop, answer in apart.items()}
     solo = Realtime(lambda: FakeNetwork(), settings, db=db)
     solo.ingest("SF", "tripupdates", TU1, fetched_at=NOW + 1)
     each = [a for stop in (BUSIEST, "SF:13243") for a in solo.arrivals([stop], limit=1000, now=NOW).platforms[stop]]
     assert each, "the fixture has arrivals at both stops"
 
-    # Asked for by either stop, the answer is both stops' arrivals, keyed as asked.
     assert apart[BUSIEST] == apart["SF:13243"]
     merged = apart[BUSIEST]
     assert sorted((a.trip, a.time) for a in merged) == sorted({(a.trip, a.time) for a in each})
@@ -261,7 +264,10 @@ def test_a_platforms_arrivals_are_its_stops_merged(settings, db):
     assert len({a.trip for a in merged}) == len(merged)  # a trip at both stops counts once
 
     # The limit applies to the merged answer.
-    assert realtime.arrivals(["SF:13243"], limit=4, now=NOW).platforms["SF:13243"] == merged[:4]
+    assert realtime.arrivals(["SF:13243"], limit=4, now=NOW).platforms[BUSIEST] == merged[:4]
+
+    # Two stops of one platform asked together are one entry, not the same answer twice.
+    assert list(realtime.arrivals([BUSIEST, "SF:13243"], limit=4, now=NOW).platforms) == [BUSIEST]
 
 
 def test_a_platform_filter_on_alerts_takes_in_every_stop(settings, db):
@@ -286,3 +292,17 @@ def test_answers_carry_511s_own_feed_time(loaded):
     assert loaded.alerts(now=NOW).feed_at == header(ALERTS)
     assert loaded.arrivals(["SF:16992"], 1, now=NOW).feed_at == header(TU1)
     assert loaded.vehicles().feed_at != loaded.vehicles().fetched_at
+
+
+def test_refresh_after_follows_the_next_fetch(settings, db):
+    # The server fetches TripUpdates every poll_arrivals_seconds; an answer cannot
+    # change before the next fetch, plus the few seconds it takes.
+    from app.realtime import state as rt
+    clock = [NOW + 1]
+    realtime = Realtime(lambda: FakeNetwork(), settings, db=db, clock=lambda: clock[0])
+    assert realtime.arrivals(["SF:16992"], 1, now=NOW).refresh_after == rt.REFRESH_MIN_S  # nothing fetched yet
+    realtime.ingest("SF", "tripupdates", TU1, fetched_at=NOW + 1)
+    interval = settings.poll_arrivals_seconds
+    assert realtime.arrivals(["SF:16992"], 1, now=NOW).refresh_after == interval + rt.REFRESH_MARGIN_S
+    clock[0] = NOW + 1 + interval
+    assert realtime.arrivals(["SF:16992"], 1, now=NOW).refresh_after == rt.REFRESH_MIN_S  # due: ask again soon

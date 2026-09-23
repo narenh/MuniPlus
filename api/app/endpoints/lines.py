@@ -1,4 +1,4 @@
-"""``GET /api/lines``, ``GET /api/lines/{id}`` and ``GET /api/shapes``.
+"""``GET /api/v1/v1/lines``, ``GET /api/v1/lines/{id}`` and ``GET /api/v1/shapes``.
 
 Hidden lines are included, with ``hidden`` set: whether to show one is the
 client's call, and the editor needs them all.
@@ -9,7 +9,7 @@ from fastapi import APIRouter, Request, Response
 from ..models.api import LineDetailResponse, LinesResponse, Problem, ShapesResponse
 from .stations import cached, network, not_found
 
-router = APIRouter(prefix="/api", tags=["lines"])
+router = APIRouter(prefix="/api/v1", tags=["lines"])
 
 
 @router.get("/lines", response_model=LinesResponse)

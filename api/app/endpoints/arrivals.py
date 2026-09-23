@@ -1,4 +1,4 @@
-"""``GET /api/arrivals?platforms=a,b&limit=6``"""
+"""``GET /api/v1/v1/arrivals?platforms=a,b&limit=6``"""
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from app.models.api import ArrivalsResponse
 from app.realtime.http import answer, parse_ids, parse_int, realtime_of
 
-router = APIRouter(prefix="/api", tags=["realtime"])
+router = APIRouter(prefix="/api/v1", tags=["realtime"])
 
 MAX_PLATFORMS = 50
 """A station board asks for all its platforms at once. The cap stops one request
