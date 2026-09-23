@@ -36,3 +36,70 @@ def test_short_shapes_are_returned_as_they_are():
     assert simplify([]) == []
     assert simplify([at(0, 0)]) == [at(0, 0)]
     assert simplify([at(0, 0), at(1, 0)]) == [at(0, 0), at(1, 0)]
+
+
+# MARK: - Curated patches
+
+from app.data.network import Network
+from app.data.shapes import patch_shapes, splice
+from app.data.validate import validate
+from app.models.curation import ShapePatch, ShapesFile
+
+# A street running east, 0-400 m, with a dogleg 511 put in at 200 m.
+STREET = [at(0, 0), at(100, 0), at(200, 0), at(200, 30), at(210, 30), at(210, 0), at(300, 0), at(400, 0)]
+STRAIGHT = [at(150, 0), at(250, 0)]
+
+
+def test_a_patch_replaces_the_stretch_between_its_ends():
+    assert splice(STREET, STRAIGHT) == [at(0, 0), at(100, 0), at(150, 0), at(250, 0), at(300, 0), at(400, 0)]
+
+
+def test_a_shape_running_the_other_way_takes_the_patch_reversed():
+    back = splice(STREET[::-1], STRAIGHT)
+    assert back == [at(400, 0), at(300, 0), at(250, 0), at(150, 0), at(100, 0), at(0, 0)]
+
+
+def test_an_end_off_the_shape_leaves_it_alone():
+    assert splice(STREET, [at(150, 0), at(250, 40)]) is None
+
+
+def test_an_end_on_a_vertex_is_not_doubled():
+    out = splice(STREET, [at(100, 0), at(300, 0)])
+    assert out == [at(0, 0), at(100, 0), at(300, 0), at(400, 0)]
+
+
+def test_patches_apply_per_line_and_report_what_did_not_fit():
+    shapes = {"SF:1": STREET, "SF:2": STREET[::-1], "SF:9": [at(0, 500), at(400, 500)]}
+    patches = ShapesFile({
+        "dogleg": ShapePatch(lines=["SF:A", "SF:B"], path=STRAIGHT),
+        "elsewhere": ShapePatch(lines=["SF:C"], path=STRAIGHT),
+    })
+    out, unmatched = patch_shapes(patches, {"SF:A": ["SF:1", "SF:2"], "SF:B": ["SF:9"], "SF:C": []}, shapes)
+    assert out["SF:1"] == splice(STREET, STRAIGHT)
+    assert out["SF:2"] == splice(STREET[::-1], STRAIGHT)
+    assert out["SF:9"] == shapes["SF:9"]
+    assert unmatched == [("dogleg", "SF:B"), ("elsewhere", "SF:C")]
+
+
+# The fixture's F runs 17th & Castro -> corner -> Market & Church (shape SF:F1).
+# The patch bows its middle 90 m off that line, so thinning keeps it.
+F_PATCH = ShapePatch(lines=["SF:F"], path=[(-122.434979, 37.762576), (-122.4331, 37.7650), (-122.429214, 37.76725)])
+
+
+def test_the_network_serves_patched_shapes(curation, snapshots):
+    before = Network(curation, snapshots, "v").shapes()[1]
+    curation.shapes = ShapesFile({"f-corner": F_PATCH})
+    shapes, etag = Network(curation, snapshots, "v").shapes()
+    assert shapes.shapes["SF:F1"] == list(F_PATCH.path)
+    # The ETag follows the patch, so a client fetches the corrected shapes.
+    assert etag != before
+
+
+def test_patch_warnings(curation, snapshots):
+    curation.shapes = ShapesFile({
+        "f-corner": F_PATCH,
+        "gone": ShapePatch(lines=["SF:Q"], path=F_PATCH.path),
+        "moved": ShapePatch(lines=["SF:F"], path=[(-122.44, 37.75), (-122.43, 37.75)]),
+    })
+    warnings = [(w.code, w.line) for w in validate(curation, snapshots).warnings if w.code.startswith("shape-")]
+    assert warnings == [("shape-patch-unknown-line", "SF:Q"), ("shape-patch-unmatched", "SF:F")]

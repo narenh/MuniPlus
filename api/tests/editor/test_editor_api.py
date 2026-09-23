@@ -131,6 +131,21 @@ def test_rename_is_a_one_line_commit(world):
     assert world.state()["version"] == commit
 
 
+def test_a_shape_patch_is_saved_to_its_own_file_and_served(world):
+    # The editor's test app has no public routes; the network is what /api/shapes serves.
+    served = lambda: [list(p) for p in world.app.state.network.shapes()[0].shapes["SF:F1"]]  # noqa: E731
+    before = served()
+    curation = copy.deepcopy(world.state()["curation"])
+    path = [[-122.434979, 37.762576], [-122.4331, 37.765], [-122.429214, 37.76725]]
+    curation["shapes"] = {"f-corner": {"lines": ["SF:F"], "path": path, "note": "Checked on site."}}
+    res = world.save(curation, message="Patch the F at Castro")
+    assert res.status_code == 200, res.text
+    commit = res.json()["commit"]
+    assert git(world.checkout, "show", "--format=", "--name-only", commit).split() == ["curation/shapes.json"]
+    assert served() == path != before
+    assert world.state()["curation"]["shapes"]["f-corner"]["note"] == "Checked on site."
+
+
 def test_an_unchanged_save_makes_no_commit(world):
     network = world.app.state.network
     res = world.save(world.state()["curation"])
