@@ -159,7 +159,7 @@ KEY = "-----BEGIN OPENSSH PRIVATE KEY-----\nnot-a-real-key\n-----END OPENSSH PRI
 def test_deploy_key_is_written_0600_for_the_command_only(tmp_path, origin):
     bare, _ = origin
     repo = Repo(settings_for(tmp_path, bare, data_deploy_key=KEY))
-    with repo._remote_env() as env:
+    with repo.remote_env() as env:
         command = env["GIT_SSH_COMMAND"]
         key_file = Path(command.split()[2])
         assert command == f"ssh -i {key_file} -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
@@ -170,7 +170,7 @@ def test_deploy_key_is_written_0600_for_the_command_only(tmp_path, origin):
 
 def test_no_key_no_ssh_command(tmp_path, origin):
     bare, _ = origin
-    with Repo(settings_for(tmp_path, bare))._remote_env() as env:
+    with Repo(settings_for(tmp_path, bare)).remote_env() as env:
         # Whatever the machine had, untouched: without a key, ssh is not our business.
         assert env.get("GIT_SSH_COMMAND") == os.environ.get("GIT_SSH_COMMAND")
         assert env["GIT_TERMINAL_PROMPT"] == "0"

@@ -55,7 +55,7 @@ class Repo:
             # Cloning into it would fail anyway; say why instead of git's generic error.
             raise RepoError(f"{self.path} exists, is not empty and is not a git checkout")
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self._remote_env() as env:
+        with self.remote_env() as env:
             self._run(
                 ["git", "clone", "--branch", self.branch, "--single-branch", self.url, str(self.path)],
                 env=env,
@@ -71,28 +71,34 @@ class Repo:
         that failed to push), this fails and the checkout is left as it was for the
         save path to reconcile, which has the context to do it.
         """
-        with self._remote_env() as env:
-            self._git("pull", "--ff-only", "origin", self.branch, env=env)
+        with self.remote_env() as env:
+            self.git("pull", "--ff-only", "origin", self.branch, env=env)
 
     def head(self) -> str:
         """The checked-out commit. This is the network's ``version``."""
-        return self._git("rev-parse", "HEAD")
+        return self.git("rev-parse", "HEAD")
 
     def status(self) -> RepoStatus:
         """Where the checkout stands. Ahead/behind are against the last fetch: this
         does not touch the network, so it is cheap enough to call per request."""
-        branch = self._git("rev-parse", "--abbrev-ref", "HEAD")
-        dirty = bool(self._git("status", "--porcelain"))
+        branch = self.git("rev-parse", "--abbrev-ref", "HEAD")
+        dirty = bool(self.git("status", "--porcelain"))
         try:
-            counts = self._git("rev-list", "--left-right", "--count", "HEAD...@{upstream}")
+            counts = self.git("rev-list", "--left-right", "--count", "HEAD...@{upstream}")
             ahead, behind = (int(n) for n in counts.split())
         except RepoError:
             ahead = behind = 0  # no upstream (a detached HEAD, or a local-only branch)
         return RepoStatus(branch=branch, head=self.head(), dirty=dirty, ahead=ahead, behind=behind)
 
     # MARK: Running git
+    #
+    # Public, because the editor's write side (app/editor/checkout.py) and the
+    # snapshot refresh build on them: every git command in the server goes through
+    # ``git``, and every one that reaches the remote runs inside ``remote_env``.
 
-    def _git(self, *args: str, env: dict[str, str] | None = None) -> str:
+    def git(self, *args: str, env: dict[str, str] | None = None) -> str:
+        """Run ``git <args>`` in the checkout and return its stdout, stripped.
+        ``env`` defaults to ``base_env()``. Raises ``RepoError`` with git's stderr."""
         return self._run(["git", *args], env=env, cwd=self.path)
 
     def _run(self, cmd: list[str], *, env: dict[str, str] | None, cwd: Path) -> str:
@@ -100,7 +106,7 @@ class Repo:
             done = subprocess.run(
                 cmd,
                 cwd=cwd,
-                env=env if env is not None else self._base_env(),
+                env=env if env is not None else self.base_env(),
                 capture_output=True,
                 text=True,
                 timeout=TIMEOUT_SECONDS,
@@ -112,17 +118,18 @@ class Repo:
         return done.stdout.strip()
 
     @staticmethod
-    def _base_env() -> dict[str, str]:
+    def base_env() -> dict[str, str]:
+        """The environment for a git command that does not reach the remote."""
         env = dict(os.environ)
         # Never wait on a prompt for a password or passphrase: there is nobody to type it.
         env["GIT_TERMINAL_PROMPT"] = "0"
         return env
 
     @contextmanager
-    def _remote_env(self) -> Iterator[dict[str, str]]:
+    def remote_env(self) -> Iterator[dict[str, str]]:
         """The environment for a command that talks to the remote, with the deploy
         key on disk for exactly as long as the command runs."""
-        env = self._base_env()
+        env = self.base_env()
         if not self._deploy_key:
             yield env
             return

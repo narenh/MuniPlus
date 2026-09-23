@@ -426,16 +426,10 @@ def _commit(editor: Editor, snapshot: Snapshot, base_version: str, compared_with
     # between may send its newer version, and that must not hide a refresh.
     guarded = f"{files.SNAPSHOT_DIR}/{snapshot.meta.operator}/"
     require_base(editor, compared_with)
-    if changed := _changed(checkout, compared_with, head, guarded):
+    if changed := checkout.changed(compared_with, head, guarded):
         raise conflict(editor, "The snapshot was refreshed since this fetch. Fetch again.", changed)
     made = commit_snapshot(checkout, snapshot)
     return push_and_respond(editor, before=head, commit=made)
-
-
-def _changed(checkout: Checkout, base: str, head: str, prefix: str) -> list[str]:
-    # ``Checkout.curation_changed`` for another prefix. It is not generalised there
-    # because checkout.py is not this track's (see the track J report).
-    return checkout.repo._git("diff", "--name-only", base, head, "--", prefix).splitlines()
 
 
 def commit_message(snapshot: Snapshot) -> str:
@@ -444,31 +438,15 @@ def commit_message(snapshot: Snapshot) -> str:
 
 
 def commit_snapshot(checkout: Checkout, snapshot: Snapshot) -> str | None:
-    """Write the snapshot's files and commit the ones that changed; ``commit_curation``
-    for ``snapshot/``. None when nothing but ``fetchedAt`` would change."""
+    """Write the snapshot's files and commit the ones that changed. None when
+    nothing but ``fetchedAt`` would change."""
     with checkout.lock:
         operator = snapshot.meta.operator
         on_disk = operator in files.snapshot_operators(checkout.path)
         current = files.read_snapshot(checkout.path, operator) if on_disk else None
         if same_content(current, snapshot):
             return None
-        before = checkout.head()
-        try:
-            # Inside the try: the files are written one by one, and a failure
-            # after the first must not leave the checkout dirty.
-            changed = files.write_snapshot(checkout.path, snapshot)
-            if not changed:
-                return None
-            checkout.repo._git("add", "--", *changed)
-            # Only these paths, as a save commits only its own.
-            checkout.repo._git(
-                "commit", "-q", "--no-verify", "-m", commit_message(snapshot), "--", *changed,
-                env=checkout._author_env(),
-            )  # fmt: skip
-        except BaseException:
-            checkout.reset(before)
-            raise
-        return checkout.head()
+        return checkout.commit_paths(lambda: files.write_snapshot(checkout.path, snapshot), commit_message(snapshot))
 
 
 # MARK: - Routes

@@ -18,6 +18,7 @@ Two locks, because saves and reads have different needs:
 
 import re
 import threading
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -130,30 +131,33 @@ class Checkout:
     def history(self, limit: int) -> list[tuple[str, str, str, str]]:
         """(sha, subject, author, ISO date) of the last commits touching curation."""
         # Unit separators, because a subject can contain anything but a newline.
-        out = self.repo._git("log", f"-n{limit}", "--format=%H%x1f%s%x1f%an%x1f%aI", "--", CURATION_DIR)
+        out = self.repo.git("log", f"-n{limit}", "--format=%H%x1f%s%x1f%an%x1f%aI", "--", CURATION_DIR)
         return [tuple(line.split("\x1f", 3)) for line in out.splitlines() if line]
 
     def is_commit(self, rev: str) -> bool:
         try:
-            self.repo._git("cat-file", "-e", f"{rev}^{{commit}}")
+            self.repo.git("cat-file", "-e", f"{rev}^{{commit}}")
             return True
         except RepoError:
             return False
 
+    def changed(self, base: str, head: str, prefix: str) -> list[str]:
+        """Files under ``prefix`` that differ between two commits."""
+        return self.repo.git("diff", "--name-only", base, head, "--", prefix).splitlines()
+
     def curation_changed(self, base: str, head: str) -> list[str]:
-        out = self.repo._git("diff", "--name-only", base, head, "--", CURATION_DIR)
-        return out.splitlines()
+        return self.changed(base, head, CURATION_DIR)
 
     def ahead(self) -> int:
         """Local commits the remote does not have, as of the last fetch."""
-        return int(self.repo._git("rev-list", "--count", f"{self.upstream}..HEAD"))
+        return int(self.repo.git("rev-list", "--count", f"{self.upstream}..HEAD"))
 
     # MARK: Writing (callers hold ``save_lock``; tree changes also take ``lock``)
 
     def fetch(self) -> None:
         """Update ``origin/<branch>``. Touches no file, so it runs outside ``lock``."""
-        with self.repo._remote_env() as env:
-            self.repo._git("fetch", "-q", "origin", self.repo.branch, env=env)
+        with self.repo.remote_env() as env:
+            self.repo.git("fetch", "-q", "origin", self.repo.branch, env=env)
 
     def rebase_onto_upstream(self) -> None:
         """Bring HEAD up to the last fetch.
@@ -165,36 +169,46 @@ class Checkout:
         """
         with self.lock:
             try:
-                self.repo._git("rebase", "-q", self.upstream, env=self._author_env())
+                self.repo.git("rebase", "-q", self.upstream, env=self.author_env())
             except RepoError as err:
                 try:
-                    self.repo._git("rebase", "--abort")
+                    self.repo.git("rebase", "--abort")
                 except RepoError:
                     pass  # it failed before starting (nothing to abort)
                 raise RebaseConflict(str(err)) from None
 
-    def commit_curation(self, curation: Curation, message: str) -> str | None:
-        """Write the curation files and commit the ones that changed. Returns the
-        new commit, or None when nothing changed (and nothing was committed)."""
+    def commit_paths(self, write: Callable[[], list[str]], message: str) -> str | None:
+        """Run ``write``, which writes files and returns the ones it changed, and
+        commit exactly those. Returns the new commit, or None when nothing changed
+        (and nothing was committed). Curation saves and snapshot refreshes are both
+        this.
+
+        ``write`` runs inside the rollback: files are written one by one, and a
+        failure after the first must not leave the checkout half-written.
+        """
         with self.lock:
             before = self.repo.head()
-            changed = files.write_curation(self.path, curation)
-            if not changed:
-                return None
             try:
-                self.repo._git("add", "--", *changed)
+                changed = write()
+                if not changed:
+                    return None
+                self.repo.git("add", "--", *changed)
                 # Only these paths: whatever else is in the index or the tree is
-                # not this save's to commit.
-                self.repo._git("commit", "-q", "--no-verify", "-m", message, "--", *changed, env=self._author_env())
+                # not this commit's.
+                self.repo.git("commit", "-q", "--no-verify", "-m", message, "--", *changed, env=self.author_env())
             except BaseException:
                 self.reset(before)
                 raise
             return self.repo.head()
 
+    def commit_curation(self, curation: Curation, message: str) -> str | None:
+        """Write the curation files and commit the ones that changed."""
+        return self.commit_paths(lambda: files.write_curation(self.path, curation), message)
+
     def push(self) -> PushResult:
-        with self.repo._remote_env() as env:
+        with self.repo.remote_env() as env:
             try:
-                self.repo._git("push", "-q", "origin", f"HEAD:refs/heads/{self.repo.branch}", env=env)
+                self.repo.git("push", "-q", "origin", f"HEAD:refs/heads/{self.repo.branch}", env=env)
             except RepoError as err:
                 # "! [rejected] ... (fetch first)" or "(non-fast-forward)": the remote
                 # moved. "[remote rejected]" (a hook, a protected branch) and
@@ -204,10 +218,11 @@ class Checkout:
 
     def reset(self, rev: str) -> None:
         with self.lock:
-            self.repo._git("reset", "-q", "--hard", rev)
+            self.repo.git("reset", "-q", "--hard", rev)
 
-    def _author_env(self) -> dict[str, str]:
-        env = self.repo._base_env()
+    def author_env(self) -> dict[str, str]:
+        """``base_env`` plus the configured identity, as author and committer."""
+        env = self.repo.base_env()
         name, email = self._author
         # Committer too: a rebase rewrites commits, and git refuses to without
         # a committer identity.
