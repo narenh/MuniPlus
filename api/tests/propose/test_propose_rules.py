@@ -114,7 +114,7 @@ def test_same_corner_joins_but_an_underground_station_is_never_merged_into():
     }, {"J": [["1", "3"]], "37": [["2", "4"]]})
     cur = curation({"church": ("Church", ["1"], []), "churchDuboce": ("Church & Duboce", ["3"], [])},
                    subways={"market": ["church"]})
-    by = {p.platform: p for p in propose(snap, cur, ["SF:2", "SF:4"])}
+    by = {p.stop: p for p in propose(snap, cur, ["SF:2", "SF:4"])}
     assert by["SF:2"].new_station.id == "church14"
     assert by["SF:4"].station == "churchDuboce"
 
@@ -124,7 +124,7 @@ def test_assigned_and_ignored_stops_are_skipped_and_unknown_ones_refused():
     cur = files.read_curation(FIXTURE)
     out = propose(snap, cur, list(snap.stops.root))
     # everything in the fixture is assigned or ignored (SF:13510), bar one
-    assert [p.platform for p in out] == ["SF:15418"]
+    assert [p.stop for p in out] == ["SF:15418"]
     assert out[0].new_station.name == "Balboa Park BART/Mezzanine Level"
     # no fixture pattern stops there, so there is no direction of travel
     assert out[0].heading is None
@@ -134,5 +134,5 @@ def test_assigned_and_ignored_stops_are_skipped_and_unknown_ones_refused():
 
 
 def test_proposal_is_camel_case_on_the_wire():
-    p = Proposal(platform="SF:1", heading="northbound", station="x", reason="r")
-    assert set(p.model_dump()) == {"platform", "heading", "station", "newStation", "reason"}
+    p = Proposal(stop="SF:1", heading="northbound", station="x", reason="r")
+    assert set(p.model_dump()) == {"stop", "heading", "station", "newStation", "reason"}

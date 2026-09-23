@@ -4,8 +4,8 @@
 // of the server's `derived` values.
 
 import {
-  store, select, stationById, stationIds, linesOf, lineById, allLines, platformsOf,
-  stationPos, platformPos, derivedPlatform, stationMatches, platformMatches,
+  store, select, stationById, stationIds, linesOf, lineById, allLines, platformsOf, stopsOf, platformIdOf,
+  stationPos, stopPos, derivedStop, stationMatches, stopMatches,
   lineMatches, upstream, metresBetween, unclaimedNear,
 } from './store.js';
 import { bundle } from './bundle.js';
@@ -41,7 +41,7 @@ function drawnLines() {
  *  the curves of the track. Until the shapes arrive, or for a direction the
  *  feed has no shape for, the line through the platforms it stops at instead,
  *  which cuts corners but is never missing. */
-const pathOf = dir => store.shapes[dir.shape] || dir.platforms.map(platformPos).filter(Boolean);
+const pathOf = dir => store.shapes[dir.shape] || dir.stops.map(stopPos).filter(Boolean);
 
 /**
  * Metro lines are drawn side by side where they share track, in this order
@@ -64,7 +64,7 @@ function metroBundle() {
       const coords = pathOf(dir);
       if (coords.length < 2) continue;
       traversals.push({ line: ln.id, dir: dir.direction, coords });
-      key.push(`${ln.id}/${dir.direction}/${store.shapes[dir.shape] ? dir.shape : dir.platforms.join()}`);
+      key.push(`${ln.id}/${dir.direction}/${store.shapes[dir.shape] ? dir.shape : dir.stops.join()}`);
     }
   }
   const k = key.join(';') + (Object.keys(store.shapes).length ? '' : ';no-shapes');
@@ -323,7 +323,7 @@ function stationFeatures() {
         ...stationStyle(sid, s, ls),
         selected: store.selStation === sid ? 1 : 0,
         // a platform 511 no longer lists: flagged, never removed automatically
-        stale: platformsOf(s).some(p => !derivedPlatform(p.id)?.live) ? 1 : 0,
+        stale: platformsOf(s).flatMap(stopsOf).some(stop => !derivedStop(stop)?.live) ? 1 : 0,
       },
       geometry: { type: 'Point', coordinates: at },
     });
@@ -334,40 +334,46 @@ function stationFeatures() {
   };
 }
 
-/** Poles of shown stations whose own lines pass the mode chips. A platform with
- *  no coordinate (not in 511's snapshot) has nothing to draw. */
+/** A pole for every stop of every platform of shown stations whose own lines
+ *  pass the mode chips: the editor shows a platform's stops separately, since
+ *  each is what 511 reports on. A stop with no coordinate (not in 511's
+ *  snapshot) has nothing to draw. `p` is the platform the stop belongs to. */
 function* shownPoles() {
   const active = store.activeLine;
+  const selected = store.selPlatform && platformIdOf(store.selPlatform);
   for (const sid of stationIds()) {
     if (!shown(sid)) continue;
     const ls = linesOf(sid);
     const on = !active || ls.some(l => l.id === active);
     const color = tint(ls, on);
     for (const p of platformsOf(stationById(sid))) {
-      const at = platformPos(p.id);
-      if (!at) continue;
-      if (sid !== store.selStation && !platformMatches(p.id)) continue;
-      yield { sid, p, at, on, color };
+      for (const stop of stopsOf(p)) {
+        const at = stopPos(stop);
+        if (!at) continue;
+        if (sid !== store.selStation && !stopMatches(stop)) continue;
+        yield { sid, p, stop, at, on, color, selected: selected === p.id };
+      }
     }
   }
 }
 
 function platformFeatures() {
   const feats = [];
-  for (const { sid, p, at, on, color } of shownPoles()) {
+  for (const { sid, p, stop, at, on, color, selected } of shownPoles()) {
     feats.push({
       type: 'Feature',
-      id: hashId(p.id),
+      id: hashId(stop),
       properties: {
-        pid: p.id,
-        code: upstream(p.id),
+        pid: stop,
+        code: upstream(stop),
         sid,
         heading: p.heading,
         bearing: HEADING_DEG[p.heading] ?? 0,
         color,
         active: on ? 1 : 0,
-        selected: store.selPlatform === p.id ? 1 : 0,
-        label: derivedPlatform(p.id)?.stopName || stationById(sid).name,
+        // A platform is selected as a whole: every one of its stops lights up.
+        selected: selected ? 1 : 0,
+        label: derivedStop(stop)?.name || stationById(sid).name,
       },
       geometry: { type: 'Point', coordinates: at },
     });
@@ -376,21 +382,25 @@ function platformFeatures() {
 }
 
 /**
- * A short leader from each station's centre to each of its poles.
+ * A short leader from each station's centre to each of its poles, and from a
+ * platform's primary stop to each of its extra stops.
  *
  * An underground station puts every pole within metres of the centre, so
  * without these the poles are an indistinguishable pile on top of the station
- * dot, and nothing shows which station a stray pole belongs to.
+ * dot, and nothing shows which station a stray pole belongs to. The tie from a
+ * primary to an extra stop (`tie`, drawn solid) is what shows that two poles
+ * are one platform.
  */
 function leaderFeatures() {
   const feats = [];
-  for (const { sid, at, on, color } of shownPoles()) {
-    const centre = stationPos(sid);
-    if (!centre) continue;
+  for (const { sid, p, stop, at, on, color } of shownPoles()) {
+    const primary = stop === p.id;
+    const from = primary ? stationPos(sid) : stopPos(p.id);
+    if (!from) continue;
     feats.push({
       type: 'Feature',
-      properties: { color, selected: store.selStation === sid ? 1 : 0, active: on ? 1 : 0 },
-      geometry: { type: 'LineString', coordinates: [centre, at] },
+      properties: { color, selected: store.selStation === sid ? 1 : 0, active: on ? 1 : 0, tie: primary ? 0 : 1 },
+      geometry: { type: 'LineString', coordinates: [from, at] },
     });
   }
   return { type: 'FeatureCollection', features: feats };
@@ -417,7 +427,7 @@ function candidateFeatures() {
     features: unclaimedNear(at, CANDIDATE_LIMIT).map(c => ({
       type: 'Feature',
       id: hashId(c.id),
-      properties: { pid: c.id, code: upstream(c.id), label: c.p.stopName || '' },
+      properties: { pid: c.id, code: upstream(c.id), label: c.p.name || '' },
       geometry: { type: 'Point', coordinates: [c.p.lon, c.p.lat] },
     })),
   };
@@ -436,7 +446,7 @@ export function spotlight(pid) {
 }
 
 function spotFeatures() {
-  const at = spotPid && platformPos(spotPid);
+  const at = spotPid && stopPos(spotPid);
   return {
     type: 'FeatureCollection',
     features: at ? [{ type: 'Feature', properties: { code: upstream(spotPid) }, geometry: { type: 'Point', coordinates: at } }] : [],
@@ -797,6 +807,7 @@ function addLayers() {
   map.addLayer({
     id: 'muni-leader', type: 'line', source: 'leaders',
     minzoom: POLE_MINZOOM,
+    filter: ['==', ['get', 'tie'], 0],
     layout: { 'line-cap': 'round' },
     paint: {
       'line-color': ['get', 'color'],
@@ -807,6 +818,21 @@ function addLayers() {
           ['==', ['get', 'selected'], 1], 0.9,
           ['==', ['get', 'active'], 1], 0.32, 0.08]],
       'line-dasharray': [1.5, 1.5],
+    },
+  });
+  // A platform's extra stop tied to its primary: solid, and drawn as strongly as
+  // the poles, because it says the two are one place to stand.
+  map.addLayer({
+    id: 'muni-leader-tie', type: 'line', source: 'leaders',
+    minzoom: POLE_MINZOOM,
+    filter: ['==', ['get', 'tie'], 1],
+    layout: { 'line-cap': 'round' },
+    paint: {
+      'line-color': ['case', ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
+      'line-width': ['interpolate', ['linear'], ['zoom'], 15, 2, 19, 4],
+      'line-opacity': ['interpolate', ['linear'], ['zoom'],
+        POLE_MINZOOM, 0,
+        POLE_MINZOOM + 0.8, ['case', ['==', ['get', 'active'], 1], 0.9, 0.2]],
     },
   });
 
@@ -1108,7 +1134,7 @@ export function refresh(which = 'all') {
  */
 export const LAYER_IDS = {
   platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-ring', 'muni-platform-arrow',
-              'muni-platform-label', 'muni-leader'],
+              'muni-platform-label', 'muni-leader', 'muni-leader-tie'],
   labels: ['muni-label'],
   transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case',
               'muni-transfer-head', 'muni-transfer-label'],
@@ -1169,7 +1195,7 @@ export const flyToStation = (id, zoom) => flyTo(stationPos(id), zoom);
 export function fitLine(lineId) {
   const ln = lineById(lineId);
   if (!ln || !map) return;
-  const pts = (ln.directions || []).flatMap(d => d.platforms.map(platformPos)).filter(Boolean);
+  const pts = (ln.directions || []).flatMap(d => d.stops.map(stopPos)).filter(Boolean);
   if (!pts.length) return;
   const b = new maplibregl.LngLatBounds();
   for (const at of pts) b.extend(at);

@@ -15,7 +15,7 @@ from typing import Literal
 from pydantic import Field, RootModel, model_serializer
 
 from .base import FileModel
-from .ids import Color, LineId, Mode, Operator, PlatformId, ShapeId
+from .ids import Color, LineId, Mode, Operator, StopId, ShapeId
 
 
 class SnapshotMeta(FileModel):
@@ -39,10 +39,10 @@ class SnapshotStop(FileModel):
     lon: float
 
 
-class SnapshotStops(RootModel[dict[PlatformId, SnapshotStop]]):
+class SnapshotStops(RootModel[dict[StopId, SnapshotStop]]):
     """``stops.json``: every stop 511 lists, keyed by the id the realtime feeds use."""
 
-    root: dict[PlatformId, SnapshotStop] = {}
+    root: dict[StopId, SnapshotStop] = {}
 
     @model_serializer(mode="wrap")
     def _sorted(self, handler):
@@ -79,7 +79,7 @@ class Pattern(FileModel):
     trips: int = Field(ge=1)
     """How many trips in the service period run exactly this sequence. The most-run
     pattern per direction is the line's diagram."""
-    stops: list[PlatformId]
+    stops: list[StopId]
     shape: ShapeId | None = None
     """The GTFS shape most of those trips drive, a key into ``shapes.json``. None
     when the feed has no shapes."""

@@ -60,7 +60,7 @@ from .models import (
     StopMove,
     StopRename,
 )
-from .review import codes_of, dead_platforms, dead_stations, unassigned_stops
+from .review import codes_of, dead_stations, dead_stops, unassigned_stops
 from .save import check_writable, conflict, fetch_and_rebase, push_and_respond, require_base, run_locked
 from .state import Editor, editor_of, loaded
 
@@ -293,7 +293,7 @@ def drift(at_head: Loaded, old: Snapshot | None, new: Snapshot) -> SnapshotDrift
         if distance > MOVE_METRES:
             moved.append(
                 StopMove(
-                    platform=pid,
+                    stop=pid,
                     name=b.name,
                     metres=round(distance),
                     old_lat=a.lat,
@@ -303,7 +303,7 @@ def drift(at_head: Loaded, old: Snapshot | None, new: Snapshot) -> SnapshotDrift
                 )
             )
         if a.name != b.name:
-            renamed.append(StopRename(platform=pid, old_name=a.name, name=b.name))
+            renamed.append(StopRename(stop=pid, old_name=a.name, name=b.name))
 
     changed_lines = []
     for lid in sorted(old_lines.keys() & new_lines.keys()):
@@ -330,7 +330,7 @@ def drift(at_head: Loaded, old: Snapshot | None, new: Snapshot) -> SnapshotDrift
         # does, so a new stop at the corner of a queued one is proposed into the
         # same new station.
         queue = unassigned_stops(curation, snapshots, network, after["unassigned-stop"])
-        new_unassigned = [u for u in queue if u.platform in newly["unassigned-stop"]]
+        new_unassigned = [u for u in queue if u.stop in newly["unassigned-stop"]]
 
     return SnapshotDrift(
         operator=operator,
@@ -345,14 +345,14 @@ def drift(at_head: Loaded, old: Snapshot | None, new: Snapshot) -> SnapshotDrift
         lines_removed=[_line(lid, old_lines[lid]) for lid in sorted(old_lines.keys() - new_lines.keys())],
         lines_changed=changed_lines,
         patterns_changed=_pattern_changes(old, new) if old else [],
-        dead_platforms=dead_platforms(curation, newly["platform-not-in-snapshot"]),
+        dead_stops=dead_stops(curation, newly["stop-not-in-snapshot"]),
         dead_stations=dead_stations(curation, newly["station-has-no-live-platforms"]),
         new_unassigned=new_unassigned,
     )
 
 
 def _stop(pid, stop) -> DriftStop:
-    return DriftStop(platform=pid, name=stop.name, lat=stop.lat, lon=stop.lon)
+    return DriftStop(stop=pid, name=stop.name, lat=stop.lat, lon=stop.lon)
 
 
 def _line(lid, line) -> DriftLine:

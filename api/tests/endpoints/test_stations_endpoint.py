@@ -27,7 +27,7 @@ def test_list(client):
     church = next(s for s in body["stations"] if s["id"] == "churchMarket")
     assert church["lines"] == ["SF:J", "SF:F"]
     assert church["modes"] == ["metro", "streetcar"]
-    assert church["platforms"][0] == {"id": "SF:17073", "heading": "northbound", "lines": ["SF:J"]}
+    assert church["platforms"][0] == {"id": "SF:17073", "heading": "northbound", "lines": ["SF:J"], "stops": ["SF:17073"]}
 
 
 def test_list_etag(client):
@@ -70,6 +70,7 @@ def test_detail(client):
         "id": "SF:15731",
         "heading": "eastbound",
         "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
+        "stops": ["SF:15731"],
         "name": None,
         "stopName": "Metro Montgomery Station/Downtown",
         "lat": 37.789219,
@@ -136,7 +137,7 @@ class FakeRealtime:
             description="",
             active_periods=[],
             lines=[],
-            platforms=["SF:15417"],
+            stops=["SF:15417"],
             stations=["powell"],
             url=None,
         )

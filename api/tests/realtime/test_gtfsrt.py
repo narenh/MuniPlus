@@ -41,7 +41,7 @@ def test_trip_updates_shape(trips):
     assert len(trips.trips) == 1435
     assert sum(len(t.stops) for t in trips.trips) == 36137
     assert all(t.id.startswith("SF:") and t.line.startswith("SF:") for t in trips.trips)
-    assert all(s.platform.startswith("SF:") for t in trips.trips for s in t.stops)
+    assert all(s.stop.startswith("SF:") for t in trips.trips for s in t.stops)
 
 
 def test_departure_only_updates_are_at_trip_starts(trips):
@@ -52,14 +52,14 @@ def test_departure_only_updates_are_at_trip_starts(trips):
     # departure-only: still the start of the trip, just a two-stop start.
     later = [(t, i) for t, i in at if i != 0]
     assert len(later) == 5
-    assert {(t.line, i, t.stops[i].platform, t.stops[0].kind) for t, i in later} == {
+    assert {(t.line, i, t.stops[i].stop, t.stops[0].kind) for t, i in later} == {
         ("SF:9", 1, "SF:13243", "departure")
     }
 
 
 def test_departure_only_stops_would_vanish_from_an_arrival_only_scan(trips):
-    arriving = {s.platform for t in trips.trips for s in t.stops if s.kind == "arrival"}
-    departing = {s.platform for t in trips.trips for s in t.stops if s.kind == "departure"}
+    arriving = {s.stop for t in trips.trips for s in t.stops if s.kind == "arrival"}
+    departing = {s.stop for t in trips.trips for s in t.stops if s.kind == "departure"}
     assert departing - arriving == DEPARTURE_ONLY_STOPS
 
 
@@ -134,11 +134,11 @@ def test_alerts():
     assert len(feed.alerts) == 41
     assert all(a.active_at(feed.timestamp) for a in feed.alerts)
     moved = next(a for a in feed.alerts if a.id == "SF_15874")
-    assert (moved.lines, moved.platforms) == (("SF:9",), ("SF:13240",))
+    assert (moved.lines, moved.stops) == (("SF:9",), ("SF:13240",))
     assert moved.header.startswith("9 STOP TEMP. MOVED")
     assert moved.periods == ((1789974000, 1792479599),)
     agency_wide = next(a for a in feed.alerts if a.id == "SF_15898")
-    assert (agency_wide.lines, agency_wide.platforms) == ((), ())
+    assert (agency_wide.lines, agency_wide.stops) == ((), ())
 
 
 def test_alert_period_bounds():

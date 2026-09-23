@@ -1,7 +1,7 @@
 import {
   store, load, adopt, subscribe, undo, redo, canUndo, canRedo, validateNow,
   select, setActiveLine, toggleLayer, stationById, lineById, allLines, stations,
-  isDirty, canon, changes, esc, platformsOf, upstream, ownerOf, platformPos,
+  isDirty, canon, changes, esc, platformsOf, upstream, ownerOf, stopPos,
   knownModes, modeOn, setModeOn, setUnverifiedOnly, verifiedCount, nextUnverified,
   derivedStation, detailText,
 } from './store.js';
@@ -456,20 +456,20 @@ function jumpToNextUnverified() {
  *  platform where it is, else the line. */
 function goToIssue(it) {
   if (it.station && stationById(it.station)) {
-    select(it.station, it.platform || null);
-    const at = it.platform && platformPos(it.platform);
+    select(it.station, it.stop || null);
+    const at = it.stop && stopPos(it.stop);
     if (at) flyTo(at, 17); else flyToStation(it.station);
     return;
   }
-  if (it.platform) {
-    const sid = ownerOf(it.platform);
-    const at = platformPos(it.platform);
-    select(sid, sid ? it.platform : null);
+  if (it.stop) {
+    const sid = ownerOf(it.stop);
+    const at = stopPos(it.stop);
+    select(sid, sid ? it.stop : null);
     if (at) flyTo(at, 17);
     if (!sid) {
-      spotlight(it.platform);
-      const name = at ? store.derived.platforms[it.platform]?.stopName : null;
-      hint(`${upstream(it.platform)}${name ? ` (${name})` : ''} is in no station${at ? '' : ', and 511 has no coordinate for it'}`, 4000);
+      spotlight(it.stop);
+      const name = at ? store.derived.stops[it.stop]?.name : null;
+      hint(`${upstream(it.stop)}${name ? ` (${name})` : ''} is in no station${at ? '' : ', and 511 has no coordinate for it'}`, 4000);
     }
     return;
   }

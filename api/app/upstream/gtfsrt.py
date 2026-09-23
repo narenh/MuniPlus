@@ -38,7 +38,7 @@ class FeedError(ValueError):
 
 @dataclass(frozen=True, slots=True)
 class StopTime:
-    platform: str
+    stop: str
     time: int
     kind: Kind
     terminates: bool
@@ -93,7 +93,7 @@ class AlertInfo:
     description: str
     periods: tuple[tuple[int | None, int | None], ...]
     lines: tuple[str, ...]
-    platforms: tuple[str, ...]
+    stops: tuple[str, ...]
     url: str | None
 
     def active_at(self, now: int) -> bool:
@@ -152,20 +152,20 @@ def decode_trip_updates(payload: bytes, operator: str) -> TripUpdates:
         for update in tu.stop_time_update:
             if update.schedule_relationship == pb.TripUpdate.StopTimeUpdate.SKIPPED:
                 continue
-            platform = _qualify(operator, update.stop_id)
-            if platform is None:
+            stop = _qualify(operator, update.stop_id)
+            if stop is None:
                 continue
             if update.HasField("arrival") and update.arrival.time:
-                timed.append((platform, update.arrival.time, "arrival"))
+                timed.append((stop, update.arrival.time, "arrival"))
             elif update.HasField("departure") and update.departure.time:
-                timed.append((platform, update.departure.time, "departure"))
+                timed.append((stop, update.departure.time, "departure"))
         if not timed:
             continue
 
         last = len(timed) - 1
         stops = tuple(
-            StopTime(platform, time, kind, terminates=(i == last and kind == "arrival"))
-            for i, (platform, time, kind) in enumerate(timed)
+            StopTime(stop, time, kind, terminates=(i == last and kind == "arrival"))
+            for i, (stop, time, kind) in enumerate(timed)
         )
         vehicle = ref(operator, tu.vehicle.id) if tu.HasField("vehicle") and tu.vehicle.id else None
         trips.append(Trip(
@@ -238,11 +238,11 @@ def decode_vehicle_positions(payload: bytes, operator: str) -> VehiclePositions:
 
 
 def decode_service_alerts(payload: bytes, operator: str) -> ServiceAlerts:
-    """Alerts, with their lines and platforms.
+    """Alerts, with their lines and stops.
 
     In the fixture every alert's ``informed_entity`` is an (agency, route, stop)
     triple, except one agency-only entity (SF_15898, the Folsom Street Fair
-    reroutes). An agency-only alert has no lines and no platforms, so it only
+    reroutes). An agency-only alert has no lines and no stops, so it only
     appears when nothing is filtered on.
 
     Unlike the other two feeds, an alerts feed with no entities is accepted:
@@ -259,22 +259,22 @@ def decode_service_alerts(payload: bytes, operator: str) -> ServiceAlerts:
             continue
         alert = entity.alert
         lines: dict[str, None] = {}
-        platforms: dict[str, None] = {}
+        stops: dict[str, None] = {}
         for informed in alert.informed_entity:
             # An entity naming another agency is about that agency's service.
             if informed.agency_id and informed.agency_id != operator:
                 continue
             if (line := _qualify(operator, informed.route_id)) is not None:
                 lines[line] = None
-            if (platform := _qualify(operator, informed.stop_id)) is not None:
-                platforms[platform] = None
+            if (stop := _qualify(operator, informed.stop_id)) is not None:
+                stops[stop] = None
         alerts.append(AlertInfo(
             id=entity.id,
             header=_text(alert.header_text) or "",
             description=_text(alert.description_text) or "",
             periods=tuple((p.start or None, p.end or None) for p in alert.active_period),
             lines=tuple(lines),
-            platforms=tuple(platforms),
+            stops=tuple(stops),
             url=_text(alert.url),
         ))
     return ServiceAlerts(timestamp=feed.header.timestamp, alerts=tuple(alerts))
@@ -314,7 +314,7 @@ def _parse(payload: bytes) -> pb.FeedMessage:
 def _qualify(operator: str, upstream: str) -> str | None:
     """``SF:<id>``, or None where the upstream id could not be a valid ref.
 
-    Checked here because a platform or line id is validated again when the
+    Checked here because a stop or line id is validated again when the
     response is built, and one bad id would otherwise fail a whole response.
     """
     if not upstream or any(c in upstream for c in ",:/") or any(c.isspace() for c in upstream):

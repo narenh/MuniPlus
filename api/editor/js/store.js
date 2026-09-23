@@ -35,7 +35,7 @@ export const store = {
   activeDir: 0,         // index into the active line's directions, for ↑/↓
   lineInspector: false, // the inspector shows the active line, not a station
   selStation: null,     // station id
-  selPlatform: null,    // full platform id, "SF:16992"
+  selPlatform: null,    // a stop id, "SF:16992"; its platform is the one selected
   modesOff: new Set(),  // modes the chips have switched off; empty = no filter
   unverifiedOnly: false,
   layers: { platforms: true, labels: true, transfers: true, vehicles: false },
@@ -110,7 +110,7 @@ export function edit(label, mutate) {
  * Renames, headings and notes leave it alone (PLAN.md, "verification").
  */
 function clearVerifiedWherePlatformsChanged(before, after) {
-  const ids = st => (st.platforms || []).map(p => p.id).sort().join(',');
+  const ids = st => (st.platforms || []).flatMap(stopsOf).sort().join(',');
   for (const [sid, st] of Object.entries(after)) {
     const was = before[sid];
     if (was && st.verified && ids(was) !== ids(st)) delete st.verified;
@@ -220,9 +220,13 @@ export const stationById = id => (id ? stations()[id] || null : null);
 /** A station's platforms: always one flat list. Null-safe, for ids that point
  *  at a station which no longer exists. */
 export const platformsOf = st => st?.platforms || [];
+/** Every stop at a platform, the primary (its id) first. Read a platform's stops
+ *  through this, never `p.id` alone, or its extra stops are silently missed. */
+export const stopsOf = p => [p.id, ...(p.stops || [])];
 
 export const derivedStation = id => store.derived.stations[id] || null;
-export const derivedPlatform = id => store.derived.platforms[id] || null;
+/** A 511 stop's derived values: live, lines, lat/lon, 511's name. */
+export const derivedStop = id => store.derived.stops[id] || null;
 export const lineById = id => store.derived.lines[id] || null;
 export const allLines = () => Object.values(store.derived.lines);
 export const lineOverride = id => store.curation?.lines?.[id] || null;
@@ -252,42 +256,51 @@ export function stationPos(id) {
   return d && isNum(d.lat) && isNum(d.lon) ? [d.lon, d.lat] : null;
 }
 
-export function platformPos(id) {
-  const d = derivedPlatform(id);
+/** `[lng, lat]` of a 511 stop, or null when 511 no longer lists it. */
+export function stopPos(id) {
+  const d = derivedStop(id);
   return d && isNum(d.lat) && isNum(d.lon) ? [d.lon, d.lat] : null;
 }
 
-/** The station that owns each platform. The server's rule for a platform two
+/** The station and platform that own each stop. The server's rule for a stop two
  *  stations claim (invalid, but possible mid-edit) is that the first station by
  *  id wins, and this follows it so the strip agrees with the directions. */
 let ownerCache = { rev: -1, map: new Map() };
-export function ownerOf(pid) {
+function owners() {
   if (ownerCache.rev !== store._rev) {
     const map = new Map();
     for (const sid of stationIds().sort()) {
-      for (const p of platformsOf(stations()[sid])) if (!map.has(p.id)) map.set(p.id, sid);
+      for (const p of platformsOf(stations()[sid])) {
+        for (const stop of stopsOf(p)) if (!map.has(stop)) map.set(stop, { sid, platform: p.id });
+      }
     }
     ownerCache = { rev: store._rev, map };
   }
-  return ownerCache.map.get(pid) || null;
+  return ownerCache.map;
 }
+/** The station a stop belongs to, through its platform. */
+export const ownerOf = stop => owners().get(stop)?.sid || null;
+/** The id of the platform a stop belongs to: its primary stop. */
+export const platformIdOf = stop => owners().get(stop)?.platform || null;
 
-export function platformByCode(pid) {
-  const sid = ownerOf(pid);
-  if (!sid) return null;
-  const st = stationById(sid);
-  return { sid, station: st, platform: platformsOf(st).find(p => p.id === pid) };
+/** The station and platform a stop belongs to, or null. */
+export function platformByStop(stop) {
+  const own = owners().get(stop);
+  if (!own) return null;
+  const st = stationById(own.sid);
+  return { sid: own.sid, station: st, platform: platformsOf(st).find(p => p.id === own.platform) };
 }
 
 /**
  * Snapshot stops no station has claimed, nearest first: the only things a
- * platform can be added from. Ignored stops are left out, because assigning
- * one is a validation error; un-ignoring is the review queue's job.
+ * platform, or an extra stop of one, can be added from. Ignored stops are left
+ * out, because assigning one is a validation error; un-ignoring is the review
+ * queue's job.
  */
 export function unclaimedNear(at, limit = Infinity) {
   const ignored = store.curation.ignored || {};
   const out = [];
-  for (const [pid, p] of Object.entries(store.derived.platforms)) {
+  for (const [pid, p] of Object.entries(store.derived.stops)) {
     if (!p.live || ownerOf(pid) || ignored[pid] || !isNum(p.lat)) continue;
     out.push({ id: pid, p, metres: at ? metresBetween(at, [p.lon, p.lat]) : 0 });
   }
@@ -318,9 +331,9 @@ export function stationMatches(id) {
   return (derivedStation(id)?.modes || []).some(modeOn);
 }
 
-export function platformMatches(pid) {
+export function stopMatches(stop) {
   if (!filteringModes()) return true;
-  return (derivedPlatform(pid)?.lines || []).some(l => modeOn(lineById(l)?.mode));
+  return (derivedStop(stop)?.lines || []).some(l => modeOn(lineById(l)?.mode));
 }
 
 export const lineMatches = id => modeOn(lineById(id)?.mode);
@@ -435,7 +448,7 @@ export function changes() {
     const a = A[id];
     const T = b.name || id;
     if (!a) {
-      push('add', T, `New station ${code(id)} with ${list(platformsOf(b).map(p => upstream(p.id)))}`);
+      push('add', T, `New station ${code(id)} with ${list(platformsOf(b).flatMap(stopsOf).map(upstream))}`);
       continue;
     }
     if (a.name !== b.name) push('edit', T, `Renamed from ${code(a.name)}`);
@@ -449,6 +462,9 @@ export function changes() {
       if (q.heading !== p.heading) push('edit', P, `Heading ${code(q.heading)} → ${code(p.heading)}`);
       if (!same(q.name, p.name)) push('edit', P, `Signage → ${code(p.name || 'none')}`);
       if (!same(q.note, p.note)) push('edit', P, p.note ? `Note → ${code(p.note)}` : 'Note removed');
+      const qs = q.stops || [], ps = p.stops || [];
+      for (const x of ps) if (!qs.includes(x)) push('add', P, `Stop ${code(upstream(x))} is at this platform`);
+      for (const x of qs) if (!ps.includes(x)) push('del', P, `Stop ${code(upstream(x))} no longer at this platform`);
     }
     for (const pid of ap.keys()) if (!bp.has(pid)) push('del', T, `Removed platform ${code(upstream(pid))}`);
 

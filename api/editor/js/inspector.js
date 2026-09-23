@@ -9,8 +9,8 @@
 
 import {
   store, edit, select, stationById, stationIds, linesOf, lineById, allLines, esc,
-  metresBetween, platformsOf, derivedStation, derivedPlatform, stationPos,
-  platformPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
+  metresBetween, platformsOf, stopsOf, platformIdOf, derivedStation, derivedStop, stationPos,
+  stopPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
   setLineOverride, knownModes, setActiveLine,
 } from './store.js';
 import { hint, highlightLink, flyTo, showCandidates, onCandidate, fitLine } from './map.js';
@@ -217,7 +217,7 @@ function candidates(sid) {
   const q = addQuery.trim().toLowerCase();
   const all = unclaimedNear(at);
   return q
-    ? all.filter(c => `${c.id} ${c.p.stopName || ''}`.toLowerCase().includes(q))
+    ? all.filter(c => `${c.id} ${c.p.name || ''}`.toLowerCase().includes(q))
     : all;
 }
 
@@ -228,7 +228,7 @@ function addPicker(sid) {
     return `
     <button class="cand" data-act="pick-cand" data-pid="${esc(c.id)}">
       <span class="cand-code mono">${esc(upstream(c.id))}</span>
-      <span class="cand-name">${esc(c.p.stopName || '')}</span>
+      <span class="cand-name">${esc(c.p.name || '')}</span>
       <span class="cand-lines">${lines.slice(0, 5).map(l =>
         `<i style="background:${esc(l.color || '#7c8598')}" title="${esc(l.name)}"></i>`).join('')}</span>
       <em class="mono">${stationPos(sid) ? `${c.metres} m` : ''}</em>
@@ -245,14 +245,18 @@ function addPicker(sid) {
 }
 
 function platformCards(st) {
-  return platformsOf(st).map(p => {
+  const all = platformsOf(st);
+  return all.map(p => {
     const pid = p.id;
-    const d = derivedPlatform(pid);
+    const d = derivedStop(pid);
     const live = !!d?.live;
-    const sel = store.selPlatform === pid;
-    const at = platformPos(pid);
+    const sel = !!store.selPlatform && platformIdOf(store.selPlatform) === pid;
+    const at = stopPos(pid);
+    const stops = stopsOf(p);
 
-    const served = (d?.lines || []).map(lineById).filter(Boolean);
+    // A platform serves every line any of its stops does, in line order.
+    const lineIds = new Set(stops.flatMap(x => derivedStop(x)?.lines || []));
+    const served = allLines().filter(l => lineIds.has(l.id));
     const pub = store.publicMap;
     const lines = served.slice(0, MAX_PLATFORM_LINES).map(ln =>
       `<button class="mini-bullet" style="background:${esc(ln.color || '#7c8598')}" disabled
@@ -270,7 +274,7 @@ function platformCards(st) {
         <div style="min-width:0">
           <div class="plat-code" title="${esc(pid)}">${esc(upstream(pid))}${live ? ''
             : ' <span class="dead-tag" title="511 no longer lists this stop. The API leaves it out; it is not removed automatically.">not in 511</span>'}</div>
-          <div class="plat-sub">${esc(d?.stopName || p.name || st.name)}</div>
+          <div class="plat-sub">${esc(d?.name || p.name || st.name)}</div>
         </div>
         <div class="plat-actions">
           <button class="icon-btn" data-act="locate" data-pid="${esc(pid)}" title="Show on the map">
@@ -301,8 +305,9 @@ function platformCards(st) {
         <label class="micro">Note</label>
         <input class="inp" data-pf="note" data-pid="${esc(pid)}" data-key="o-${esc(pid)}" value="${esc(p.note ?? '')}" placeholder="none">
       </div>`}
+      ${stopsField(p, all)}
       <div class="field">
-        <label class="micro">Lines ${sub('from 511')}</label>
+        <label class="micro">Lines ${sub('from 511, over all its stops')}</label>
         <div class="insp-lines">${lines}</div>
       </div>
       <div class="field" style="margin-bottom:0">
@@ -313,6 +318,40 @@ function platformCards(st) {
       </div>
     </div>`;
   }).join('');
+}
+
+/**
+ * A platform's 511 stops: usually just its own id. Where 511 numbers one place
+ * more than once (the N and its bus substitute on one Duboce shelter), the
+ * others are listed here and can be split back out. "Same place as" folds this
+ * whole platform into another of the station's, which keeps its own heading,
+ * signage and note.
+ */
+function stopsField(p, all) {
+  const stops = stopsOf(p);
+  const others = all.filter(q => q.id !== p.id);
+  const chips = stops.map((x, i) => {
+    const d = derivedStop(x);
+    const far = i && stopPos(p.id) && stopPos(x) ? metresBetween(stopPos(p.id), stopPos(x)) : null;
+    return `<span class="tchip link" title="${esc(d?.name || '')}${far !== null ? ` · ${far} m from ${upstream(p.id)}` : ''}">
+      <span class="mono">${esc(upstream(x))}</span>${i ? '' : ' <em>primary</em>'}${far !== null ? ` <em>${far} m</em>` : ''}${
+      d?.live ? '' : ' <em style="color:var(--warn)">not in 511</em>'}${
+      i ? `<button class="x edit-only" data-act="split-stop" data-pid="${esc(p.id)}" data-stop="${esc(x)}"
+        title="Split ${esc(upstream(x))} out into a platform of its own">split</button>` : ''}</span>`;
+  }).join('');
+  const merge = store.publicMap || !others.length ? '' : `
+    <select class="inp edit-only" data-act-change="merge-into" data-pid="${esc(p.id)}" data-key="m-${esc(p.id)}"
+      title="This platform is the same place to stand as another: fold its stops into that one">
+      <option value="">Same place as…</option>
+      ${others.map(q => `<option value="${esc(q.id)}">${esc(upstream(q.id))} · ${esc(q.heading)}${
+        q.name ? ` · ${esc(q.name)}` : ''}</option>`).join('')}
+    </select>`;
+  return `
+      <div class="field">
+        <label class="micro">Stops ${sub(stops.length > 1 ? 'one place, several 511 ids' : '511 stop id')}</label>
+        <div class="chips">${chips}</div>
+        ${merge}
+      </div>`;
 }
 
 // ---------------------------------------------------------------- transfers
@@ -461,6 +500,21 @@ function wireStation(st, sid) {
     };
   });
 
+  // Fold one platform into another: its stops become the other's extra stops,
+  // and it goes. The other keeps its heading, signage and note.
+  body.querySelectorAll('[data-act-change="merge-into"]').forEach(el => {
+    el.onchange = () => {
+      const from = el.dataset.pid, into = el.value;
+      if (!into) return;
+      commit(`${upstream(from)} is at ${upstream(into)}`, s => {
+        const src = plat(s, from), dst = plat(s, into);
+        dst.stops = [...(dst.stops || []), ...stopsOf(src)];
+        s.platforms = s.platforms.filter(x => x.id !== from);
+      });
+      select(sid, into);
+    };
+  });
+
   const q = body.querySelector('#add-q');
   if (q) {
     q.oninput = () => { addQuery = q.value; renderInspector(); };
@@ -497,7 +551,7 @@ function wireStation(st, sid) {
 
       if (act === 'locate') {
         select(sid, pid);
-        const at = platformPos(pid);
+        const at = stopPos(pid);
         if (at) flyTo(at, 17.4); else hint(`${upstream(pid)} has no coordinate`);
       }
 
@@ -515,12 +569,25 @@ function wireStation(st, sid) {
       if (act === 'verify') markVerified(sid);
       if (act === 'unverify') commit(`Unverify ${st.name}`, s => { delete s.verified; });
 
+      // An extra stop becomes its own platform again, just after this one, facing
+      // the same way until someone says otherwise.
+      if (act === 'split-stop') {
+        const stop = b.dataset.stop;
+        commit(`Split ${upstream(stop)} out of ${upstream(pid)}`, s => {
+          const p = plat(s, pid);
+          p.stops = (p.stops || []).filter(x => x !== stop);
+          if (!p.stops.length) delete p.stops;
+          s.platforms.splice(s.platforms.indexOf(p) + 1, 0, { id: stop, heading: p.heading });
+        });
+        select(sid, stop);
+      }
+
       if (act === 'del-plat') {
         if (platformsOf(st).length === 1) { hint('A station must keep at least one platform'); return; }
         commit(`Remove platform ${upstream(pid)}`, s => {
           s.platforms = s.platforms.filter(p => p.id !== pid);
         });
-        if (store.selPlatform === pid) select(sid, null);
+        if (store.selPlatform && platformIdOf(store.selPlatform) === pid) select(sid, null);
       }
 
       if (act === 'untransfer') {
@@ -671,7 +738,7 @@ function renderLine(ln) {
     <div class="sect-head"><div class="micro">Directions ${sub('511\'s most-run pattern each way')}</div></div>
     ${(ln.directions || []).map(d => `
       <div class="derived" style="margin-bottom:6px">→ <b>${esc(d.headsign)}</b>
-        <span class="mono" style="color:var(--ink-faint)"> · ${d.stations.length} stations · ${d.platforms.length} stops</span></div>`).join('')
+        <span class="mono" style="color:var(--ink-faint)"> · ${d.stations.length} stations · ${d.stops.length} stops</span></div>`).join('')
       || '<div class="empty">None.</div>'}
   </div>`;
   wireLine(ln);

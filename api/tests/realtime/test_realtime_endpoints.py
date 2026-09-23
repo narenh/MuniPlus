@@ -123,7 +123,7 @@ def test_alerts(client):
     by_station = client.get("/api/alerts", params={"station": "eleventhMission"}).json()["alerts"]
     assert [a["id"] for a in by_station] == ["SF_15874", "SF_15898"]  # plus the agency-wide one
     assert by_station[0]["stations"] == ["eleventhMission"]
-    assert set(by_station[0]) == {"id", "header", "description", "activePeriods", "lines", "platforms", "stations", "url"}
+    assert set(by_station[0]) == {"id", "header", "description", "activePeriods", "lines", "stops", "stations", "url"}
     assert "SF_15874" in {a["id"] for a in client.get("/api/alerts", params={"line": "SF:9"}).json()["alerts"]}
     assert "SF_15874" in {a["id"] for a in client.get("/api/alerts", params={"platforms": "SF:13240"}).json()["alerts"]}
 

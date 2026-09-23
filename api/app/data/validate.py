@@ -16,6 +16,11 @@ from ..models.editor import Issue, Validation
 from ..models.snapshot import Snapshot
 from .network import _most_run, terminal_stops
 from .shapes import ANCHOR_M, draw_shapes
+from ..ingest.propose import metres
+
+PLATFORM_SPREAD_M = 25.0
+"""How far a platform's extra stop may be from its primary before the validator
+asks whether they are really one place."""
 
 
 def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validation:
@@ -74,7 +79,7 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
             else:
                 claimed_by[former] = sid
 
-    # MARK: Platforms
+    # MARK: Platforms and their stops
 
     owner: dict[str, str] = {}
     for sid, station in stations.items():
@@ -83,40 +88,55 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
             continue
         seen: set[str] = set()
         for platform in station.platforms:
-            pid = platform.id
-            if pid in seen:
-                error(
-                    "platform-listed-twice",
-                    f"{pid} is listed twice in {station.name} ({sid}).",
-                    station=sid,
-                    platform=pid,
-                )
-                continue
-            seen.add(pid)
-            if pid in owner:
-                first = owner[pid]
-                error(
-                    "platform-in-two-stations",
-                    f"{pid} is in both {stations[first].name} ({first}) and {station.name} ({sid}).",
-                    station=sid,
-                    platform=pid,
-                )
-            else:
-                owner[pid] = sid
-            if pid in ignored:
-                error(
-                    "platform-assigned-and-ignored",
-                    f"{pid} is in {station.name} ({sid}) and also in ignored.json.",
-                    station=sid,
-                    platform=pid,
-                )
-            if pid not in stops:
-                warn(
-                    "platform-not-in-snapshot",
-                    f"{pid} in {station.name} ({sid}) is not in 511's current data, so the API leaves it out.",
-                    station=sid,
-                    platform=pid,
-                )
+            for pid in platform.all_stops:
+                if pid in seen:
+                    error(
+                        "stop-listed-twice",
+                        f"{pid} is listed twice in {station.name} ({sid}).",
+                        station=sid,
+                        stop=pid,
+                    )
+                    continue
+                seen.add(pid)
+                if pid in owner:
+                    first = owner[pid]
+                    error(
+                        "stop-in-two-stations",
+                        f"{pid} is in both {stations[first].name} ({first}) and {station.name} ({sid}).",
+                        station=sid,
+                        stop=pid,
+                    )
+                else:
+                    owner[pid] = sid
+                if pid in ignored:
+                    error(
+                        "stop-assigned-and-ignored",
+                        f"{pid} is in {station.name} ({sid}) and also in ignored.json.",
+                        station=sid,
+                        stop=pid,
+                    )
+                if pid not in stops:
+                    warn(
+                        "stop-not-in-snapshot",
+                        f"{pid} in {station.name} ({sid}) is not in 511's current data, so the API leaves it out.",
+                        station=sid,
+                        stop=pid,
+                    )
+            # The stops of one platform are one place a rider stands. Two ids for one
+            # shelter sit metres apart (5.4 and 5.8 m at Duboce & Church); much further
+            # and it is more likely two places. A warning: 511 moving a pole must never
+            # block a save.
+            primary = stops.get(platform.id)
+            for pid in platform.stops:
+                other = stops.get(pid)
+                if primary and other and (far := metres((primary.lon, primary.lat), (other.lon, other.lat))) > PLATFORM_SPREAD_M:
+                    warn(
+                        "platform-stops-far-apart",
+                        f"{pid} is {far:.0f} m from {platform.id}, the platform it is listed in at "
+                        f"{station.name} ({sid}): more than one place to stand?",
+                        station=sid,
+                        stop=pid,
+                    )
         if not any(pid in stops for pid in seen):
             warn(
                 "station-has-no-live-platforms",
@@ -206,7 +226,7 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
         warn(
             "unassigned-stop",
             f"{pid} ({stops[pid].name}) is in 511's data but in no station, and not ignored.",
-            platform=pid,
+            stop=pid,
         )
 
     return Validation(errors=errors, warnings=warnings)

@@ -233,3 +233,40 @@ def test_live_mode_uses_the_wall_clock(settings, db):
     realtime = Realtime(lambda: None, settings, db=db, clock=lambda: NOW + 10**7)
     realtime.ingest("SF", "tripupdates", TU1, fetched_at=NOW)
     assert realtime.arrivals([BUSIEST], limit=6).platforms[BUSIEST] == []
+
+
+# MARK: - Platforms of several stops
+
+
+def test_a_platforms_arrivals_are_its_stops_merged(settings, db):
+    # BUSIEST and SF:13243 made one platform, as two ids on one shelter are.
+    network = FakeNetwork(platforms=[[BUSIEST, "SF:13243"]])
+    realtime = Realtime(lambda: network, settings, db=db)
+    realtime.ingest("SF", "tripupdates", TU1, fetched_at=NOW + 1)
+
+    apart = {
+        stop: realtime.arrivals([stop], limit=1000, now=NOW).platforms[stop]
+        for stop in (BUSIEST, "SF:13243")
+    }
+    solo = Realtime(lambda: FakeNetwork(), settings, db=db)
+    solo.ingest("SF", "tripupdates", TU1, fetched_at=NOW + 1)
+    each = [a for stop in (BUSIEST, "SF:13243") for a in solo.arrivals([stop], limit=1000, now=NOW).platforms[stop]]
+    assert each, "the fixture has arrivals at both stops"
+
+    # Asked for by either stop, the answer is both stops' arrivals, keyed as asked.
+    assert apart[BUSIEST] == apart["SF:13243"]
+    merged = apart[BUSIEST]
+    assert sorted((a.trip, a.time) for a in merged) == sorted({(a.trip, a.time) for a in each})
+    assert [a.time for a in merged] == sorted(a.time for a in merged)
+    assert len({a.trip for a in merged}) == len(merged)  # a trip at both stops counts once
+
+    # The limit applies to the merged answer.
+    assert realtime.arrivals(["SF:13243"], limit=4, now=NOW).platforms["SF:13243"] == merged[:4]
+
+
+def test_a_platform_filter_on_alerts_takes_in_every_stop(settings, db):
+    network = FakeNetwork(platforms=[["SF:99001", "SF:13240"]])
+    realtime = Realtime(lambda: network, settings, db=db)
+    realtime.ingest("SF", "servicealerts", ALERTS, fetched_at=NOW)
+    # SF_15874 names SF:13240, the platform's second stop; asked for by its primary.
+    assert "SF_15874" in {a.id for a in realtime.alerts(now=NOW, platforms={"SF:99001"}).alerts}

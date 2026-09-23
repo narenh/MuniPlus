@@ -20,6 +20,17 @@ keeps using the Cloudflare Worker (`../src/`) and `../appdata/`. **Those are
 production and frozen: never edit them from this work.** `../tools/` is kept
 read-only as a reference until the app moves over.
 
+## Terms
+
+* **stop**: one place a line stops, as 511 numbers it (`SF:16992`). What 511 and
+  the realtime feeds speak in. Type `StopId`.
+* **platform**: one place a rider stands. Usually one stop; where 511 numbers one
+  place more than once (the N and its bus substitute on one Duboce shelter), several.
+  Its id is its primary stop's; `stops` lists the others. Read a platform's stops
+  through `Platform.all_stops` (JS `stopsOf`), never `id` alone.
+* **station**: the platforms riders think of as one place, with a name and an id of
+  our own.
+
 ## Decisions (settled — do not reopen without new evidence)
 
 | topic | decision |
@@ -28,10 +39,10 @@ read-only as a reference until the app moves over.
 | deploy | Coolify builds `master` (base dir `/api`, watch paths `api/**`), persistent volume at `/data` |
 | data repo | `sf-transit`: fresh history; the editor commits there via a deploy key; nothing redeploys on a data edit |
 | vocabulary | **lines**, never routes, everywhere (511 says lines). GTFS "routes" are renamed at ingest. HTTP handler modules live in `app/endpoints/` |
-| ids | `<511 operator>:<upstream id>` for platforms and lines (`SF:16992`, `SF:LOWL`), no mapping table. Station ids are ours, `[A-Za-z0-9]+`, permanent |
+| ids | `<511 operator>:<upstream id>` for stops and lines (`SF:16992`, `SF:LOWL`), no mapping table. A platform's id is its primary stop's. Station ids are ours, `[A-Za-z0-9]+`, permanent |
 | renames | `mongomery` → `montgomery`; the old id lives in `formerIds` and is flagged as a client favourites migration |
-| stations | one flat platform list. Levels/exits come later as an optional `layout` field. All hand-curated station info is in `curation/stations.json` |
-| coordinates | never curated. Platforms take 511's; a station is the centroid of its live platforms |
+| stations | one flat platform list; a platform may take in several stops (`stops`), curated by hand, never by distance. Levels/exits come later as an optional `layout` field. All hand-curated station info is in `curation/stations.json` |
+| coordinates | never curated. Stops take 511's; a platform is the centroid of its live stops, a station of all its live stops |
 | modes | 511's line `TransportMode` verbatim (`metro`, `bus`, `cableway`). One curated override: the F is `streetcar` |
 | replacements | `replaces` on a line (`SF:LOWL` replaces `SF:L`). **No** replacement platforms, no station-level mapping |
 | terminates | **not curated.** Derived per trip from realtime: departure-only = the trip starts here; arrival-only last stop = the trip ends here |
@@ -47,10 +58,10 @@ read-only as a reference until the app moves over.
 ```
 curation/stations.json   { subways: {id: {name, stations[]}}, stations: {id: Station} }
 curation/lines.json      { lineId: LineOverride }     overrides only
-curation/ignored.json    { platformId: {note} }       511 stops deliberately left out
+curation/ignored.json    { stopId: {note} }           511 stops deliberately left out
 curation/shapes.json     { patchId: {lines[], path[[lon, lat]...], note?} }   corrections to 511's shapes
 snapshot/SF/meta.json    service period, fetch time, sha256 of the GTFS zip
-snapshot/SF/stops.json   { platformId: {name, lat, lon} }
+snapshot/SF/stops.json   { stopId: {name, lat, lon} }
 snapshot/SF/lines.json   { lineId: {shortName, longName, mode, routeType, color, textColor} }
 snapshot/SF/patterns.json { lineId: [{direction, headsign, trips, stops[], shape?}] }
 snapshot/SF/shapes.json  { shapeId: [[lon, lat], ...] }   only shapes a pattern names
@@ -70,9 +81,11 @@ trips drive; a feed without shapes gives none and the map draws through the stop
 
 ### Derived at load time (never stored)
 
-* platform: `lines` (union over patterns containing it), `lat`/`lon`/`stopName`
+* stop: `lines` (union over patterns containing it), `lat`/`lon`/`name`
   (snapshot), `live` (present in snapshot)
-* station: `lat`/`lon` (centroid of live platforms), `lines`, `modes`
+* platform: `lines` (union over its stops), `lat`/`lon` (centroid of its live stops),
+  live while any of its stops is
+* station: `lat`/`lon` (centroid of its live stops), `lines`, `modes`
 * line: `name` default `"{shortName} {Title Case longName}"`; `mode` (override,
   else snapshot); `directions` (the most-run pattern per direction, mapped to
   stations; unassigned stops dropped)
@@ -88,14 +101,17 @@ Errors, which block a save:
 * `duplicate-station-id`: two ids differing only in case (`powell` / `Powell`).
   An exact duplicate key cannot get this far: `files.py` refuses the file.
 * `former-id-collides`: a former id reused, or equal to a current id
-* `platform-in-two-stations`, `platform-listed-twice`, `platform-assigned-and-ignored`
+* `stop-in-two-stations`, `stop-listed-twice`, `stop-assigned-and-ignored` (a stop
+  counts wherever a platform lists it, as its id or in its `stops`)
 * `unknown-station`: a transfer or subway naming a station that does not exist
 * `indoor-transfer-not-reciprocated`
 * `station-has-no-platforms`
 
 Warnings, which never block:
 
-* `platform-not-in-snapshot` (dropped from the API output)
+* `stop-not-in-snapshot` (dropped from the API output)
+* `platform-stops-far-apart` (a platform's extra stop more than 25 m from its primary:
+  two ids for one shelter sit metres apart)
 * `station-has-no-live-platforms` (left out of the public API; still in `derived`)
 * `unassigned-stop` (in the snapshot, in no station, not ignored: this is the review queue)
 * `unknown-line-override` (`lines.json` names a line 511 does not have, e.g. `S`)
@@ -121,7 +137,7 @@ at their boarding stop, 75 m short of the station; an extension carries them to 
 Ids, headings and non-blank names are already enforced by the models; duplicate
 JSON keys by `files.loads`.
 
-`Derived.platforms` covers every curated platform **and** every snapshot stop, so
+`Derived.stops` covers every stop a platform names **and** every snapshot stop, so
 the review queue can show what serves an unassigned stop. There `live` means "in
 the snapshot", so an unassigned stop is `live: true`. `Network.is_live` is
 stricter: assigned *and* in the snapshot. `Derived.lines` carries full
@@ -138,9 +154,9 @@ Response models: `app/models/api.py`. camelCase. Realtime times are epoch second
 | `GET /api/lines` | includes `mode`, `hidden`, `replaces`; ETag = `version`. Hidden lines are included with the flag set |
 | `GET /api/lines/{id}` | + `directions`, each naming its `shape` (or null) |
 | `GET /api/shapes` | every shape a direction names, `[lon, lat]`, patched (curation), cut at the direction's first and last stops (511's shapes run on to where vehicles turn: 600 m past Embarcadero for J K L M), simplified to 0.5 m. ETag = hash of the shapes, so it survives curation edits and changes only with a snapshot refresh. Not in `EditorState` |
-| `GET /api/arrivals?platforms=a,b&limit=6` | 1–50 platforms; malformed id → 400; unknown id → empty list |
+| `GET /api/arrivals?platforms=a,b&limit=6` | 1–50 platforms, each given by any of its stops; the answer is the whole platform's, merged across its stops (a trip at two of them once), keyed by the id asked for. Malformed id → 400; unknown id → empty list |
 | `GET /api/vehicles?line=a,b` | `line` optional; in-service vehicles only |
-| `GET /api/alerts?line=&station=&platforms=` | active now |
+| `GET /api/alerts?line=&station=&platforms=` | active now. Alerts name `stops`, as 511 does; a platform filter takes in all of its stops |
 | `GET /health` | `app.models.api.Health` |
 
 Errors: `app.models.api.Problem` (`{error, message}`). `error` is one of `not-found`, `bad-request`, `unauthorized`, `conflict`, `unavailable`.
@@ -249,12 +265,14 @@ app.state.settings : app.settings.Settings            # contract (done)
 
 app.state.network  : app.data.network.Network          # track B
     .version: str                                      # sf-transit commit
-    .station_of(platform_id: str) -> str | None        # owning station, if assigned
+    .station_of(stop_id: str) -> str | None            # owning station, if assigned
+    .platform_of(stop_id: str) -> str | None           # owning platform's id, if assigned
+    .stops_of(stop_id: str) -> list[str]               # its platform's stops, or just itself
     .headsign(line_id: str, direction: int) -> str | None   # most-run pattern's headsign
-    .is_live(platform_id: str) -> bool                 # assigned AND in the snapshot
+    .is_live(stop_id: str) -> bool                     # assigned AND in the snapshot
 
 app.state.realtime : app.realtime.state.Realtime       # track C
-    .arrivals(platform_ids: list[str], limit: int) -> ArrivalsResponse
+    .arrivals(ids: list[str], limit: int) -> ArrivalsResponse   # merged per platform
     .vehicles(lines: set[str] | None) -> VehiclesResponse
     .alerts(*, lines=None, stations=None, platforms=None) -> AlertsResponse  # active now
     .health() -> tuple[dict[str, FeedHealth], BudgetHealth]

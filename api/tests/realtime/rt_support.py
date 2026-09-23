@@ -37,12 +37,22 @@ def make_settings(tmp_path: Path, **overrides) -> Settings:
 class FakeNetwork:
     """Just enough of track B's Network to satisfy ``NetworkView``."""
 
-    def __init__(self, stations: dict[str, str] | None = None, headsigns: dict[tuple[str, int], str] | None = None):
+    def __init__(
+        self,
+        stations: dict[str, str] | None = None,
+        headsigns: dict[tuple[str, int], str] | None = None,
+        platforms: list[list[str]] | None = None,
+    ):
         self.stations = stations or {}
         self.headsigns = headsigns or {}
+        # Each platform's stops, primary first; a stop in none is its own.
+        self.platforms = {stop: group for group in platforms or [] for stop in group}
 
-    def station_of(self, platform_id: str) -> str | None:
-        return self.stations.get(platform_id)
+    def station_of(self, stop_id: str) -> str | None:
+        return self.stations.get(stop_id)
+
+    def stops_of(self, stop_id: str) -> list[str]:
+        return list(self.platforms.get(stop_id, [stop_id]))
 
     def headsign(self, line_id: str, direction: int) -> str | None:
         return self.headsigns.get((line_id, direction))

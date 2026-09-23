@@ -36,8 +36,8 @@ from ..models.api import (
     SubwayRef,
     TransferOut,
 )
-from ..models.curation import Curation, Station
-from ..models.editor import Derived, DerivedPlatform, DerivedStation
+from ..models.curation import Curation, Platform, Station
+from ..models.editor import Derived, DerivedStation, DerivedStop
 from ..models.snapshot import Pattern, Point, Snapshot, SnapshotLine, SnapshotStop
 from .shapes import draw_shapes, simplify
 
@@ -139,6 +139,8 @@ class Network:
     __slots__ = (
         "_version",
         "_station_of",
+        "_platform_of",
+        "_platform_stops",
         "_stops",
         "_headsigns",
         "_derived",
@@ -188,8 +190,8 @@ class Network:
         def in_line_order(ids: Iterable[str]) -> list[str]:
             return sorted(set(ids), key=rank.__getitem__)
 
-        # Platform lines: every pattern that stops there, not only the most-run one,
-        # so a short turn or school trip still lists its line at the stops it serves.
+        # Stop lines: every pattern that stops there, not only the most-run one, so a
+        # short turn or school trip still lists its line at the stops it serves.
         served: dict[str, set[str]] = {}
         for line_id, line_patterns in patterns.items():
             if line_id not in lines:
@@ -197,31 +199,43 @@ class Network:
             for pattern in line_patterns:
                 for stop in pattern.stops:
                     served.setdefault(stop, set()).add(line_id)
-        platform_lines = {pid: in_line_order(ids) for pid, ids in served.items()}
+        stop_lines = {pid: in_line_order(ids) for pid, ids in served.items()}
 
-        # Ownership: the first claim wins (see the module docstring).
+        # Ownership, stop by stop: the first claim wins (see the module docstring). A
+        # platform keeps the stops no earlier station claimed, and one left with none
+        # is left out, as it would be if it named only that stop.
         station_of: dict[str, str] = {}
-        owned: dict[str, list] = {}
+        platform_of: dict[str, str] = {}
+        owned: dict[str, list[tuple[Platform, list[str]]]] = {}
         for sid, station in stations.items():
             owned[sid] = []
             for platform in station.platforms:
-                if platform.id not in station_of:
-                    station_of[platform.id] = sid
-                    owned[sid].append(platform)
+                mine = [p for p in dict.fromkeys(platform.all_stops) if p not in station_of]
+                for p in mine:
+                    station_of[p] = sid
+                    platform_of[p] = platform.id
+                if mine:
+                    owned[sid].append((platform, mine))
         self._station_of = station_of
+        self._platform_of = platform_of
+        self._platform_stops = {platform.id: mine for plats in owned.values() for platform, mine in plats}
 
-        # Derived platforms: every curated platform, and every stop in a snapshot, so
+        # Derived stops: every stop a platform names, and every stop in a snapshot, so
         # the editor's review queue can show what serves a stop nobody has assigned.
-        derived_platforms: dict[str, DerivedPlatform] = {}
+        derived_stops: dict[str, DerivedStop] = {}
         for pid in sorted(station_of.keys() | stops.keys()):
             stop = stops.get(pid)
-            derived_platforms[pid] = DerivedPlatform(
+            derived_stops[pid] = DerivedStop(
                 live=stop is not None,
-                lines=platform_lines.get(pid, []),
+                lines=stop_lines.get(pid, []),
                 lat=stop.lat if stop else None,
                 lon=stop.lon if stop else None,
-                stop_name=stop.name if stop else None,
+                name=stop.name if stop else None,
             )
+
+        def union(ss: list[str]) -> list[str]:
+            """The lines of all of ``ss``, in line order: a platform's lines."""
+            return in_line_order(line for s in ss for line in stop_lines.get(s, []))
 
         # Stations.
         derived_stations: dict[str, DerivedStation] = {}
@@ -233,9 +247,11 @@ class Network:
                 subways_of.setdefault(sid, []).append(SubwayRef(id=subway_id, name=subway.name))
 
         for sid, station in stations.items():
-            live = [p for p in owned[sid] if p.id in stops]
-            centre = _centroid((stops[p.id].lat, stops[p.id].lon) for p in live)
-            station_lines = in_line_order(line for p in live for line in platform_lines.get(p.id, []))
+            # A platform is live while any of its stops is, and is what those stops are.
+            live = [(p, [s for s in mine if s in stops]) for p, mine in owned[sid]]
+            live = [(p, ss) for p, ss in live if ss]
+            centre = _centroid((stops[s].lat, stops[s].lon) for _, ss in live for s in ss)
+            station_lines = union([s for _, ss in live for s in ss])
             modes = sorted({lines[line].mode for line in station_lines}, key=_mode_key)
             derived_stations[sid] = DerivedStation(
                 lat=centre[0] if centre else None,
@@ -255,28 +271,32 @@ class Network:
                 lines=station_lines,
                 modes=modes,
                 platforms=[
-                    PlatformSummary(id=p.id, heading=p.heading, lines=platform_lines.get(p.id, []))
-                    for p in live
+                    PlatformSummary(id=p.id, heading=p.heading, lines=union(ss), stops=ss) for p, ss in live
                 ],
             )
 
         for sid, summary in summaries.items():
             station = stations[sid]
+            live = [(p, [s for s in mine if s in stops]) for p, mine in owned[sid]]
+            platforms = []
+            for p, ss in live:
+                if not ss:
+                    continue
+                at = _centroid((stops[s].lat, stops[s].lon) for s in ss)
+                platforms.append(PlatformDetail(
+                    id=p.id,
+                    heading=p.heading,
+                    lines=union(ss),
+                    stops=ss,
+                    name=p.name,
+                    # The primary's name while it is live, else the first live stop's.
+                    stop_name=stops[ss[0]].name,
+                    lat=at[0],
+                    lon=at[1],
+                ))
             details[sid] = StationDetail(
                 **{k: v for k, v in summary if k != "platforms"},
-                platforms=[
-                    PlatformDetail(
-                        id=p.id,
-                        heading=p.heading,
-                        lines=platform_lines.get(p.id, []),
-                        name=p.name,
-                        stop_name=stops[p.id].name,
-                        lat=stops[p.id].lat,
-                        lon=stops[p.id].lon,
-                    )
-                    for p in owned[sid]
-                    if p.id in stops
-                ],
+                platforms=platforms,
                 # A transfer to a station the API does not serve (unknown, or with no
                 # live platforms) would be a link to a 404, so it is left out.
                 transfers=[
@@ -322,7 +342,7 @@ class Network:
                     drawn_stops.setdefault(shape, pattern.stops)
                 directions.append(
                     Direction(
-                        direction=direction, headsign=pattern.headsign, stations=along, platforms=claimed, shape=shape
+                        direction=direction, headsign=pattern.headsign, stations=along, stops=claimed, shape=shape
                     )
                 )
             self._line_details[line.id] = LineDetail(**dict(line), directions=directions)
@@ -337,7 +357,7 @@ class Network:
         self._shapes: tuple[ShapesResponse, str] | None = None
         self._derived = Derived(
             stations=derived_stations,
-            platforms=derived_platforms,
+            stops=derived_stops,
             lines={line.id: self._line_details[line.id] for line in ordered},
         )
 
@@ -348,17 +368,28 @@ class Network:
         """The sf-transit commit this network was built from."""
         return self._version
 
-    def station_of(self, platform_id: str) -> str | None:
-        """The station a platform is assigned to, live or not."""
-        return self._station_of.get(platform_id)
+    def station_of(self, stop_id: str) -> str | None:
+        """The station a stop is assigned to, through its platform, live or not."""
+        return self._station_of.get(stop_id)
+
+    def platform_of(self, stop_id: str) -> str | None:
+        """The platform a stop belongs to (its primary stop's id), if assigned."""
+        return self._platform_of.get(stop_id)
+
+    def stops_of(self, stop_id: str) -> list[str]:
+        """Every stop of the platform ``stop_id`` belongs to, the primary first; or
+        just ``stop_id`` when no platform names it. What arrivals and alerts for a
+        platform are gathered over, whichever of its stops is asked for."""
+        platform = self._platform_of.get(stop_id)
+        return list(self._platform_stops[platform]) if platform else [stop_id]
 
     def headsign(self, line_id: str, direction: int) -> str | None:
         """The most-run pattern's headsign for this line and direction."""
         return self._headsigns.get((line_id, direction))
 
-    def is_live(self, platform_id: str) -> bool:
+    def is_live(self, stop_id: str) -> bool:
         """Assigned to a station and in the snapshot."""
-        return platform_id in self._station_of and platform_id in self._stops
+        return stop_id in self._station_of and stop_id in self._stops
 
     # MARK: Endpoints
 
