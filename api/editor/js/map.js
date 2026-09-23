@@ -346,6 +346,9 @@ function platformFeatures() {
         active: on ? 1 : 0,
         // A platform is selected as a whole: every one of its stops lights up.
         selected: selected ? 1 : 0,
+        // Every platform of the selected station is highlighted, so it is clear
+        // at a glance which poles make up the station being edited.
+        inSel: sid === store.selStation ? 1 : 0,
         label: derivedStop(stop)?.name || stationById(sid).name,
       },
       geometry: { type: 'Point', coordinates: at },
@@ -524,18 +527,16 @@ function makeStationImages() {
   g.stroke();
   map.addImage('station-pill', { width: pill.width, height: pill.height, data: g.getImageData(0, 0, pill.width, pill.height).data }, { pixelRatio: R });
 
-  const S = 56, r = 20, ring = document.createElement('canvas');
-  ring.width = ring.height = S;
-  const h = ring.getContext('2d');
-  h.strokeStyle = '#fff';
-  h.lineWidth = 0.38 * r;
-  // Eight dashes, gaps a little shorter than the dashes.
-  const dash = (2 * Math.PI * r) / 8;
-  h.setLineDash([dash * 0.58, dash * 0.42]);
+  // A platform is a thin bar, drawn upright and rotated to its heading, so it
+  // lies along its street and cannot be mistaken for a station's round dot.
+  const BW = 28, BH = 72, bar = document.createElement('canvas');
+  bar.width = BW; bar.height = BH;
+  const h = bar.getContext('2d');
   h.beginPath();
-  h.arc(S / 2, S / 2, r, 0, 2 * Math.PI);
-  h.stroke();
-  map.addImage('platform-ring', { width: S, height: S, data: h.getImageData(0, 0, S, S).data }, { sdf: true });
+  h.roundRect(BW / 2 - 5.5, 6, 11, BH - 12, 3);
+  h.fillStyle = '#fff';
+  h.fill();
+  map.addImage('platform-bar', { width: BW, height: BH, data: h.getImageData(0, 0, BW, BH).data }, { sdf: true });
 }
 
 /** A small triangular arrow drawn to a canvas, used for platform headings. */
@@ -796,7 +797,8 @@ function addLayers() {
       'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 1.2, 13, 4, 16, 13, 19, 20],
       'circle-color': ['get', 'color'],
       'circle-opacity': ['case',
-        ['==', ['get', 'selected'], 1], 0.35,
+        ['==', ['get', 'selected'], 1], 0.4,
+        ['==', ['get', 'inSel'], 1], 0.3,
         ['boolean', ['feature-state', 'hover'], false], 0.26, 0.1],
       'circle-blur': 0.35,
     },
@@ -817,27 +819,34 @@ function addLayers() {
       'circle-stroke-color': ['case',
         ['==', ['get', 'selected'], 1], '#ffffff',
         ['get', 'color']],
-      'circle-opacity': ['interpolate', ['linear'], ['zoom'],
-        12, dimmed(true, 0.5, 0.12), 14, dimmed(true, 1, 0.25)],
-      // The ring is the dashed icon below; the stroke stays, unseen, so a
-      // click or hover on the rim still finds the pole.
+      // Unseen: the bar below is what shows. The circle stays as the target
+      // for clicks and hovers, which a thin bar would make hard to hit.
+      'circle-opacity': 0,
       'circle-stroke-opacity': 0,
     },
   });
+  const inSel = ['==', ['get', 'inSel'], 1];
+  // Larger when its station is selected, largest when it is the selected one.
+  const grow = ['case', isSel, 1.3, inSel, 1.18, 1];
   map.addLayer({
-    id: 'muni-platform-ring', type: 'symbol', source: 'platforms',
+    id: 'muni-platform-bar', type: 'symbol', source: 'platforms',
     layout: {
-      'icon-image': 'platform-ring',
-      // The circle's radius plus half its stroke, over the image's radius of 20.
+      'icon-image': 'platform-bar',
       'icon-size': ['interpolate', ['linear'], ['zoom'],
-        11, 0.053, 13, 0.13, 14, 0.25, 16, 0.39, 19, 0.64],
+        11, ['*', 0.12, grow], 13, ['*', 0.26, grow], 14, ['*', 0.4, grow],
+        16, ['*', 0.62, grow], 19, ['*', 1, grow]],
+      'icon-rotate': ['get', 'bearing'],
+      'icon-rotation-alignment': 'map',
       'icon-allow-overlap': true,
       'icon-ignore-placement': true,
     },
     paint: {
-      'icon-color': ['case', ['==', ['get', 'selected'], 1], '#ffffff', ['get', 'color']],
+      'icon-color': ['case', isSel, '#ffffff', ['get', 'color']],
+      'icon-halo-color': ['case', inSel, '#ffffff', '#05060a'],
+      'icon-halo-width': ['case', isSel, 2.6, inSel, 1.8, 1.2],
       'icon-opacity': ['interpolate', ['linear'], ['zoom'],
-        12, dimmed(true, 0.5, 0.12), 14, dimmed(true, 1, 0.3)],
+        12, ['case', inSel, 1, dimmed(true, 0.5, 0.12)],
+        14, ['case', inSel, 1, dimmed(true, 1, 0.3)]],
     },
   });
   map.addLayer({
@@ -859,6 +868,13 @@ function addLayers() {
       'icon-halo-width': 1.4,
     },
   });
+
+  // Station dots sit in front of their platforms: a station reads as the place,
+  // its platforms as parts of it. They were added before the platforms (the
+  // leaders run from them), so they are lifted here, above the bars and heading
+  // arrows but under the stop-code labels, which stay readable. Each bar still
+  // reaches past its dot and keeps its own click target.
+  for (const id of ['muni-station-stale', 'muni-station', 'muni-station-pill']) map.moveLayer(id);
 
   // --- the stop code, which is the thing you actually need to read off a pole
   map.addLayer({
@@ -1085,7 +1101,7 @@ export function refresh(which = 'all') {
  * LAYER_TOOLS; nothing else needs to know about it.
  */
 export const LAYER_IDS = {
-  platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-ring', 'muni-platform-arrow',
+  platforms: ['muni-platform', 'muni-platform-halo', 'muni-platform-bar', 'muni-platform-arrow',
               'muni-platform-label', 'muni-leader', 'muni-leader-tie'],
   labels: ['muni-label'],
   transfers: ['muni-transfer', 'muni-transfer-indoor', 'muni-transfer-indoor-case', 'muni-transfer-label'],

@@ -13,6 +13,7 @@ import {
   stopPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
   setLineOverride, knownModes, setActiveLine, transferPartners, deleteStationIn,
   transfersOf, findTransfer, addTransferIn, removeTransferIn,
+  mergeStationsIn, movePlatformIn, foldPlatformIn, stationsNear, suggestStationId, stationIdProblem,
 } from './store.js';
 import { hint, highlightLink, flyTo, showCandidates, onCandidate, fitLine } from './map.js';
 
@@ -29,6 +30,14 @@ const CANDIDATES_SHOWN = 12;
 let pickStationFor = null;
 let pickLineFor = null;
 let addingFor = null;        // station id whose add-platform picker is open
+/** An open "merge with station" form: `{sid, other, keep, name}`. */
+let merging = null;
+/** An open "move platform" row: `{sid, pid, step: 'choose' | 'new', id, name}`. */
+let moving = null;
+/** How far "Merge into platform…" looks for other stations' platforms. Two ids on
+ *  one shelter sit metres apart; 150 m is well past any shelter and short of the
+ *  next block's stop. */
+const FOLD_REACH_M = 150;
 let addQuery = '';
 
 export function initInspector({ onNeedStationPicker, onNeedLinePicker }) {
@@ -123,7 +132,10 @@ function renderStation(st, sid) {
     box.appendChild(more);
   }
 
+  if (merging && merging.sid !== sid) merging = null;
+  if (moving && moving.sid !== sid) moving = null;
   document.getElementById('insp-body').innerHTML =
+    (merging ? sectionMerge(sid) : '') +
     sectionStation(st, sid) +
     sectionPlatforms(st, sid) +
     sectionTransfers(st, sid) +
@@ -281,6 +293,9 @@ function platformCards(st) {
           <button class="icon-btn" data-act="locate" data-pid="${esc(pid)}" title="Show on the map">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 14.5S13 10 13 6.4A5 5 0 003 6.4C3 10 8 14.5 8 14.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.3" r="1.8" fill="currentColor"/></svg>
           </button>
+          <button class="icon-btn edit-only ${moving?.pid === pid ? 'on' : ''}" data-act="move-plat" data-pid="${esc(pid)}" title="Move this platform to another station, or to a new one">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h9M9 4.5L12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
           <button class="icon-btn danger edit-only" data-act="del-plat" data-pid="${esc(pid)}" title="Remove this platform">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.6 8h4.8l.6-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -306,6 +321,7 @@ function platformCards(st) {
         <label class="micro">Note</label>
         <input class="inp" data-pf="note" data-pid="${esc(pid)}" data-key="o-${esc(pid)}" value="${esc(p.note ?? '')}" placeholder="none">
       </div>`}
+      ${moveRow(store.selStation, pid)}
       ${stopsField(p, all)}
       <div class="field">
         <label class="micro">Lines ${sub('from 511, over all its stops')}</label>
@@ -324,13 +340,14 @@ function platformCards(st) {
 /**
  * A platform's 511 stops: usually just its own id. Where 511 numbers one place
  * more than once (the N and its bus substitute on one Duboce shelter), the
- * others are listed here and can be split back out. "Same place as" folds this
- * whole platform into another of the station's, which keeps its own heading,
+ * others are listed here and can be split back out into platforms of their own.
+ * "Merge into platform" does the opposite: this platform's stops join another
+ * platform, of this station or a nearby one, which keeps its own heading,
  * signage and note.
  */
 function stopsField(p, all) {
+  const sid = store.selStation;
   const stops = stopsOf(p);
-  const others = all.filter(q => q.id !== p.id);
   const chips = stops.map((x, i) => {
     const d = derivedStop(x);
     const far = i && stopPos(p.id) && stopPos(x) ? metresBetween(stopPos(p.id), stopPos(x)) : null;
@@ -338,14 +355,20 @@ function stopsField(p, all) {
       <span class="mono">${esc(upstream(x))}</span>${i ? '' : ' <em>primary</em>'}${far !== null ? ` <em>${far} m</em>` : ''}${
       d?.live ? '' : ' <em style="color:var(--warn)">not in 511</em>'}${
       i ? `<button class="x edit-only" data-act="split-stop" data-pid="${esc(p.id)}" data-stop="${esc(x)}"
-        title="Split ${esc(upstream(x))} out into a platform of its own">split</button>` : ''}</span>`;
+        title="Make ${esc(upstream(x))} a platform of its own again">split out</button>` : ''}</span>`;
   }).join('');
-  const merge = store.publicMap || !others.length ? '' : `
+
+  const option = (osid, q) => `<option value="${esc(osid)}|${esc(q.id)}">${esc(upstream(q.id))} · ${esc(q.heading)}${
+    q.name ? ` · ${esc(q.name)}` : ''}${osid === sid ? '' : ` · ${esc(stationById(osid).name)}`}</option>`;
+  const here = all.filter(q => q.id !== p.id).map(q => option(sid, q)).join('');
+  const nearby = stationsNear(stopPos(p.id), FOLD_REACH_M, sid)
+    .map(({ id }) => platformsOf(stationById(id)).map(q => option(id, q)).join('')).join('');
+  const merge = store.publicMap || (!here && !nearby) ? '' : `
     <select class="inp edit-only" data-act-change="merge-into" data-pid="${esc(p.id)}" data-key="m-${esc(p.id)}"
-      title="This platform is the same place to stand as another: fold its stops into that one">
-      <option value="">Same place as…</option>
-      ${others.map(q => `<option value="${esc(q.id)}">${esc(upstream(q.id))} · ${esc(q.heading)}${
-        q.name ? ` · ${esc(q.name)}` : ''}</option>`).join('')}
+      title="511 numbers this place more than once: fold this platform's stops into another platform">
+      <option value="">Merge into platform…</option>
+      ${here ? `<optgroup label="This station">${here}</optgroup>` : ''}
+      ${nearby ? `<optgroup label="Within ${FOLD_REACH_M} m">${nearby}</optgroup>` : ''}
     </select>`;
   return `
       <div class="field">
@@ -411,11 +434,75 @@ function sectionTransfers(st, sid) {
 function sectionDanger(st) {
   return `
   <div class="sect edit-only">
-    <div class="sect-head"><div class="micro">Danger zone</div></div>
+    <div class="sect-head"><div class="micro">Station</div></div>
+    <button class="btn" data-act="merge-start" style="width:100%;justify-content:center;margin-bottom:8px"
+      title="Fold another station into this one, or this one into it">Merge with station…</button>
     <button class="btn" id="del-station" style="width:100%;justify-content:center;color:var(--bad);border-color:rgba(251,113,133,.3)">
       Delete “${esc(st.name)}”
     </button>
   </div>`;
+}
+
+/**
+ * Merging two stations: which one stays, and its name. The one that goes keeps
+ * working as an id (it becomes a former id of the one that stays), so this is
+ * about which id is the real one from now on, not about losing anything.
+ */
+function sectionMerge(sid) {
+  const ids = [merging.sid, merging.other];
+  const keep = merging.keep, gone = ids.find(x => x !== keep);
+  const K = stationById(keep), G = stationById(gone);
+  const n = platformsOf(G).length;
+  const choice = id => {
+    const st = stationById(id);
+    const np = platformsOf(st).length;
+    return `<label class="merge-choice ${id === keep ? 'on' : ''}">
+      <input type="radio" name="merge-keep" value="${esc(id)}" ${id === keep ? 'checked' : ''}>
+      <span><b>${esc(st.name)}</b> <code>${esc(id)}</code><em>${np} platform${np === 1 ? '' : 's'}</em></span>
+    </label>`;
+  };
+  return `
+  <div class="sect edit-only merge-form">
+    <div class="sect-head"><div class="micro">Merge stations</div></div>
+    <div class="field"><label class="micro">Keep the id of</label>${ids.map(choice).join('')}</div>
+    <div class="field"><label class="micro">Name</label>
+      <input class="inp" id="merge-name" value="${esc(merging.name)}" data-key="merge-name"></div>
+    <div class="merge-says">${esc(G.name)}'s ${n} platform${n === 1 ? '' : 's'} join ${esc(K.name)}.
+      <code>${esc(gone)}</code> becomes a former id of <code>${esc(keep)}</code>, so the API redirects it and saved
+      favourites follow. Its transfers move to ${esc(K.name)}${findTransfer(keep, gone) ? ', and the transfer between the two goes' : ''}.</div>
+    <div class="rv-actions">
+      <button class="btn small primary" data-act="merge-confirm">Merge</button>
+      <button class="btn small ghost" data-act="merge-cancel">Cancel</button>
+    </div>
+  </div>`;
+}
+
+/** The inline row a platform card shows while it is being moved to another station. */
+function moveRow(sid, pid) {
+  if (!moving || moving.sid !== sid || moving.pid !== pid) return '';
+  if (moving.step === 'new') {
+    const problem = stationIdProblem((moving.id || '').trim());
+    return `
+    <div class="move-row edit-only">
+      <div class="micro">A new station with ${esc(upstream(pid))} ${sub('the id is permanent: the app keeps it in favourites')}</div>
+      <label class="rv-lab">Id<input class="inp mono ${problem ? 'bad' : ''}" id="move-id" value="${esc(moving.id || '')}" data-key="move-id" spellcheck="false" autocomplete="off"></label>
+      <div class="rv-err" id="move-id-err">${problem ? esc(problem) : ''}</div>
+      <label class="rv-lab">Name<input class="inp" id="move-name" value="${esc(moving.name || '')}" data-key="move-name"></label>
+      <div class="rv-actions">
+        <button class="btn small primary" data-act="move-new-confirm">Create station</button>
+        <button class="btn small ghost" data-act="move-cancel">Cancel</button>
+      </div>
+    </div>`;
+  }
+  return `
+    <div class="move-row edit-only">
+      <div class="micro">Move ${esc(upstream(pid))} to…</div>
+      <div class="rv-actions">
+        <button class="btn small" data-act="move-existing" data-pid="${esc(pid)}">An existing station…</button>
+        <button class="btn small" data-act="move-new" data-pid="${esc(pid)}">A new station…</button>
+        <button class="btn small ghost" data-act="move-cancel">Cancel</button>
+      </div>
+    </div>`;
 }
 
 /** Add a snapshot stop to a station as a new platform. */
@@ -492,16 +579,35 @@ function wireStation(st, sid) {
   // and it goes. The other keeps its heading, signage and note.
   body.querySelectorAll('[data-act-change="merge-into"]').forEach(el => {
     el.onchange = () => {
-      const from = el.dataset.pid, into = el.value;
+      const from = el.dataset.pid;
+      const [to, into] = el.value.split('|');
       if (!into) return;
-      commit(`${upstream(from)} is at ${upstream(into)}`, s => {
-        const src = plat(s, from), dst = plat(s, into);
-        dst.stops = [...(dst.stops || []), ...stopsOf(src)];
-        s.platforms = s.platforms.filter(x => x.id !== from);
-      });
-      select(sid, into);
+      if (to !== sid && platformsOf(st).length === 1) {
+        el.value = '';
+        hint(`${upstream(from)} is ${st.name}'s only platform: merge the stations instead`, 4200);
+        return;
+      }
+      edit(`${upstream(from)} merged into platform ${upstream(into)}`, c => foldPlatformIn(c, sid, from, to, into));
+      select(to, into);
     };
   });
+
+  // The merge form and the move row keep what is typed without re-rendering on
+  // every key, which would drop the focus.
+  body.querySelectorAll('input[name="merge-keep"]').forEach(r => {
+    r.onchange = () => { merging.keep = r.value; merging.name = stationById(r.value).name; renderInspector(); };
+  });
+  const mname = body.querySelector('#merge-name');
+  if (mname) mname.oninput = () => { merging.name = mname.value; };
+  const mid = body.querySelector('#move-id');
+  if (mid) mid.oninput = () => {
+    moving.id = mid.value;
+    const problem = stationIdProblem(mid.value.trim());
+    mid.classList.toggle('bad', !!problem);
+    body.querySelector('#move-id-err').textContent = problem || '';
+  };
+  const mnm = body.querySelector('#move-name');
+  if (mnm) mnm.oninput = () => { moving.name = mnm.value; };
 
   const q = body.querySelector('#add-q');
   if (q) {
@@ -576,6 +682,62 @@ function wireStation(st, sid) {
           s.platforms = s.platforms.filter(p => p.id !== pid);
         });
         if (store.selPlatform && platformIdOf(store.selPlatform) === pid) select(sid, null);
+      }
+
+      if (act === 'merge-start') {
+        pickStationFor?.(other => {
+          if (!other || other === sid) return;
+          merging = { sid, other, keep: sid, name: st.name };
+          renderInspector();
+          document.getElementById('insp-body')?.scrollTo?.(0, 0);
+        }, { near: stationPos(sid), placeholder: `Merge ${st.name} with…` });
+      }
+      if (act === 'merge-cancel') { merging = null; renderInspector(); }
+      if (act === 'merge-confirm') {
+        const { keep } = merging;
+        const gone = keep === merging.sid ? merging.other : merging.sid;
+        const newName = (merging.name || '').trim();
+        if (!newName) { hint('A name is required'); return; }
+        const ok = edit(`Merge ${gone} into ${keep}`, c => mergeStationsIn(c, keep, gone, newName));
+        if (ok) { merging = null; select(keep, null); hint(`${gone} merged into ${keep}`); }
+      }
+
+      if (act === 'move-plat') {
+        moving = moving?.pid === pid ? null : { sid, pid, step: 'choose' };
+        renderInspector();
+      }
+      if (act === 'move-cancel') { moving = null; renderInspector(); }
+      const onlyOne = () => {
+        if (platformsOf(st).length > 1) return false;
+        hint(`That is ${st.name}'s only platform: merge the stations, or rename this one`, 4200);
+        return true;
+      };
+      if (act === 'move-existing') {
+        if (onlyOne()) return;
+        pickStationFor?.(to => {
+          if (!to || to === sid) return;
+          const ok = edit(`Move ${upstream(pid)} to ${to}`, c => movePlatformIn(c, sid, pid, to));
+          if (ok) { moving = null; select(to, pid); hint(`${upstream(pid)} moved to ${stationById(to)?.name || to}`); }
+        }, { near: stopPos(pid), placeholder: `Move ${upstream(pid)} to…` });
+      }
+      if (act === 'move-new') {
+        if (onlyOne()) return;
+        const name = derivedStop(pid)?.name || '';
+        moving = { sid, pid, step: 'new', name, id: suggestStationId(name) };
+        renderInspector();
+        document.getElementById('move-id')?.focus();
+      }
+      if (act === 'move-new-confirm') {
+        const id = (moving.id || '').trim(), name = (moving.name || '').trim();
+        const problem = stationIdProblem(id);
+        if (problem) { hint(problem); return; }
+        if (!name) { hint('A name is required'); return; }
+        const from = moving.pid;
+        const ok = edit(`New station ${id} from ${upstream(from)}`, c => {
+          c.stations.stations[id] = { name, platforms: [] };
+          movePlatformIn(c, sid, from, id);
+        });
+        if (ok) { moving = null; select(id, from); hint(`${name} created`); }
       }
 
       if (act === 'untransfer') {

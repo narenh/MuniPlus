@@ -85,7 +85,7 @@ async function loadShapes() {
       onLineDetails: () => { store.lineInspector = true; select(null, null); },
     });
     initInspector({
-      onNeedStationPicker: cb => openPalette('station', cb),
+      onNeedStationPicker: (cb, opts) => openPalette('station', cb, opts),
       onNeedLinePicker: cb => openPalette('line', cb),
     });
     wirePalette();

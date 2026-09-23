@@ -366,6 +366,81 @@ export function deleteStationIn(c, sid) {
   c.stations.transfers = (c.stations.transfers || []).filter(t => !t.between.includes(sid));
 }
 
+// ------------------------------------------------------ merging and splitting
+// Edits that move platforms between stations. Each runs inside an edit()
+// mutator, and edit() clears `verified` on every station whose stops change,
+// so none of them has to.
+
+/**
+ * Fold station `gone` into station `keep`. Its platforms follow; its id, and any
+ * ids it had before, become former ids of `keep`, so the API redirects them and
+ * the app's saved favourites follow. Transfers are repointed at `keep`: the one
+ * between the two goes, and a pair both had is kept once, the first listing's
+ * mode winning. Subways list `keep` where they listed either, once.
+ */
+export function mergeStationsIn(c, keep, gone, name) {
+  const S = c.stations.stations, K = S[keep], G = S[gone];
+  K.platforms.push(...G.platforms);
+  K.formerIds = [...new Set([...(K.formerIds || []), gone, ...(G.formerIds || [])])];
+  const agencies = [...new Set([...(K.transferAgencies || []), ...(G.transferAgencies || [])])];
+  if (agencies.length) K.transferAgencies = agencies;
+  if (K.hub || G.hub) K.hub = true;
+  const notes = [K.note, G.note].filter(Boolean);
+  if (notes.length) K.note = notes.join(' · ');
+  if (name) K.name = name;
+  delete S[gone];
+
+  const seen = new Set();
+  c.stations.transfers = (c.stations.transfers || []).flatMap(t => {
+    const between = t.between.map(x => (x === gone ? keep : x)).sort();
+    const key = between.join('|');
+    if (between[0] === between[1] || seen.has(key)) return [];
+    seen.add(key);
+    return [{ ...t, between }];
+  });
+  for (const sub of Object.values(c.stations.subways || {})) {
+    sub.stations = [...new Set(sub.stations.map(x => (x === gone ? keep : x)))];
+  }
+}
+
+/** Move platform `pid` from station `from` to station `to`, at the end of its list. */
+export function movePlatformIn(c, from, pid, to) {
+  const S = c.stations.stations;
+  const i = S[from].platforms.findIndex(p => p.id === pid);
+  const [p] = S[from].platforms.splice(i, 1);
+  S[to].platforms.push(p);
+}
+
+/**
+ * Platform `pid` of station `from` is the same place to stand as platform `into`
+ * of station `to` (which may be the same station): its stops join `into`'s, and
+ * `into` keeps its own heading, signage and note.
+ */
+export function foldPlatformIn(c, from, pid, to, into) {
+  const S = c.stations.stations;
+  const i = S[from].platforms.findIndex(p => p.id === pid);
+  const [src] = S[from].platforms.splice(i, 1);
+  const dst = S[to].platforms.find(p => p.id === into);
+  dst.stops = [...(dst.stops || []), ...stopsOf(src)];
+}
+
+/** Stations whose position is within `metres` of `at`, nearest first. */
+export function stationsNear(at, metres, except = null) {
+  if (!at) return [];
+  return stationIds()
+    .filter(id => id !== except)
+    .map(id => ({ id, m: stationPos(id) ? metresBetween(at, stationPos(id)) : Infinity }))
+    .filter(x => x.m <= metres)
+    .sort((a, b) => a.m - b.m);
+}
+
+/** A starting point for a new station's id, from its name: "Castro & 17th" is
+ *  castro17th. The person can change it; stationIdProblem() says if it is taken. */
+export function suggestStationId(name) {
+  const words = String(name || '').split(/[^A-Za-z0-9]+/).filter(Boolean);
+  return words.map((w, i) => (i ? w[0].toUpperCase() + w.slice(1) : w[0].toLowerCase() + w.slice(1))).join('');
+}
+
 const STATION_ID = /^[A-Za-z0-9]+$/;
 
 /**
