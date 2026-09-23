@@ -1,5 +1,7 @@
 """Thinning shapes for drawing."""
 
+import pytest
+
 from app.data.shapes import simplify
 from app.ingest.propose import M_PER_DEG_LAT, M_PER_DEG_LON
 
@@ -103,3 +105,39 @@ def test_patch_warnings(curation, snapshots):
     })
     warnings = [(w.code, w.line) for w in validate(curation, snapshots).warnings if w.code.startswith("shape-")]
     assert warnings == [("shape-patch-unknown-line", "SF:Q"), ("shape-patch-unmatched", "SF:F")]
+
+
+# MARK: - Terminal tails
+
+from app.data.shapes import clip_to_stops
+
+
+def flat(points):
+    """Coordinates in one list, which pytest.approx can compare."""
+    return [v for p in points for v in p]
+
+
+def test_a_shape_is_cut_at_its_first_and_last_stops():
+    # A run east with 100 m of turnaround track past each end.
+    shape = [at(-100, 0), at(0, 0), at(200, 0), at(400, 0), at(500, 0)]
+    stops = [at(0, 5), at(200, 5), at(400, 5)]
+    # Cut points are rounded to six places, like the feed's.
+    assert flat(clip_to_stops(shape, stops)) == pytest.approx(flat([at(0, 0), at(200, 0), at(400, 0)]), abs=1e-6)
+
+
+def test_stops_are_placed_in_order_on_a_route_that_passes_a_corner_twice():
+    # Out east along y=0, up, and back west along y=40, ending 20 m from where it
+    # started. Nearest-point placement would put the last stop on the outbound
+    # pass and cut the whole return leg.
+    shape = [at(0, 0), at(300, 0), at(300, 40), at(10, 40)]
+    stops = [at(0, 5), at(300, 20), at(20, 35)]
+    out = clip_to_stops(shape, stops)
+    assert out[0] == at(0, 0) and out[-1] == pytest.approx(at(20, 40), abs=1e-6)
+    assert at(300, 40) in out
+
+
+def test_a_stop_far_from_the_shape_is_skipped_not_cut_to():
+    shape = [at(0, 0), at(200, 0), at(400, 0)]
+    out = clip_to_stops(shape, [at(100, 5), at(300, 5), at(900, 900)])
+    assert flat(out) == pytest.approx(flat([at(100, 0), at(200, 0), at(300, 0)]), abs=1e-6)
+    assert clip_to_stops(shape, [at(900, 900)]) == shape

@@ -131,7 +131,7 @@ Response models: `app/models/api.py`. camelCase. Realtime times are epoch second
 | `GET /api/stations/{id}` | detail; a former id → `308` to the current one. **No ETag**: its `alerts` change without the version changing |
 | `GET /api/lines` | includes `mode`, `hidden`, `replaces`; ETag = `version`. Hidden lines are included with the flag set |
 | `GET /api/lines/{id}` | + `directions`, each naming its `shape` (or null) |
-| `GET /api/shapes` | every shape a direction names, `[lon, lat]`, simplified to 0.5 m. ETag = hash of the shapes, so it survives curation edits and changes only with a snapshot refresh. Not in `EditorState` |
+| `GET /api/shapes` | every shape a direction names, `[lon, lat]`, patched (curation), cut at the direction's first and last stops (511's shapes run on to where vehicles turn: 600 m past Embarcadero for J K L M), simplified to 0.5 m. ETag = hash of the shapes, so it survives curation edits and changes only with a snapshot refresh. Not in `EditorState` |
 | `GET /api/arrivals?platforms=a,b&limit=6` | 1–50 platforms; malformed id → 400; unknown id → empty list |
 | `GET /api/vehicles?line=a,b` | `line` optional; in-service vehicles only |
 | `GET /api/alerts?line=&station=&platforms=` | active now |
