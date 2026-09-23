@@ -39,7 +39,7 @@ from ..models.api import (
 from ..models.curation import Curation, Station
 from ..models.editor import Derived, DerivedPlatform, DerivedStation
 from ..models.snapshot import Pattern, Point, Snapshot, SnapshotLine, SnapshotStop
-from .shapes import patch_shapes, simplify
+from .shapes import clip_to_stops, patch_shapes, simplify
 
 # MARK: - Line names
 
@@ -300,6 +300,7 @@ class Network:
         # Line diagrams.
         self._headsigns: dict[tuple[str, int], str] = {}
         drawn: dict[str, list[str]] = {}
+        drawn_stops: dict[str, list[str]] = {}
         self._line_details: dict[str, LineDetail] = {}
         for line in ordered:
             directions = []
@@ -316,6 +317,9 @@ class Network:
                 shape = pattern.shape if pattern.shape in shapes else None
                 if shape:
                     drawn.setdefault(line.id, []).append(shape)
+                    # One direction's stops per shape; a shape two drawn directions
+                    # share (none in SF) is cut to the first one's.
+                    drawn_stops.setdefault(shape, pattern.stops)
                 directions.append(
                     Direction(
                         direction=direction, headsign=pattern.headsign, stations=along, platforms=claimed, shape=shape
@@ -329,6 +333,10 @@ class Network:
         # Curated patches first (curation/shapes.json): what the map draws is 511's
         # path wherever a person has not said otherwise.
         patched, _ = patch_shapes(curation.shapes, drawn, shapes)
+        # Then cut at the terminals: a stop missing from the snapshot is skipped.
+        for sid, stop_ids in drawn_stops.items():
+            at = [(stops[p].lon, stops[p].lat) for p in stop_ids if p in stops]
+            patched[sid] = clip_to_stops(patched[sid], at)
         self._shape_points = dict(sorted(patched.items()))
         self._shapes: tuple[ShapesResponse, str] | None = None
         self._derived = Derived(

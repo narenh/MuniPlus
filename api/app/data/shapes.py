@@ -120,3 +120,76 @@ def patch_shapes(
             if not fitted:
                 unmatched.append((patch_id, line))
     return out, unmatched
+
+
+# MARK: - Terminal tails
+
+STOP_M = 50.0
+"""How far a stop may be from its line's shape and still be placed on it. Stops
+sit at the kerb, and a subway platform can be tens of metres from the track's
+centre line in the feed."""
+
+
+def _segments(points: list[tuple[float, float]], at: tuple[float, float]) -> list[tuple[float, float]]:
+    """Each segment's (t, distance) from ``at``, in metres."""
+    px, py = at[0] * M_PER_DEG_LON, at[1] * M_PER_DEG_LAT
+    out = []
+    for i in range(len(points) - 1):
+        ax, ay = points[i][0] * M_PER_DEG_LON, points[i][1] * M_PER_DEG_LAT
+        bx, by = points[i + 1][0] * M_PER_DEG_LON, points[i + 1][1] * M_PER_DEG_LAT
+        dx, dy = bx - ax, by - ay
+        span = dx * dx + dy * dy
+        t = 0.0 if span == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / span))
+        out.append((t, math.hypot(px - ax - t * dx, py - ay - t * dy)))
+    return out
+
+
+def stop_positions(points: list[tuple[float, float]], stops: list[tuple[float, float]]) -> list[tuple[int, float] | None]:
+    """Where each stop falls along the shape, in order: (segment, t), or None for
+    a stop too far from it.
+
+    Each stop is looked for only from where the one before it was found, and at
+    the first pass that comes within STOP_M, so a route that passes the same
+    corner twice places each stop on the right pass. The nearest point overall
+    would not: the 36's last stop is also nearest a point six kilometres earlier.
+    """
+    out: list[tuple[int, float] | None] = []
+    at = (0, 0.0)
+    for stop in stops:
+        segs = _segments(points, stop)
+        found = None
+        for i in range(at[0], len(segs)):
+            t, d = segs[i]
+            if i == at[0] and t < at[1]:
+                t = at[1]  # not behind the stop before
+            if d <= STOP_M:
+                # This pass: follow it to its closest point.
+                while i + 1 < len(segs) and segs[i + 1][1] < d:
+                    i += 1
+                    t, d = segs[i]
+                found = (i, t)
+                break
+        out.append(found)
+        if found:
+            at = found
+    return out
+
+
+def clip_to_stops(points: list[tuple[float, float]], stops: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """The shape from its first stop to its last.
+
+    A GTFS shape is where the vehicle drives, which can run on past the last
+    stop to where it turns: the J, K, L and M go 600 m beyond Embarcadero to
+    their turnaround. A line map ends a line where riders' trips end.
+    """
+    placed = [p for p in stop_positions(points, stops) if p]
+    if len(placed) < 2 or placed[0] >= placed[-1]:
+        return points
+
+    def at(seg: int, t: float) -> tuple[float, float]:
+        (ax, ay), (bx, by) = points[seg], points[seg + 1]
+        return (round(ax + (bx - ax) * t, 6), round(ay + (by - ay) * t, 6))
+
+    (s0, t0), (s1, t1) = placed[0], placed[-1]
+    out = [at(s0, t0), *points[s0 + 1 : s1 + 1], at(s1, t1)]
+    return [p for i, p in enumerate(out) if i == 0 or p != out[i - 1]]
