@@ -39,7 +39,7 @@ from ..models.api import (
 from ..models.curation import Curation, Station
 from ..models.editor import Derived, DerivedPlatform, DerivedStation
 from ..models.snapshot import Pattern, Point, Snapshot, SnapshotLine, SnapshotStop
-from .shapes import simplify
+from .shapes import patch_shapes, simplify
 
 # MARK: - Line names
 
@@ -299,7 +299,7 @@ class Network:
 
         # Line diagrams.
         self._headsigns: dict[tuple[str, int], str] = {}
-        drawn: dict[str, list[Point]] = {}
+        drawn: dict[str, list[str]] = {}
         self._line_details: dict[str, LineDetail] = {}
         for line in ordered:
             directions = []
@@ -315,7 +315,7 @@ class Network:
                 # sent as a key the shapes endpoint cannot answer.
                 shape = pattern.shape if pattern.shape in shapes else None
                 if shape:
-                    drawn[shape] = shapes[shape]
+                    drawn.setdefault(line.id, []).append(shape)
                 directions.append(
                     Direction(
                         direction=direction, headsign=pattern.headsign, stations=along, platforms=claimed, shape=shape
@@ -326,7 +326,10 @@ class Network:
         self._lines = LinesResponse(version=version, lines=ordered)
         # Simplified on first request, not here: the editor builds a network for every
         # validate, and none of those is ever asked for its shapes.
-        self._shape_points = dict(sorted(drawn.items()))
+        # Curated patches first (curation/shapes.json): what the map draws is 511's
+        # path wherever a person has not said otherwise.
+        patched, _ = patch_shapes(curation.shapes, drawn, shapes)
+        self._shape_points = dict(sorted(patched.items()))
         self._shapes: tuple[ShapesResponse, str] | None = None
         self._derived = Derived(
             stations=derived_stations,

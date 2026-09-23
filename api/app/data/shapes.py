@@ -1,4 +1,4 @@
-"""Thinning a GTFS shape for drawing.
+"""Thinning a GTFS shape for drawing, and splicing in curated corrections.
 
 A feed's shape carries a point every few metres along straight track, where two
 would draw the same line. Douglas-Peucker drops every point within ``TOLERANCE_M``
@@ -7,8 +7,10 @@ and a curve keeps as many points as its bend needs.
 """
 
 import math
+from collections.abc import Mapping
 
 from ..ingest.propose import M_PER_DEG_LAT, M_PER_DEG_LON
+from ..models.curation import ShapesFile
 
 TOLERANCE_M = 0.5
 """Four pixels at the map's z20, where the line itself is ten wide. On a 2024 SFMTA
@@ -49,3 +51,72 @@ def simplify(points: list[tuple[float, float]], tolerance_m: float = TOLERANCE_M
             stack.append((first, worst_i))
             stack.append((worst_i, last))
     return [p for p, k in zip(points, keep) if k]
+
+
+# MARK: - Curated patches
+
+ANCHOR_M = 25.0
+"""How far a patch's end may be from 511's shape and still be on it. Wide enough
+for an end placed by eye on the map, narrower than the half-block that would let
+it catch a parallel street."""
+
+
+def _position(points: list[tuple[float, float]], at: tuple[float, float]) -> tuple[int, float, float]:
+    """Where ``at`` falls along ``points``: the segment it is nearest, how far
+    along that segment (0-1), and how far off the line, in metres."""
+    px, py = at[0] * M_PER_DEG_LON, at[1] * M_PER_DEG_LAT
+    best = (0, 0.0, math.inf)
+    for i in range(len(points) - 1):
+        ax, ay = points[i][0] * M_PER_DEG_LON, points[i][1] * M_PER_DEG_LAT
+        bx, by = points[i + 1][0] * M_PER_DEG_LON, points[i + 1][1] * M_PER_DEG_LAT
+        dx, dy = bx - ax, by - ay
+        span = dx * dx + dy * dy
+        t = 0.0 if span == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / span))
+        d = math.hypot(px - ax - t * dx, py - ay - t * dy)
+        if d < best[2]:
+            best = (i, t, d)
+    return best
+
+
+def splice(points: list[tuple[float, float]], path: list[tuple[float, float]]) -> list[tuple[float, float]] | None:
+    """``points`` with the stretch between ``path``'s two ends replaced by
+    ``path``, or None when either end is not on the shape.
+
+    Works in either direction: a shape that meets the end before the start is
+    running the other way along the same track, and takes the path reversed.
+    Where a shape passes an end twice (a terminal loop) the nearer pass is used.
+    """
+    if len(points) < 2:
+        return None
+    start, end = _position(points, path[0]), _position(points, path[-1])
+    if start[2] > ANCHOR_M or end[2] > ANCHOR_M:
+        return None
+    if start[:2] > end[:2]:
+        start, end, path = end, start, path[::-1]
+    # Up to the vertex before the start, the path, then from the vertex after the end.
+    joined = [*points[: start[0] + 1], *path, *points[end[0] + 1 :]]
+    # An end placed exactly on a vertex would otherwise leave that point in twice.
+    return [p for i, p in enumerate(joined) if i == 0 or p != joined[i - 1]]
+
+
+def patch_shapes(
+    patches: ShapesFile, drawn: Mapping[str, list[str]], shapes: Mapping[str, list[tuple[float, float]]]
+) -> tuple[dict[str, list[tuple[float, float]]], list[tuple[str, str]]]:
+    """The shapes each line draws (``drawn``: line -> shape ids), with every
+    curated patch spliced in. Also every (patch, line) whose patch fits none of
+    that line's shapes, which the validator reports.
+
+    Only the shapes named in ``drawn`` are patched and returned: those are the
+    only ones served."""
+    out = {sid: shapes[sid] for sids in drawn.values() for sid in sids if sid in shapes}
+    unmatched = []
+    for patch_id, patch in sorted(patches.root.items()):
+        for line in patch.lines:
+            fitted = False
+            for sid in drawn.get(line, []):
+                if sid in out and (spliced := splice(out[sid], list(patch.path))) is not None:
+                    out[sid] = spliced
+                    fitted = True
+            if not fitted:
+                unmatched.append((patch_id, line))
+    return out, unmatched

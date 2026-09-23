@@ -47,6 +47,7 @@ read-only as a reference until the app moves over.
 curation/stations.json   { subways: {id: {name, stations[]}}, stations: {id: Station} }
 curation/lines.json      { lineId: LineOverride }     overrides only
 curation/ignored.json    { platformId: {note} }       511 stops deliberately left out
+curation/shapes.json     { patchId: {lines[], path[[lon, lat]...], note?} }   corrections to 511's shapes
 snapshot/SF/meta.json    service period, fetch time, sha256 of the GTFS zip
 snapshot/SF/stops.json   { platformId: {name, lat, lon} }
 snapshot/SF/lines.json   { lineId: {shortName, longName, mode, routeType, color, textColor} }
@@ -98,6 +99,18 @@ Warnings, which never block:
 * `unassigned-stop` (in the snapshot, in no station, not ignored: this is the review queue)
 * `unknown-line-override` (`lines.json` names a line 511 does not have, e.g. `S`)
 * `unknown-line` (`replaces` names a line 511 does not have)
+* `shape-patch-unknown-line` (a shape patch names a line 511 does not have)
+* `shape-patch-unmatched` (511's shape for a patched line no longer passes within 25 m of both ends of the patch; 511's path is drawn instead)
+
+### Shape patches
+
+Where 511's shape is wrong (the T's dogleg at Market & 4th), `curation/shapes.json`
+holds the real path for that stretch. A patch's first and last points sit on 511's
+shape. Every drawn shape of the listed lines that passes within 25 m of both ends
+has the stretch between them replaced, with the path reversed for the opposite
+direction. Patches are keyed to the geometry, not to shape ids, so they keep
+applying after a refresh renumbers the shapes. They are applied before `/api/shapes`
+simplifies and hashes the shapes, so a patch changes that response's ETag.
 
 Ids, headings and non-blank names are already enforced by the models; duplicate
 JSON keys by `files.loads`.

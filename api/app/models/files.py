@@ -18,12 +18,13 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-from .curation import Curation, IgnoredFile, LinesFile, StationsFile
+from .curation import Curation, IgnoredFile, LinesFile, ShapesFile, StationsFile
 from .snapshot import Snapshot, SnapshotLines, SnapshotMeta, SnapshotPatterns, SnapshotShapes, SnapshotStops
 
 STATIONS = "curation/stations.json"
 LINES = "curation/lines.json"
 IGNORED = "curation/ignored.json"
+SHAPES = "curation/shapes.json"
 SNAPSHOT_DIR = "snapshot"
 
 
@@ -122,12 +123,13 @@ def _read(root: Path, rel: str, model: type[BaseModel], *, missing_ok: bool = Fa
 
 
 def read_curation(root: Path) -> Curation:
-    """``lines.json`` and ``ignored.json`` may be absent and read as empty;
-    ``stations.json`` may not."""
+    """``lines.json``, ``ignored.json`` and ``shapes.json`` may be absent and read
+    as empty; ``stations.json`` may not."""
     return Curation(
         stations=_read(root, STATIONS, StationsFile),
         lines=_read(root, LINES, LinesFile, missing_ok=True),
         ignored=_read(root, IGNORED, IgnoredFile, missing_ok=True),
+        shapes=_read(root, SHAPES, ShapesFile, missing_ok=True),
     )
 
 
@@ -135,7 +137,12 @@ def write_curation(root: Path, curation: Curation) -> list[str]:
     """Write every curation file whose content changed. Returns the paths written,
     relative to ``root``, which is exactly what a commit should stage."""
     changed = []
-    for rel, model in ((STATIONS, curation.stations), (LINES, curation.lines), (IGNORED, curation.ignored)):
+    parts = ((STATIONS, curation.stations), (LINES, curation.lines), (IGNORED, curation.ignored), (SHAPES, curation.shapes))
+    for rel, model in parts:
+        if rel == SHAPES and not model.root and not (root / rel).exists():
+            # Newer than the other files: a save with no patches must not add an
+            # empty one to every checkout that predates it.
+            continue
         if write_if_changed(root / rel, dumps(model)):
             changed.append(rel)
     return changed

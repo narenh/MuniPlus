@@ -13,7 +13,7 @@ from datetime import date
 
 from typing import Annotated
 
-from pydantic import RootModel, StringConstraints, model_serializer
+from pydantic import Field, RootModel, StringConstraints, model_serializer
 
 from .base import FileModel
 from .ids import Color, Heading, LineId, Mode, Operator, PlatformId, StationId, SubwayId, TransferMode
@@ -136,9 +136,43 @@ class IgnoredFile(RootModel[dict[PlatformId, IgnoredStop]]):
         return dict(sorted(handler(self).items()))
 
 
+PatchId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9-]+$")]
+
+CuratedPoint = tuple[float, float]
+"""``(lon, lat)``, as in a snapshot's shapes."""
+
+
+class ShapePatch(FileModel):
+    """A stretch of track 511's shapes draw wrongly, and the path it really takes.
+
+    ``path`` runs from one point on 511's shape to another. Every shape of the
+    listed lines that passes both ends has what lies between them replaced by
+    ``path``, reversed for a direction that runs the other way. Anchored to the
+    geometry rather than to shape ids, which 511 may renumber in a new service
+    period: a refresh leaves the patch applying wherever the track still runs.
+    """
+
+    lines: list[LineId] = Field(min_length=1)
+    path: list[CuratedPoint] = Field(min_length=2)
+    note: str | None = None
+    """What is wrong with 511's version, and how the curated path was checked."""
+
+
+class ShapesFile(RootModel[dict[PatchId, ShapePatch]]):
+    """``curation/shapes.json``: patches to 511's line shapes, keyed by a name for
+    the stretch (``t-market-4th``). Applied in key order."""
+
+    root: dict[PatchId, ShapePatch] = {}
+
+    @model_serializer(mode="wrap")
+    def _sorted(self, handler):
+        return dict(sorted(handler(self).items()))
+
+
 class Curation(FileModel):
-    """All three curation files, as one value. What the editor loads and saves."""
+    """All the curation files, as one value. What the editor loads and saves."""
 
     stations: StationsFile
     lines: LinesFile = LinesFile()
     ignored: IgnoredFile = IgnoredFile()
+    shapes: ShapesFile = ShapesFile()
