@@ -1,4 +1,4 @@
-"""``GET /api/v1/v1/alerts?line=&station=&platforms=``
+"""``GET /api/v1/alerts?line=&station=&platforms=``
 
 Each parameter is optional and takes a comma-separated list. With none, every
 alert active now; otherwise those touching any line, station or platform named.

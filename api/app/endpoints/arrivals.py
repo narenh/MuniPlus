@@ -1,4 +1,4 @@
-"""``GET /api/v1/v1/arrivals?platforms=a,b&limit=6``"""
+"""``GET /api/v1/arrivals?platforms=a,b&limit=6``"""
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse

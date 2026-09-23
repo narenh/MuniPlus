@@ -1,4 +1,4 @@
-"""``GET /api/v1/v1/lines``, ``GET /api/v1/lines/{id}`` and ``GET /api/v1/shapes``.
+"""``GET /api/v1/lines``, ``GET /api/v1/lines/{id}`` and ``GET /api/v1/shapes``.
 
 Hidden lines are included, with ``hidden`` set: whether to show one is the
 client's call, and the editor needs them all.
