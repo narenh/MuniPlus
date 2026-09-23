@@ -2,6 +2,10 @@
 // platforms, transfers and verification) or, with no station selected, the
 // focused line's overrides. Coordinates, stop names and the lines serving a
 // platform are shown but never editable: they come from 511, not from a person.
+//
+// On the public /map/ it is a plain read-only view: no form fields, and none of
+// the curators' own fields (notes, verification), which describe the editing
+// rather than the station.
 
 import {
   store, edit, select, stationById, stationIds, linesOf, lineById, allLines, esc,
@@ -50,7 +54,8 @@ export function closeAdd() {
 export function renderInspector() {
   const el = document.getElementById('inspector');
   const st = stationById(store.selStation);
-  const ln = !st && store.lineInspector ? lineById(store.activeLine) : null;
+  // The line form is overrides, all editorial, so /map/ never opens it.
+  const ln = !st && store.lineInspector && !store.publicMap ? lineById(store.activeLine) : null;
   if (addingFor && addingFor !== store.selStation) closeAdd();
 
   if (!st && !ln) {
@@ -98,8 +103,9 @@ function renderStation(st, sid) {
 
   document.getElementById('insp-name').textContent = st.name;
   const n = platformsOf(st).length;
-  document.getElementById('insp-id').innerHTML =
-    `${esc(sid)} · ${n} platform${n === 1 ? '' : 's'} · ${st.verified
+  const plats = `${n} platform${n === 1 ? '' : 's'}`;
+  document.getElementById('insp-id').innerHTML = store.publicMap ? plats
+    : `${esc(sid)} · ${plats} · ${st.verified
       ? `<span class="vpill">verified ${esc(st.verified)}</span>`
       : '<span class="vpill off">unverified</span>'}`;
 
@@ -140,6 +146,16 @@ function sectionStation(st, sid) {
   const coord = d && d.lat != null
     ? `<code>${d.lat}, ${d.lon}</code>`
     : '<span style="color:var(--warn)">no live platforms, so no coordinate</span>';
+  if (store.publicMap) {
+    // The name is the header; the id, notes and verification are the curators'.
+    return `
+  <div class="sect">
+    <div class="field">
+      <label class="micro">Coordinate ${sub('centre of its platforms')}</label>
+      <div class="derived mono">${coord}</div>
+    </div>
+  </div>`;
+  }
   const former = (st.formerIds || []).length
     ? ` · formerly ${st.formerIds.map(f => `<code>${esc(f)}</code>`).join(' ')}` : '';
   return `
@@ -233,6 +249,7 @@ function platformCards(st) {
     const at = platformPos(pid);
 
     const served = (d?.lines || []).map(lineById).filter(Boolean);
+    const pub = store.publicMap;
     const lines = served.slice(0, MAX_PLATFORM_LINES).map(ln =>
       `<button class="mini-bullet" style="background:${esc(ln.color || '#7c8598')}" disabled
         title="${esc(ln.name)}">${esc(ln.shortName || upstream(ln.id))}</button>`).join('')
@@ -261,6 +278,11 @@ function platformCards(st) {
         </div>
       </div>
 
+      ${pub ? `
+      <div class="field">
+        <label class="micro">Heading</label>
+        <div class="derived">${esc(p.heading)}${p.name ? ` · signed <b>${esc(p.name)}</b>` : ''}</div>
+      </div>` : `
       <div class="field">
         <label class="micro">Heading</label>
         <select class="inp" data-pf="heading" data-pid="${esc(pid)}" data-key="h-${esc(pid)}">
@@ -274,7 +296,7 @@ function platformCards(st) {
       <div class="field">
         <label class="micro">Note</label>
         <input class="inp" data-pf="note" data-pid="${esc(pid)}" data-key="o-${esc(pid)}" value="${esc(p.note ?? '')}" placeholder="none">
-      </div>
+      </div>`}
       <div class="field">
         <label class="micro">Lines ${sub('from 511')}</label>
         <div class="insp-lines">${lines}</div>
@@ -333,6 +355,8 @@ function sectionTransfers(st, sid) {
     const on = (st.transferAgencies || []).includes(ag);
     return `<button class="tchip ${on ? 'agency-on' : 'add'}" data-act="agency" data-ag="${ag}" title="${label} (${ag})">${label}</button>`;
   }).join('');
+  // Read-only hides the agencies not set, so with none set there is nothing to show.
+  const anyAgency = AGENCIES.some(([ag]) => (st.transferAgencies || []).includes(ag));
 
   return `
   <div class="sect">
@@ -346,10 +370,10 @@ function sectionTransfers(st, sid) {
         Link a station
       </button>
     </div>
-    <div class="field" style="margin-top:12px">
-      <label class="micro">Other agencies ${sub('no platforms in the data yet')}</label>
+    ${store.readOnly && !anyAgency ? '' : `<div class="field" style="margin-top:12px">
+      <label class="micro">Other agencies ${sub(store.publicMap ? 'transfer here' : 'no platforms in the data yet')}</label>
       <div class="chips agencies">${agencies}</div>
-    </div>
+    </div>`}
   </div>`;
 }
 
@@ -399,7 +423,7 @@ function wireStation(st, sid) {
 
   // ---------------------------------------------------------------- station
   const name = body.querySelector('#f-name');
-  name.onchange = () => {
+  if (name) name.onchange = () => {
     const v = name.value.trim();
     // A blank name fails the model, so the server could not even validate it.
     if (!v || v === st.name) { name.value = st.name; return; }
@@ -407,7 +431,7 @@ function wireStation(st, sid) {
   };
 
   const note = body.querySelector('#f-note');
-  note.onchange = () => {
+  if (note) note.onchange = () => {
     const v = note.value.trim();
     if (v === (st.note ?? '')) return;
     commit(`Note on ${st.name}`, s => { if (v) s.note = v; else delete s.note; });

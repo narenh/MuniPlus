@@ -11,6 +11,7 @@ import {
   resetNorth, onPick, hint, mapCentre, spotlight,
 } from './map.js';
 import { initStrip, renderStrip } from './strip.js';
+import { initVehicles } from './vehicles.js';
 import { initInspector, renderInspector, closeAdd, markVerified } from './inspector.js';
 import {
   toast, showModal, hideModal, isModalOpen, openPalette, wirePalette,
@@ -30,7 +31,8 @@ const nf = new Intl.NumberFormat('en-US');
 /**
  * The map tool buttons, top to bottom. A layer tool toggles `store.layers[key]`
  * (whose MapLibre layers are listed in map.js's LAYER_IDS); an action tool just
- * runs. The live vehicle layer is one more entry here.
+ * runs. The letter is its key. R for the live vehicles ("realtime"), because V
+ * already marks a station verified.
  */
 const LAYER_TOOLS = [
   { key: 'platforms', letter: 'P', title: 'Show platform poles',
@@ -39,6 +41,8 @@ const LAYER_TOOLS = [
     icon: '<path d="M3 5h12M3 9h12M3 13h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' },
   { key: 'transfers', letter: 'T', title: 'Show transfer links',
     icon: '<path d="M4 6h7a3 3 0 010 6H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1 2.6"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="6" cy="12" r="2" fill="currentColor"/>' },
+  { key: 'vehicles', letter: 'R', title: 'Show live vehicles',
+    icon: '<rect x="3.2" y="3" width="11.6" height="10" rx="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M3.6 8.6h10.8" stroke="currentColor" stroke-width="1.4"/><circle cx="6.2" cy="15" r="1.3" fill="currentColor"/><circle cx="11.8" cy="15" r="1.3" fill="currentColor"/>' },
   { action: resetNorth, letter: 'N', title: 'Reset bearing and pitch',
     icon: '<path d="M9 2.4l3.4 9.4L9 9.9l-3.4 1.9L9 2.4z" fill="currentColor"/><path d="M5.6 14.4h6.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>' },
 ];
@@ -52,6 +56,7 @@ const modeLabel = m => MODE_LABEL[m] || m.charAt(0).toUpperCase() + m.slice(1);
     $('boot-msg').textContent = 'Reading the network…';
     const state = await api.state();
     load(state);
+    if (store.publicMap) dressAsMap();
 
     $('boot-msg').textContent = 'Drawing the network…';
     await initMap('map');
@@ -59,6 +64,7 @@ const modeLabel = m => MODE_LABEL[m] || m.charAt(0).toUpperCase() + m.slice(1);
     buildRail();
     buildFilters();
     buildTools();
+    initVehicles();
     initStrip({
       onPick: () => renderAll(),
       onLineDetails: () => { store.lineInspector = true; select(null, null); },
@@ -104,6 +110,18 @@ const modeLabel = m => MODE_LABEL[m] || m.charAt(0).toUpperCase() + m.slice(1);
          Could not start — ${esc(err.message)}</span>`;
   }
 })();
+
+/**
+ * /map/ is the same page with the editing taken out. Read-only already hides
+ * every control that edits; this also hides everything that is only about
+ * curating (history, counts, validation, verification), and the "Read-only"
+ * chip, because here being read-only is the point rather than a warning.
+ */
+function dressAsMap() {
+  document.documentElement.classList.add('public-map');
+  document.title = 'Muni+ Map';
+  $('wordmark').textContent = 'Muni+ Map';
+}
 
 // ============================================================ render
 let raf = 0;
@@ -277,8 +295,8 @@ function buildFilters() {
   host.innerHTML = knownModes().map(m =>
     `<button class="fchip" data-mode="${esc(m)}" title="Show ${esc(modeLabel(m).toLowerCase())} stations and lines">
       ${esc(modeLabel(m))}<em></em></button>`).join('')
-    + `<span class="fsep"></span>
-       <button class="fchip" id="f-unverified" title="Only stations nobody has verified (U jumps to the nearest)">Unverified only</button>`;
+    + (store.publicMap ? '' : `<span class="fsep"></span>
+       <button class="fchip" id="f-unverified" title="Only stations nobody has verified (U jumps to the nearest)">Unverified only</button>`);
   host.querySelectorAll('[data-mode]').forEach(b => {
     b.onclick = e => {
       const m = b.dataset.mode;
@@ -287,7 +305,8 @@ function buildFilters() {
       setModeOn(m, !modeOn(m));
     };
   });
-  $('f-unverified').onclick = () => setUnverifiedOnly(!store.unverifiedOnly);
+  const unverified = $('f-unverified');
+  if (unverified) unverified.onclick = () => setUnverifiedOnly(!store.unverifiedOnly);
 }
 
 function renderFilters() {
@@ -299,7 +318,7 @@ function renderFilters() {
     b.classList.toggle('on', modeOn(b.dataset.mode));
     b.querySelector('em').textContent = nf.format(count.get(b.dataset.mode) || 0);
   });
-  $('f-unverified').classList.toggle('on', store.unverifiedOnly);
+  $('f-unverified')?.classList.toggle('on', store.unverifiedOnly);
 }
 
 function buildTools() {
@@ -385,9 +404,10 @@ function wireKeys() {
     if (k === 'p') toggleLayer('platforms');
     if (k === 'l') toggleLayer('labels');
     if (k === 't') toggleLayer('transfers');
+    if (k === 'r') toggleLayer('vehicles');
     if (k === 'n') resetNorth();
     if (k === 'v' && store.selStation && !store.readOnly) markVerified(store.selStation);
-    if (k === 'u') jumpToNextUnverified();
+    if (k === 'u' && !store.publicMap) jumpToNextUnverified();
     if (k === 'd' && store.activeLine) {
       const n = lineById(store.activeLine)?.directions?.length || 0;
       if (n > 1) { store.activeDir = (store.activeDir + 1) % n; renderAll(); }

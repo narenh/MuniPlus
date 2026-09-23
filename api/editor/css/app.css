@@ -822,6 +822,110 @@ body.read-only #branch-chip {
   color: #fcd34d;
 }
 
+/* ==========================================================================
+   Public map (/map/)
+   The same page with everything about curating taken away. The "Read-only"
+   chip goes with it: there, being read-only is the point, not a warning.
+   ========================================================================== */
+.public-map .editorial,
+.public-map .stop-side { display: none !important; }
+
+/* ==========================================================================
+   Live vehicles
+   ========================================================================== */
+.tool { position: relative; }
+/* the layer's own quiet status, beside its button: never a dialog */
+.tool-note {
+  position: absolute; right: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+  padding: 4px 9px; border-radius: 99px; white-space: nowrap; pointer-events: none;
+  background: rgba(10,12,18,.9); backdrop-filter: blur(16px);
+  border: 1px solid rgba(251,191,36,.3); color: #fcd34d;
+  font-size: 10.5px; font-weight: 560;
+}
+
+.veh-pop .maplibregl-popup-content {
+  padding: 11px 13px 10px; border-radius: 12px;
+  background: var(--panel-solid); color: var(--ink);
+  border: 1px solid var(--line); box-shadow: var(--shadow-lift);
+  font-family: var(--font); font-size: 12px;
+}
+.veh-pop.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.veh-pop.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.veh-pop.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip { border-top-color: var(--panel-solid); }
+.veh-pop.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.veh-pop.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.veh-pop.maplibregl-popup-anchor-top-right .maplibregl-popup-tip { border-bottom-color: var(--panel-solid); }
+.veh-pop.maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: var(--panel-solid); }
+.veh-pop.maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: var(--panel-solid); }
+.veh-pop .maplibregl-popup-close-button {
+  color: var(--ink-faint); font-size: 17px; width: 24px; height: 24px; right: 3px; top: 3px; border-radius: 6px;
+}
+.veh-pop .maplibregl-popup-close-button:hover { background: rgba(255,255,255,.08); color: var(--ink); }
+.vp-head { display: flex; align-items: center; gap: 9px; padding-right: 18px; }
+.vp-bullet {
+  min-width: 28px; height: 28px; padding: 0 5px; border-radius: 8px; flex: none;
+  display: grid; place-items: center; font-size: 12px; font-weight: 750;
+}
+.vp-title { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.vp-title b { font-size: 12.5px; font-weight: 640; }
+.vp-title span { font-size: 11.5px; color: var(--ink-dim); }
+.vp-row {
+  margin-top: 9px; padding: 7px 9px; border-radius: 8px; background: rgba(255,255,255,.04);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; line-height: 1.35;
+}
+.vp-row span { width: 100%; font-size: 9.5px; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.vp-row b { font-weight: 580; }
+.vp-row em { font-style: normal; color: var(--ink-dim); }
+.vp-row code, .vp-meta code { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); }
+.vp-meta { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; font-size: 11px; color: var(--ink-dim); }
+.vp-meta .vp-stale { color: var(--warn); }
+.vp-note { margin-top: 5px; font-size: 10.5px; color: var(--ink-faint); }
+
+/* ==========================================================================
+   Phone
+   The strip and the inspector become sheets over the bottom of the map, so a
+   panel never takes the whole screen; map.js's padding() matches this width.
+   ========================================================================== */
+@media (max-width: 640px) {
+  :root { --rail-w: 56px; }
+
+  #topbar { height: 48px; gap: 8px; padding: 0 10px; }
+  #topbar .stat-group, #topbar .divider, #branch-chip, .brand span, #btn-search .kbd { display: none; }
+
+  #rail { padding: 10px 0; gap: 6px; }
+  .bullet { width: 36px; height: 36px; border-radius: 11px; }
+  .bullet.on::after { left: -10px; }
+  .rail-group.compact .rail-items { grid-template-columns: 22px 22px; gap: 4px; }
+  .rail-group.compact .bullet { width: 22px; height: 22px; border-radius: 6px; font-size: 8.5px; }
+  .rail-group.compact .bullet.len3 { font-size: 7.5px; }
+  .rail-group.compact .bullet.len4 { font-size: 6.5px; }
+
+  #strip, #inspector {
+    position: absolute; z-index: 28;
+    left: var(--rail-w); right: 0; top: auto; bottom: 0;
+    width: auto; margin-left: 0;
+    border: none; border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -18px 40px -16px rgba(0,0,0,.8);
+    transition: transform .38s var(--ease-out), opacity .3s;
+  }
+  #strip { max-height: 44%; }
+  #inspector { max-height: 58%; z-index: 29; }
+  #strip.closed, #inspector.closed { margin-left: 0; transform: translateY(100%); }
+  .strip-head, .insp-head { padding: 12px 14px 10px; }
+  .strip-tools { margin-top: 9px; }
+
+  #filters { left: 10px; top: 10px; max-width: calc(100% - 64px); gap: 4px; }
+  .fchip { height: 26px; padding: 0 9px; font-size: 11px; }
+  #map-tools, body.inspector-open #map-tools { right: 10px; top: 10px; gap: 5px; }
+  .tool { width: 32px; height: 32px; }
+  .maplibregl-ctrl-bottom-right, body.no-inspector .maplibregl-ctrl-bottom-right { margin-right: 0; }
+  #hud-coords { display: none; }
+  .toast { max-width: 92vw; }
+}
+/* a tooltip that only hover can dismiss would stick after a tap */
+@media (hover: none) { #rail-tip { display: none; } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }

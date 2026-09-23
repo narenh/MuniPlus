@@ -29,4 +29,11 @@ export const api = {
   save: (curation, message, baseVersion) => post('api/save', { curation, message, baseVersion }),
   /** Recent sf-transit commits touching curation/. */
   history: () => fetch('api/history', { cache: 'no-store' }).then(j),
+  /** VehiclesResponse (app/models/api.py) for `lines`, or every line when null.
+   *  The one absolute path: vehicles are the public API's, not the editor's, and
+   *  /editor/ and /map/ share its origin. */
+  vehicles: (lines, signal) => {
+    const q = lines ? `?line=${lines.map(encodeURIComponent).join(',')}` : '';
+    return fetch(`/api/vehicles${q}`, { cache: 'no-store', signal }).then(j);
+  },
 };

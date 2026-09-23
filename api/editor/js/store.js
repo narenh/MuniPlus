@@ -21,6 +21,7 @@ export const store = {
   version: null,        // sf-transit commit the curation started from (baseVersion)
   readOnly: false,
   readOnlyReason: null,
+  publicMap: false,     // served at /map/: no editorial chrome at all
   curation: null,       // edited in place
   base: null,           // curation as last loaded or saved: the change-list baseline
   snapshots: {},
@@ -36,7 +37,7 @@ export const store = {
   selPlatform: null,    // full platform id, "SF:16992"
   modesOff: new Set(),  // modes the chips have switched off; empty = no filter
   unverifiedOnly: false,
-  layers: { platforms: true, labels: true, transfers: true },
+  layers: { platforms: true, labels: true, transfers: true, vehicles: false },
 
   // --- validate round trip
   checking: false,      // a validate call is pending or in flight
@@ -57,6 +58,10 @@ export function load(state) {
   store.version = state.version;
   store.readOnly = !!state.readOnly;
   store.readOnlyReason = state.readOnlyReason || null;
+  // The public map is read-only by purpose, where the editor is read-only by
+  // circumstance (no password, no checkout), so it is told apart by the reason
+  // app/editor/state.py gives, or by the path should that wording ever change.
+  store.publicMap = store.readOnlyReason === 'public map' || location.pathname.startsWith('/map');
   store.curation = state.curation;
   store.base = clone(state.curation);
   store.snapshots = state.snapshots || {};

@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Muni+ Editor</title>
+<script>
+  // The same page is the public map at /map/. Named before the first paint, so
+  // the tab never reads "Editor" there; main.js confirms it from the state.
+  if (location.pathname.startsWith('/map')) {
+    document.title = 'Muni+ Map';
+    document.documentElement.classList.add('public-map');
+  }
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Cpath d='M8 22c0-8 4-12 8-12s8 4 8 12' stroke='%2300529C' stroke-width='3.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='22' r='3' fill='%23FAA633'/%3E%3Ccircle cx='24' cy='22' r='3' fill='%23D60F45'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css">
 <link rel="stylesheet" href="css/app.css">
@@ -33,18 +41,18 @@
         <path d="M16 31c0-12 6-18 14-18s14 7 14 18" stroke="#FAA633" stroke-width="5.5" stroke-linecap="round" opacity=".9"/>
         <circle cx="6" cy="30" r="4.5" fill="#D60F45"/><circle cx="44" cy="31" r="4.5" fill="#008552"/>
       </svg>
-      <div><b>Muni+ Editor</b> <span>sf-transit</span></div>
+      <div><b id="wordmark">Muni+ Editor</b> <span class="editorial">sf-transit</span></div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider editorial"></div>
 
-    <button class="chip button" id="branch-chip" title="Commit history">
+    <button class="chip button editorial" id="branch-chip" title="Commit history">
       <span class="dot live"></span><span id="branch-name">…</span>
     </button>
 
-    <div class="divider"></div>
+    <div class="divider editorial"></div>
 
-    <div class="stat-group">
+    <div class="stat-group editorial">
       <div class="stat"><b id="n-stations">–</b><i>stations</i></div>
       <div class="stat"><b id="n-platforms">–</b><i>platforms</i></div>
       <div class="stat"><b id="n-lines">–</b><i>lines</i></div>
@@ -53,11 +61,11 @@
 
     <div class="grow"></div>
 
-    <button class="chip button" id="issues-chip" title="Validation issues" hidden>
+    <button class="chip button editorial" id="issues-chip" title="Validation issues" hidden>
       <span class="dot live" id="issues-dot"></span><span id="issues-text">Valid</span>
     </button>
 
-    <div class="divider"></div>
+    <div class="divider editorial"></div>
 
     <button class="btn ghost edit-only" id="btn-undo" title="Undo (⌘Z)" disabled>
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4L3 7l3 3M3 7h7a3 3 0 010 6H8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -99,7 +107,7 @@
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 2H2v4M10 2h4v4M10 14h4v-4M6 14H2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Fit
           </button>
-          <button class="btn" id="strip-details" title="Name, colour, mode, visibility and replacements">
+          <button class="btn editorial" id="strip-details" title="Name, colour, mode, visibility and replacements">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M3 8h10M3 11.5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             Line details
           </button>
