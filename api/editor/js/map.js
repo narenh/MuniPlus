@@ -274,17 +274,31 @@ function candidateFeatures() {
  * fly to an empty street.
  */
 let spotPid = null;
+let spotPoints = null;        // [{ at, code }] ringed where `derived` has no position
 export function spotlight(pid) {
-  if (spotPid === pid) return;
+  if (spotPid === pid && !spotPoints) return;
   spotPid = pid;
+  spotPoints = null;
+  refresh('spot');
+}
+
+/**
+ * Ring places by coordinate. A snapshot refresh's drift names stops the current
+ * snapshot does not have (added ones) or has somewhere else (moved ones), so
+ * `derived` cannot place them.
+ */
+export function spotlightAt(points) {
+  spotPid = null;
+  spotPoints = points?.length ? points : null;
   refresh('spot');
 }
 
 function spotFeatures() {
-  const at = spotPid && platformPos(spotPid);
+  const pts = spotPoints
+    || (spotPid && platformPos(spotPid) ? [{ at: platformPos(spotPid), code: upstream(spotPid) }] : []);
   return {
     type: 'FeatureCollection',
-    features: at ? [{ type: 'Feature', properties: { code: upstream(spotPid) }, geometry: { type: 'Point', coordinates: at } }] : [],
+    features: pts.map(p => ({ type: 'Feature', properties: { code: p.code }, geometry: { type: 'Point', coordinates: p.at } })),
   };
 }
 

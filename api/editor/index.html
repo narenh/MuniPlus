@@ -61,6 +61,10 @@
 
     <div class="grow"></div>
 
+    <button class="chip button editorial edit-only" id="review-chip" title="Review queue (Q)">
+      <span class="dot" id="review-dot"></span><span>Review</span><b id="review-count">…</b>
+    </button>
+
     <button class="chip button editorial" id="issues-chip" title="Validation issues" hidden>
       <span class="dot live" id="issues-dot"></span><span id="issues-text">Valid</span>
     </button>
@@ -114,6 +118,27 @@
         </div>
       </div>
       <div class="strip-scroll" id="strip-list"></div>
+    </aside>
+
+    <!-- review: the queue of 511 disagreements, and the snapshot refresh (review.js) -->
+    <aside id="review" class="closed editorial edit-only">
+      <div class="rv-head">
+        <div class="row1">
+          <h2>Review</h2>
+          <div class="grow"></div>
+          <button class="icon-btn" id="review-reload" title="Ask the server again">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 11-1.5-3.6M13 2.5v3h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="icon-btn" id="review-close" title="Close (Q)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="rv-tabs">
+          <button class="rv-tab on" data-tab="queue">Queue <em id="rv-tab-count"></em></button>
+          <button class="rv-tab" data-tab="snapshot">511 snapshot</button>
+        </div>
+      </div>
+      <div class="rv-scroll" id="review-body"></div>
     </aside>
 
     <!-- map -->

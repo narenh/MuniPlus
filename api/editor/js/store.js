@@ -294,6 +294,52 @@ export function unclaimedNear(at, limit = Infinity) {
   return out.slice(0, limit);
 }
 
+// ------------------------------------------------------------------ stations
+/** Stations whose transfers point at `sid`: deleting it cuts those links. */
+export function inboundTransfers(sid) {
+  return stationIds().filter(id => id !== sid && (stations()[id].transfers || []).some(t => t.to === sid));
+}
+
+/** Subways listing `sid`, by id. */
+export function subwaysWith(sid) {
+  return Object.entries(store.curation?.stations.subways || {})
+    .filter(([, s]) => (s.stations || []).includes(sid)).map(([id]) => id);
+}
+
+/**
+ * Delete a station inside an edit() mutator. A transfer or subway naming a
+ * station that does not exist is an `unknown-station` error, so both go with it.
+ */
+export function deleteStationIn(c, sid) {
+  delete c.stations.stations[sid];
+  for (const s of Object.values(c.stations.subways || {})) s.stations = s.stations.filter(x => x !== sid);
+  for (const s of Object.values(c.stations.stations)) {
+    if (s.transfers) s.transfers = s.transfers.filter(t => t.to !== sid);
+  }
+}
+
+const STATION_ID = /^[A-Za-z0-9]+$/;
+
+/**
+ * Why `id` cannot name a new station, or null if it can. Ids are permanent
+ * (the app keeps them in favourites), so besides the model's pattern an id must
+ * never have been used: not by a station, not as anyone's former id, and not by
+ * a station this edit deleted, whose favourites would silently move to the new
+ * one. Compared without case, as `duplicate-station-id` does.
+ */
+export function stationIdProblem(id) {
+  if (!id) return 'An id is required';
+  if (!STATION_ID.test(id)) return 'Letters and digits only';
+  const low = id.toLowerCase();
+  for (const c of [store.curation, store.base]) {
+    for (const [sid, st] of Object.entries(c?.stations.stations || {})) {
+      if (sid.toLowerCase() === low) return `${sid} is already a station id`;
+      if ((st.formerIds || []).some(f => f.toLowerCase() === low)) return `${id} is a former id of ${sid}`;
+    }
+  }
+  return null;
+}
+
 // ------------------------------------------------------------------ filters
 /** Modes present in the data, in line order, with the four SF modes always
  *  listed so the chips do not move around between datasets. */
