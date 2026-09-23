@@ -224,6 +224,37 @@ function pillOf(sid, ls, at) {
   return b.pills.get(sid);
 }
 
+/**
+ * One angle for every pill in a curated subway, so the Market St stations read
+ * as a row rather than following each bend of the tunnel. The angle is the one
+ * most of the subway's pills already have (within ALIGN_DEG, compared modulo
+ * 180 since a pill is symmetric), averaged; a tie goes to the cluster met first
+ * in the subway's own order. Stations in no subway keep their own.
+ */
+const ALIGN_DEG = 10;
+function alignPills(pills) {
+  const bySid = new Map(pills.map(f => [f.properties.sid, f]));
+  const half = b => ((b % 180) + 180) % 180;
+  const gap = (a, b) => { const d = Math.abs(half(a) - half(b)); return Math.min(d, 180 - d); };
+  for (const subway of Object.values(store.curation?.stations?.subways || {})) {
+    const members = subway.stations.map(sid => bySid.get(sid)).filter(Boolean);
+    if (members.length < 2) continue;
+    let best = [];
+    for (const f of members) {
+      const near = members.filter(g => gap(f.properties.bearing, g.properties.bearing) <= ALIGN_DEG);
+      if (near.length > best.length) best = near;
+    }
+    // Average as vectors on the doubled angle, so 179 and 1 average to 0, not 90.
+    const [x, y] = best.reduce(([x, y], f) => {
+      const r = half(f.properties.bearing) * 2 * Math.PI / 180;
+      return [x + Math.cos(r), y + Math.sin(r)];
+    }, [0, 0]);
+    const bearing = Math.atan2(y, x) * 180 / Math.PI / 2;
+    for (const f of members) f.properties.bearing = bearing;
+  }
+  return pills;
+}
+
 function stationFeatures() {
   const active = store.activeLine;
   const feats = [], pills = [];
@@ -262,7 +293,7 @@ function stationFeatures() {
   }
   return {
     stations: { type: 'FeatureCollection', features: feats },
-    pills: { type: 'FeatureCollection', features: pills },
+    pills: { type: 'FeatureCollection', features: alignPills(pills) },
   };
 }
 
