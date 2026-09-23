@@ -2,7 +2,7 @@
 
 import {
   store, esc, linesOf, changes, stations, platformsOf, allLines, upstream,
-  derivedStop, stationPos, metresBetween,
+  derivedStop, stationPos, metresBetween, inkOn, badgeShape,
 } from './store.js';
 
 // --------------------------------------------------------------------- toasts
@@ -90,7 +90,7 @@ function buildPalette(q) {
       const n = new Set((ln.directions || []).flatMap(d => d.stations)).size;
       out.push({
         kind: 'line', id: ln.id,
-        lead: ln.shortName || upstream(ln.id), leadBg: ln.color, leadFg: ln.textColor,
+        lead: ln.shortName || upstream(ln.id), leadBg: ln.color, leadFg: inkOn(ln.color), shape: badgeShape(ln),
         t1: ln.name, t2: `${ln.mode} · ${n} stations${ln.hidden ? ' · hidden' : ''}`,
       });
     }
@@ -111,7 +111,7 @@ function buildPalette(q) {
       found.push({ m, item: {
         kind: 'station', id: sid,
         lead: ls.length ? (ls[0].shortName || upstream(ls[0].id)) : '·',
-        leadBg: ls[0]?.color || 'rgba(255,255,255,.08)', leadFg: ls[0]?.textColor,
+        leadBg: ls[0]?.color || 'rgba(255,255,255,.08)', leadFg: ls[0] ? inkOn(ls[0].color) : null, shape: ls[0] ? badgeShape(ls[0]) : '',
         t1: st.name + (st.verified && !store.publicMap ? ' ✓' : ''),
         t2: `${near ? (at ? `${m} m · ` : 'no position · ') : ''}${sid} · ${ps.map(p => upstream(p.id)).join(' ')}`,
         lines: ls.slice(0, 8).map(l => l.color),
@@ -132,7 +132,7 @@ function renderPalette() {
   const list = document.getElementById('pal-list');
   list.innerHTML = palItems.map((it, i) => `
     <div class="pal-item ${i === palIndex ? 'on' : ''}" data-i="${i}">
-      <div class="lead" style="background:${esc(it.leadBg || 'rgba(255,255,255,.08)')}${it.leadFg ? `;color:${esc(it.leadFg)}` : ''}">${esc(it.lead)}</div>
+      <div class="lead ${it.shape || ''}" style="background:${esc(it.leadBg || 'rgba(255,255,255,.08)')}${it.leadFg ? `;color:${esc(it.leadFg)}` : ''}">${esc(it.lead)}</div>
       <div class="txt">
         <div class="t1">${esc(it.t1)}</div>
         <div class="t2">${esc(it.t2)}</div>

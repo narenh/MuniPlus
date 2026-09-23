@@ -9,7 +9,7 @@
 
 import {
   store, esc, upstream, lineById, stationById, ownerOf, stopPos, isDirty,
-  changes, select, setActiveLine,
+  changes, select, setActiveLine, lineBadge,
 } from './store.js';
 import { api } from './api.js';
 import { flyTo, flyToStation, fitLine, spotlight, spotlightAt, hint } from './map.js';
@@ -211,7 +211,7 @@ const code = pid => `<code title="${esc(pid)}">${esc(upstream(pid))}</code>`;
 
 function bullet(id, short) {
   const l = lineById(id);
-  return `<span class="mini-bullet" style="background:${esc(l?.color || '#7c8598')}${l?.textColor ? `;color:${esc(l.textColor)}` : ''}">${esc(short || l?.shortName || upstream(id))}</span>`;
+  return lineBadge(l || { id }, { label: short || l?.shortName || upstream(id) });
 }
 
 /** Fly to a coordinate the current snapshot may not have, and ring it there. */

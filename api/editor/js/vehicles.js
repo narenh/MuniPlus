@@ -7,7 +7,7 @@
 
 import {
   store, subscribe, lineById, allLines, lineMatches, filteringModes, esc, upstream,
-  derivedStop, ownerOf, stationById,
+  derivedStop, ownerOf, stationById, lineBadge, inkOn,
 } from './store.js';
 import { api } from './api.js';
 import { map, claimClicks, LAYER_IDS } from './map.js';
@@ -186,7 +186,7 @@ function features(pos) {
       properties: {
         vid: v.id,
         color: ln?.color || GREY,
-        fg: ln?.textColor || '#FFFFFF',
+        fg: inkOn(ln?.color || GREY),
         label: ln?.shortName || upstream(v.line),
         // Only a bearing 511 actually sent gets an arrow; null (about 1 in 5)
         // is a dot, never a guessed direction.
@@ -400,7 +400,7 @@ function popupHtml(v) {
 
   return `
     <div class="vp-head">
-      <span class="vp-bullet" style="background:${esc(ln?.color || GREY)};color:${esc(ln?.textColor || '#fff')}">${esc(ln?.shortName || upstream(v.line))}</span>
+      ${lineBadge(ln || { id: v.line, color: GREY }, { cls: 'vp-bullet' })}
       <div class="vp-title">
         <b>${esc(ln?.name || upstream(v.line))}</b>
         <span>${dir?.headsign ? `→ ${esc(dir.headsign)}` : v.direction == null ? 'direction unknown' : `direction ${v.direction}`}</span>

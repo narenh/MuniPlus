@@ -13,7 +13,7 @@ import {
   stopPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
   setLineOverride, knownModes, setActiveLine, transferPartners, deleteStationIn,
   transfersOf, findTransfer, addTransferIn, removeTransferIn,
-  mergeStationsIn, movePlatformIn, foldPlatformIn, stationsNear, suggestStationId, stationIdProblem,
+  mergeStationsIn, movePlatformIn, foldPlatformIn, stationsNear, suggestStationId, stationIdProblem, badgeShape, inkOn, lineBadge,
 } from './store.js';
 import { hint, highlightLink, flyTo, showCandidates, onCandidate, fitLine } from './map.js';
 
@@ -145,9 +145,9 @@ function renderStation(st, sid) {
 
 function lineChip(ln) {
   const b = document.createElement('button');
-  b.className = 'mini-bullet';
+  b.className = `mini-bullet ${badgeShape(ln)}`;
   b.style.background = ln.color || '#7c8598';
-  if (ln.textColor) b.style.color = ln.textColor;
+  b.style.color = inkOn(ln.color || '#7c8598');
   b.textContent = ln.shortName || upstream(ln.id);
   b.title = `${ln.name} — focus this line`;
   b.onclick = () => { setActiveLine(ln.id); fitLine(ln.id); };
@@ -272,8 +272,7 @@ function platformCards(st) {
     const served = allLines().filter(l => lineIds.has(l.id));
     const pub = store.publicMap;
     const lines = served.slice(0, MAX_PLATFORM_LINES).map(ln =>
-      `<button class="mini-bullet" style="background:${esc(ln.color || '#7c8598')}" disabled
-        title="${esc(ln.name)}">${esc(ln.shortName || upstream(ln.id))}</button>`).join('')
+      lineBadge(ln, { tag: 'button', attrs: `disabled title="${esc(ln.name)}"` })).join('')
       + (served.length > MAX_PLATFORM_LINES ? `<span class="mini-more">+${served.length - MAX_PLATFORM_LINES}</span>` : '')
       || '<span class="empty">none</span>';
 
@@ -802,7 +801,7 @@ function renderLine(ln) {
   const replaces = (o.replaces || []).map(id => {
     const r = lineById(id);
     return `<span class="tchip link">
-      <span class="mini-bullet" style="background:${esc(r?.color || '#7c8598')}">${esc(r?.shortName || upstream(id))}</span>
+      ${lineBadge(r || { id })}
       <span class="nm">${esc(r?.name || id)}</span>
       <button class="x" data-act="unreplace" data-id="${esc(id)}" title="Remove">
         <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>

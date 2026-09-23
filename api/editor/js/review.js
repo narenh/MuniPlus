@@ -12,7 +12,7 @@
 
 import {
   store, edit, select, esc, upstream, lineById, stationById, platformsOf, stopsOf, ownerOf,
-  stationIdProblem, transferPartners, subwaysWith, deleteStationIn,
+  stationIdProblem, transferPartners, subwaysWith, deleteStationIn, lineBadge,
 } from './store.js';
 import { api } from './api.js';
 import { flyTo, flyToStation, spotlight, hint } from './map.js';
@@ -232,7 +232,7 @@ function lineChips(ids) {
   const ls = ids.map(lineById).filter(Boolean);
   if (!ls.length) return '<span class="rv-none">no line stops here</span>';
   return ls.slice(0, MAX_LINE_CHIPS).map(l =>
-    `<span class="mini-bullet" style="background:${esc(l.color || '#7c8598')}${l.textColor ? `;color:${esc(l.textColor)}` : ''}" title="${esc(l.name)}">${esc(l.shortName || upstream(l.id))}</span>`).join('')
+    lineBadge(l, { attrs: `title="${esc(l.name)}"` })).join('')
     + (ls.length > MAX_LINE_CHIPS ? `<span class="mini-more">+${ls.length - MAX_LINE_CHIPS}</span>` : '');
 }
 

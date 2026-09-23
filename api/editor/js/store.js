@@ -309,6 +309,35 @@ export function unclaimedNear(at, limit = Infinity) {
 }
 
 // ------------------------------------------------------------------ stations
+// ---------------------------------------------------------------- line badges
+/** A bus is a pill, as wide as its label needs ("38R", "NOWL" overflowed a
+ *  square); every other mode is rail (metro, streetcar, cableway) and a circle. */
+export const badgeShape = ln => (ln?.mode === 'bus' ? 'pill' : 'circle');
+
+const channel = v => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+const luminance = hex => {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+  if (!m) return 0.2;
+  const [r, g, b] = [0, 2, 4].map(i => channel(parseInt(m[1].slice(i, i + 2), 16) / 255));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const DARK_INK = '#0b0d12';
+
+/** Black or white, whichever reads better on `bg` by WCAG contrast. Not 511's
+ *  text colour, which is white everywhere, including on light colours where it
+ *  barely reads (the J's orange, 2.0:1; FBUS's gold, 2.6:1). */
+export function inkOn(bg) {
+  const L = luminance(bg);
+  return (1.05) / (L + 0.05) >= (L + 0.05) / (luminance(DARK_INK) + 0.05) ? '#ffffff' : DARK_INK;
+}
+
+/** A line's badge as HTML: its colour, a readable label, and its shape. */
+export function lineBadge(ln, { tag = 'span', cls = 'mini-bullet', attrs = '', label } = {}) {
+  const bg = ln?.color || '#7c8598';
+  const text = label ?? (ln?.shortName || (ln?.id ? upstream(ln.id) : '?'));
+  return `<${tag} class="${cls} ${badgeShape(ln)}" style="background:${esc(bg)};color:${inkOn(bg)}" ${attrs}>${esc(text)}</${tag}>`;
+}
+
 // ----------------------------------------------------------------- transfers
 // A transfer is one pair of stations, walkable either way, listed once in
 // `curation.stations.transfers` (app/models/curation.py). There is no per-station

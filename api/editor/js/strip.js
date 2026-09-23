@@ -5,7 +5,7 @@
 // is nothing here to reorder.
 
 import {
-  store, select, stationById, linesOf, lineById, esc, upstream, ownerOf, transfersOf,
+  store, select, stationById, linesOf, lineById, esc, upstream, ownerOf, transfersOf, inkOn, badgeShape,
 } from './store.js';
 import { flyToStation } from './map.js';
 
@@ -49,7 +49,9 @@ export function renderStrip() {
   const badge = document.getElementById('strip-badge');
   badge.textContent = ln.shortName || upstream(ln.id);
   badge.style.setProperty('--c', color);
-  if (ln.textColor) badge.style.color = ln.textColor; else badge.style.removeProperty('color');
+  badge.style.color = inkOn(color);
+  badge.classList.remove('circle', 'pill');
+  badge.classList.add(badgeShape(ln));
   document.getElementById('strip-name').textContent = ln.name;
 
   const dirs = ln.directions || [];

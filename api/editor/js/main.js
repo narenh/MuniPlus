@@ -3,7 +3,7 @@ import {
   select, setActiveLine, toggleLayer, stationById, lineById, allLines, stations,
   isDirty, canon, changes, esc, platformsOf, upstream, ownerOf, stopPos,
   knownModes, modeOn, setModeOn, setUnverifiedOnly, verifiedCount, nextUnverified,
-  derivedStation, detailText,
+  derivedStation, detailText, badgeShape, inkOn,
 } from './store.js';
 import { api } from './api.js';
 import {
@@ -261,7 +261,7 @@ function buildRail() {
 function bullet(ln) {
   const b = document.createElement('button');
   const label = ln.shortName || upstream(ln.id);
-  b.className = `bullet len${Math.min(label.length, 4)}`;
+  b.className = `bullet ${badgeShape(ln)} len${Math.min(label.length, 4)}`;
   b.dataset.line = ln.id;
   b.textContent = label;
   b.onclick = () => {
@@ -304,7 +304,7 @@ function renderRail() {
     b.classList.toggle('dim', !!active && !on);
     b.classList.toggle('hidden-line', !!ln.hidden);
     b.style.setProperty('--c', ln.color || '#7c8598');
-    if (ln.textColor) b.style.setProperty('--fg', ln.textColor); else b.style.removeProperty('--fg');
+    b.style.setProperty('--fg', inkOn(ln.color || '#7c8598'));
   });
 }
 

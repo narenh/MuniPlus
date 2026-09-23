@@ -1118,3 +1118,27 @@ body.read-only #branch-chip {
   margin: 0 0 10px; padding: 8px 9px; border-radius: var(--r-sm);
   background: rgba(110,168,254,.07); border: 1px solid rgba(110,168,254,.25);
 }
+
+/* ---------------------------------------------------------------- line badges
+ * Rail lines (metro, streetcar, cableway) are circles; buses are pills as wide
+ * as their label, so "38R" and "NOWL" no longer spill out of a square. The ink
+ * is black or white by contrast with the line colour (store.js, inkOn). These
+ * come last so they win over the older square rules at equal specificity. */
+.mini-bullet.circle { width: 21px; min-width: 21px; padding: 0; border-radius: 50%; }
+.mini-bullet.pill { width: auto; min-width: 21px; padding: 0 7px; border-radius: 99px; letter-spacing: -.01em; }
+.drift-item .mini-bullet.circle { width: 17px; min-width: 17px; }
+.vp-bullet.circle { width: 28px; min-width: 28px; padding: 0; border-radius: 50%; }
+.vp-bullet.pill { border-radius: 99px; padding: 0 9px; }
+.bullet.circle { border-radius: 50%; }
+.bullet.pill { border-radius: 99px; }
+/* The bus group is a two-column grid; pills there size to their label. */
+.rail-group.compact .rail-items { grid-template-columns: repeat(2, auto); justify-content: center; }
+.rail-group.compact .bullet.pill {
+  width: auto; min-width: 25px; height: 22px; padding: 0 5px; border-radius: 99px;
+}
+.rail-group.compact .bullet.pill.len3,
+.rail-group.compact .bullet.pill.len4 { font-size: 9px; letter-spacing: -.02em; }
+.strip-title .badge.circle { border-radius: 50%; }
+.strip-title .badge.pill { width: auto; min-width: 32px; padding: 0 9px; border-radius: 99px; }
+.pal-item .lead.circle { border-radius: 50%; }
+.pal-item .lead.pill { width: auto; min-width: 26px; padding: 0 7px; border-radius: 99px; font-size: 10.5px; }
