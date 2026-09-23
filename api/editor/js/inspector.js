@@ -373,6 +373,7 @@ function stopsField(p, all) {
       <div class="field">
         <label class="micro">Stops ${sub(stops.length > 1 ? 'one place, several 511 ids' : '511 stop id')}</label>
         <div class="chips">${chips}</div>
+        ${(p.formerIds || []).length ? `<div class="former-ids" title="Ids this platform had before 511 retired or renumbered them. Homes and favourites kept on them still find it.">Formerly ${p.formerIds.map(x => `<code>${esc(upstream(x))}</code>`).join(' ')}</div>` : ''}
         ${merge}
       </div>`;
 }

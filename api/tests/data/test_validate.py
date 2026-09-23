@@ -246,3 +246,16 @@ def test_a_platform_whose_stops_are_far_apart_is_a_warning(curation, snapshots):
     result = validate(curation, snapshots)
     assert result.errors == []
     assert [i.stop for i in result.warnings if i.code == "platform-stops-far-apart"] == ["SF:18059", "SF:15661"]
+
+
+def test_a_platform_former_id_must_not_be_a_current_stop(curation, snapshots):
+    # It would send a home or favourite to the wrong platform.
+    curation.stations.stations["montgomery"].platforms[0].former_ids = ["SF:16992"]  # Embarcadero's
+    issue = only(validate(curation, snapshots).errors, "platform-former-id-collides")
+    assert "Embarcadero" in issue.message
+
+
+def test_a_platform_former_id_belongs_to_one_platform(curation, snapshots):
+    curation.stations.stations["montgomery"].platforms[0].former_ids = ["SF:99901"]
+    curation.stations.stations["embarcadero"].platforms[0].former_ids = ["SF:99901"]
+    only(validate(curation, snapshots).errors, "platform-former-id-collides")

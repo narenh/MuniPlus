@@ -145,6 +145,32 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
                 station=sid,
             )
 
+    # MARK: Platforms' former ids
+
+    # A former id is an alias homes and favourites resolve through. One that is also
+    # a current stop, or the former id of two platforms, would send them to the
+    # wrong place, so both are errors.
+    former_of: dict[str, str] = {}
+    for sid, station in stations.items():
+        for platform in station.platforms:
+            for former in platform.former_ids:
+                where = f"platform {former} was, now {platform.id} in {station.name} ({sid})"
+                if former in owner:
+                    error(
+                        "platform-former-id-collides",
+                        f"{former} is a former id of platform {platform.id} in {station.name} ({sid}), "
+                        f"but it is a current stop in {stations[owner[former]].name}.",
+                        station=sid, stop=platform.id,
+                    )
+                elif former in former_of:
+                    error(
+                        "platform-former-id-collides",
+                        f"{former} is a former id of two platforms: {former_of[former]} and {platform.id}.",
+                        station=sid, stop=platform.id,
+                    )
+                else:
+                    former_of[former] = platform.id
+
     # MARK: References
 
     seen_pairs: dict[frozenset[str], int] = {}

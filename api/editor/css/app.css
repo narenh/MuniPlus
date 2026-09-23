@@ -1144,3 +1144,5 @@ body.read-only #branch-chip {
 .strip-title .badge.pill { width: auto; min-width: 32px; padding: 0 9px; border-radius: 99px; }
 .pal-item .lead.circle { border-radius: 50%; }
 .pal-item .lead.pill { width: auto; min-width: 26px; padding: 0 7px; border-radius: 99px; font-size: 10.5px; }
+.former-ids { margin-top: 6px; font-size: 11px; color: var(--ink-faint); }
+.former-ids code { font-family: var(--mono); font-size: 10.5px; color: var(--ink-dim); margin-left: 3px; }

@@ -40,6 +40,11 @@ class Platform(FileModel):
     removed, so a saved platform keeps meaning the same place."""
     stops: list[StopId] = []
     """The other stops at this same place, if any. Never includes ``id``."""
+    former_ids: list[StopId] = []
+    """Stop ids this platform has had and lost while it lived on: a primary 511
+    retired, replaced by the next stop or by a new stop at the same place. The
+    app keeps platform ids as homes and favourites, so these still find this
+    platform. The editor adds them; a former id is never a current stop."""
     heading: Heading
     name: str | None = None
     """Signage, where the platform has any ("Platform 1", "To Castro"). Not the 511 stop name."""

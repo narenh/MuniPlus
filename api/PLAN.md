@@ -42,6 +42,7 @@ read-only as a reference until the app moves over.
 | ids | `<511 operator>:<upstream id>` for stops and lines (`SF:16992`, `SF:LOWL`), no mapping table. A platform's id is its primary stop's. Station ids are ours, `[A-Za-z0-9]+`, permanent |
 | renames | `mongomery` → `montgomery`; the old id lives in `formerIds` and is flagged as a client favourites migration |
 | stations | one flat platform list; a platform may take in several stops (`stops`), curated by hand, never by distance. Levels/exits come later as an optional `layout` field. All hand-curated station info is in `curation/stations.json` |
+| platform identity | the app keeps **platform** ids (the primary stop's) as homes and favourites, so they must last. A stored id is found by a platform's `id`, then its `stops`, then its `formerIds`. The editor records a former id whenever a platform survives losing a stop id: removing a dead primary, or the review queue's "Replaces" (a 511 renumbering, e.g. 18165 for 13244 at 11th & Market). Only a deleted platform's id is truly gone |
 | transfers | always both ways: one entry per pair of stations, in `stations.json`'s top-level `transfers` (`{between: [a, b], mode}`), so a one-way transfer cannot be written. Only the 12 pairs from the iOS app's data were kept; the generator's one-way links were dropped (2026-09-23) |
 | coordinates | never curated. Stops take 511's; a platform is the centroid of its live stops, a station of all its live stops |
 | modes | 511's line `TransportMode` verbatim (`metro`, `bus`, `cableway`). One curated override: the F is `streetcar` |
@@ -106,6 +107,7 @@ Errors, which block a save:
   counts wherever a platform lists it, as its id or in its `stops`)
 * `unknown-station`: a transfer or subway naming a station that does not exist
 * `transfer-to-itself`, `duplicate-transfer` (the same pair twice, in either order)
+* `platform-former-id-collides`: a platform's former id is a current stop, or another platform's former id
 * `station-has-no-platforms`
 
 Warnings, which never block:

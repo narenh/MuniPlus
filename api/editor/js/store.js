@@ -451,6 +451,28 @@ export function foldPlatformIn(c, from, pid, to, into) {
   const [src] = S[from].platforms.splice(i, 1);
   const dst = S[to].platforms.find(p => p.id === into);
   dst.stops = [...(dst.stops || []), ...stopsOf(src)];
+  // src's id lives on as one of dst's stops; any ids src had lost come along too,
+  // so a home or favourite kept on any of them still finds this platform.
+  if (src.formerIds?.length) dst.formerIds = [...new Set([...(dst.formerIds || []), ...src.formerIds])];
+}
+
+/** Record that platform `p` no longer answers to stop `id`. The app keeps
+ *  platform ids as homes and favourites; a former id still finds the platform. */
+export function retireStopId(p, id) {
+  p.formerIds = [...new Set([...(p.formerIds || []), id])];
+}
+
+/**
+ * 511 renumbered a stop: `fresh` (unassigned) stands where `dead` (511 no longer
+ * lists it) did, on platform `pid` of station `sid`. `fresh` takes `dead`'s place,
+ * as the platform's id if `dead` was, and `dead` becomes a former id, so the
+ * platform keeps its heading, signage, note, and everyone's homes and favourites.
+ */
+export function replaceStopIn(c, sid, pid, dead, fresh) {
+  const p = c.stations.stations[sid].platforms.find(x => x.id === pid);
+  if (p.id === dead) p.id = fresh;
+  else p.stops = (p.stops || []).map(x => (x === dead ? fresh : x));
+  retireStopId(p, dead);
 }
 
 /** Stations whose position is within `metres` of `at`, nearest first. */
@@ -649,6 +671,9 @@ export function changes() {
       const qs = q.stops || [], ps = p.stops || [];
       for (const x of ps) if (!qs.includes(x)) push('add', P, `Stop ${code(upstream(x))} is at this platform`);
       for (const x of qs) if (!ps.includes(x)) push('del', P, `Stop ${code(upstream(x))} no longer at this platform`);
+      const qf = q.formerIds || [], pf = p.formerIds || [];
+      for (const x of pf) if (!qf.includes(x)) push('edit', P, `${code(upstream(x))} kept as a former id`);
+      for (const x of qf) if (!pf.includes(x)) push('del', P, `Former id ${code(upstream(x))} removed`);
     }
     for (const pid of ap.keys()) if (!bp.has(pid)) push('del', T, `Removed platform ${code(upstream(pid))}`);
 

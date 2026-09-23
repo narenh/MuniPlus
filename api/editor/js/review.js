@@ -12,7 +12,8 @@
 
 import {
   store, edit, select, esc, upstream, lineById, stationById, platformsOf, stopsOf, ownerOf,
-  stationIdProblem, transferPartners, subwaysWith, deleteStationIn, lineBadge,
+  stationIdProblem, transferPartners, subwaysWith, deleteStationIn, retireStopId, replaceStopIn,
+  stationPos, metresBetween, lineBadge,
 } from './store.js';
 import { api } from './api.js';
 import { flyTo, flyToStation, spotlight, hint } from './map.js';
@@ -129,6 +130,28 @@ function target(u) {
   const made = minted.get(p.newStation.id);
   if (made && stationById(made)) return { sid: made, made: true };
   return { create: p.newStation };
+}
+
+/** How far from a new 511 stop a dead one may be and still be offered as what it
+ *  replaces. A renumbered pole is at the same corner; 250 m covers a station's
+ *  spread without reaching the next stop along a line. */
+const REPLACE_REACH_M = 250;
+
+/**
+ * Dead stops near an unassigned one: likely the stop 511 renumbered it from (at
+ * 11th & Market, 18165 appeared where 13244 was retired). A dead stop has no
+ * position of its own, since 511 dropped it, so its station's stands in; a
+ * station with no live platform has none and is not offered.
+ */
+function replaceCandidates(u) {
+  const out = [];
+  for (const d of review?.deadStops || []) {
+    if (deadStopDone(d)) continue;
+    const at = stationPos(d.station);
+    const m = at ? metresBetween([u.lon, u.lat], at) : Infinity;
+    if (m <= REPLACE_REACH_M) out.push({ ...d, m });
+  }
+  return out.sort((a, b) => a.m - b.m).slice(0, 2);
 }
 
 const draftOf = pid => {
@@ -309,6 +332,8 @@ function stopRow(u) {
            <button class="btn small primary" data-act="accept" ${t.missing ? 'disabled' : ''}
              title="${t.create ? 'Create the proposed station (you can change its id and name first)' : 'Add this stop to the proposed station'}">${t.create ? 'Accept…' : 'Accept'}</button>
            <button class="btn small" data-act="other" title="Pick another station, nearest first">Other…</button>
+           ${replaceCandidates(u).map(d => `<button class="btn small" data-act="replace" data-dead="${esc(d.stop)}"
+             title="511 renumbered ${esc(upstream(d.stop))} (${esc(d.stationName)}, ${esc(d.heading)}, ${Math.round(d.m)} m away) to this stop: it takes that stop's place on its platform, and the old id stays as a former id, so homes and favourites still find the platform">Replaces ${esc(upstream(d.stop))}</button>`).join('')}
            <button class="btn small ghost" data-act="ignore" title="Leave it out, with a note saying why">Ignore…</button>
          </div>`}
          ${form}`}
@@ -461,7 +486,7 @@ function act(what, row, button) {
 
   if (row.dataset.row === 'stop') {
     const u = stopOf(row.dataset.pid);
-    if (u) stopAction(what, u, row);
+    if (u) stopAction(what, u, row, button);
     return;
   }
   if (what === 'remove-stop') removeDeadStop(looseStops().find(d => d.stop === row.dataset.pid));
@@ -485,7 +510,7 @@ function needHeading(row) {
   hint('Choose a heading first: no line stops here, so there is no direction of travel to read one from', 3600);
 }
 
-function stopAction(what, u, row) {
+function stopAction(what, u, row, button) {
   const pid = u.stop;
   const heading = headingOf(u);
 
@@ -506,6 +531,14 @@ function stopAction(what, u, row) {
   }
 
   if (what === 'create') createStation(u, heading);
+
+  if (what === 'replace') {
+    const d = replaceCandidates(u).find(x => x.stop === button.dataset.dead);
+    if (!d) return;
+    const ok = edit(`${upstream(u.stop)} replaces ${upstream(d.stop)} at ${d.stationName}`,
+      c => replaceStopIn(c, d.station, d.platform, d.stop, u.stop));
+    if (ok) { expanded = null; hint(`${upstream(u.stop)} replaces ${upstream(d.stop)}; ${upstream(d.stop)} kept as a former id`); }
+  }
 
   if (what === 'other') {
     if (!heading) { needHeading(row); return; }
@@ -565,13 +598,17 @@ function removeDeadStop(d) {
     const s = c.stations.stations[d.station];
     const i = s.platforms.findIndex(p => p.id === d.platform);
     const p = s.platforms[i];
+    // The platform survives in both of these, so the dead id becomes a former id:
+    // a home or favourite kept on it still finds the platform.
     if (plan.kind === 'extra') {
       p.stops = p.stops.filter(x => x !== d.stop);
       if (!p.stops.length) delete p.stops;
+      retireStopId(p, d.stop);
     } else if (plan.kind === 'promote') {
       const [next, ...rest] = p.stops;
       p.id = next;
       if (rest.length) p.stops = rest; else delete p.stops;
+      retireStopId(p, d.stop);
     } else {
       s.platforms.splice(i, 1);
     }

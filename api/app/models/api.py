@@ -30,6 +30,10 @@ class PlatformSummary(Wire):
     stops: list[StopId]
     """Its stops in 511's data, the primary first. Arrivals asked for by any of
     them are the whole platform's."""
+    former_ids: list[StopId]
+    """Ids this platform has had and lost (a stop 511 retired or renumbered). A
+    stored platform id is found by ``id``, then ``stops``, then ``formerIds``;
+    arrivals asked for by a former id are answered under the current ``id``."""
 
 
 class StationSummary(Wire):

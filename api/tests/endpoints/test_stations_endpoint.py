@@ -28,7 +28,7 @@ def test_list(client):
     church = next(s for s in body["stations"] if s["id"] == "churchMarket")
     assert church["lines"] == ["SF:J", "SF:F"]
     assert church["modes"] == ["metro", "streetcar"]
-    assert church["platforms"][0] == {"id": "SF:17073", "heading": "northbound", "lines": ["SF:J"], "stops": ["SF:17073"]}
+    assert church["platforms"][0] == {"id": "SF:17073", "heading": "northbound", "lines": ["SF:J"], "stops": ["SF:17073"], "formerIds": []}
 
 
 def test_a_schema_change_changes_the_etag(client, monkeypatch):
@@ -81,6 +81,7 @@ def test_detail(client):
         "heading": "eastbound",
         "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
         "stops": ["SF:15731"],
+        "formerIds": [],
         "name": None,
         "stopName": "Metro Montgomery Station/Downtown",
         "lat": 37.789219,

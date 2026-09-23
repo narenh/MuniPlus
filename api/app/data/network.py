@@ -227,6 +227,13 @@ class Network:
                     platform_of[p] = platform.id
                 if mine:
                     owned[sid].append((platform, mine))
+        # A former id finds its platform too, so arrivals asked for by an id a home
+        # or favourite has kept are the platform's. It is only an alias: no station
+        # lists it, and it never counts as a stop of the platform.
+        for plats in owned.values():
+            for platform, _ in plats:
+                for former in platform.former_ids:
+                    platform_of.setdefault(former, platform.id)
         self._station_of = station_of
         self._platform_of = platform_of
         self._platform_stops = {platform.id: mine for plats in owned.values() for platform, mine in plats}
@@ -283,7 +290,8 @@ class Network:
                 modes=modes,
                 operators=operators_of(station),
                 platforms=[
-                    PlatformSummary(id=p.id, heading=p.heading, lines=union(ss), stops=ss) for p, ss in live
+                    PlatformSummary(id=p.id, heading=p.heading, lines=union(ss), stops=ss, former_ids=list(p.former_ids))
+                    for p, ss in live
                 ],
             )
 
@@ -316,6 +324,7 @@ class Network:
                     heading=p.heading,
                     lines=union(ss),
                     stops=ss,
+                    former_ids=list(p.former_ids),
                     name=p.name,
                     # The primary's name while it is live, else the first live stop's.
                     stop_name=stops[ss[0]].name,

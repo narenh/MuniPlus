@@ -347,3 +347,17 @@ def test_every_stop_of_a_platform_resolves_to_it(curation, snapshots):
         assert net.is_live(stop)
     assert net.stops_of("SF:15418") == ["SF:15418"]  # in no platform: just itself
     assert net.platform_of("SF:15418") is None
+
+
+def test_a_platforms_former_id_still_finds_it(curation, snapshots):
+    # 511 retired Montgomery's SF:15731 and the platform now answers to another id:
+    # a home or favourite that kept SF:15731 must still reach it.
+    p = curation.stations.stations["montgomery"].platforms[0]
+    p.id, p.former_ids = "SF:16994", ["SF:15731"]
+    curation.stations.stations["montgomery"].platforms = [p]
+    net = Network(curation, snapshots, "v")
+    assert net.platform_of("SF:15731") == "SF:16994"
+    assert net.stops_of("SF:15731") == ["SF:16994"]
+    assert net.station_of("SF:15731") is None  # an alias for platforms, not a stop
+    summary = next(s for s in net.stations().stations if s.id == "montgomery")
+    assert summary.platforms[0].former_ids == ["SF:15731"]
