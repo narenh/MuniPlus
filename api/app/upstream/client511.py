@@ -15,6 +15,7 @@ upstream be retried straight through the ceiling.
 import logging
 import time
 from collections.abc import Callable
+from typing import Literal
 
 import httpx
 
@@ -28,6 +29,16 @@ TIMEOUT_SECONDS = 10.0
 """The Worker's value, which it has run in production. Its cold fetch of a 683 KB
 TripUpdates took 877 ms end to end, so ten seconds is generous for a slow 511
 while still ending a hung connection long before the next poll is due."""
+
+STATIC_TIMEOUT_SECONDS = 120.0
+"""For the static endpoints. SF's GTFS zip is about 8 MB, a dozen times the
+largest realtime feed, and it is fetched by hand from the editor, where waiting
+is fine and a call cut off half-way would still have been counted."""
+
+Static = Literal["datafeeds", "lines"]
+"""``/transit/datafeeds`` (the GTFS zip) and ``/transit/lines`` (JSON, for
+``TransportMode``). Both take ``operator_id``, where the realtime feeds take
+``agency``."""
 
 
 class UpstreamError(Exception):
@@ -72,6 +83,31 @@ class Client511:
 
     async def fetch(self, feed: Feed, operator: str) -> bytes:
         """The raw body of ``/transit/<feed>`` for one operator."""
+        return await self._get(feed, operator, {"agency": operator}, TIMEOUT_SECONDS)
+
+    async def fetch_static(self, endpoint: Static, operator: str) -> bytes:
+        """The raw body of one of the static endpoints, through the same ledger and
+        ceiling as the realtime feeds: the key's 60 an hour are shared by all of them."""
+        params = {"operator_id": operator}
+        if endpoint == "lines":
+            # Without it 511 answers XML.
+            params["format"] = "json"
+        return await self._get(endpoint, operator, params, STATIC_TIMEOUT_SECONDS, follow_redirects=True)
+
+    def remaining(self) -> int:
+        """Calls left in the rolling hour, by the ledger. A snapshot refresh needs two
+        and checks first, so it never spends one call on a refresh it cannot finish."""
+        return max(0, self._per_hour - self._db.calls_since(self._clock() - 3600))
+
+    async def _get(
+        self,
+        feed: str,
+        operator: str,
+        params: dict[str, str],
+        timeout: float,
+        *,
+        follow_redirects: bool = False,
+    ) -> bytes:
         if not self._key:
             raise NoApiKey("API_511_KEY is not set")
 
@@ -84,7 +120,12 @@ class Client511:
         error: str | None = None
         try:
             response = await self._http.get(
-                f"{BASE_URL}/{feed}", params={"api_key": self._key, "agency": operator}
+                f"{BASE_URL}/{feed}",
+                params={"api_key": self._key, **params},
+                timeout=timeout,
+                # Unverified whether 511 serves the zip itself or redirects to storage;
+                # following costs nothing if it does not. One call in the ledger either way.
+                follow_redirects=follow_redirects,
             )
             status = response.status_code
             remaining = _int_header(response.headers.get("RateLimit-Remaining"))
@@ -96,7 +137,7 @@ class Client511:
                 raise UpstreamError(f"511 answered {status} for {feed}", status=status)
             return response.content
         except httpx.TimeoutException as exc:
-            error = f"timeout after {TIMEOUT_SECONDS:g}s ({type(exc).__name__})"
+            error = f"timeout after {timeout:g}s ({type(exc).__name__})"
             raise UpstreamError(f"511 {feed}: {error}") from None
         except httpx.HTTPError as exc:
             # httpx exceptions carry the request, whose URL holds the key. Only
