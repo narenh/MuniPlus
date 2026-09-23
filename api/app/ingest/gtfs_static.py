@@ -16,6 +16,7 @@ import io
 import json
 import re
 import zipfile
+from ..names import tidy_stop_name
 from collections import Counter, defaultdict
 from collections.abc import Iterator
 from datetime import UTC, date, datetime, timedelta
@@ -113,7 +114,7 @@ def _stops(zf: zipfile.ZipFile, operator: str) -> SnapshotStops:
         if row.get("location_type", "") not in ("", "0"):
             continue
         out[ref(operator, row["stop_id"])] = SnapshotStop(
-            name=row["stop_name"],
+            name=tidy_stop_name(row["stop_name"]),
             lat=float(row["stop_lat"]),
             lon=float(row["stop_lon"]),
         )

@@ -19,6 +19,7 @@ consistent while it exists.
 import re
 from collections.abc import Iterable, Mapping
 
+from ..names import ACRONYMS, FIXUPS, MINOR_WORDS
 from ..models.api import (
     Direction,
     LineDetail,
@@ -49,10 +50,6 @@ from ..models.snapshot import Pattern, Snapshot, SnapshotLine, SnapshotStop
 # a street corner from a stop name ("16th St & Rhode Island St" -> "16th & Rhode
 # Island"), which is right for a stop and wrong for a line ("Market & Wharves",
 # "Ashbury-18th St"). Station names are curated, so nothing here names a corner.
-ACRONYMS = {"sf", "bart", "ucsf", "sfsu", "ccsf", "usf", "va", "vamc", "sfo", "mlk", "ymca"}
-MINOR_WORDS = {"at", "of", "the", "and", "to", "via", "on"}
-"""Lower case unless first."""
-FIXUPS = {"Mcallister": "McAllister"}
 ORDINAL = re.compile(r"\d+(st|nd|rd|th)")
 
 

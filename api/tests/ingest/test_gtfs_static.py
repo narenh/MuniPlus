@@ -289,3 +289,19 @@ def test_rebuilding_the_same_zip_is_byte_identical(tmp_path):
     a = files.dumps(build_snapshot(zip_path, lines_path, "SF", FETCHED).patterns)
     b = files.dumps(build_snapshot(zip_path, lines_path, "SF", FETCHED).patterns)
     assert a == b
+
+
+@pytest.mark.parametrize("raw, tidy", [
+    # Real stop names from 511's 2026-08-29 feed.
+    ("Ucsf Medical Center", "UCSF Medical Center"),
+    ("Mcallister St & Divisadero St", "McAllister St & Divisadero St"),
+    ("Clement St & Legion Of Honor Dr", "Clement St & Legion of Honor Dr"),
+    ("O'Shaughnessy Blvd - Sf School Of The Arts", "O'Shaughnessy Blvd - SF School of the Arts"),
+    ("Right Of Way/18th St", "Right of Way/18th St"),
+    # Punctuation starts a phrase, so its first word keeps its capital.
+    ("Beach St & The Embarcadero", "Beach St & The Embarcadero"),
+    ("The Embarcadero & Brannan St", "The Embarcadero & Brannan St"),
+])
+def test_stop_names_are_re_cased(raw, tidy):
+    from app.names import tidy_stop_name
+    assert tidy_stop_name(raw) == tidy
