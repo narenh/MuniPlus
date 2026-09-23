@@ -68,6 +68,10 @@ class Station(FileModel):
     verified: date | None = None
     """When a person last checked this station on the map. Cleared whenever its
     platform list changes; renames and heading fixes leave it alone."""
+    hub: bool = False
+    """A major interchange between metro lines (4th & King, Union Square, Balboa
+    Park), drawn as the map's largest white station. A person's call: a rule on
+    line counts also catches every stop where two branches happen to meet."""
     note: str | None = None
 
 

@@ -186,6 +186,10 @@ function sectionStation(st, sid) {
       </div>
     </div>
     <div class="field">
+      <label class="check"><input type="checkbox" id="f-hub" data-key="f-hub" ${st.hub ? 'checked' : ''}>
+        Hub ${sub('a major metro interchange, drawn large and white')}</label>
+    </div>
+    <div class="field">
       <label class="micro">Note ${sub('what was checked, and how')}</label>
       <textarea class="inp" data-key="f-note" id="f-note" rows="2" placeholder="none">${esc(st.note ?? '')}</textarea>
     </div>
@@ -428,6 +432,13 @@ function wireStation(st, sid) {
     // A blank name fails the model, so the server could not even validate it.
     if (!v || v === st.name) { name.value = st.name; return; }
     commit(`Rename ${sid}`, s => { s.name = v; });
+  };
+
+  const hub = body.querySelector('#f-hub');
+  if (hub) hub.onchange = () => {
+    if (hub.checked === !!st.hub) return;
+    // Unset rather than false, so the file only says what someone decided.
+    commit(`${hub.checked ? 'Hub' : 'Not a hub'}: ${st.name}`, s => { if (hub.checked) s.hub = true; else delete s.hub; });
   };
 
   const note = body.querySelector('#f-note');

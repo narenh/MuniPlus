@@ -38,6 +38,7 @@ read-only as a reference until the app moves over.
 | line diagrams | the most-run 511 pattern per direction, read-only in the editor; no manual reordering |
 | new 511 stops | not in the API until assigned to a station (or ignored) in the editor's review queue |
 | validation | one Python validator, run by the server for the loader and the editor; no copy in the browser |
+| hubs | `hub: true` on a station marks a major metro interchange (4th & King, Union Square, Balboa Park). Curated, because a rule on line counts also catches every stop where two branches meet |
 | verification | `verified` date per station. The seed marks hand-curated stations verified and generated bus stations unverified. A change to a station's platform list clears it |
 | 511 budget | dev key: 60/hr. Arrivals 180 s, vehicles 180 s, alerts 1200 s = 43/hr. Client-enforced ceiling 55/hr, persisted |
 
