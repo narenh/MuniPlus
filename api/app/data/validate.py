@@ -14,8 +14,8 @@ from collections.abc import Mapping
 from ..models.curation import Curation
 from ..models.editor import Issue, Validation
 from ..models.snapshot import Snapshot
-from .network import _most_run
-from .shapes import ANCHOR_M, patch_shapes
+from .network import _most_run, terminal_stops
+from .shapes import ANCHOR_M, draw_shapes
 
 
 def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validation:
@@ -176,10 +176,14 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
     # its line, must not block every save until someone redraws the patch.
     shapes = {sid: pts for snap in snapshots.values() for sid, pts in snap.shapes.root.items()}
     patterns = {lid: ps for snap in snapshots.values() for lid, ps in snap.patterns.root.items()}
-    drawn = {
-        lid: [p.shape for p in _most_run(patterns.get(lid, [])).values() if p.shape in shapes] for lid in known_lines
-    }
-    _, unmatched = patch_shapes(curation.shapes, drawn, shapes)
+    most_run = {lid: list(_most_run(patterns.get(lid, [])).values()) for lid in known_lines}
+    drawn = {lid: [p.shape for p in ps if p.shape in shapes] for lid, ps in most_run.items()}
+    drawn_stops: dict[str, list[str]] = {}
+    for ps in most_run.values():
+        for p in ps:
+            if p.shape in shapes:
+                drawn_stops.setdefault(p.shape, p.stops)
+    _, unmatched = draw_shapes(curation.shapes, drawn, terminal_stops(drawn_stops, stops, curation), shapes)
     for patch_id, line_id in unmatched:
         if line_id not in known_lines:
             warn(
@@ -191,7 +195,8 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
             warn(
                 "shape-patch-unmatched",
                 f"Shape patch {patch_id!r} does not fit {line_id}: 511's shape for it no longer passes "
-                f"within {ANCHOR_M:g} m of both ends of the patch, so 511's path is drawn there instead.",
+                f"within {ANCHOR_M:g} m of both ends of the patch, or of one end and the line's own end "
+                "for an extension, so 511's path is drawn there instead.",
                 line=line_id,
             )
 

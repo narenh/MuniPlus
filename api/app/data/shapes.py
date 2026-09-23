@@ -99,26 +99,70 @@ def splice(points: list[tuple[float, float]], path: list[tuple[float, float]]) -
     return [p for i, p in enumerate(joined) if i == 0 or p != joined[i - 1]]
 
 
-def patch_shapes(
-    patches: ShapesFile, drawn: Mapping[str, list[str]], shapes: Mapping[str, list[tuple[float, float]]]
-) -> tuple[dict[str, list[tuple[float, float]]], list[tuple[str, str]]]:
-    """The shapes each line draws (``drawn``: line -> shape ids), with every
-    curated patch spliced in. Also every (patch, line) whose patch fits none of
-    that line's shapes, which the validator reports.
+def extend(points: list[tuple[float, float]], path: list[tuple[float, float]]) -> list[tuple[float, float]] | None:
+    """``points`` with ``path`` joined on at one end, or None when it does not fit.
 
-    Only the shapes named in ``drawn`` are patched and returned: those are the
-    only ones served."""
+    One end of ``path`` must be within ANCHOR_M of the shape's first or last point
+    and the other must be off the shape: a line carried on past where its trips
+    end, to meet its station (the J and K at Balboa Park end 75 m short of the
+    M's platform, across the same station). A path with both ends on the shape
+    is a splice, not this.
+    """
+    if len(points) < 2:
+        return None
+    first, last = points[0], points[-1]
+
+    def near(a: tuple[float, float], b: tuple[float, float]) -> bool:
+        return math.hypot((a[0] - b[0]) * M_PER_DEG_LON, (a[1] - b[1]) * M_PER_DEG_LAT) <= ANCHOR_M
+
+    for p in (path, path[::-1]):
+        if _position(points, p[0])[2] <= ANCHOR_M:
+            continue  # the free end must be off the shape
+        if near(p[-1], first):
+            return [*p[:-1], *points]
+        if near(p[-1], last):
+            return [*points, *p[-2::-1]]
+    return None
+
+
+def draw_shapes(
+    patches: ShapesFile,
+    drawn: Mapping[str, list[str]],
+    drawn_stops: Mapping[str, list[tuple[float, float]]],
+    shapes: Mapping[str, list[tuple[float, float]]],
+) -> tuple[dict[str, list[tuple[float, float]]], list[tuple[str, str]]]:
+    """The shapes each line draws (``drawn``: line -> shape ids), as served:
+
+    1. every curated patch with both ends on a shape spliced in;
+    2. cut to the shape's first and last stop riders use (``drawn_stops``: shape
+       id -> the stops of the pattern that draws it, ignored ones left out);
+    3. every other patch joined on as an extension, after the cut, which would
+       otherwise remove it again.
+
+    Also every (patch, line) whose patch fits none of that line's shapes, which
+    the validator reports. Only the shapes named in ``drawn`` are returned: those
+    are the only ones served."""
     out = {sid: shapes[sid] for sids in drawn.values() for sid in sids if sid in shapes}
-    unmatched = []
-    for patch_id, patch in sorted(patches.root.items()):
+    fitted: set[tuple[str, str]] = set()
+    ordered = sorted(patches.root.items())
+    for patch_id, patch in ordered:
         for line in patch.lines:
-            fitted = False
             for sid in drawn.get(line, []):
                 if sid in out and (spliced := splice(out[sid], list(patch.path))) is not None:
                     out[sid] = spliced
-                    fitted = True
-            if not fitted:
-                unmatched.append((patch_id, line))
+                    fitted.add((patch_id, line))
+    for sid, stops in drawn_stops.items():
+        if sid in out:
+            out[sid] = clip_to_stops(out[sid], stops)
+    for patch_id, patch in ordered:
+        for line in patch.lines:
+            if (patch_id, line) in fitted:
+                continue
+            for sid in drawn.get(line, []):
+                if sid in out and (extended := extend(out[sid], list(patch.path))) is not None:
+                    out[sid] = extended
+                    fitted.add((patch_id, line))
+    unmatched = [(patch_id, line) for patch_id, patch in ordered for line in patch.lines if (patch_id, line) not in fitted]
     return out, unmatched
 
 

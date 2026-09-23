@@ -113,6 +113,11 @@ direction. Patches are keyed to the geometry, not to shape ids, so they keep
 applying after a refresh renumbers the shapes. They are applied before `/api/shapes`
 simplifies and hashes the shapes, so a patch changes that response's ETag.
 
+A patch with one end on a line's first or last point and the other off its shape
+is an **extension**, joined on at that end after the shapes are cut to their
+terminal stops (which would otherwise remove it). The J and K at Balboa Park end
+at their boarding stop, 75 m short of the station; an extension carries them to it.
+
 Ids, headings and non-blank names are already enforced by the models; duplicate
 JSON keys by `files.loads`.
 

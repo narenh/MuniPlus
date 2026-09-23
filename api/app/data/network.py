@@ -39,7 +39,7 @@ from ..models.api import (
 from ..models.curation import Curation, Station
 from ..models.editor import Derived, DerivedPlatform, DerivedStation
 from ..models.snapshot import Pattern, Point, Snapshot, SnapshotLine, SnapshotStop
-from .shapes import clip_to_stops, patch_shapes, simplify
+from .shapes import draw_shapes, simplify
 
 # MARK: - Line names
 
@@ -330,17 +330,9 @@ class Network:
         self._lines = LinesResponse(version=version, lines=ordered)
         # Simplified on first request, not here: the editor builds a network for every
         # validate, and none of those is ever asked for its shapes.
-        # Curated patches first (curation/shapes.json): what the map draws is 511's
-        # path wherever a person has not said otherwise.
-        patched, _ = patch_shapes(curation.shapes, drawn, shapes)
-        # Then cut at the terminals riders use. A stop missing from the snapshot is
-        # skipped, and so is an ignored one: SF:15418 at Balboa Park is where 511
-        # ends every J and K from downtown, and SFMTA's own page calls it a timing
-        # point nobody boards at. Those lines end at their last real stop instead.
-        ignored = curation.ignored.root
-        for sid, stop_ids in drawn_stops.items():
-            at = [(stops[p].lon, stops[p].lat) for p in stop_ids if p in stops and p not in ignored]
-            patched[sid] = clip_to_stops(patched[sid], at)
+        # 511's path wherever a person has not said otherwise (curation/shapes.json),
+        # cut at the terminals riders use (draw_shapes).
+        patched, _ = draw_shapes(curation.shapes, drawn, terminal_stops(drawn_stops, stops, curation), shapes)
         self._shape_points = dict(sorted(patched.items()))
         self._shapes: tuple[ShapesResponse, str] | None = None
         self._derived = Derived(
@@ -404,6 +396,21 @@ class Network:
 
     def derived(self) -> Derived:
         return self._derived
+
+
+def terminal_stops(
+    drawn_stops: Mapping[str, list[str]], stops: Mapping[str, SnapshotStop], curation: Curation
+) -> dict[str, list[tuple[float, float]]]:
+    """Shape id -> where its pattern's stops are, for cutting it at the terminals.
+    A stop missing from the snapshot is skipped, and so is an ignored one: SF:15418
+    at Balboa Park is where 511 ends every J and K from downtown, and SFMTA's own
+    page calls it a timing point nobody boards at. Those lines end at their last
+    real stop instead."""
+    ignored = curation.ignored.root
+    return {
+        sid: [(stops[p].lon, stops[p].lat) for p in stop_ids if p in stops and p not in ignored]
+        for sid, stop_ids in drawn_stops.items()
+    }
 
 
 def _former_ids(stations: Mapping[str, Station], public: Mapping[str, object]) -> dict[str, str]:

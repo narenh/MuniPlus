@@ -43,7 +43,7 @@ def test_short_shapes_are_returned_as_they_are():
 # MARK: - Curated patches
 
 from app.data.network import Network
-from app.data.shapes import patch_shapes, splice
+from app.data.shapes import draw_shapes, extend, splice
 from app.data.validate import validate
 from app.models.curation import ShapePatch, ShapesFile
 
@@ -76,7 +76,7 @@ def test_patches_apply_per_line_and_report_what_did_not_fit():
         "dogleg": ShapePatch(lines=["SF:A", "SF:B"], path=STRAIGHT),
         "elsewhere": ShapePatch(lines=["SF:C"], path=STRAIGHT),
     })
-    out, unmatched = patch_shapes(patches, {"SF:A": ["SF:1", "SF:2"], "SF:B": ["SF:9"], "SF:C": []}, shapes)
+    out, unmatched = draw_shapes(patches, {"SF:A": ["SF:1", "SF:2"], "SF:B": ["SF:9"], "SF:C": []}, {}, shapes)
     assert out["SF:1"] == splice(STREET, STRAIGHT)
     assert out["SF:2"] == splice(STREET[::-1], STRAIGHT)
     assert out["SF:9"] == shapes["SF:9"]
@@ -160,3 +160,34 @@ def test_a_line_ends_at_its_last_stop_that_is_not_ignored(curation, snapshots):
     curation.ignored.root["SF:15662"] = IgnoredStop(note="Timing only.")
     cut = Network(curation, snapshots, "v").shapes()[0].shapes["SF:F1"]
     assert cut[-1] == (-122.432177, 37.764935)
+
+
+
+# MARK: - Extensions
+
+# A line ending at 400 m east, and its station's centre 60 m further on.
+ENDS = [at(0, 0), at(200, 0), at(400, 0)]
+ON_TO_STATION = [at(400, 0), at(460, 0)]
+
+
+def test_an_extension_joins_a_line_at_its_end():
+    assert extend(ENDS, ON_TO_STATION) == [*ENDS, at(460, 0)]
+    # Written the other way round, or on the shape running the other way.
+    assert extend(ENDS, ON_TO_STATION[::-1]) == [*ENDS, at(460, 0)]
+    assert extend(ENDS[::-1], ON_TO_STATION) == [at(460, 0), *ENDS[::-1]]
+
+
+def test_an_extension_must_start_at_an_end_and_leave_the_shape():
+    assert extend(ENDS, [at(200, 0), at(200, 60)]) is None  # from the middle
+    assert extend(ENDS, [at(400, 0), at(300, 0)]) is None  # back along the line
+
+
+def test_an_extension_survives_the_cut_to_the_last_stop():
+    # The shape runs 100 m past its last stop at 400 m, which the cut removes; an
+    # extension from 400 m is joined on after it, not cut away with the tail.
+    shapes = {"SF:1": [at(0, 0), at(200, 0), at(400, 0), at(500, 0)]}
+    stops = {"SF:1": [at(0, 5), at(400, 5)]}
+    patches = ShapesFile({"to-station": ShapePatch(lines=["SF:A"], path=[at(400, 0), at(400, 60)])})
+    out, unmatched = draw_shapes(patches, {"SF:A": ["SF:1"]}, stops, shapes)
+    assert flat(out["SF:1"]) == pytest.approx(flat([at(0, 0), at(200, 0), at(400, 0), at(400, 60)]), abs=1e-6)
+    assert unmatched == []
