@@ -60,9 +60,9 @@ export function load(state) {
   store.readOnly = !!state.readOnly;
   store.readOnlyReason = state.readOnlyReason || null;
   // The public map is read-only by purpose, where the editor is read-only by
-  // circumstance (no password, no checkout), so it is told apart by the reason
-  // app/editor/state.py gives, or by the path should that wording ever change.
-  store.publicMap = store.readOnlyReason === 'public map' || location.pathname.startsWith('/map');
+  // circumstance (no password, no checkout). The server says which page this is;
+  // readOnlyReason is a sentence for people and is never matched on.
+  store.publicMap = state.mode === 'map';
   store.curation = state.curation;
   store.base = clone(state.curation);
   store.snapshots = state.snapshots || {};

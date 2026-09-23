@@ -38,6 +38,7 @@ def test_state(world):
     assert (state["readOnly"], state["readOnlyReason"]) == (False, None)
     assert "castroPlaza" in state["curation"]["stations"]["stations"]
     assert state["curation"]["lines"]["SF:F"]["mode"] == "streetcar"
+    assert state["mode"] == "editor"
     assert set(state["snapshots"]) == {"SF"}
     assert state["snapshots"]["SF"]["meta"]["operator"] == "SF"
     assert set(state["derived"]) == {"stations", "stops", "lines"}

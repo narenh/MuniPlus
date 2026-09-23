@@ -82,6 +82,10 @@ class RepoStatus(Wire):
 
 
 class EditorState(Wire):
+    mode: Literal["editor", "map"]
+    """Which page this state is for, set by the endpoint that serves it:
+    ``/editor/api/state`` or ``/map/api/state``. The frontend keys its chrome off
+    this, never off ``readOnlyReason``, which is a sentence for people to read."""
     version: str
     """sf-transit HEAD commit the state was read from."""
     read_only: bool

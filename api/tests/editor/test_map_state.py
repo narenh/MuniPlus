@@ -9,6 +9,7 @@ def test_map_state_needs_no_session(world):
     state = res.json()
     assert state["version"] == world.seed
     assert (state["readOnly"], state["readOnlyReason"]) == (True, "public map")
+    assert state["mode"] == "map"
     assert state["validation"] is None
     assert state["repo"] is None
     assert "castroPlaza" in state["curation"]["stations"]["stations"]

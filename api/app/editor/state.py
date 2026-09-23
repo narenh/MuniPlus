@@ -84,6 +84,7 @@ def build_state(editor: Editor, app: FastAPI, *, public: bool) -> EditorState:
         network = files_at_head.network()
     reason = PUBLIC_MAP if public else editor.read_only_reason()
     return EditorState(
+        mode="map" if public else "editor",
         version=files_at_head.version,
         read_only=reason is not None,
         read_only_reason=reason,
