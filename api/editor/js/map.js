@@ -31,10 +31,12 @@ export function onCandidate(fn) { listeners.candidate.push(fn); }
 const HEADING_DEG = { northbound: 0, eastbound: 90, southbound: 180, westbound: 270 };
 
 /**
- * Each line as the platforms of its most-run pattern per direction, which is
- * where the vehicles actually stop, so the two directions of a street line run
- * down either side of the street. Hidden lines (owl copies of a day line) are
- * left off unless focused, as the app leaves them off.
+ * Each line as the path its most-run pattern per direction drives: the GTFS
+ * shape, so it follows the street and the curves of the track. Until the shapes
+ * arrive, or for a direction the feed has no shape for, the line is drawn
+ * through the platforms it stops at instead, which cuts corners but is never
+ * missing. Hidden lines (owl copies of a day line) are left off unless focused,
+ * as the app leaves them off.
  */
 function lineFeatures() {
   const feats = [];
@@ -43,7 +45,7 @@ function lineFeatures() {
     if (!focused && (ln.hidden || !lineMatches(ln.id))) continue;
     const active = !store.activeLine || focused;
     for (const dir of ln.directions || []) {
-      const coords = dir.platforms.map(platformPos).filter(Boolean);
+      const coords = store.shapes[dir.shape] || dir.platforms.map(platformPos).filter(Boolean);
       if (coords.length < 2) continue;
       feats.push({
         type: 'Feature',

@@ -30,8 +30,8 @@ NEW_FROM, NEW_TO = "20270116", "20270601"
 
 
 def fixture_feed() -> dict:
-    """The fixture snapshot as a feed spec: stops, routes and patterns, keyed by
-    511's own ids (no ``SF:``), in a form a test can edit before zipping."""
+    """The fixture snapshot as a feed spec: stops, routes, patterns and shapes, keyed
+    by 511's own ids (no ``SF:``), in a form a test can edit before zipping."""
     snap = files.read_snapshot(FIXTURE, "SF")
     return {
         "period": (NEW_FROM, NEW_TO),
@@ -48,11 +48,15 @@ def fixture_feed() -> dict:
             for lid, line in snap.lines.root.items()
         },
         "patterns": [
-            [upstream_of(lid), p.direction, p.headsign, p.trips, [upstream_of(s) for s in p.stops]]
+            [
+                upstream_of(lid), p.direction, p.headsign, p.trips, [upstream_of(s) for s in p.stops],
+                p.shape and upstream_of(p.shape),
+            ]
             for lid, patterns in snap.patterns.root.items()
             for p in patterns
         ],
-    }
+        "shapes": {upstream_of(sid): points for sid, points in snap.shapes.root.items()},
+    }  # fmt: skip
 
 
 def zip_feed(feed: dict) -> tuple[bytes, bytes]:
@@ -65,13 +69,13 @@ def zip_feed(feed: dict) -> tuple[bytes, bytes]:
     routes += [
         f'{rid},SF,{r["short"]},"{r["long"]}",{r["type"]},{r["color"]},{r["text"]}' for rid, r in feed["routes"].items()
     ]
-    trips = ["route_id,service_id,trip_id,trip_headsign,direction_id"]
+    trips = ["route_id,service_id,trip_id,trip_headsign,direction_id,shape_id"]
     times = ["trip_id,arrival_time,departure_time,stop_id,stop_sequence"]
     n = 0
-    for rid, direction, headsign, count, seq in feed["patterns"]:
+    for rid, direction, headsign, count, seq, shape in feed["patterns"]:
         for _ in range(count):
             n += 1
-            trips.append(f'{rid},day,t{n},"{headsign}",{direction}')
+            trips.append(f'{rid},day,t{n},"{headsign}",{direction},{shape or ""}')
             times += [f"t{n},08:{i:02d}:00,08:{i:02d}:00,{sid},{i + 1}" for i, sid in enumerate(seq)]
     tables = {
         "stops.txt": stops,
@@ -80,6 +84,8 @@ def zip_feed(feed: dict) -> tuple[bytes, bytes]:
         "stop_times.txt": times,
         "feed_info.txt": ["feed_publisher_name,feed_start_date,feed_end_date", f"511 SF Bay,{start},{end}"],
         "calendar_dates.txt": ["service_id,date,exception_type", f"day,{start},1"],
+        "shapes.txt": ["shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence"]
+        + [f"{sid},{lat},{lon},{i + 1}" for sid, points in feed["shapes"].items() for i, (lon, lat) in enumerate(points)],
     }
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as zf:
@@ -157,12 +163,14 @@ def drifted() -> dict:
     stops["15688"][0] = "Market St & Powell St (Cable Car Turnaround)"
     # A new line, the J recoloured, the 5 renamed.
     routes["714"] = dict(short="714", long="BART EARLY BIRD", type=3, color="666666", text="FFFFFF", mode="bus")
-    patterns.append(["714", 0, "Daly City BART", 5, ["15688", "16064"]])
+    patterns.append(["714", 0, "Daly City BART", 5, ["15688", "16064"], None])
     routes["J"]["color"] = "FF0000"
     routes["5"]["long"] = "FULTON STREET"
     # The J's outbound diagram skips Powell.
     j0 = next(p for p in patterns if p[0] == "J" and p[1] == 0)
     j0[4] = [s for s in j0[4] if s != "16995"]
+    # The F's path up Market is resurveyed.
+    feed["shapes"]["F1"][1] = [-122.43514, 37.76263]
     return feed
 
 
@@ -372,6 +380,7 @@ def test_commit_writes_only_the_snapshot_and_swaps_the_network(keyed):
         "snapshot/SF/lines.json",
         "snapshot/SF/meta.json",
         "snapshot/SF/patterns.json",
+        "snapshot/SF/shapes.json",
         "snapshot/SF/stops.json",
     ]
     assert git(keyed.checkout, "status", "--porcelain") == ""

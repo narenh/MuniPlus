@@ -13,6 +13,11 @@ def test_map_state_needs_no_session(world):
     assert state["repo"] is None
     assert "castroPlaza" in state["curation"]["stations"]["stations"]
     assert set(state["snapshots"]) == {"SF"}
+    # Shapes are served once from /api/shapes, not with every state; the direction
+    # still names its shape.
+    assert "shapes" not in state["snapshots"]["SF"]
+    f1 = state["derived"]["lines"]["SF:F"]["directions"][1]
+    assert f1["shape"] == "SF:F1"
     assert state["derived"]["stations"]["castroPlaza"]["lat"] is not None
     assert res.headers["etag"] == f'"{world.seed}"'
     assert res.headers["cache-control"] == "no-cache"

@@ -5,7 +5,7 @@ in place; git history keeps the old ones, and the diff of a refresh commit is
 exactly what 511 changed.
 
 For SF a refresh is two 511 calls: the GTFS zip (``/transit/datafeeds``) for
-stops, lines, colours and stop patterns, and ``/transit/lines`` for 511's own
+stops, lines, colours, stop patterns and the shapes vehicles drive, and ``/transit/lines`` for 511's own
 ``TransportMode``, which the zip does not carry.
 """
 
@@ -15,7 +15,7 @@ from typing import Literal
 from pydantic import Field, RootModel, model_serializer
 
 from .base import FileModel
-from .ids import Color, LineId, Mode, Operator, PlatformId
+from .ids import Color, LineId, Mode, Operator, PlatformId, ShapeId
 
 
 class SnapshotMeta(FileModel):
@@ -80,6 +80,9 @@ class Pattern(FileModel):
     """How many trips in the service period run exactly this sequence. The most-run
     pattern per direction is the line's diagram."""
     stops: list[PlatformId]
+    shape: ShapeId | None = None
+    """The GTFS shape most of those trips drive, a key into ``shapes.json``. None
+    when the feed has no shapes."""
 
 
 class SnapshotPatterns(RootModel[dict[LineId, list[Pattern]]]):
@@ -96,6 +99,24 @@ class SnapshotPatterns(RootModel[dict[LineId, list[Pattern]]]):
         }
 
 
+Point = tuple[float, float]
+"""``(lon, lat)``, GeoJSON's order, so a shape is a LineString's coordinates as is."""
+
+
+class SnapshotShapes(RootModel[dict[ShapeId, list[Point]]]):
+    """``shapes.json``: the path of every shape a pattern names, as the feed draws it.
+
+    Only shapes a pattern names are kept; the rest of ``shapes.txt`` describes trips
+    no pattern counts. Points are the feed's, unsimplified: simplifying is a choice
+    about drawing, made where the shapes are served."""
+
+    root: dict[ShapeId, list[Point]] = {}
+
+    @model_serializer(mode="wrap")
+    def _sorted(self, handler):
+        return dict(sorted(handler(self).items()))
+
+
 class Snapshot(FileModel):
     """One operator's snapshot, as one value."""
 
@@ -103,3 +124,7 @@ class Snapshot(FileModel):
     stops: SnapshotStops
     lines: SnapshotLines
     patterns: SnapshotPatterns
+    shapes: SnapshotShapes = Field(default_factory=SnapshotShapes, exclude=True)
+    """Left out when a whole snapshot is serialised, as ``EditorState`` does: they are
+    most of its bytes and the map fetches them once from ``GET /api/shapes``.
+    ``files`` writes each part on its own, so ``shapes.json`` is unaffected."""

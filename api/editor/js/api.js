@@ -36,4 +36,8 @@ export const api = {
     const q = lines ? `?line=${lines.map(encodeURIComponent).join(',')}` : '';
     return fetch(`/api/vehicles${q}`, { cache: 'no-store', signal }).then(j);
   },
+  /** ShapesResponse: every line direction's path, `{shapes: {id: [[lon, lat]...]}}`.
+   *  Absolute like vehicles. The browser's own cache is left on: the server's
+   *  ETag is a hash of the shapes, so a reload costs a 304 until 511 redraws. */
+  shapes: () => fetch('/api/shapes').then(j),
 };

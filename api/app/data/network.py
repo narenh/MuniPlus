@@ -16,6 +16,8 @@ the other. The validator reports the conflict; this module only has to stay
 consistent while it exists.
 """
 
+import hashlib
+import json
 import re
 from collections.abc import Iterable, Mapping
 
@@ -27,6 +29,7 @@ from ..models.api import (
     LineSummary,
     PlatformDetail,
     PlatformSummary,
+    ShapesResponse,
     StationDetail,
     StationsResponse,
     StationSummary,
@@ -35,7 +38,8 @@ from ..models.api import (
 )
 from ..models.curation import Curation, Station
 from ..models.editor import Derived, DerivedPlatform, DerivedStation
-from ..models.snapshot import Pattern, Snapshot, SnapshotLine, SnapshotStop
+from ..models.snapshot import Pattern, Point, Snapshot, SnapshotLine, SnapshotStop
+from .shapes import simplify
 
 # MARK: - Line names
 
@@ -143,6 +147,8 @@ class Network:
         "_former_ids",
         "_lines",
         "_line_details",
+        "_shape_points",
+        "_shapes",
     )
 
     def __init__(self, curation: Curation, snapshots: Mapping[str, Snapshot], version: str):
@@ -153,10 +159,12 @@ class Network:
         stops: dict[str, SnapshotStop] = {}
         snapshot_lines: dict[str, SnapshotLine] = {}
         patterns: dict[str, list[Pattern]] = {}
+        shapes: dict[str, list[Point]] = {}
         for _, snapshot in sorted(snapshots.items()):
             stops.update(snapshot.stops.root)
             snapshot_lines.update(snapshot.lines.root)
             patterns.update(snapshot.patterns.root)
+            shapes.update(snapshot.shapes.root)
         self._stops = stops
 
         # Lines. A line exists if 511 lists it; an override for any other line is a
@@ -291,6 +299,7 @@ class Network:
 
         # Line diagrams.
         self._headsigns: dict[tuple[str, int], str] = {}
+        drawn: dict[str, list[Point]] = {}
         self._line_details: dict[str, LineDetail] = {}
         for line in ordered:
             directions = []
@@ -302,12 +311,23 @@ class Network:
                     # A station with two poles on one block appears once, not twice.
                     if not along or along[-1] != station_of[pid]:
                         along.append(station_of[pid])
+                # A shape the snapshot names but does not carry is left out rather than
+                # sent as a key the shapes endpoint cannot answer.
+                shape = pattern.shape if pattern.shape in shapes else None
+                if shape:
+                    drawn[shape] = shapes[shape]
                 directions.append(
-                    Direction(direction=direction, headsign=pattern.headsign, stations=along, platforms=claimed)
+                    Direction(
+                        direction=direction, headsign=pattern.headsign, stations=along, platforms=claimed, shape=shape
+                    )
                 )
             self._line_details[line.id] = LineDetail(**dict(line), directions=directions)
 
         self._lines = LinesResponse(version=version, lines=ordered)
+        # Simplified on first request, not here: the editor builds a network for every
+        # validate, and none of those is ever asked for its shapes.
+        self._shape_points = dict(sorted(drawn.items()))
+        self._shapes: tuple[ShapesResponse, str] | None = None
         self._derived = Derived(
             stations=derived_stations,
             platforms=derived_platforms,
@@ -351,6 +371,19 @@ class Network:
 
     def line(self, line_id: str) -> LineDetail | None:
         return self._line_details.get(line_id)
+
+    def shapes(self) -> tuple[ShapesResponse, str]:
+        """Every shape a line direction names, and a hash of them for an ETag.
+
+        The hash is of the shapes alone, not the sf-transit version: a curation edit
+        moves the version but not one point, and the shapes are the one response
+        big enough that a client should only fetch it again when they change."""
+        if self._shapes is None:
+            response = ShapesResponse(shapes={sid: simplify(pts) for sid, pts in self._shape_points.items()})
+            body = json.dumps(response.model_dump(mode="json"), separators=(",", ":")).encode()
+            # Two requests racing here both compute the same value; either may win.
+            self._shapes = (response, hashlib.sha256(body).hexdigest()[:16])
+        return self._shapes
 
     # MARK: Editor
 

@@ -1,4 +1,4 @@
-"""``GET /api/lines`` and ``GET /api/lines/{id}``.
+"""``GET /api/lines``, ``GET /api/lines/{id}`` and ``GET /api/shapes``.
 
 Hidden lines are included, with ``hidden`` set: whether to show one is the
 client's call, and the editor needs them all.
@@ -6,7 +6,7 @@ client's call, and the editor needs them all.
 
 from fastapi import APIRouter, Request, Response
 
-from ..models.api import LineDetailResponse, LinesResponse, Problem
+from ..models.api import LineDetailResponse, LinesResponse, Problem, ShapesResponse
 from .stations import cached, network, not_found
 
 router = APIRouter(prefix="/api", tags=["lines"])
@@ -29,3 +29,14 @@ def get_line(line_id: str, request: Request, response: Response):
     if (hit := cached(request, response, net.version)) is not None:
         return hit
     return LineDetailResponse(version=net.version, line=line)
+
+
+@router.get("/shapes", response_model=ShapesResponse)
+def list_shapes(request: Request, response: Response):
+    # A few hundred KB that changes only when a snapshot refresh moves a point, so
+    # its ETag is the shapes' own hash rather than the version: a client revalidates
+    # with a 304 across every curation edit and fetches again only after 511 redraws.
+    shapes, etag = network(request).shapes()
+    if (hit := cached(request, response, etag)) is not None:
+        return hit
+    return shapes
