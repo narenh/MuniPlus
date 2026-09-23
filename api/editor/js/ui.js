@@ -2,7 +2,7 @@
 
 import {
   store, esc, linesOf, changes, stations, platformsOf, allLines, upstream,
-  derivedStop,
+  derivedStop, stationPos, metresBetween,
 } from './store.js';
 
 // --------------------------------------------------------------------- toasts
@@ -54,7 +54,7 @@ scrim().addEventListener('click', hideModal);
 // ------------------------------------------------------------------- palette
 // Modes: 'jump' (lines and stations), 'station' (pick a station, for a
 // transfer) and 'line' (pick a line, for `replaces`).
-let palItems = [], palIndex = 0, palPick = null, palMode = 'jump';
+let palItems = [], palIndex = 0, palPick = null, palMode = 'jump', palNear = null;
 
 const PLACEHOLDER = {
   jump: 'Jump to a station, line, or stop id…',
@@ -62,11 +62,17 @@ const PLACEHOLDER = {
   line: 'Pick a line…',
 };
 
-export function openPalette(mode = 'jump', onPick = null) {
+/**
+ * `opts.near` (`[lng, lat]`) lists stations nearest first, with their distance:
+ * placing a stop, the right station is almost always one of the closest few.
+ * `opts.placeholder` replaces the mode's prompt.
+ */
+export function openPalette(mode = 'jump', onPick = null, opts = {}) {
   palPick = onPick;
   palMode = mode;
+  palNear = opts.near || null;
   const input = document.getElementById('pal-input');
-  input.placeholder = PLACEHOLDER[mode] || PLACEHOLDER.jump;
+  input.placeholder = opts.placeholder || PLACEHOLDER[mode] || PLACEHOLDER.jump;
   input.value = '';
   buildPalette('');
   showModal('palette', () => { palPick = null; });
@@ -91,6 +97,8 @@ function buildPalette(q) {
   }
 
   if (palMode !== 'line') {
+    const near = palMode === 'station' ? palNear : null;
+    const found = [];
     for (const [sid, st] of Object.entries(stations())) {
       const ps = platformsOf(st);
       const codes = ps.map(p => p.id).join(' ');
@@ -98,15 +106,19 @@ function buildPalette(q) {
       const hay = `${sid} ${st.name} ${codes} ${names}`.toLowerCase();
       if (query && !hay.includes(query)) continue;
       const ls = linesOf(sid);
-      out.push({
+      const at = near && stationPos(sid);
+      const m = at ? metresBetween(near, at) : Infinity;
+      found.push({ m, item: {
         kind: 'station', id: sid,
         lead: ls.length ? (ls[0].shortName || upstream(ls[0].id)) : '·',
         leadBg: ls[0]?.color || 'rgba(255,255,255,.08)', leadFg: ls[0]?.textColor,
         t1: st.name + (st.verified && !store.publicMap ? ' ✓' : ''),
-        t2: `${sid} · ${ps.map(p => upstream(p.id)).join(' ')}`,
+        t2: `${near ? (at ? `${m} m · ` : 'no position · ') : ''}${sid} · ${ps.map(p => upstream(p.id)).join(' ')}`,
         lines: ls.slice(0, 8).map(l => l.color),
-      });
+      } });
     }
+    if (near) found.sort((a, b) => a.m - b.m);
+    out.push(...found.map(f => f.item));
   }
 
   palItems = out.slice(0, 120);

@@ -29,6 +29,16 @@ export const api = {
   save: (curation, message, baseVersion) => post('api/save', { curation, message, baseVersion }),
   /** Recent sf-transit commits touching curation/. */
   history: () => fetch('api/history', { cache: 'no-store' }).then(j),
+  /** ReviewResponse (app/editor/models.py): unassigned stops with proposals, dead
+   *  platforms, dead stations, all as of the saved curation at `version`. */
+  review: () => fetch('api/review', { cache: 'no-store' }).then(j),
+  /** SnapshotFetchResponse: two 511 calls and the drift against the committed
+   *  snapshot. Commits nothing. 503 when the server may not call 511, 409 when a
+   *  fetch is already running. */
+  snapshotFetch: () => post('api/snapshot/fetch', {}),
+  /** SaveResponse. 404 when `pending` has been replaced or committed, 409 when
+   *  another refresh was committed since the fetch. */
+  snapshotCommit: (pending, baseVersion) => post('api/snapshot/commit', { pending, baseVersion }),
   /** VehiclesResponse (app/models/api.py) for `lines`, or every line when null.
    *  The one absolute path: vehicles are the public API's, not the editor's, and
    *  /editor/ and /map/ share its origin. */

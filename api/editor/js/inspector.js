@@ -11,11 +11,11 @@ import {
   store, edit, select, stationById, stationIds, linesOf, lineById, allLines, esc,
   metresBetween, platformsOf, stopsOf, platformIdOf, derivedStation, derivedStop, stationPos,
   stopPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
-  setLineOverride, knownModes, setActiveLine,
+  setLineOverride, knownModes, setActiveLine, inboundTransfers, deleteStationIn,
 } from './store.js';
 import { hint, highlightLink, flyTo, showCandidates, onCandidate, fitLine } from './map.js';
 
-const HEADINGS = ['northbound', 'southbound', 'eastbound', 'westbound'];
+export const HEADINGS = ['northbound', 'southbound', 'eastbound', 'westbound'];
 /** 511 operator codes, as `transferAgencies` stores them (Embarcadero has BA). */
 const AGENCIES = [['BA', 'BART'], ['CT', 'Caltrain']];
 const ARROW = { northbound: 0, eastbound: 90, southbound: 180, westbound: 270 };
@@ -646,14 +646,12 @@ function wireStation(st, sid) {
 
   const del = body.querySelector('#del-station');
   if (del) del.onclick = () => {
-    if (!confirm(`Delete "${st.name}"?\n\nIt is also removed from every subway and transfer that references it. Its id cannot be reused by another station without breaking saved favourites.`)) return;
-    edit(`Delete ${sid}`, c => {
-      delete c.stations.stations[sid];
-      for (const s of Object.values(c.stations.subways || {})) s.stations = s.stations.filter(x => x !== sid);
-      for (const s of Object.values(c.stations.stations)) {
-        if (s.transfers) s.transfers = s.transfers.filter(t => t.to !== sid);
-      }
-    });
+    const inbound = inboundTransfers(sid).map(id => stationById(id)?.name || id);
+    const links = inbound.length
+      ? `\n\n${inbound.length} station${inbound.length === 1 ? ' transfers' : 's transfer'} to it (${inbound.join(', ')}); those links go too.`
+      : '';
+    if (!confirm(`Delete "${st.name}"?${links}\n\nIt is also removed from every subway and transfer that references it. Its id cannot be reused by another station without breaking saved favourites.`)) return;
+    edit(`Delete ${sid}`, c => deleteStationIn(c, sid));
     select(null, null);
   };
 }

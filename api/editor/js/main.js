@@ -13,6 +13,7 @@ import {
 import { initStrip, renderStrip } from './strip.js';
 import { initVehicles } from './vehicles.js';
 import { initInspector, renderInspector, closeAdd, markVerified } from './inspector.js';
+import { initReview, renderReview, refreshReview, toggleReview, isReviewOpen } from './review.js';
 import {
   toast, showModal, hideModal, isModalOpen, openPalette, wirePalette,
   setPaletteHandlers, renderSheet, renderHistory, renderIssues, setIssueHandler,
@@ -90,6 +91,7 @@ async function loadShapes() {
     wirePalette();
     wireChrome();
     wireKeys();
+    initReview({ reload: reloadState });
 
     setPaletteHandlers({
       onLine: id => { setActiveLine(id); fitLine(id); },
@@ -108,6 +110,8 @@ async function loadShapes() {
     if (!store.readOnly) restoreDraft();
     renderAll();
     fitAll();
+    // For the count on the review chip; the panel itself opens on request.
+    refreshReview();
 
     if (store.readOnly && store.validation) {
       // The public /map is read-only by design and needs no announcement; an
@@ -150,6 +154,7 @@ function renderAll() {
     renderFilters();
     renderTools();
     renderChrome();
+    renderReview();
     saveDraft();
   });
 }
@@ -407,7 +412,8 @@ function wireKeys() {
       if (isModalOpen()) { hideModal(); return; }
       if (closeAdd()) { renderAll(); return; }
       if (store.selStation) { select(null, null); return; }
-      if (store.lineInspector) { store.lineInspector = false; renderAll(); }
+      if (store.lineInspector) { store.lineInspector = false; renderAll(); return; }
+      if (isReviewOpen()) toggleReview(false);
       return;
     }
     if (typing || mod || e.altKey || isModalOpen()) return;
@@ -422,6 +428,8 @@ function wireKeys() {
     if (k === 'n') resetNorth();
     if (k === 'v' && store.selStation && !store.readOnly) markVerified(store.selStation);
     if (k === 'u' && !store.publicMap) jumpToNextUnverified();
+    // Q for the review queue, PLAN.md's name for it (R is already the vehicles).
+    if (k === 'q' && !store.readOnly && !store.publicMap) toggleReview();
     if (k === 'd' && store.activeLine) {
       const n = lineById(store.activeLine)?.directions?.length || 0;
       if (n > 1) { store.activeDir = (store.activeDir + 1) % n; renderAll(); }
@@ -521,6 +529,8 @@ async function doSave() {
       toast('Nothing to commit — sf-transit already matched', 'info');
     }
     refreshRepo();
+    // Proposals are only good against the curation they were computed from.
+    refreshReview();
   } catch (err) {
     if (err.status === 409) {
       flushDraft();
@@ -545,6 +555,20 @@ async function doSave() {
     btn.textContent = was;
     btn.disabled = changes().length === 0 || (store.validation?.errors.length ?? 0) > 0;
   }
+}
+
+/**
+ * Load the state whole, as at boot. A snapshot commit changes what every derived
+ * value, and the line rail, are built from; its callers make sure there are no
+ * unsaved edits first, since `load` starts from the server's curation.
+ */
+async function reloadState() {
+  const state = await api.state();
+  load(state);
+  buildRail();
+  buildFilters();
+  renderAll();
+  await refreshReview();
 }
 
 /** ahead/behind change with a save, and SaveResponse does not carry them. */
