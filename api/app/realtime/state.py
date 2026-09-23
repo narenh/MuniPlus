@@ -173,6 +173,7 @@ class Realtime:
         network = self._network()
         platforms: dict[str, list[Arrival]] = {}
         fetched: list[int] = []
+        feed_times: list[int] = []
         for asked in ids:
             operator = operator_of(asked)
             index = self._state.get((operator, "tripupdates"))
@@ -181,6 +182,7 @@ class Realtime:
                 platforms[asked] = []
                 continue
             fetched.append(index.fetched_at)
+            feed_times.append(index.feed_time)
             at = self._now(now, index)
             first: dict[str, _Event] = {}
             for stop in network.stops_of(asked) if network is not None else [asked]:
@@ -205,16 +207,22 @@ class Realtime:
                 )
                 for event in merged
             ]
-        return ArrivalsResponse(fetched_at=min(fetched) if fetched else None, platforms=platforms)
+        return ArrivalsResponse(
+            fetched_at=min(fetched) if fetched else None,
+            feed_at=min(feed_times) if feed_times else None,
+            platforms=platforms,
+        )
 
     def vehicles(self, lines: set[str] | None = None) -> VehiclesResponse:
         """In-service vehicles, optionally only those on ``lines``."""
         out: list[Vehicle] = []
         fetched: list[int] = []
+        feed_times: list[int] = []
         for (operator, feed), state in self._state.items():
             if feed != "vehiclepositions" or not isinstance(state, _Vehicles):
                 continue
             fetched.append(state.fetched_at)
+            feed_times.append(state.feed_time)
             for v in state.feed.vehicles:
                 if lines is not None and v.line not in lines:
                     continue
@@ -223,7 +231,11 @@ class Realtime:
                     bearing=v.bearing, speed=v.speed, stop=v.stop, status=v.status, reported_at=v.reported_at,
                 ))
         out.sort(key=lambda v: (v.line, v.id))
-        return VehiclesResponse(fetched_at=min(fetched) if fetched else None, vehicles=out)
+        return VehiclesResponse(
+            fetched_at=min(fetched) if fetched else None,
+            feed_at=min(feed_times) if feed_times else None,
+            vehicles=out,
+        )
 
     def alerts(
         self,
@@ -248,10 +260,12 @@ class Realtime:
 
         out: list[Alert] = []
         fetched: list[int] = []
+        feed_times: list[int] = []
         for (operator, feed), state in self._state.items():
             if feed != "servicealerts" or not isinstance(state, _Alerts):
                 continue
             fetched.append(state.fetched_at)
+            feed_times.append(state.feed_time)
             at = self._now(now, state)
             for alert in state.alerts:
                 if not alert.active_at(at):
@@ -277,7 +291,11 @@ class Realtime:
                     stations=alert_stations,
                     url=alert.url,
                 ))
-        return AlertsResponse(fetched_at=min(fetched) if fetched else None, alerts=out)
+        return AlertsResponse(
+            fetched_at=min(fetched) if fetched else None,
+            feed_at=min(feed_times) if feed_times else None,
+            alerts=out,
+        )
 
     def health(self, *, now: int | None = None) -> tuple[dict[str, FeedHealth], BudgetHealth]:
         """Per feed, keyed ``<operator>:<feed>`` (``SF:tripupdates``), and the 511

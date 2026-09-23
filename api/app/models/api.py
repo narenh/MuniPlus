@@ -160,6 +160,10 @@ class ArrivalsResponse(Wire):
     fetched_at: int | None
     """When the TripUpdates feed behind this answer came back from 511. Null before
     the first successful fetch."""
+    feed_at: int | None
+    """511's own time for the feed behind this answer (its header timestamp): how
+    old the data is, as opposed to ``fetchedAt``, when this server downloaded it.
+    With several operators, the oldest. Null before the first successful fetch."""
     platforms: dict[StopId, list[Arrival]]
     """Keyed by each id asked for. Every one is present, as an empty list when
     nothing is coming. An id may be any stop of a platform: the answer is the
@@ -185,10 +189,18 @@ class Vehicle(Wire):
     stop: StopId | None
     status: VehicleStatus | None
     reported_at: int
+    """The vehicle's own report time, as 511 sends it. In practice 511 stamps every
+    vehicle in one feed with the same time (all 677 in each recording), so this is
+    when the batch was built, not when this vehicle last reported: it cannot show
+    one vehicle that has gone quiet. ``feedAt`` is the honest age of the data."""
 
 
 class VehiclesResponse(Wire):
     fetched_at: int | None
+    feed_at: int | None
+    """511's own time for the feed behind this answer (its header timestamp): how
+    old the data is, as opposed to ``fetchedAt``, when this server downloaded it.
+    With several operators, the oldest. Null before the first successful fetch."""
     vehicles: list[Vehicle]
     """In-service vehicles only: those on a trip with a line."""
 
@@ -213,6 +225,10 @@ class Alert(Wire):
 
 class AlertsResponse(Wire):
     fetched_at: int | None
+    feed_at: int | None
+    """511's own time for the feed behind this answer (its header timestamp): how
+    old the data is, as opposed to ``fetchedAt``, when this server downloaded it.
+    With several operators, the oldest. Null before the first successful fetch."""
     alerts: list[Alert]
     """Alerts active now."""
 

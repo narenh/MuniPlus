@@ -141,7 +141,7 @@ class FakeRealtime:
             stations=["powell"],
             url=None,
         )
-        return AlertsResponse(fetched_at=1_790_000_000, alerts=[alert])
+        return AlertsResponse(fetched_at=1_790_000_000, feed_at=None, alerts=[alert])
 
 
 def test_detail_alerts_from_realtime(make_app):

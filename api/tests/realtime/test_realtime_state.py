@@ -270,3 +270,19 @@ def test_a_platform_filter_on_alerts_takes_in_every_stop(settings, db):
     realtime.ingest("SF", "servicealerts", ALERTS, fetched_at=NOW)
     # SF_15874 names SF:13240, the platform's second stop; asked for by its primary.
     assert "SF_15874" in {a.id for a in realtime.alerts(now=NOW, platforms={"SF:99001"}).alerts}
+
+
+def test_answers_carry_511s_own_feed_time(loaded):
+    # feedAt is the feed header's own time, not when the server fetched it: the
+    # recordings are from 2026-09-22 however recently they were loaded.
+    from google.transit import gtfs_realtime_pb2 as g
+
+    def header(payload):
+        m = g.FeedMessage()
+        m.ParseFromString(payload)
+        return m.header.timestamp
+
+    assert loaded.vehicles().feed_at == header(VP1)
+    assert loaded.alerts(now=NOW).feed_at == header(ALERTS)
+    assert loaded.arrivals(["SF:16992"], 1, now=NOW).feed_at == header(TU1)
+    assert loaded.vehicles().feed_at != loaded.vehicles().fetched_at

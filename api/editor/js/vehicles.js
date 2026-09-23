@@ -140,25 +140,29 @@ async function poll() {
 }
 
 /**
- * The feed's own clock is its newest position report. The response's
- * `fetchedAt` is when the server fetched it, which is not the same thing: under
- * FIXTURES=1 the server re-reads positions recorded on 2026-09-22 at 14:51 and
- * stamps them with the wall clock, so against `fetchedAt` every vehicle would be
- * hours stale. A whole feed that has fallen behind the fetch is said once, here,
- * instead of by fading every marker.
+ * The feed's own clock: `feedAt`, 511's header time for the feed. Not
+ * `fetchedAt`, which is when the server downloaded it; under FIXTURES=1 the
+ * server replays positions recorded on 2026-09-22 and fetches them "now". And
+ * not any vehicle's `reportedAt`: 511 gives every vehicle in a feed the same one.
  */
-function feedClock(r) {
-  let t = 0;
-  for (const v of r?.vehicles || []) if (v.reportedAt > t) t = v.reportedAt;
-  return t || r?.fetchedAt || 0;
+const feedClock = r => r?.feedAt || r?.fetchedAt || 0;
+
+/** How old the positions are now: their age when the server fetched them, plus
+ *  the time since this page received the answer. Measured on the server's clocks,
+ *  so a wrong clock in the browser cannot skew it. */
+function feedAge(r) {
+  if (!r?.fetchedAt || !r.feedAt) return null;
+  return r.fetchedAt - r.feedAt + Math.round((performance.now() - receivedAt) / 1000);
 }
 
+/** Said once, beside the control, rather than by fading every marker: 511 stamps
+ *  a whole feed at once, so a stale feed is stale everywhere. */
 function feedLag(r) {
-  const clock = feedClock(r);
-  if (!r.fetchedAt || !clock || r.fetchedAt - clock <= STALE_S) return null;
+  const age = feedAge(r);
+  if (age == null || age <= STALE_S) return null;
   return {
-    text: `Positions ${ago(r.fetchedAt - clock)} old`,
-    title: `511's newest position is from ${clockTime(clock)}, ${ago(r.fetchedAt - clock)} before the server fetched it at ${clockTime(r.fetchedAt)}.`,
+    text: `Positions ${ago(age)} old`,
+    title: `511 built this feed at ${clockTime(r.feedAt)}; the server fetched it at ${clockTime(r.fetchedAt)}.`,
   };
 }
 
@@ -383,12 +387,10 @@ function popupHtml(v) {
   const sid = v.stop ? ownerOf(v.stop) : null;
   const station = sid ? stationById(sid) : null;
   const stopName = stop?.name || (v.stop ? upstream(v.stop) : '');
-  // The age now, not at the fetch: the server's fetch time plus the time since
-  // this page received it, so a wrong clock in the browser cannot skew it.
-  const age = res?.fetchedAt
-    ? res.fetchedAt - v.reportedAt + Math.round((performance.now() - receivedAt) / 1000)
-    : null;
-  const stale = feedClock(res) - v.reportedAt > STALE_S;
+  // The feed's age, not this vehicle's: 511 stamps every vehicle in a feed with
+  // one time, so there is no per-vehicle age to show.
+  const age = feedAge(res);
+  const stale = age != null && age > STALE_S;
 
   const where = v.stop ? `
     <div class="vp-row"><span>${esc(STATUS[v.status] || 'Next stop')}</span>
@@ -407,7 +409,7 @@ function popupHtml(v) {
     ${where}
     <div class="vp-meta">
       <span>Vehicle <code>${esc(upstream(v.id))}</code></span>
-      <span class="${stale ? 'vp-stale' : ''}" title="Reported at ${esc(clockTime(v.reportedAt))}">${age == null ? '' : `reported ${esc(ago(age))} ago`}</span>
+      <span class="${stale ? 'vp-stale' : ''}" title="511 built this feed at ${esc(clockTime(res.feedAt || v.reportedAt))}">${age == null ? '' : `position ${esc(ago(age))} old`}</span>
     </div>
     ${v.bearing == null ? '<div class="vp-note">511 sent no heading for this vehicle</div>' : ''}`;
 }
