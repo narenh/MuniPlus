@@ -7,6 +7,7 @@ from itsdangerous import URLSafeTimedSerializer
 
 from app.editor import auth
 from app.editor.auth import COOKIE, MAX_DELAY, SALT, Throttle
+from app.editor.pages import asset_version
 
 
 class Clock:
@@ -69,14 +70,41 @@ def test_assets_need_no_session(world):
         assert world.client.get(path).status_code == 200, path
 
 
-def test_assets_are_revalidated_not_cached(world):
-    # Otherwise Cloudflare's default TTL caches them for hours past a deploy.
+def test_the_page_loads_its_assets_from_a_versioned_folder(world):
+    version = asset_version(world.app.state.editor.editor_dir)
+    page = world.client.get("/map/")
+    assert page.headers["cache-control"] == "no-cache"
+    assert f'src="v/{version}/js/main.js"' in page.text
+    assert f'href="v/{version}/css/app.css"' in page.text
+    assert 'src="js/' not in page.text and 'href="css/' not in page.text
+    assert world.client.get("/map/", headers={"If-None-Match": page.headers["etag"]}).status_code == 304
+
+    # Relative imports inside main.js resolve into the same folder.
+    for path in (f"/map/v/{version}/js/main.js", f"/map/v/{version}/js/map.js", f"/editor/v/{version}/css/app.css"):
+        res = world.client.get(path)
+        assert res.status_code == 200, path
+        assert res.headers["cache-control"] == "public, max-age=31536000, immutable", path
+
+    # Another version's folder is not served: its files would not match its name.
+    assert world.client.get("/map/v/000000000000/js/main.js").status_code == 404
+
+
+def test_plain_asset_paths_are_revalidated(world):
     for path in ("/editor/js/main.js", "/map/css/app.css"):
         res = world.client.get(path)
         assert res.headers["cache-control"] == "no-cache", path
         again = world.client.get(path, headers={"If-None-Match": res.headers["etag"]})
         assert again.status_code == 304, path
-        assert again.headers["cache-control"] == "no-cache", path
+
+
+def test_the_version_follows_the_files(tmp_path):
+    for name, text in (("index.html", '<link href="css/a.css"><script src="js/m.js"></script>'), ("js/m.js", "1"), ("css/a.css", "")):
+        (tmp_path / name).parent.mkdir(exist_ok=True)
+        (tmp_path / name).write_text(text)
+    before = asset_version.__wrapped__(tmp_path)
+    assert asset_version.__wrapped__(tmp_path) == before
+    (tmp_path / "js/m.js").write_text("2")
+    assert asset_version.__wrapped__(tmp_path) != before
 
 
 def test_forged_and_foreign_cookies_are_refused(world):
