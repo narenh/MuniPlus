@@ -109,6 +109,8 @@ body.no-inspector .maplibregl-ctrl-bottom-right { margin-right: 12px; }
 
 .brand { display: flex; align-items: center; gap: 9px; padding-right: 4px; }
 .brand svg { display: block; }
+/* The logo is 1130x349; at 30px tall it is about 97px wide. */
+.brand-logo { display: block; height: 30px; width: auto; }
 .brand b { font-size: 13.5px; font-weight: 640; letter-spacing: -.01em; }
 .brand span { color: var(--ink-faint); font-size: 11px; font-weight: 500; }
 

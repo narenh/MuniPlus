@@ -138,7 +138,6 @@ async function loadShapes() {
 function dressAsMap() {
   document.documentElement.classList.add('public-map');
   document.title = 'Muni+ Map';
-  $('wordmark').textContent = 'Muni+ Map';
 }
 
 // ============================================================ render

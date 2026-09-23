@@ -43,7 +43,7 @@ VERSIONED = "v"
 # The references index.html makes to its own assets, rewritten into the
 # versioned folder. Each must be found: a page edited so one no longer matches
 # would silently stop busting that asset.
-ASSET_REFS = ('href="css/', 'src="js/')
+ASSET_REFS = ('href="css/', 'src="js/', 'src="img/')
 
 router = APIRouter(include_in_schema=False)
 
