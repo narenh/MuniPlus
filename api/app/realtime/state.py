@@ -60,10 +60,12 @@ log = logging.getLogger(__name__)
 
 
 class NetworkView(Protocol):
-    """The two things realtime needs from the loaded network. Track B's
-    ``Network`` satisfies this structurally, without importing it."""
+    """What realtime needs from the loaded network. Track B's ``Network``
+    satisfies this structurally, without importing it."""
 
-    def station_of(self, platform_id: str) -> str | None: ...
+    def station_of(self, stop_id: str) -> str | None: ...
+
+    def stops_of(self, stop_id: str) -> list[str]: ...
 
     def headsign(self, line_id: str, direction: int) -> str | None: ...
 
@@ -91,7 +93,7 @@ class _Event:
 class _Arrivals:
     fetched_at: int
     feed_time: int
-    by_platform: dict[str, list[_Event]]
+    by_stop: dict[str, list[_Event]]
     """Each list sorted by time, so "from now" is a bisect."""
     times: dict[str, list[int]]
 
@@ -159,27 +161,37 @@ class Realtime:
 
     # MARK: - Queries
 
-    def arrivals(self, platform_ids: list[str], limit: int, *, now: int | None = None) -> ArrivalsResponse:
-        """The next ``limit`` arrivals at each platform, at or after ``now``.
+    def arrivals(self, ids: list[str], limit: int, *, now: int | None = None) -> ArrivalsResponse:
+        """The next ``limit`` arrivals at the platform of each id, at or after ``now``.
 
-        Every requested platform is in the answer, as an empty list when nothing
-        is due or the id is unknown. The vehicle is the TripUpdate's own, else the
-        one VehiclePositions places on the same trip."""
+        An id may be any stop of a platform: the answer is the whole platform's,
+        its stops' arrivals merged, a trip predicted at two of them counted once,
+        at its earlier time. It is keyed by the id as asked for. Every requested id
+        is in the answer, as an empty list when nothing is due or it is unknown. The
+        vehicle is the TripUpdate's own, else the one VehiclePositions places on the
+        same trip."""
         network = self._network()
         platforms: dict[str, list[Arrival]] = {}
         fetched: list[int] = []
-        for platform in platform_ids:
-            operator = operator_of(platform)
+        for asked in ids:
+            operator = operator_of(asked)
             index = self._state.get((operator, "tripupdates"))
             positions = self._state.get((operator, "vehiclepositions"))
             if not isinstance(index, _Arrivals):
-                platforms[platform] = []
+                platforms[asked] = []
                 continue
             fetched.append(index.fetched_at)
             at = self._now(now, index)
-            events = index.by_platform.get(platform, [])
-            start = bisect.bisect_left(index.times.get(platform, []), at)
-            platforms[platform] = [
+            first: dict[str, _Event] = {}
+            for stop in network.stops_of(asked) if network is not None else [asked]:
+                events = index.by_stop.get(stop, [])
+                start = bisect.bisect_left(index.times.get(stop, []), at)
+                # Each stop's own ``limit`` is all the merged answer can need from it.
+                for event in events[start:start + limit]:
+                    if event.trip.id not in first or event.time < first[event.trip.id].time:
+                        first[event.trip.id] = event
+            merged = sorted(first.values(), key=lambda e: (e.time, e.trip.line, e.trip.id))[:limit]
+            platforms[asked] = [
                 Arrival(
                     line=event.trip.line,
                     direction=event.trip.direction,
@@ -191,7 +203,7 @@ class Realtime:
                     vehicle=event.trip.vehicle
                     or (positions.by_trip.get(event.trip.id) if isinstance(positions, _Vehicles) else None),
                 )
-                for event in events[start:start + limit]
+                for event in merged
             ]
         return ArrivalsResponse(fetched_at=min(fetched) if fetched else None, platforms=platforms)
 
@@ -222,14 +234,18 @@ class Realtime:
         now: int | None = None,
     ) -> AlertsResponse:
         """Alerts active at ``now``. With no filter, all of them; otherwise those
-        naming any of ``lines`` or ``platforms``, or a platform of any of
-        ``stations``, plus agency-wide alerts, which match every filter."""
+        naming any of ``lines``, any stop of the ``platforms`` (any of whose stops
+        may be given), or a stop of any of ``stations``, plus agency-wide alerts,
+        which match every filter."""
         want_lines = set(lines) if lines is not None else None
         want_stations = set(stations) if stations is not None else None
-        want_platforms = set(platforms) if platforms is not None else None
-        unfiltered = want_lines is None and want_stations is None and want_platforms is None
-
         network = self._network()
+        want_stops = (
+            {s for p in platforms for s in (network.stops_of(p) if network is not None else [p])}
+            if platforms is not None else None
+        )
+        unfiltered = want_lines is None and want_stations is None and want_stops is None
+
         out: list[Alert] = []
         fetched: list[int] = []
         for (operator, feed), state in self._state.items():
@@ -240,14 +256,14 @@ class Realtime:
             for alert in state.alerts:
                 if not alert.active_at(at):
                     continue
-                alert_stations = _stations(network, alert.platforms)
+                alert_stations = _stations(network, alert.stops)
                 # An alert naming no line and no stop is agency-wide (the fixture's
                 # SF_15898, the Folsom Street Fair). It affects every station, so it
                 # matches every filter; otherwise no station board could ever show it.
-                agency_wide = not alert.lines and not alert.platforms
+                agency_wide = not alert.lines and not alert.stops
                 if not unfiltered and not agency_wide and not (
                     (want_lines and want_lines.intersection(alert.lines))
-                    or (want_platforms and want_platforms.intersection(alert.platforms))
+                    or (want_stops and want_stops.intersection(alert.stops))
                     or (want_stations and want_stations.intersection(alert_stations))
                 ):
                     continue
@@ -257,7 +273,7 @@ class Realtime:
                     description=alert.description,
                     active_periods=[ActivePeriod(start=s, end=e) for s, e in alert.periods],
                     lines=list(alert.lines),
-                    platforms=list(alert.platforms),
+                    stops=list(alert.stops),
                     stations=alert_stations,
                     url=alert.url,
                 ))
@@ -311,14 +327,14 @@ class Realtime:
 def _build(decoded: TripUpdates | VehiclePositions | ServiceAlerts, fetched_at: int) -> _State:
     match decoded:
         case TripUpdates():
-            by_platform: dict[str, list[_Event]] = {}
+            by_stop: dict[str, list[_Event]] = {}
             for trip in decoded.trips:
                 for stop in trip.stops:
-                    by_platform.setdefault(stop.platform, []).append(_Event(stop.time, stop, trip))
-            for events in by_platform.values():
+                    by_stop.setdefault(stop.stop, []).append(_Event(stop.time, stop, trip))
+            for events in by_stop.values():
                 events.sort(key=lambda e: (e.time, e.trip.line, e.trip.id))
-            times = {platform: [e.time for e in events] for platform, events in by_platform.items()}
-            return _Arrivals(fetched_at, decoded.timestamp, by_platform, times)
+            times = {stop: [e.time for e in events] for stop, events in by_stop.items()}
+            return _Arrivals(fetched_at, decoded.timestamp, by_stop, times)
         case VehiclePositions():
             by_trip = {v.trip: v.id for v in decoded.vehicles}
             return _Vehicles(fetched_at, decoded.timestamp, decoded, by_trip)
@@ -332,7 +348,7 @@ def _headsign(network: NetworkView | None, line: str, direction: Literal[0, 1]) 
     return headsign or DIRECTION_NAMES[direction]
 
 
-def _stations(network: NetworkView | None, platforms: Iterable[str]) -> list[str]:
+def _stations(network: NetworkView | None, stops: Iterable[str]) -> list[str]:
     if network is None:
         return []
-    return sorted({s for p in platforms if (s := network.station_of(p)) is not None})
+    return sorted({s for p in stops if (s := network.station_of(p)) is not None})

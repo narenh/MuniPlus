@@ -1,6 +1,6 @@
 """Identifiers, and the one rule for what each kind looks like.
 
-Platform and line ids are ``<operator>:<upstream id>``. The operator is 511's own
+Stop and line ids are ``<operator>:<upstream id>``. The operator is 511's own
 operator code (``SF``, ``BA``, ``CT``...) used verbatim, with no mapping table of
 our own. The upstream part is whatever the source feed calls the thing:
 ``SF:16992`` is SFMTA stop 16992, ``SF:LOWL`` is the L Owl.
@@ -26,7 +26,11 @@ OPERATOR_PATTERN = r"[A-Z0-9]+"
 REF_PATTERN = rf"^{OPERATOR_PATTERN}:[^,:/\s]+$"
 
 Operator = Annotated[str, StringConstraints(pattern=rf"^{OPERATOR_PATTERN}$")]
-PlatformId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
+StopId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
+"""A stop: one place where a line stops, as 511 numbers it (``SF:16992``), and
+the id the realtime feeds use. Not the same as a platform, the place a rider
+stands, which may take in several stops (two ids on one shelter); a platform's
+id is its primary stop's."""
 LineId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
 ShapeId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
 """A GTFS ``shape_id``, qualified like the others (``SF:103``): shape ids are only

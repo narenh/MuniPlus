@@ -2,7 +2,7 @@
 
 import {
   store, esc, linesOf, changes, stations, platformsOf, allLines, upstream,
-  derivedPlatform,
+  derivedStop,
 } from './store.js';
 
 // --------------------------------------------------------------------- toasts
@@ -94,7 +94,7 @@ function buildPalette(q) {
     for (const [sid, st] of Object.entries(stations())) {
       const ps = platformsOf(st);
       const codes = ps.map(p => p.id).join(' ');
-      const names = ps.map(p => `${derivedPlatform(p.id)?.stopName || ''} ${p.name || ''}`).join(' ');
+      const names = ps.map(p => `${derivedStop(p.id)?.name || ''} ${p.name || ''}`).join(' ');
       const hay = `${sid} ${st.name} ${codes} ${names}`.toLowerCase();
       if (query && !hay.includes(query)) continue;
       const ls = linesOf(sid);
@@ -192,8 +192,8 @@ export function issuesHtml(validation, { warnings = true } = {}) {
     const [level, code] = k.split('|');
     const rows = idx.slice(0, PER_CODE).map(i => {
       const it = all[i];
-      const where = it.station || (it.platform && upstream(it.platform)) || (it.line && upstream(it.line)) || '';
-      const target = it.station || it.platform || it.line;
+      const where = it.station || (it.stop && upstream(it.stop)) || (it.line && upstream(it.line)) || '';
+      const target = it.station || it.stop || it.line;
       return `<div class="issue ${level === 'error' ? 'error' : 'warn'} ${target ? 'go' : ''}" data-issue="${i}">
         ${where ? `<b>${esc(where)}</b>` : ''}<span>${esc(it.message)}</span></div>`;
     }).join('');
@@ -210,7 +210,7 @@ let issueList = [];
 export function wireIssues(host) {
   host.querySelectorAll('[data-issue]').forEach(el => {
     const it = issueList[Number(el.dataset.issue)];
-    if (!it || !(it.station || it.platform || it.line)) return;
+    if (!it || !(it.station || it.stop || it.line)) return;
     el.onclick = () => { hideModal(); onIssue(it); };
   });
 }

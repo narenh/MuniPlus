@@ -36,20 +36,20 @@ def test_the_fixture_queue(world):
     body = review(world)
     assert body["version"] == world.seed
     # SF:13510 is in the snapshot and in no station too, but ignored.json lists it.
-    assert [u["platform"] for u in body["unassigned"]] == ["SF:15418"]
+    assert [u["stop"] for u in body["unassigned"]] == ["SF:15418"]
     stop = body["unassigned"][0]
-    assert stop["stopName"] == "Balboa Park BART/Mezzanine Level"
+    assert stop["name"] == "Balboa Park BART/Mezzanine Level"
     assert (stop["lat"], stop["lon"]) == (37.721809, -122.447425)
     # No pattern in the fixture stops there (on the real feed all 324 M trips do).
     assert stop["lines"] == []
     proposal = stop["proposal"]
-    assert proposal["platform"] == "SF:15418"
+    assert proposal["stop"] == "SF:15418"
     assert proposal["heading"] is None
     assert proposal["station"] is None
     assert proposal["newStation"]["id"] not in state_stations(world)
     assert proposal["newStation"]["name"]
     assert "no heading" in proposal["reason"]
-    assert body["deadPlatforms"] == []
+    assert body["deadStops"] == []
     assert body["deadStations"] == []
 
 
@@ -74,15 +74,16 @@ def test_dead_platforms_and_stations(world):
     pull(world)
     body = review(world)
     assert body["version"] == world.head() != world.seed
-    assert body["deadPlatforms"] == [
-        {"platform": "SF:99998", "station": "castroPlaza", "stationName": "Castro Plaza", "heading": "westbound"},
-        {"platform": "SF:99999", "station": "ghost", "stationName": "Ghost", "heading": "northbound"},
+    assert body["deadStops"] == [
+        {"stop": "SF:99998", "platform": "SF:99998", "station": "castroPlaza", "stationName": "Castro Plaza",
+         "heading": "westbound"},
+        {"stop": "SF:99999", "platform": "SF:99999", "station": "ghost", "stationName": "Ghost", "heading": "northbound"},
     ]
     # Castro Plaza still has a live platform; Ghost has none.
-    assert body["deadStations"] == [{"station": "ghost", "name": "Ghost", "platforms": ["SF:99999"]}]
+    assert body["deadStations"] == [{"station": "ghost", "name": "Ghost", "stops": ["SF:99999"]}]
     # The queue is the list form of the validator's warnings, so the two agree.
     warnings = world.state()["validation"]["warnings"]
-    assert {w["platform"] for w in warnings if w["code"] == "platform-not-in-snapshot"} == {"SF:99998", "SF:99999"}
+    assert {w["stop"] for w in warnings if w["code"] == "stop-not-in-snapshot"} == {"SF:99998", "SF:99999"}
     assert {w["station"] for w in warnings if w["code"] == "station-has-no-live-platforms"} == {"ghost"}
 
 
@@ -106,7 +107,7 @@ def add_stops(world) -> str:
 def test_proposals_join_a_station_or_share_a_new_one(world):
     add_stops(world)
     pull(world)
-    queue = {u["platform"]: u for u in review(world)["unassigned"]}
+    queue = {u["stop"]: u for u in review(world)["unassigned"]}
     assert list(queue) == ["SF:15418", "SF:99100", "SF:99200", "SF:99201"]
 
     joins = queue["SF:99100"]
@@ -129,7 +130,7 @@ def accept(curation: dict, stop: dict) -> dict:
     out = copy.deepcopy(curation)
     stations = out["stations"]["stations"]
     proposal = stop["proposal"]
-    platform = {"id": stop["platform"], "heading": proposal["heading"] or "northbound"}
+    platform = {"id": stop["stop"], "heading": proposal["heading"] or "northbound"}
     if proposal["station"]:
         station = stations[proposal["station"]]
         station.pop("verified", None)
@@ -155,7 +156,7 @@ def test_accepting_every_proposal_with_a_normal_save_empties_the_queue(world):
     assert after["version"] == res.json()["commit"]
     assert after["unassigned"] == []
     stations = state_stations(world)
-    new_id = next(s["proposal"]["newStation"]["id"] for s in queue if s["platform"] == "SF:99200")
+    new_id = next(s["proposal"]["newStation"]["id"] for s in queue if s["stop"] == "SF:99200")
     assert [p["id"] for p in stations[new_id]["platforms"]] == ["SF:99200", "SF:99201"]
     assert "SF:99100" in [p["id"] for p in stations["churchMarket"]["platforms"]]
     assert stations["churchMarket"]["verified"] is None

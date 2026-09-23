@@ -12,20 +12,21 @@ from typing import Literal
 from .api import LineDetail
 from .base import Wire
 from .curation import Curation, NonBlank
-from .ids import LineId, Mode, Operator, PlatformId, StationId
+from .ids import LineId, Mode, Operator, StopId, StationId
 from .snapshot import Snapshot
 
 # MARK: - Derived values
 
 
-class DerivedPlatform(Wire):
+class DerivedStop(Wire):
     live: bool
     """False when 511 no longer lists this stop. It is dropped from the public API
     and flagged, never deleted automatically."""
     lines: list[LineId]
     lat: float | None
     lon: float | None
-    stop_name: str | None
+    name: str | None
+    """511's name for the stop ("Duboce Ave & Church St")."""
 
 
 class DerivedStation(Wire):
@@ -41,7 +42,9 @@ class Derived(Wire):
     re-implement the rules. Recomputed by the server after every validate call."""
 
     stations: dict[StationId, DerivedStation]
-    platforms: dict[PlatformId, DerivedPlatform]
+    stops: dict[StopId, DerivedStop]
+    """Every stop a platform names, and every stop in a snapshot, so the review
+    queue can show what serves a stop nobody has assigned."""
     lines: dict[LineId, LineDetail]
     """With ``directions``, so the line strip never re-derives diagrams in the browser."""
 
@@ -52,11 +55,11 @@ class Derived(Wire):
 class Issue(Wire):
     level: Literal["error", "warning"]
     code: str
-    """Stable, machine-readable (``platform-in-two-stations``), so the UI can group
+    """Stable, machine-readable (``stop-in-two-stations``), so the UI can group
     and the tests can assert without matching prose."""
     message: str
     station: StationId | None = None
-    platform: PlatformId | None = None
+    stop: StopId | None = None
     line: LineId | None = None
 
 

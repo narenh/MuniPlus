@@ -32,7 +32,7 @@ from collections.abc import Iterable
 
 from app.models.base import Wire
 from app.models.curation import Curation, Station
-from app.models.ids import Heading, PlatformId, StationId, upstream_of
+from app.models.ids import Heading, StopId, StationId, upstream_of
 from app.models.snapshot import Snapshot, SnapshotStop
 
 MERGE_RADIUS = 75               # m: new stop <-> a station at the same corner
@@ -62,7 +62,7 @@ class Proposal(Wire):
     ``new_station`` is set. Stops proposed together that form one intersection
     share a ``new_station``."""
 
-    platform: PlatformId
+    stop: StopId
     heading: Heading | None
     """``None`` only for a stop no pattern visits, which has no direction of travel."""
     station: StationId | None = None
@@ -435,12 +435,12 @@ def _place(stops: dict[str, SnapshotStop], curation: Curation, universe: set[str
     they are never moved.
     """
     stations: dict[str, Station] = curation.stations.stations
-    station_of = {p.id: sid for sid, st in stations.items() for p in st.platforms}
+    station_of = {s: sid for sid, st in stations.items() for p in st.platforms for s in p.all_stops}
     below = _below_ground(curation)
 
-    # A station's platforms are where 511 says they are: coordinates are never
-    # curated. A platform 511 no longer lists has nowhere to be.
-    platform_pts = {sid: [_pt(stops, p.id) for p in st.platforms if p.id in stops]
+    # A station's stops are where 511 says they are: coordinates are never curated.
+    # A stop 511 no longer lists has nowhere to be.
+    platform_pts = {sid: [_pt(stops, x) for p in st.platforms for x in p.all_stops if x in stops]
                     for sid, st in stations.items()}
     corner_keys = {sid: match_key(st.name) for sid, st in stations.items()
                    if sid not in below and platform_pts[sid]}
@@ -529,7 +529,7 @@ def _join_reason(sid, how, via, s, stops, stations, station_of, members):
 # MARK: - Entry point
 
 
-def propose(snapshot: Snapshot, curation: Curation, platform_ids: Iterable[str]) -> list[Proposal]:
+def propose(snapshot: Snapshot, curation: Curation, stop_ids: Iterable[str]) -> list[Proposal]:
     """A proposal for each given stop that is in the snapshot, in no station and not
     ignored, in the order given. Assigned and ignored stops are skipped: an existing
     assignment is never second-guessed here. A stop 511 does not list is an error.
@@ -541,10 +541,10 @@ def propose(snapshot: Snapshot, curation: Curation, platform_ids: Iterable[str])
     """
     stops = snapshot.stops.root
     ignored = set(curation.ignored.root)
-    assigned = {p.id for st in curation.stations.stations.values() for p in st.platforms}
+    assigned = {s for st in curation.stations.stations.values() for p in st.platforms for s in p.all_stops}
 
     wanted = []
-    for pid in dict.fromkeys(platform_ids):
+    for pid in dict.fromkeys(stop_ids):
         if pid not in stops:
             raise ValueError(f'{pid} is not in the snapshot')
         if pid not in ignored and pid not in assigned:
@@ -565,6 +565,6 @@ def propose(snapshot: Snapshot, curation: Curation, platform_ids: Iterable[str])
             reason += '; no line stops here, so no heading'
         elif pid in snapped:
             reason += f'; heading snapped to its street (travel alone says {snapped[pid]})'
-        out.append(Proposal(platform=pid, heading=head.get(pid), station=p.station,
+        out.append(Proposal(stop=pid, heading=head.get(pid), station=p.station,
                             new_station=p.new, reason=reason))
     return out

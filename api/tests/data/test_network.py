@@ -117,7 +117,7 @@ def test_directions_follow_the_most_run_pattern(net):
     # Direction 1 has "Caltrain" x175 and "Embarcadero" x12.
     assert [(d.direction, d.headsign) for d in n.directions] == [(0, "Ocean Beach"), (1, "Caltrain")]
     assert n.directions[0].stations == ["embarcadero", "montgomery", "powell"]
-    assert n.directions[0].platforms == ["SF:17217", "SF:16994", "SF:16995"]
+    assert n.directions[0].stops == ["SF:17217", "SF:16994", "SF:16995"]
 
 
 def test_one_direction_lines(net):
@@ -136,7 +136,7 @@ def test_unclaimed_stops_are_dropped_and_repeats_collapse(curation, snapshots):
     )
     d = Network(curation, snapshots, "v").line("SF:J").directions[0]
     assert d.stations == ["embarcadero", "montgomery", "powell", "churchMarket"]
-    assert d.platforms == ["SF:17217", "SF:16994", "SF:16995", "SF:18059", "SF:17073"]
+    assert d.stops == ["SF:17217", "SF:16994", "SF:16995", "SF:18059", "SF:17073"]
 
 
 def test_headsign(net):
@@ -257,16 +257,16 @@ def test_derived(net, curation):
     assert list(d.lines) == [line.id for line in net.lines().lines]
     # Every stop 511 lists is there, assigned or not, so the review queue can show
     # what serves an unassigned one.
-    assert d.platforms["SF:15418"].live
-    assert d.platforms["SF:15418"].stop_name == "Balboa Park BART/Mezzanine Level"
-    assert d.platforms["SF:13510"].lines == []
-    assert d.platforms["SF:16992"].lines == ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"]
+    assert d.stops["SF:15418"].live
+    assert d.stops["SF:15418"].name == "Balboa Park BART/Mezzanine Level"
+    assert d.stops["SF:13510"].lines == []
+    assert d.stops["SF:16992"].lines == ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"]
 
 
 def test_derived_platform_gone_from_511(curation, snapshots):
     curation.stations.stations["clayDrumm"].platforms.append(Platform(id="SF:99999", heading="eastbound"))
-    p = Network(curation, snapshots, "v").derived().platforms["SF:99999"]
-    assert (p.live, p.lines, p.lat, p.lon, p.stop_name) == (False, [], None, None, None)
+    p = Network(curation, snapshots, "v").derived().stops["SF:99999"]
+    assert (p.live, p.lines, p.lat, p.lon, p.name) == (False, [], None, None, None)
 
 
 # MARK: - Invalid curation
@@ -299,3 +299,42 @@ def test_operators_filter():
     assert net.stations().stations == []
     assert net.lines().lines == []
     assert loader.load(FIXTURE, "v", operators=["SF"]).line("SF:J") is not None
+
+
+# MARK: - Platforms of several stops
+
+
+def two_stop_platform(curation):
+    """Church & Market's southbound stop made an extra stop of its northbound
+    platform: one place with two ids, for these tests' purposes."""
+    church = curation.stations.stations["churchMarket"]
+    church.platforms = [
+        Platform(id="SF:17073", heading="northbound", stops=["SF:18059"]),
+        *[p for p in church.platforms if p.id not in ("SF:17073", "SF:18059")],
+    ]
+    return curation
+
+
+def test_a_platform_is_the_union_of_its_stops(curation, snapshots):
+    net = Network(two_stop_platform(curation), snapshots, "v")
+    summary = next(s for s in net.stations().stations if s.id == "churchMarket")
+    p = summary.platforms[0]
+    assert (p.id, p.stops) == ("SF:17073", ["SF:17073", "SF:18059"])
+    assert p.lines == sorted({*net.derived().stops["SF:17073"].lines, *net.derived().stops["SF:18059"].lines},
+                             key=[line.id for line in net.lines().lines].index)
+    detail = net.station("churchMarket").platforms[0]
+    # Between the two stops, named for the primary.
+    assert detail.lat == round((37.767509 + 37.767286) / 2, 6)
+    assert detail.stop_name == "Church St & Market St"
+    assert [q.id for q in net.station("churchMarket").platforms] == ["SF:17073", "SF:15662", "SF:15661"]
+
+
+def test_every_stop_of_a_platform_resolves_to_it(curation, snapshots):
+    net = Network(two_stop_platform(curation), snapshots, "v")
+    for stop in ("SF:17073", "SF:18059"):
+        assert net.station_of(stop) == "churchMarket"
+        assert net.platform_of(stop) == "SF:17073"
+        assert net.stops_of(stop) == ["SF:17073", "SF:18059"]
+        assert net.is_live(stop)
+    assert net.stops_of("SF:15418") == ["SF:15418"]  # in no platform: just itself
+    assert net.platform_of("SF:15418") is None

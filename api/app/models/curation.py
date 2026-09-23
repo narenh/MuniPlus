@@ -16,26 +16,41 @@ from typing import Annotated
 from pydantic import Field, RootModel, StringConstraints, model_serializer
 
 from .base import FileModel
-from .ids import Color, Heading, LineId, Mode, Operator, PlatformId, StationId, SubwayId, TransferMode
+from .ids import Color, Heading, LineId, Mode, Operator, StopId, StationId, SubwayId, TransferMode
 
 NonBlank = Annotated[str, StringConstraints(pattern=r"\S")]
 """At least one non-space character. Not stripped: what is on disk is what round-trips."""
 
 
 class Platform(FileModel):
-    """One pole or platform, identified by the stop id 511 uses for it.
+    """One place a rider stands: a pole, a shelter, a subway platform.
 
-    A platform belongs to exactly one station. Its coordinates, 511 stop name and
+    Usually that is one 511 stop, and the platform's ``id`` is that stop's. Where
+    511 numbers one place more than once (the N and its bus substitute share a
+    shelter at Duboce & Church as SF:14448 and SF:18061), ``id`` is the primary
+    stop and ``stops`` lists the rest. Read every stop through ``all_stops``,
+    never ``id`` alone, or the extra ones are silently missed.
+
+    A platform belongs to exactly one station. Its coordinates, 511 stop names and
     the lines serving it all come from the snapshot.
     """
 
-    id: PlatformId
+    id: StopId
+    """The primary stop, and the platform's id: kept when stops are added or
+    removed, so a saved platform keeps meaning the same place."""
+    stops: list[StopId] = []
+    """The other stops at this same place, if any. Never includes ``id``."""
     heading: Heading
     name: str | None = None
     """Signage, where the platform has any ("Platform 1", "To Castro"). Not the 511 stop name."""
     note: str | None = None
     """Why this platform is here, when that is not obvious: a verified-on-the-street
     reassignment, a pole with two ids. The record of what was checked and how."""
+
+    @property
+    def all_stops(self) -> list[str]:
+        """Every stop at this platform, the primary first."""
+        return [self.id, *self.stops]
 
 
 class Transfer(FileModel):
@@ -129,11 +144,11 @@ class IgnoredStop(FileModel):
     """Required: an ignored stop with no reason is indistinguishable from a mistake."""
 
 
-class IgnoredFile(RootModel[dict[PlatformId, IgnoredStop]]):
+class IgnoredFile(RootModel[dict[StopId, IgnoredStop]]):
     """``curation/ignored.json``: 511 stops deliberately assigned to no station, so
     they stop appearing in the review queue. Not station data, hence its own file."""
 
-    root: dict[PlatformId, IgnoredStop] = {}
+    root: dict[StopId, IgnoredStop] = {}
 
     @model_serializer(mode="wrap")
     def _sorted(self, handler):

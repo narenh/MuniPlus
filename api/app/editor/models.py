@@ -11,7 +11,7 @@ from ..ingest.propose import Proposal
 from ..models.api import Problem
 from ..models.base import Wire
 from ..models.editor import Validation
-from ..models.ids import Heading, LineId, Mode, Operator, PlatformId, StationId
+from ..models.ids import Heading, LineId, Mode, Operator, StopId, StationId
 
 
 class HistoryEntry(Wire):
@@ -56,7 +56,7 @@ class UnassignedStop(Wire):
     Accepting it is an ordinary curation edit followed by the normal save, so this
     carries everything that edit needs:
 
-    * ``proposal.station`` set: append ``{id: platform, heading}`` to that
+    * ``proposal.station`` set: append ``{id: stop, heading}`` to that
       station's ``platforms`` (and clear its ``verified``, as any change to a
       platform list does);
     * ``proposal.newStation`` set: create ``stations[newStation.id]`` named
@@ -65,27 +65,29 @@ class UnassignedStop(Wire):
       accepting all of them builds one station;
     * ``proposal.heading`` null (no line stops here, so there is no direction of
       travel to read one from): the editor has to ask, since a platform needs one;
-    * rejecting it: add ``ignored[platform] = {note}``, or place it by hand.
+    * rejecting it: add ``ignored[stop] = {note}``, or place it by hand.
 
     A proposed new id is free in the curation this was computed from. If the edit
     has since created a different station with that id, pick another.
     """
 
-    platform: PlatformId
-    stop_name: str
+    stop: StopId
+    name: str
     """511's name for the stop."""
     lat: float
     lon: float
     lines: list[LineId]
-    """Every line with a pattern stopping here (``derived.platforms``), in line
-    order. Empty for a stop no line serves in the service period."""
+    """Every line with a pattern stopping here (``derived.stops``), in line order.
+    Empty for a stop no line serves in the service period."""
     proposal: Proposal
 
 
-class DeadPlatform(Wire):
-    """A curated platform 511 no longer lists (``platform-not-in-snapshot``)."""
+class DeadStop(Wire):
+    """A curated stop 511 no longer lists (``stop-not-in-snapshot``)."""
 
-    platform: PlatformId
+    stop: StopId
+    platform: StopId
+    """The platform it is listed in: itself, or the primary it is an extra stop of."""
     station: StationId
     station_name: str
     heading: Heading
@@ -97,7 +99,8 @@ class DeadStation(Wire):
 
     station: StationId
     name: str
-    platforms: list[PlatformId]
+    stops: list[StopId]
+    """Every stop of every one of its platforms."""
 
 
 class ReviewResponse(Wire):
@@ -107,10 +110,10 @@ class ReviewResponse(Wire):
     """sf-transit HEAD this was computed from. Proposals are only good against the
     curation at this version: fetch the review again after a save."""
     unassigned: list[UnassignedStop]
-    """In platform id order."""
-    dead_platforms: list[DeadPlatform]
-    """By station id, then in the station's own platform order. Includes the
-    platforms of ``deadStations``."""
+    """In stop id order."""
+    dead_stops: list[DeadStop]
+    """By station id, then in the station's own platform and stop order. Includes
+    the stops of ``deadStations``."""
     dead_stations: list[DeadStation]
     """By station id."""
 
@@ -124,14 +127,14 @@ class ServicePeriod(Wire):
 
 
 class DriftStop(Wire):
-    platform: PlatformId
+    stop: StopId
     name: str
     lat: float
     lon: float
 
 
 class StopMove(Wire):
-    platform: PlatformId
+    stop: StopId
     name: str
     """The new name."""
     metres: float
@@ -143,7 +146,7 @@ class StopMove(Wire):
 
 
 class StopRename(Wire):
-    platform: PlatformId
+    stop: StopId
     old_name: str
     name: str
 
@@ -169,7 +172,7 @@ class LineChange(Wire):
 class PatternSummary(Wire):
     headsign: str
     trips: int
-    stops: list[PlatformId]
+    stops: list[StopId]
 
 
 class PatternChange(Wire):
@@ -183,8 +186,8 @@ class PatternChange(Wire):
     """Null when the line had no trips in this direction before."""
     new: PatternSummary | None
     """Null when it has none now."""
-    stops_added: list[PlatformId]
-    stops_removed: list[PlatformId]
+    stops_added: list[StopId]
+    stops_removed: list[StopId]
 
 
 class SnapshotDrift(Wire):
@@ -213,8 +216,8 @@ class SnapshotDrift(Wire):
     lines_changed: list[LineChange]
     patterns_changed: list[PatternChange]
 
-    dead_platforms: list[DeadPlatform]
-    """Curated platforms live now that the new snapshot drops."""
+    dead_stops: list[DeadStop]
+    """Curated stops live now that the new snapshot drops."""
     dead_stations: list[DeadStation]
     """Stations with a live platform now that would have none."""
     new_unassigned: list[UnassignedStop]

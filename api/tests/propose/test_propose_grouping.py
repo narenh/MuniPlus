@@ -35,7 +35,7 @@ def proposed(snapshot, metro_curation):
     todo = [s for s in snapshot.stops.root if s not in assigned and s not in metro_curation.ignored.root]
     assert len(todo) == 2949
     props = port.propose(snapshot, metro_curation, todo)
-    assert [p.platform for p in props] == todo
+    assert [p.stop for p in props] == todo
     return props
 
 
@@ -51,7 +51,7 @@ def compare(original, gtfs, metro_for_original, overrides, metro_curation, propo
     want = dict(curated)
     want.update({ref(stops[s]["stop_code"]): sid for s, sid in station_of.items()})
     got = dict(curated)
-    got.update({p.platform: p.station or f"new:{p.new_station.id}" for p in proposed})
+    got.update({p.stop: p.station or f"new:{p.new_station.id}" for p in proposed})
 
     common = set(want) & set(got)
     bw, bg = blocks({s: want[s] for s in common}), blocks({s: got[s] for s in common})
@@ -59,7 +59,7 @@ def compare(original, gtfs, metro_for_original, overrides, metro_curation, propo
 
     minted = {s: records[want[s]] for s in common
               if want[s] in records and records[want[s]]["metro"] is None}
-    new = {p.platform: p.new_station for p in proposed if p.new_station}
+    new = {p.stop: p.new_station for p in proposed if p.new_station}
     both_new = set(minted) & set(new)
     names = {s: (minted[s]["name"], new[s].name) for s in sorted(both_new) if minted[s]["name"] != new[s].name}
     ids = {s: (want[s], new[s].id) for s in sorted(both_new) if want[s] != new[s].id}

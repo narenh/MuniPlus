@@ -201,16 +201,16 @@ def test_fetch_reports_every_kind_of_drift_and_commits_nothing(keyed):
     assert drift["new"] == {"serviceFrom": "2027-01-16", "serviceTo": "2027-06-01"}
     assert drift["sameZip"] is False
 
-    assert [s["platform"] for s in drift["stopsAdded"]] == ["SF:99001"]
+    assert [s["stop"] for s in drift["stopsAdded"]] == ["SF:99001"]
     assert drift["stopsRemoved"] == [
-        {"platform": "SF:14015", "name": "Clay St & Drumm St", "lat": 37.79532, "lon": -122.397473}
+        {"stop": "SF:14015", "name": "Clay St & Drumm St", "lat": 37.79532, "lon": -122.397473}
     ]
     (moved,) = drift["stopsMoved"]
-    assert (moved["platform"], moved["metres"]) == ("SF:13311", 50)
+    assert (moved["stop"], moved["metres"]) == ("SF:13311", 50)
     assert (moved["oldLat"], moved["lat"]) == (37.762576, pytest.approx(37.763026))
     assert drift["stopsRenamed"] == [
         {
-            "platform": "SF:15688",
+            "stop": "SF:15688",
             "oldName": "Market St & Powell St",
             "name": "Market St & Powell St (Cable Car Turnaround)",
         }
@@ -232,13 +232,14 @@ def test_fetch_reports_every_kind_of_drift_and_commits_nothing(keyed):
     # The N's two direction-1 patterns in the fixture differ only in headsign, and
     # the build merges them; its most-run pattern is the same, so it is not listed.
 
-    assert drift["deadPlatforms"] == [
-        {"platform": "SF:14015", "station": "clayDrumm", "stationName": "Clay & Drumm", "heading": "westbound"}
+    assert drift["deadStops"] == [
+        {"stop": "SF:14015", "platform": "SF:14015", "station": "clayDrumm", "stationName": "Clay & Drumm",
+         "heading": "westbound"}
     ]
-    assert drift["deadStations"] == [{"station": "clayDrumm", "name": "Clay & Drumm", "platforms": ["SF:14015"]}]
+    assert drift["deadStations"] == [{"station": "clayDrumm", "name": "Clay & Drumm", "stops": ["SF:14015"]}]
     # SF:15418 is already in the queue and SF:13510 is ignored: only the new stop.
     (new,) = drift["newUnassigned"]
-    assert (new["platform"], new["stopName"], new["lines"]) == ("SF:99001", "Ocean Ave & Lee Ave", ["SF:K"])
+    assert (new["stop"], new["name"], new["lines"]) == ("SF:99001", "Ocean Ave & Lee Ave", ["SF:K"])
     assert new["proposal"]["newStation"]["id"] == "oceanLee"
     assert new["proposal"]["heading"] is not None
 
@@ -385,8 +386,8 @@ def test_commit_writes_only_the_snapshot_and_swaps_the_network(keyed):
     ]
     assert git(keyed.checkout, "status", "--porcelain") == ""
     # The warnings the drift predicted are now the checkout's.
-    warnings = {(w["code"], w.get("platform") or w.get("station")) for w in body["validation"]["warnings"]}
-    assert {("platform-not-in-snapshot", "SF:14015"), ("station-has-no-live-platforms", "clayDrumm"),
+    warnings = {(w["code"], w.get("stop") or w.get("station")) for w in body["validation"]["warnings"]}
+    assert {("stop-not-in-snapshot", "SF:14015"), ("station-has-no-live-platforms", "clayDrumm"),
             ("unassigned-stop", "SF:99001")} <= warnings  # fmt: skip
 
     # The public network is replaced whole, at the new version.
@@ -416,7 +417,7 @@ def test_an_identical_snapshot_commits_nothing(keyed):
     assert (again["unchanged"], again["drift"]["sameZip"]) == (True, True)
     drift = again["drift"]
     for key in ("stopsAdded", "stopsRemoved", "stopsMoved", "stopsRenamed", "linesAdded", "linesRemoved",
-                "linesChanged", "patternsChanged", "deadPlatforms", "deadStations", "newUnassigned"):  # fmt: skip
+                "linesChanged", "patternsChanged", "deadStops", "deadStations", "newUnassigned"):  # fmt: skip
         assert drift[key] == [], key
     res = commit(keyed, again["pending"], again["baseVersion"])
     assert res.status_code == 200, res.text

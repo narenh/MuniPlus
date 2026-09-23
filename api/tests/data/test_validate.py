@@ -24,14 +24,14 @@ def test_unassigned_stop(curation, snapshots):
     # SF:15418 (Balboa Park BART) is in the snapshot and in no station; SF:13510 is
     # in ignored.json, so it is not in the queue.
     issue = only(validate(curation, snapshots).warnings, "unassigned-stop")
-    assert issue.platform == "SF:15418"
+    assert issue.stop == "SF:15418"
     assert issue.level == "warning"
     assert "Balboa Park BART/Mezzanine Level" in issue.message
 
 
 def test_ignored_stop_is_not_in_the_queue(curation, snapshots):
     assert "SF:13510" in curation.ignored.root
-    platforms = [i.platform for i in validate(curation, snapshots).warnings]
+    platforms = [i.stop for i in validate(curation, snapshots).warnings]
     assert "SF:13510" not in platforms
 
 
@@ -65,23 +65,23 @@ def test_former_id_reused(curation, snapshots):
 
 def test_platform_in_two_stations(curation, snapshots):
     curation.stations.stations["powell"].platforms.append(Platform(id="SF:15731", heading="eastbound"))
-    issue = only(validate(curation, snapshots).errors, "platform-in-two-stations")
-    assert (issue.station, issue.platform) == ("powell", "SF:15731")
+    issue = only(validate(curation, snapshots).errors, "stop-in-two-stations")
+    assert (issue.station, issue.stop) == ("powell", "SF:15731")
     assert "Montgomery (montgomery)" in issue.message
 
 
 def test_platform_listed_twice(curation, snapshots):
     curation.stations.stations["montgomery"].platforms.append(Platform(id="SF:15731", heading="westbound"))
     result = validate(curation, snapshots)
-    issue = only(result.errors, "platform-listed-twice")
-    assert (issue.station, issue.platform) == ("montgomery", "SF:15731")
-    assert "platform-in-two-stations" not in codes(result.errors)
+    issue = only(result.errors, "stop-listed-twice")
+    assert (issue.station, issue.stop) == ("montgomery", "SF:15731")
+    assert "stop-in-two-stations" not in codes(result.errors)
 
 
 def test_platform_assigned_and_ignored(curation, snapshots):
     curation.ignored.root["SF:14015"] = IgnoredStop(note="test")
-    issue = only(validate(curation, snapshots).errors, "platform-assigned-and-ignored")
-    assert (issue.station, issue.platform) == ("clayDrumm", "SF:14015")
+    issue = only(validate(curation, snapshots).errors, "stop-assigned-and-ignored")
+    assert (issue.station, issue.stop) == ("clayDrumm", "SF:14015")
 
 
 def test_unknown_station_in_a_transfer(curation, snapshots):
@@ -139,8 +139,8 @@ def test_station_has_no_platforms(curation, snapshots):
 def test_platform_not_in_snapshot(curation, snapshots):
     curation.stations.stations["clayDrumm"].platforms.append(Platform(id="SF:99999", heading="eastbound"))
     result = validate(curation, snapshots)
-    issue = only(result.warnings, "platform-not-in-snapshot")
-    assert (issue.station, issue.platform) == ("clayDrumm", "SF:99999")
+    issue = only(result.warnings, "stop-not-in-snapshot")
+    assert (issue.station, issue.stop) == ("clayDrumm", "SF:99999")
     assert result.errors == []
 
 
@@ -148,9 +148,9 @@ def test_station_has_no_live_platforms(curation, snapshots):
     curation.stations.stations["clayDrumm"].platforms = [Platform(id="SF:99999", heading="westbound")]
     result = validate(curation, snapshots)
     assert only(result.warnings, "station-has-no-live-platforms").station == "clayDrumm"
-    assert only(result.warnings, "platform-not-in-snapshot").platform == "SF:99999"
+    assert only(result.warnings, "stop-not-in-snapshot").stop == "SF:99999"
     # SF:14015 is free again, so it joins the review queue.
-    assert {i.platform for i in result.warnings if i.code == "unassigned-stop"} == {"SF:14015", "SF:15418"}
+    assert {i.stop for i in result.warnings if i.code == "unassigned-stop"} == {"SF:14015", "SF:15418"}
     assert result.errors == []
 
 
@@ -185,15 +185,15 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
     assert set(codes(result.errors)) == {
         "duplicate-station-id",
         "former-id-collides",
-        "platform-in-two-stations",
-        "platform-listed-twice",
-        "platform-assigned-and-ignored",
+        "stop-in-two-stations",
+        "stop-listed-twice",
+        "stop-assigned-and-ignored",
         "unknown-station",
         "indoor-transfer-not-reciprocated",
         "station-has-no-platforms",
     }
     assert set(codes(result.warnings)) == {
-        "platform-not-in-snapshot",
+        "stop-not-in-snapshot",
         "station-has-no-live-platforms",
         "unassigned-stop",
         "unknown-line-override",
@@ -210,3 +210,42 @@ def test_output_is_deterministic(curation, snapshots):
     first = validate(curation, snapshots)
     again = validate(curation.model_copy(deep=True), snapshots)
     assert first == again
+
+
+# MARK: - Platforms of several stops
+
+
+def test_an_extra_stop_counts_as_the_station_s(curation, snapshots):
+    from app.models.curation import Platform
+
+    church = curation.stations.stations["churchMarket"]
+    church.platforms = [
+        Platform(id="SF:17073", heading="northbound", stops=["SF:18059"]),
+        *[p for p in church.platforms if p.id not in ("SF:17073", "SF:18059")],
+    ]
+    result = validate(curation, snapshots)
+    assert result.errors == []
+    assert "SF:18059" not in {i.stop for i in result.warnings if i.code == "unassigned-stop"}
+
+    # Its own id repeated, or claimed by another station, is the same error as a
+    # platform listed twice or in two stations.
+    church.platforms[0].stops = ["SF:18059", "SF:17073"]
+    assert only(validate(curation, snapshots).errors, "stop-listed-twice").stop == "SF:17073"
+    church.platforms[0].stops = ["SF:18059", "SF:15731"]  # Montgomery's
+    issue = only(validate(curation, snapshots).errors, "stop-in-two-stations")
+    assert (issue.station, issue.stop) == ("montgomery", "SF:15731")
+
+
+def test_a_platform_whose_stops_are_far_apart_is_a_warning(curation, snapshots):
+    from app.models.curation import Platform
+
+    church = curation.stations.stations["churchMarket"]
+    # The fixture's Church St stops are across the street from each other, 27 m
+    # apart, and SF:15661 is 25.3 m away on Market: none of these is one shelter.
+    church.platforms = [
+        Platform(id="SF:17073", heading="northbound", stops=["SF:18059", "SF:15661"]),
+        *[p for p in church.platforms if p.id not in ("SF:17073", "SF:18059", "SF:15661")],
+    ]
+    result = validate(curation, snapshots)
+    assert result.errors == []
+    assert [i.stop for i in result.warnings if i.code == "platform-stops-far-apart"] == ["SF:18059", "SF:15661"]

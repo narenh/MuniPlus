@@ -12,16 +12,24 @@ Editorial fields (``note``, ``verified``) are not part of the public API.
 from typing import Literal
 
 from .base import Wire
-from .ids import Color, Heading, LineId, Mode, Operator, PlatformId, ShapeId, StationId, SubwayId, TransferMode
+from .ids import Color, Heading, LineId, Mode, Operator, StopId, ShapeId, StationId, SubwayId, TransferMode
 
 # MARK: - Stations
 
 
 class PlatformSummary(Wire):
-    id: PlatformId
+    """One place a rider stands. Usually one 511 stop; where 511 numbers one place
+    more than once, all of them, and everything about the platform (its lines,
+    its arrivals) is the union of its stops'."""
+
+    id: StopId
+    """The platform's primary stop."""
     heading: Heading
     lines: list[LineId]
-    """Derived from 511's stop patterns."""
+    """Every line that stops at any of its stops. Derived from 511's stop patterns."""
+    stops: list[StopId]
+    """Its stops in 511's data, the primary first. Arrivals asked for by any of
+    them are the whole platform's."""
 
 
 class StationSummary(Wire):
@@ -50,9 +58,10 @@ class PlatformDetail(PlatformSummary):
     name: str | None
     """Signage ("Platform 1"), where curated."""
     stop_name: str
-    """511's name for the stop."""
+    """511's name for the primary stop."""
     lat: float
     lon: float
+    """The centroid of its stops, which are metres apart where there are several."""
 
 
 class TransferOut(Wire):
@@ -105,11 +114,11 @@ class Direction(Wire):
     stations: list[StationId]
     """The most-run pattern in this direction, mapped to stations, in order. Its
     first and last entries are the line's terminals in this direction."""
-    platforms: list[PlatformId]
-    """The same pattern as platforms. Stops no station claims are left out."""
+    stops: list[StopId]
+    """The same pattern as stops. Stops no station claims are left out."""
     shape: ShapeId | None = None
     """The path this pattern drives, a key into ``GET /api/shapes``. None when the
-    snapshot has no shape for it; draw through ``platforms`` instead."""
+    snapshot has no shape for it; draw through ``stops`` instead."""
 
 
 class LineDetail(LineSummary):
@@ -151,8 +160,10 @@ class ArrivalsResponse(Wire):
     fetched_at: int | None
     """When the TripUpdates feed behind this answer came back from 511. Null before
     the first successful fetch."""
-    platforms: dict[PlatformId, list[Arrival]]
-    """Every requested platform is present; one with nothing coming is an empty list."""
+    platforms: dict[StopId, list[Arrival]]
+    """Keyed by each id asked for. Every one is present, as an empty list when
+    nothing is coming. An id may be any stop of a platform: the answer is the
+    whole platform's, merged across its stops."""
 
 
 VehicleStatus = Literal["incomingAt", "stoppedAt", "inTransitTo"]
@@ -171,7 +182,7 @@ class Vehicle(Wire):
     with no bearing, and the latter is far more common."""
     speed: float | None
     """Metres per second. Null where 511 sends 0 for the same reason."""
-    stop: PlatformId | None
+    stop: StopId | None
     status: VehicleStatus | None
     reported_at: int
 
@@ -193,9 +204,10 @@ class Alert(Wire):
     description: str
     active_periods: list[ActivePeriod]
     lines: list[LineId]
-    platforms: list[PlatformId]
+    stops: list[StopId]
+    """As 511 names them."""
     stations: list[StationId]
-    """Resolved from ``platforms`` through curation."""
+    """Resolved from ``stops`` through curation."""
     url: str | None
 
 

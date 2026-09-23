@@ -8,7 +8,7 @@ from pydantic import TypeAdapter, ValidationError
 
 from app.models import files
 from app.models.curation import Curation, Platform, Station, StationsFile
-from app.models.ids import LineId, PlatformId, StationId
+from app.models.ids import LineId, StopId, StationId
 
 FIXTURE = Path(__file__).parent / "fixtures" / "transit"
 
@@ -18,14 +18,14 @@ FIXTURE = Path(__file__).parent / "fixtures" / "transit"
 
 @pytest.mark.parametrize("value", ["SF:16992", "SF:L", "SF:5R", "SF:LOWL", "BA:12", "BA:EMBR", "CT:70011"])
 def test_refs_accept(value):
-    TypeAdapter(PlatformId).validate_python(value)
+    TypeAdapter(StopId).validate_python(value)
     TypeAdapter(LineId).validate_python(value)
 
 
 @pytest.mark.parametrize("value", ["16992", "sf:16992", "SF:", ":16992", "SF:16992,16993", "SF:a:b", "SF:a/b", "SF: 1"])
 def test_refs_reject(value):
     with pytest.raises(ValidationError):
-        TypeAdapter(PlatformId).validate_python(value)
+        TypeAdapter(StopId).validate_python(value)
 
 
 @pytest.mark.parametrize("value", ["embarcadero", "churchMarket", "500Parnassus", "3801SanBruno"])

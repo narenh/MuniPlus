@@ -16,7 +16,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from app.models.api import Problem
-from app.models.ids import LineId, PlatformId, StationId
+from app.models.ids import LineId, StopId, StationId
 
 from .state import Realtime
 
@@ -25,7 +25,7 @@ NO_STORE = {"Cache-Control": "no-store"}
 its own on top would add a second, invisible staleness (the Worker's reasoning)."""
 
 _ADAPTERS: dict[str, TypeAdapter] = {
-    "platform": TypeAdapter(PlatformId),
+    "platform": TypeAdapter(StopId),
     "line": TypeAdapter(LineId),
     "station": TypeAdapter(StationId),
 }

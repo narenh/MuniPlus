@@ -7,7 +7,7 @@
 
 import {
   store, subscribe, lineById, allLines, lineMatches, filteringModes, esc, upstream,
-  derivedPlatform, ownerOf, stationById,
+  derivedStop, ownerOf, stationById,
 } from './store.js';
 import { api } from './api.js';
 import { map, claimClicks, LAYER_IDS } from './map.js';
@@ -379,10 +379,10 @@ function updatePopup(pos) {
 function popupHtml(v) {
   const ln = lineById(v.line);
   const dir = (ln?.directions || []).find(d => d.direction === v.direction);
-  const stop = v.stop ? derivedPlatform(v.stop) : null;
+  const stop = v.stop ? derivedStop(v.stop) : null;
   const sid = v.stop ? ownerOf(v.stop) : null;
   const station = sid ? stationById(sid) : null;
-  const stopName = stop?.stopName || (v.stop ? upstream(v.stop) : '');
+  const stopName = stop?.name || (v.stop ? upstream(v.stop) : '');
   // The age now, not at the fetch: the server's fetch time plus the time since
   // this page received it, so a wrong clock in the browser cannot skew it.
   const age = res?.fetchedAt

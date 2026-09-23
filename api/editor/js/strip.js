@@ -22,13 +22,13 @@ export function initStrip({ onPick, onLineDetails }) {
 }
 
 /**
- * A direction's platforms, grouped into consecutive runs owned by the same
+ * A direction's stops, grouped into consecutive runs owned by the same
  * station: `[{ sid, pids }]`. The server's `stations` list drops the same
- * repeats, so this is that list with the platforms each stop used.
+ * repeats, so this is that list with the stops each station contributed.
  */
-export function stopsOf(dir) {
+export function runsOf(dir) {
   const out = [];
-  for (const pid of dir.platforms) {
+  for (const pid of dir.stops) {
     const sid = ownerOf(pid);
     const last = out[out.length - 1];
     if (last && last.sid === sid) last.pids.push(pid);
@@ -73,7 +73,7 @@ export function renderStrip() {
   dirs.forEach((dir, di) => {
     const head = document.createElement('div');
     head.className = 'dir-head' + (di === store.activeDir ? ' on' : '');
-    const stops = stopsOf(dir);
+    const stops = runsOf(dir);
     head.innerHTML = `
       <span class="dir-arrow">→</span>
       <span class="dir-sign">${esc(dir.headsign || `Direction ${dir.direction}`)}</span>

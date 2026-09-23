@@ -44,12 +44,12 @@ def run(snapshot, cerf, full, seed):
             kept[sid] = st.model_copy(update={"platforms": platforms})
     curation = full.model_copy(update={"stations": StationsFile(subways=full.stations.subways, stations=kept)})
     proposals = port.propose(snapshot, curation, sorted(dropped))
-    assert sorted(p.platform for p in proposals) == sorted(dropped)
+    assert sorted(p.stop for p in proposals) == sorted(dropped)
 
     minted = collections.defaultdict(set)
     for p in proposals:
         if p.new_station:
-            minted[p.new_station.id].add(p.platform)
+            minted[p.new_station.id].add(p.stop)
     removed = collections.defaultdict(set)
     for s in dropped:
         if home[s] not in kept:
@@ -57,18 +57,18 @@ def run(snapshot, cerf, full, seed):
 
     misses, back, reminted = {}, set(), set()
     for p in proposals:
-        old = home[p.platform]
+        old = home[p.stop]
         if old in kept:
             if p.station != old:
-                misses[p.platform] = p.station or f"new:{p.new_station.id}"
+                misses[p.stop] = p.station or f"new:{p.new_station.id}"
         elif (p.new_station is None or p.new_station.name != full.stations.stations[old].name
               or minted[p.new_station.id] != removed[old]):
-            misses[p.platform] = p.station or f"new:{p.new_station.id}"
+            misses[p.stop] = p.station or f"new:{p.new_station.id}"
         else:
             back.add(old)
             if p.new_station.id == old:
                 reminted.add(old)
-    headings = {p.platform: p.heading for p in proposals if p.heading != heading[p.platform]}
+    headings = {p.stop: p.heading for p in proposals if p.heading != heading[p.stop]}
     return len(dropped), len(removed), misses, headings, back, reminted
 
 

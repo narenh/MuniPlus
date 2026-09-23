@@ -40,11 +40,11 @@ def test_state(world):
     assert state["curation"]["lines"]["SF:F"]["mode"] == "streetcar"
     assert set(state["snapshots"]) == {"SF"}
     assert state["snapshots"]["SF"]["meta"]["operator"] == "SF"
-    assert set(state["derived"]) == {"stations", "platforms", "lines"}
+    assert set(state["derived"]) == {"stations", "stops", "lines"}
     assert state["derived"]["stations"]["castroPlaza"]["lat"] is not None
     assert state["validation"]["errors"] == []
     assert {i["code"] for i in state["validation"]["warnings"]} <= {
-        "platform-not-in-snapshot", "station-has-no-live-platforms", "unassigned-stop",
+        "stop-not-in-snapshot", "station-has-no-live-platforms", "unassigned-stop",
         "unknown-line-override", "unknown-line",
     }  # fmt: skip
     assert state["repo"] == {"branch": "main", "head": world.seed, "dirty": False, "ahead": 0, "behind": 0}
@@ -78,7 +78,7 @@ def test_validate_an_unsaved_curation_with_an_error(world):
     res = world.client.post("/editor/api/validate", json={"curation": curation})
     assert res.status_code == 200, res.text
     body = res.json()
-    assert [i["code"] for i in body["validation"]["errors"]] == ["platform-in-two-stations"]
+    assert [i["code"] for i in body["validation"]["errors"]] == ["stop-in-two-stations"]
     # Derived for the unsaved curation, where the first claimant in id order
     # keeps a doubly-listed platform: Castro Plaza keeps it, Clay & Drumm is as was.
     before = world.state()["derived"]["stations"]

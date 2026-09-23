@@ -4,7 +4,7 @@ Three lists, each the list form of one validator warning, so the queue and the
 editor's warnings can never disagree about what needs looking at:
 
 * ``unassigned``: ``unassigned-stop``, with a proposal from ``app.ingest.propose``;
-* ``deadPlatforms``: ``platform-not-in-snapshot``;
+* ``deadPlatforms``: ``stop-not-in-snapshot``;
 * ``deadStations``: ``station-has-no-live-platforms``.
 
 Accepting a proposal has no endpoint: the editor applies it to its curation and
@@ -24,7 +24,7 @@ from ..models.ids import operator_of
 from ..models.snapshot import Snapshot
 from .api import UNAUTHORIZED, SessionRoute
 from .errors import json_response
-from .models import DeadPlatform, DeadStation, ReviewResponse, UnassignedStop
+from .models import DeadStop, DeadStation, ReviewResponse, UnassignedStop
 from .state import current_network, editor_of, loaded
 
 router = APIRouter(prefix="/editor/api", route_class=SessionRoute, tags=["editor"])
@@ -60,23 +60,23 @@ def build_review(
     return ReviewResponse(
         version=version,
         unassigned=unassigned_stops(curation, snapshots, network, codes["unassigned-stop"]),
-        dead_platforms=dead_platforms(curation, codes["platform-not-in-snapshot"]),
+        dead_stops=dead_stops(curation, codes["stop-not-in-snapshot"]),
         dead_stations=dead_stations(curation, codes["station-has-no-live-platforms"]),
     )
 
 
-REVIEW_CODES = ("unassigned-stop", "platform-not-in-snapshot", "station-has-no-live-platforms")
+REVIEW_CODES = ("unassigned-stop", "stop-not-in-snapshot", "station-has-no-live-platforms")
 
 
 def codes_of(validation: Validation) -> dict[str, set[str]]:
-    """What each review warning names: a platform id for the first two (the dead
-    platform's station is in the curation), a station id for the last."""
+    """What each review warning names: a stop id for the first two (a dead stop's
+    station is in the curation), a station id for the last."""
     out: dict[str, set[str]] = {code: set() for code in REVIEW_CODES}
     for issue in validation.warnings:
         if issue.code == "station-has-no-live-platforms":
             out[issue.code].add(issue.station)
         elif issue.code in out:
-            out[issue.code].add(issue.platform)
+            out[issue.code].add(issue.stop)
     return out
 
 
@@ -84,11 +84,11 @@ def unassigned_stops(
     curation: Curation,
     snapshots: Mapping[str, Snapshot],
     network: Network,
-    platforms: set[str],
+    unassigned: set[str],
 ) -> list[UnassignedStop]:
-    derived = network.derived().platforms
+    derived = network.derived().stops
     by_operator: dict[str, list[str]] = {}
-    for pid in sorted(platforms):
+    for pid in sorted(unassigned):
         by_operator.setdefault(operator_of(pid), []).append(pid)
     out = []
     for operator, pids in sorted(by_operator.items()):
@@ -97,38 +97,40 @@ def unassigned_stops(
         # stops it is given, so two new poles at one corner get one new station,
         # and two corners that would mint the same id are numbered consistently.
         for proposal in propose(snapshot, curation, pids):
-            stop = snapshot.stops.root[proposal.platform]
+            stop = snapshot.stops.root[proposal.stop]
             out.append(
                 UnassignedStop(
-                    platform=proposal.platform,
-                    stop_name=stop.name,
+                    stop=proposal.stop,
+                    name=stop.name,
                     lat=stop.lat,
                     lon=stop.lon,
-                    lines=derived[proposal.platform].lines if proposal.platform in derived else [],
+                    lines=derived[proposal.stop].lines if proposal.stop in derived else [],
                     proposal=proposal,
                 )
             )
-    return sorted(out, key=lambda u: u.platform)
+    return sorted(out, key=lambda u: u.stop)
 
 
-def dead_platforms(curation: Curation, platforms: set[str]) -> list[DeadPlatform]:
+def dead_stops(curation: Curation, dead: set[str]) -> list[DeadStop]:
     out = []
     seen: set[str] = set()
     for sid, station in sorted(curation.stations.stations.items()):
         for platform in station.platforms:
-            # A platform listed twice is an error the validator reports; here it is
-            # shown once, under the first station, as the network does.
-            if platform.id in platforms and platform.id not in seen:
-                seen.add(platform.id)
-                out.append(
-                    DeadPlatform(platform=platform.id, station=sid, station_name=station.name, heading=platform.heading)
-                )
+            for pid in platform.all_stops:
+                # A stop listed twice is an error the validator reports; here it is
+                # shown once, under the first station, as the network does.
+                if pid in dead and pid not in seen:
+                    seen.add(pid)
+                    out.append(DeadStop(
+                        stop=pid, platform=platform.id, station=sid, station_name=station.name,
+                        heading=platform.heading,
+                    ))
     return out
 
 
 def dead_stations(curation: Curation, stations: set[str]) -> list[DeadStation]:
     return [
-        DeadStation(station=sid, name=station.name, platforms=[p.id for p in station.platforms])
+        DeadStation(station=sid, name=station.name, stops=[s for p in station.platforms for s in p.all_stops])
         for sid, station in sorted(curation.stations.stations.items())
         if sid in stations
     ]

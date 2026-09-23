@@ -41,12 +41,12 @@ def test_detail(client):
     f = body["line"]
     assert (f["name"], f["mode"]) == ("F Market & Wharves", "streetcar")
     assert f["directions"] == [
-        {"direction": 0, "headsign": "Castro", "stations": ["churchMarket"], "platforms": ["SF:15661"], "shape": None},
+        {"direction": 0, "headsign": "Castro", "stations": ["churchMarket"], "stops": ["SF:15661"], "shape": None},
         {
             "direction": 1,
             "headsign": "Fisherman's Wharf",
             "stations": ["castroPlaza", "churchMarket"],
-            "platforms": ["SF:13311", "SF:15662"],
+            "stops": ["SF:13311", "SF:15662"],
             "shape": "SF:F1",
         },
     ]
