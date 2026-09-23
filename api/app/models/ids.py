@@ -28,6 +28,9 @@ REF_PATTERN = rf"^{OPERATOR_PATTERN}:[^,:/\s]+$"
 Operator = Annotated[str, StringConstraints(pattern=rf"^{OPERATOR_PATTERN}$")]
 PlatformId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
 LineId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
+ShapeId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
+"""A GTFS ``shape_id``, qualified like the others (``SF:103``): shape ids are only
+unique within one operator's feed."""
 StationId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9]+$")]
 SubwayId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9]+$")]
 

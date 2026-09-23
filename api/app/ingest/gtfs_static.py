@@ -22,7 +22,7 @@ from collections.abc import Iterator
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
-from app.models.ids import ref
+from app.models.ids import ref, upstream_of
 from app.models.snapshot import (
     Pattern,
     Snapshot,
@@ -30,6 +30,7 @@ from app.models.snapshot import (
     SnapshotLines,
     SnapshotMeta,
     SnapshotPatterns,
+    SnapshotShapes,
     SnapshotStop,
     SnapshotStops,
 )
@@ -55,6 +56,7 @@ def build_snapshot(gtfs_zip: Path, lines_json: Path, operator: str, fetched_at: 
         service_from, service_to = _service_period(zf)
         days = service_days(zf, service_from, service_to)
         patterns = _patterns(zf, routes, stops, days, operator)
+        shapes = _shapes(zf, patterns, operator)
 
     meta = SnapshotMeta(
         operator=operator,
@@ -66,7 +68,7 @@ def build_snapshot(gtfs_zip: Path, lines_json: Path, operator: str, fetched_at: 
         source=SOURCE,
         sha256=hashlib.sha256(gtfs_zip.read_bytes()).hexdigest(),
     )
-    return Snapshot(meta=meta, stops=stops, lines=lines, patterns=patterns)
+    return Snapshot(meta=meta, stops=stops, lines=lines, patterns=patterns, shapes=shapes)
 
 
 # MARK: - /transit/lines
@@ -174,7 +176,7 @@ def _patterns(
     13 days the same as one that runs 82, and 511's SF feed has exactly that
     (weekday services 79714 and 78968), which picks a different most-run pattern
     for the TBUS."""
-    trips: dict[str, tuple[str, int, str, int]] = {}
+    trips: dict[str, tuple[str, int, str, int, str]] = {}
     for row in _rows(zf, "trips.txt"):
         route_id = row["route_id"]
         if route_id not in routes:
@@ -187,7 +189,10 @@ def _patterns(
         direction = row.get("direction_id", "")
         if direction not in ("0", "1"):
             raise GtfsError(f"trip {row['trip_id']} has direction_id {direction!r}")
-        trips[row["trip_id"]] = (route_id, int(direction), row.get("trip_headsign", ""), days[service_id])
+        # shape_id is optional in GTFS. Blank means this trip has no drawn path, and
+        # its pattern falls back to a line through the stops.
+        shape = row.get("shape_id", "").strip()
+        trips[row["trip_id"]] = (route_id, int(direction), row.get("trip_headsign", ""), days[service_id], shape)
 
     # stop_times.txt is 73 MB for SF (1,302,039 rows), so it is streamed with a plain
     # reader rather than loaded. Rows are grouped by trip in 511's file, but GTFS does
@@ -214,7 +219,8 @@ def _patterns(
             sequences[trip_id].append((int(row[seq_col]), platform))
 
     groups: dict[tuple[str, int, tuple[str, ...]], Counter[str]] = defaultdict(Counter)
-    for trip_id, (route_id, direction, headsign, runs) in trips.items():
+    shapes: dict[tuple[str, int, tuple[str, ...]], Counter[str]] = defaultdict(Counter)
+    for trip_id, (route_id, direction, headsign, runs, shape) in trips.items():
         seq = sequences.get(trip_id)
         if not seq:
             raise GtfsError(f"trip {trip_id} has no stop times")
@@ -224,7 +230,10 @@ def _patterns(
         # A trip whose service runs on no date in the period is not part of it. It
         # is still validated above: a malformed trip is a feed problem either way.
         if runs:
-            groups[(route_id, direction, tuple(p for _, p in seq))][headsign] += runs
+            key = (route_id, direction, tuple(p for _, p in seq))
+            groups[key][headsign] += runs
+            if shape:
+                shapes[key][shape] += runs
 
     out: dict[str, list[Pattern]] = defaultdict(list)
     for (route_id, direction, seq), headsigns in groups.items():
@@ -233,10 +242,52 @@ def _patterns(
         # goes to the lexicographically first so a rebuild of the same zip is
         # byte-identical.
         headsign = min(headsigns.items(), key=lambda kv: (-kv[1], kv[0]))[0]
+        # Likewise the shape: trips stopping at the same stops can still drive
+        # different paths (a detour that skips no stop), and the one most run is
+        # the one to draw.
+        drawn = shapes.get((route_id, direction, seq))
+        shape = ref(operator, min(drawn.items(), key=lambda kv: (-kv[1], kv[0]))[0]) if drawn else None
         out[ref(operator, route_id)].append(
-            Pattern(direction=direction, headsign=headsign, trips=headsigns.total(), stops=list(seq))
+            Pattern(direction=direction, headsign=headsign, trips=headsigns.total(), stops=list(seq), shape=shape)
         )
     return SnapshotPatterns(dict(out))
+
+
+# MARK: - Shapes
+
+
+def _shapes(zf: zipfile.ZipFile, patterns: SnapshotPatterns, operator: str) -> SnapshotShapes:
+    """The path of every shape a pattern names, in ``shape_pt_sequence`` order.
+
+    A pattern naming a shape ``shapes.txt`` does not have raises, as a trip at an
+    unknown stop does: the feed contradicts itself. A feed with no shapes at all is
+    allowed (GTFS makes them optional) and gives patterns with none.
+    """
+    wanted = {upstream_of(p.shape) for line in patterns.root.values() for p in line if p.shape}
+    if not wanted:
+        return SnapshotShapes()
+    if not _has(zf, "shapes.txt"):
+        raise GtfsError("trips.txt names shapes, but the feed has no shapes.txt")
+
+    points: dict[str, list[tuple[int, float, float]]] = defaultdict(list)
+    for row in _rows(zf, "shapes.txt"):
+        shape_id = row["shape_id"]
+        if shape_id in wanted:
+            # Like stop_sequence, shape_pt_sequence need only increase, and SFMTA's
+            # own feed skips numbers (1, 3, ...), so it is sorted, never indexed.
+            seq = int(row["shape_pt_sequence"])
+            points[shape_id].append((seq, float(row["shape_pt_lon"]), float(row["shape_pt_lat"])))
+
+    out = {}
+    for shape_id in wanted:
+        pts = points.get(shape_id)
+        if not pts:
+            raise GtfsError(f"trips.txt names shape {shape_id}, which shapes.txt does not list")
+        pts.sort()
+        if any(a[0] == b[0] for a, b in zip(pts, pts[1:])):
+            raise GtfsError(f"shape {shape_id} repeats a shape_pt_sequence")
+        out[ref(operator, shape_id)] = [(lon, lat) for _, lon, lat in pts]
+    return SnapshotShapes(out)
 
 
 # MARK: - Service period

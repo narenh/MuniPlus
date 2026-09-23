@@ -12,7 +12,7 @@ Editorial fields (``note``, ``verified``) are not part of the public API.
 from typing import Literal
 
 from .base import Wire
-from .ids import Color, Heading, LineId, Mode, Operator, PlatformId, StationId, SubwayId, TransferMode
+from .ids import Color, Heading, LineId, Mode, Operator, PlatformId, ShapeId, StationId, SubwayId, TransferMode
 
 # MARK: - Stations
 
@@ -107,6 +107,9 @@ class Direction(Wire):
     first and last entries are the line's terminals in this direction."""
     platforms: list[PlatformId]
     """The same pattern as platforms. Stops no station claims are left out."""
+    shape: ShapeId | None = None
+    """The path this pattern drives, a key into ``GET /api/shapes``. None when the
+    snapshot has no shape for it; draw through ``platforms`` instead."""
 
 
 class LineDetail(LineSummary):
@@ -116,6 +119,13 @@ class LineDetail(LineSummary):
 class LineDetailResponse(Wire):
     version: str
     line: LineDetail
+
+
+class ShapesResponse(Wire):
+    shapes: dict[ShapeId, list[tuple[float, float]]]
+    """Every shape a line direction names, as ``[lon, lat]`` points: a GeoJSON
+    LineString's ``coordinates``, ready to draw. Simplified to within half a metre
+    of the feed's path (``app.data.shapes``)."""
 
 
 # MARK: - Realtime

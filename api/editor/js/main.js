@@ -50,6 +50,18 @@ const LAYER_TOOLS = [
 const MODE_LABEL = { metro: 'Metro', streetcar: 'Streetcar', cableway: 'Cableway', bus: 'Bus' };
 const modeLabel = m => MODE_LABEL[m] || m.charAt(0).toUpperCase() + m.slice(1);
 
+// ============================================================ shapes
+/** The lines' real paths. Not awaited: the map draws through the platforms
+ *  first, and a failure here leaves it that way rather than blocking boot. */
+async function loadShapes() {
+  try {
+    store.shapes = (await api.shapes()).shapes;
+    refresh('lines');
+  } catch (err) {
+    console.warn('No line shapes; drawing through platforms instead.', err);
+  }
+}
+
 // ============================================================ boot
 (async function boot() {
   try {
@@ -61,6 +73,7 @@ const modeLabel = m => MODE_LABEL[m] || m.charAt(0).toUpperCase() + m.slice(1);
     $('boot-msg').textContent = 'Drawing the network…';
     await initMap('map');
 
+    loadShapes();
     buildRail();
     buildFilters();
     buildTools();

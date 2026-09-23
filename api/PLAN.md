@@ -50,7 +50,8 @@ curation/ignored.json    { platformId: {note} }       511 stops deliberately lef
 snapshot/SF/meta.json    service period, fetch time, sha256 of the GTFS zip
 snapshot/SF/stops.json   { platformId: {name, lat, lon} }
 snapshot/SF/lines.json   { lineId: {shortName, longName, mode, routeType, color, textColor} }
-snapshot/SF/patterns.json { lineId: [{direction, headsign, trips, stops[]}] }
+snapshot/SF/patterns.json { lineId: [{direction, headsign, trips, stops[], shape?}] }
+snapshot/SF/shapes.json  { shapeId: [[lon, lat], ...] }   only shapes a pattern names
 ```
 
 Models: `app/models/curation.py`, `app/models/snapshot.py`. Reading and writing:
@@ -59,7 +60,9 @@ format is deterministic (sorted maps, unset fields omitted, two-space indent), s
 a round trip is byte-identical and an unchanged save writes nothing.
 
 A snapshot refresh for SF is two 511 calls: the GTFS zip (`/transit/datafeeds`)
-and `/transit/lines` (for `mode`, which the zip lacks). Checked 2026-09-22:
+and `/transit/lines` (for `mode`, which the zip lacks). Shapes come from the same
+zip's `shapes.txt`: no extra call. A pattern's `shape` is the one most of its
+trips drive; a feed without shapes gives none and the map draws through the stops. Checked 2026-09-22:
 511's `stop_id` equals `stop_code` for all 3,240 SF stops, and matches realtime
 `stop_id`s. All 68 lines carry colours.
 
@@ -114,7 +117,8 @@ Response models: `app/models/api.py`. camelCase. Realtime times are epoch second
 | `GET /api/stations` | summaries + `formerIds` map + `version`; ETag = `version`, `Cache-Control: no-cache` |
 | `GET /api/stations/{id}` | detail; a former id → `308` to the current one. **No ETag**: its `alerts` change without the version changing |
 | `GET /api/lines` | includes `mode`, `hidden`, `replaces`; ETag = `version`. Hidden lines are included with the flag set |
-| `GET /api/lines/{id}` | + `directions` |
+| `GET /api/lines/{id}` | + `directions`, each naming its `shape` (or null) |
+| `GET /api/shapes` | every shape a direction names, `[lon, lat]`, simplified to 0.5 m. ETag = hash of the shapes, so it survives curation edits and changes only with a snapshot refresh. Not in `EditorState` |
 | `GET /api/arrivals?platforms=a,b&limit=6` | 1–50 platforms; malformed id → 400; unknown id → empty list |
 | `GET /api/vehicles?line=a,b` | `line` optional; in-service vehicles only |
 | `GET /api/alerts?line=&station=&platforms=` | active now |

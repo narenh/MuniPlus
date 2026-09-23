@@ -1,6 +1,6 @@
-"""``/api/lines`` and ``/api/lines/{id}`` against tests/fixtures/transit."""
+"""``/api/lines``, ``/api/lines/{id}`` and ``/api/shapes`` against tests/fixtures/transit."""
 
-from app.models.api import LineDetailResponse, LinesResponse
+from app.models.api import LineDetailResponse, LinesResponse, ShapesResponse
 
 VERSION = "0123456789abcdef0123456789abcdef01234567"
 
@@ -41,12 +41,13 @@ def test_detail(client):
     f = body["line"]
     assert (f["name"], f["mode"]) == ("F Market & Wharves", "streetcar")
     assert f["directions"] == [
-        {"direction": 0, "headsign": "Castro", "stations": ["churchMarket"], "platforms": ["SF:15661"]},
+        {"direction": 0, "headsign": "Castro", "stations": ["churchMarket"], "platforms": ["SF:15661"], "shape": None},
         {
             "direction": 1,
             "headsign": "Fisherman's Wharf",
             "stations": ["castroPlaza", "churchMarket"],
             "platforms": ["SF:13311", "SF:15662"],
+            "shape": "SF:F1",
         },
     ]
 
@@ -67,3 +68,29 @@ def test_unknown_line(client):
         r = client.get(f"/api/lines/{line_id}")
         assert r.status_code == 404
         assert r.json() == {"error": "not-found", "message": f"No line {line_id!r}."}
+
+
+# MARK: - Shapes
+
+
+def test_shapes(client):
+    r = client.get("/api/shapes")
+    assert r.status_code == 200
+    body = r.json()
+    ShapesResponse.model_validate(body)
+    # The fixture's point halfway along Market is on the line and is dropped; the
+    # corner at Castro is not.
+    assert body == {
+        "shapes": {
+            "SF:F1": [[-122.434979, 37.762576], [-122.435139, 37.76262], [-122.429214, 37.76725]],
+        }
+    }
+
+
+def test_shapes_etag_is_the_shapes_not_the_version(client):
+    r = client.get("/api/shapes")
+    etag = r.headers["etag"]
+    assert etag != f'"{VERSION}"'
+    assert r.headers["cache-control"] == "no-cache"
+    assert client.get("/api/shapes", headers={"If-None-Match": etag}).status_code == 304
+    assert client.get("/api/shapes", headers={"If-None-Match": f'"{VERSION}"'}).status_code == 200

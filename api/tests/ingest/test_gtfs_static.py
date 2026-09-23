@@ -305,3 +305,87 @@ def test_rebuilding_the_same_zip_is_byte_identical(tmp_path):
 def test_stop_names_are_re_cased(raw, tidy):
     from app.names import tidy_stop_name
     assert tidy_stop_name(raw) == tidy
+
+
+# MARK: - Shapes
+
+# t1-t4 share a pattern; three of them drive shape A and one drives B, so A is the
+# pattern's. t6 has none (a blank shape_id). t5 and t7 drive shape B. Shape C is in
+# shapes.txt but no pattern draws it.
+SHAPED_TRIPS = """\
+route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
+F,wk,t1,Fisherman's Wharf,0,A
+F,wk,t2,Wharf,0,A
+F,wk,t3,Wharf,0,B
+F,wk,t4,Fisherman's Wharf,0,A
+F,wk,t5,Wharf,0,B
+F,wk,t6,Castro,1,
+5,wk,t7,Ocean Beach,0,B
+"""
+
+# Out of order, and with sequence numbers that skip and would sort wrongly as
+# strings ("10" < "9").
+SHAPES = """\
+shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
+A,37.788,-122.401,10,
+A,37.79,-122.39,1,
+A,37.789,-122.40,9,
+B,37.787,-122.402,1,
+B,37.788,-122.401,2,
+C,37.7,-122.5,1,
+"""
+
+
+def pattern_shapes(snapshot):
+    return {(line, p.direction, len(p.stops)): p.shape for line, ps in snapshot.patterns.root.items() for p in ps}
+
+
+def test_each_pattern_takes_its_most_run_shape(tmp_path):
+    snapshot = build(tmp_path, trips=SHAPED_TRIPS, shapes=SHAPES)
+    assert pattern_shapes(snapshot) == {
+        ("SF:F", 0, 3): "SF:A",
+        ("SF:F", 0, 2): "SF:B",
+        ("SF:F", 1, 3): None,
+        ("SF:5", 0, 3): "SF:B",
+    }
+
+
+def test_shapes_are_kept_in_sequence_and_only_when_drawn(tmp_path):
+    shapes = build(tmp_path, trips=SHAPED_TRIPS, shapes=SHAPES).shapes.root
+    assert shapes == {
+        "SF:A": [(-122.39, 37.79), (-122.40, 37.789), (-122.401, 37.788)],
+        "SF:B": [(-122.402, 37.787), (-122.401, 37.788)],
+    }
+
+
+def test_shape_tie_goes_to_the_first_id(tmp_path):
+    trips = SHAPED_TRIPS.replace("F,wk,t2,Wharf,0,A", "F,wk,t2,Wharf,0,B")
+    assert pattern_shapes(build(tmp_path, trips=trips, shapes=SHAPES))[("SF:F", 0, 3)] == "SF:A"
+
+
+def test_a_feed_without_shapes_has_none(tmp_path):
+    snapshot = build(tmp_path)
+    assert snapshot.shapes.root == {}
+    assert all(p.shape is None for ps in snapshot.patterns.root.values() for p in ps)
+
+
+def test_a_shape_missing_from_shapes_txt_raises(tmp_path):
+    with pytest.raises(GtfsError, match="shape B"):
+        build(tmp_path, trips=SHAPED_TRIPS, shapes="\n".join(SHAPES.splitlines()[:4]) + "\n")
+
+
+def test_shapes_named_without_shapes_txt_raises(tmp_path):
+    with pytest.raises(GtfsError, match="no shapes.txt"):
+        build(tmp_path, trips=SHAPED_TRIPS)
+
+
+def test_a_repeated_shape_sequence_raises(tmp_path):
+    with pytest.raises(GtfsError, match="repeats a shape_pt_sequence"):
+        build(tmp_path, trips=SHAPED_TRIPS, shapes=SHAPES + "B,37.786,-122.403,2,\n")
+
+
+def test_shapes_round_trip_byte_identical(tmp_path):
+    shapes = build(tmp_path, trips=SHAPED_TRIPS, shapes=SHAPES).shapes
+    text = files.dumps(shapes)
+    assert text.splitlines()[:3] == ["{", '  "SF:A": [', "    [-122.39, 37.79],"]
+    assert files.dumps(type(shapes).model_validate(files.loads(text))) == text

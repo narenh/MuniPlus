@@ -19,7 +19,7 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from .curation import Curation, IgnoredFile, LinesFile, StationsFile
-from .snapshot import Snapshot, SnapshotLines, SnapshotMeta, SnapshotPatterns, SnapshotStops
+from .snapshot import Snapshot, SnapshotLines, SnapshotMeta, SnapshotPatterns, SnapshotShapes, SnapshotStops
 
 STATIONS = "curation/stations.json"
 LINES = "curation/lines.json"
@@ -34,12 +34,28 @@ def snapshot_paths(operator: str) -> dict[str, str]:
         "stops": f"{base}/stops.json",
         "lines": f"{base}/lines.json",
         "patterns": f"{base}/patterns.json",
+        "shapes": f"{base}/shapes.json",
     }
 
 
 def dumps(model: BaseModel) -> str:
     data = model.model_dump(mode="json", exclude_defaults=True)
+    if isinstance(model, SnapshotShapes):
+        return _dumps_shapes(data)
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+
+
+def _dumps_shapes(data: dict[str, list[list[float]]]) -> str:
+    """One point per line. The general format would spend four lines on each point
+    (SFMTA's own 2024 feed has ~44,000); this keeps the file a quarter of that while a
+    refresh that re-surveys a stretch of track still diffs as just those points."""
+    if not data:
+        return "{}\n"
+    parts = []
+    for shape_id, points in data.items():
+        body = ",\n".join(f"    {json.dumps(p)}" for p in points)
+        parts.append(f"  {json.dumps(shape_id)}: [\n{body}\n  ]" if points else f"  {json.dumps(shape_id)}: []")
+    return "{\n" + ",\n".join(parts) + "\n}\n"
 
 
 def write_if_changed(path: Path, text: str) -> bool:
@@ -142,13 +158,20 @@ def read_snapshot(root: Path, operator: str) -> Snapshot:
         stops=_read(root, paths["stops"], SnapshotStops),
         lines=_read(root, paths["lines"], SnapshotLines),
         patterns=_read(root, paths["patterns"], SnapshotPatterns),
+        # Absent from snapshots committed before shapes were ingested. Those read as
+        # no shapes, and the map draws through the platforms until the next refresh.
+        shapes=_read(root, paths["shapes"], SnapshotShapes, missing_ok=True),
     )
 
 
 def write_snapshot(root: Path, snapshot: Snapshot) -> list[str]:
     paths = snapshot_paths(snapshot.meta.operator)
     changed = []
-    for key in ("meta", "stops", "lines", "patterns"):
+    for key in paths:
+        if key == "shapes" and not snapshot.shapes.root and not (root / paths[key]).exists():
+            # A feed without shapes, into a snapshot that never had any: an empty
+            # file would say nothing that its absence does not.
+            continue
         if write_if_changed(root / paths[key], dumps(getattr(snapshot, key))):
             changed.append(paths[key])
     return changed

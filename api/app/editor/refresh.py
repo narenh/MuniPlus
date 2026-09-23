@@ -454,7 +454,7 @@ def commit_snapshot(checkout: Checkout, snapshot: Snapshot) -> str | None:
             return None
         before = checkout.head()
         try:
-            # Inside the try: four files are written one by one, and a failure
+            # Inside the try: the files are written one by one, and a failure
             # after the first must not leave the checkout dirty.
             changed = files.write_snapshot(checkout.path, snapshot)
             if not changed:
