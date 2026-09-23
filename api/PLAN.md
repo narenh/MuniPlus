@@ -171,6 +171,9 @@ Editor endpoints (track F), all under `/editor/api/` and all requiring the sessi
 | `GET state` | `EditorState` |
 | `POST validate` | `ValidateRequest` → `ValidateResponse` (validation + derived for the unsaved curation) |
 | `POST save` | `SaveRequest` → `SaveResponse`; `409 conflict` if the rebase does not apply |
+| `GET review` | `ReviewResponse`: unassigned stops with the proposer's suggestion, dead platforms, dead stations. Accepting a proposal is an ordinary curation edit + save |
+| `POST snapshot/fetch` | two 511 calls (GTFS zip, lines); returns `SnapshotFetchResponse` with the drift report; commits nothing. 503 without a key, in fixtures mode, or with under 2 calls of budget left |
+| `POST snapshot/commit` | commits the pending snapshot's `snapshot/<op>/` files through the save path |
 | `GET history` | recent sf-transit commits touching `curation/`: `{commits: [{sha, subject, author, date, url}]}`. No diff endpoint: the URL is the diff |
 
 Error bodies beyond `Problem` live in `app/editor/models.py`: a 422 save is
@@ -209,7 +212,7 @@ dependency says so in its report instead of editing `pyproject.toml`.
 | 2 | **E** frontend on the new model | `editor/` | editor works against `EditorState` |
 | 2 | **F** editor server | `app/editor/`, `app/endpoints/map.py`, `tests/editor/` | rename-a-station makes a one-line commit; an unchanged save makes none |
 | 3 | **H+I** vehicle layer + `/map` | `editor/` | toggle works on both pages; `/map` shows no editing controls |
-| 3 | **J** review queue + snapshot refresh | `app/editor/review.py`, `editor/` (review panel) | unassigned stops can be assigned, created or ignored |
+| 3 | **J** review queue + snapshot refresh | server: `app/editor/{review,refresh}.py` (done). UI: `editor/` review panel + refresh flow | unassigned stops can be assigned, created or ignored; a refresh shows its drift before committing |
 | 4 | docs, freeze notes, Worker `/gtfs` poller off (needs explicit OK) | | |
 
 ## Interfaces between tracks
