@@ -284,6 +284,9 @@ function stationFeatures() {
         color: tint(ls, on),
         active: on ? 1 : 0,
         interchange: ls.length > 1 ? 1 : 0,
+        // An interchange with any line that is not metro is above ground, and is
+        // drawn apart from the metro-only ones (see STATION_PAINT).
+        surface: ls.length > 1 && ls.some(l => !isMetro(l)) ? 1 : 0,
         selected: store.selStation === sid ? 1 : 0,
         // a platform 511 no longer lists: flagged, never removed automatically
         stale: platformsOf(s).some(p => !derivedPlatform(p.id)?.live) ? 1 : 0,
@@ -550,11 +553,19 @@ function addSources() {
 const dimmed = (on, a, b) => ['case', ['==', ['get', 'active'], 1], a, b];
 const isSel = ['==', ['get', 'selected'], 1];
 const isHover = ['boolean', ['feature-state', 'hover'], false];
+const isInterchange = ['==', ['get', 'interchange'], 1];
+const isSurface = ['==', ['get', 'surface'], 1];
 
 /**
- * Station nodes. Metro convention: a station served by more than one line is a
- * white disc with a black ring; a single-line stop is a small dot ringed in
- * that line's colour. Interchanges are drawn larger, as on a real map.
+ * Station nodes, three kinds:
+ *  - an interchange served only by metro lines: a white disc with a black ring,
+ *    the metro convention;
+ *  - an interchange with any bus, streetcar or cable car line, which puts it at
+ *    street level: a black disc with a white ring, so Church & 16th never reads
+ *    as the Church St subway station;
+ *  - a stop on one line: a solid dot in that line's colour, with a thin dark
+ *    edge so it still shows on its own line.
+ * Interchanges are drawn larger, as on a real map.
  *
  * At city zoom SF's 1,805 stations sit closer together than the dots were
  * wide, so the lines drowned under a blanket of rings. Below z14 the dots and
@@ -569,17 +580,21 @@ const STATION_PAINT = {
     14, ['case', ['==', ['get', 'interchange'], 1], 8, 5.2],
     18, ['case', ['==', ['get', 'interchange'], 1], 14, 9]],
   'circle-color': ['case',
-    ['==', ['get', 'interchange'], 1], '#ffffff', '#0a0c12'],
-  'circle-stroke-width': ['interpolate', ['linear'], ['zoom'],
-    10, ['case', isSel, 1.6, 0.6],
-    12, ['case', isSel, 2.4, isHover, 1.6, 0.9],
-    14, ['case', isSel, 4, isHover, 3.2, 2.4]],
-  'circle-stroke-color': ['case',
-    // a white ring on a white disc would have no edge, so a selected
-    // interchange keeps its black ring and is marked by the glow beneath
-    ['==', ['get', 'interchange'], 1], '#05060a',
-    isSel, '#ffffff',
+    isSurface, '#05060a',
+    isInterchange, '#ffffff',
     ['get', 'color']],
+  'circle-stroke-width': ['interpolate', ['linear'], ['zoom'],
+    10, ['case', isSel, 1.6, isInterchange, 0.6, 0.4],
+    12, ['case', isSel, 2.4, isHover, 1.6, isInterchange, 0.9, 0.6],
+    14, ['case', isSel, 4, isHover, 3.2, isInterchange, 2.4, 1.3]],
+  'circle-stroke-color': ['case',
+    // A white ring on a white disc would have no edge, so a selected metro
+    // interchange keeps its black ring and is marked by the glow beneath. A
+    // street-level one's white ring already is the edge.
+    isSurface, '#ffffff',
+    isInterchange, '#05060a',
+    isSel, '#ffffff',
+    '#05060a'],
   // A station drawn as a pill keeps its disc for clicks and hover, unseen.
   'circle-opacity': ['case', ['==', ['get', 'pill'], 1], 0, dimmed(true, 1, 0.3)],
   'circle-stroke-opacity': ['case', ['==', ['get', 'pill'], 1], 0, dimmed(true, 1, 0.28)],
