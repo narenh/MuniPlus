@@ -50,4 +50,8 @@ export const api = {
    *  Absolute like vehicles. The browser's own cache is left on: the server's
    *  ETag is a hash of the shapes, so a reload costs a 304 until 511 redraws. */
   shapes: () => fetch('/api/shapes').then(j),
+  /** Health (app/models/api.py), public like vehicles. The snapshot refresh reads
+   *  its `budget` just before asking, since the budget moves every few minutes and
+   *  EditorState is loaded once. */
+  health: () => fetch('/health', { cache: 'no-store' }).then(j),
 };

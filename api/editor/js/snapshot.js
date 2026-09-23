@@ -23,6 +23,8 @@ let phase = 'idle';
 let result = null;              // SnapshotFetchResponse being read
 let problem = null;             // { text, action?: 'refetch' | 'reload' }
 let committed = null;           // { commit, pushed, pushError, period } of the last commit made here
+let budget = null;              // BudgetHealth, read when the confirm step opens; null while unknown
+let budgetError = null;
 let startedAt = 0;
 let ticker = 0;
 const folded = new Map();       // drift section id -> open?, when the person has toggled it
@@ -75,8 +77,9 @@ function controlsHtml() {
       <p>Fetching uses <b>${CALLS_PER_REFRESH} of the 511 key's calls this hour</b> (the GTFS feed and
         the line list), from the same budget as the live arrivals and vehicles. It downloads about
         8&nbsp;MB and builds a snapshot, which takes a while. Nothing is committed until you choose to.</p>
+      ${budgetHtml()}
       <div class="rv-actions">
-        <button class="btn small primary" data-snap="fetch">Fetch from 511</button>
+        <button class="btn small primary" data-snap="fetch" ${short() ? 'disabled' : ''}>Fetch from 511</button>
         <button class="btn small ghost" data-snap="cancel">Cancel</button>
       </div>
     </div>`;
@@ -95,6 +98,32 @@ function controlsHtml() {
       title="Download 511's current feed and show how it differs. Uses ${CALLS_PER_REFRESH} of the key's hourly calls.">
       ${result ? 'Fetch again from 511…' : 'Refresh snapshot from 511…'}</button>
   </div>`;
+}
+
+/** Calls left in the rolling hour, as the server's ledger counts them. The live
+ *  feeds use most of the budget (about 43 of 55 an hour at the development poll
+ *  rates), and a restart re-fetches stale feeds, so a refresh can find too few left. */
+const callsLeft = () => (budget ? Math.max(0, budget.perHour - budget.usedLastHour) : null);
+const short = () => callsLeft() !== null && callsLeft() < CALLS_PER_REFRESH;
+
+function budgetHtml() {
+  if (budgetError) return `<div class="rv-note">Could not read the 511 budget (${esc(budgetError)}); the server still refuses a fetch it cannot afford.</div>`;
+  if (!budget) return '<div class="rv-note">Reading the 511 budget…</div>';
+  const left = callsLeft();
+  return short()
+    ? `<div class="rv-warn-box"><b>${left} of ${budget.perHour}</b> calls left this hour: not enough for a refresh. The live feeds use the rest; try again in a few minutes.</div>`
+    : `<div class="rv-note"><b>${left} of ${budget.perHour}</b> calls left this hour.</div>`;
+}
+
+async function readBudget() {
+  budget = null;
+  budgetError = null;
+  try {
+    budget = (await api.health()).budget;
+  } catch (err) {
+    budgetError = err.message;
+  }
+  if (phase === 'confirm') rerender();
 }
 
 function problemHtml() {
@@ -287,9 +316,9 @@ export function wireSnapshot(body) {
 }
 
 function run(what) {
-  if (what === 'ask') { phase = 'confirm'; problem = null; rerender(); return; }
+  if (what === 'ask') { phase = 'confirm'; problem = null; rerender(); readBudget(); return; }
   if (what === 'cancel') { phase = result ? 'report' : 'idle'; rerender(); return; }
-  if (what === 'fetch') { fetchNow(); return; }
+  if (what === 'fetch') { if (!short()) fetchNow(); return; }
   if (what === 'discard') { result = null; phase = 'idle'; problem = null; rerender(); return; }
   if (what === 'commit') { commitNow(); return; }
   if (what === 'reload') { reloadNow(); }
