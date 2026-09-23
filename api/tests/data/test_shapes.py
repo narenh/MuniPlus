@@ -141,3 +141,22 @@ def test_a_stop_far_from_the_shape_is_skipped_not_cut_to():
     out = clip_to_stops(shape, [at(100, 5), at(300, 5), at(900, 900)])
     assert flat(out) == pytest.approx(flat([at(100, 0), at(200, 0), at(300, 0)]), abs=1e-6)
     assert clip_to_stops(shape, [at(900, 900)]) == shape
+
+
+def test_a_line_ends_at_its_last_stop_that_is_not_ignored(curation, snapshots):
+    # The F's Wharf-bound diagram, given a stop halfway along Market, with its real
+    # last stop (SF:15662) ignored: the line is drawn only as far as the halfway
+    # stop, as the J and K end before Balboa Park's timing-only SF:15418.
+    from app.models.curation import IgnoredStop
+    from app.models.snapshot import SnapshotStop
+
+    snap = snapshots["SF"]
+    snap.stops.root["SF:99999"] = SnapshotStop(name="Market St halfway", lat=37.764935, lon=-122.432177)
+    pattern = next(p for p in snap.patterns.root["SF:F"] if p.shape == "SF:F1")
+    pattern.stops = ["SF:13311", "SF:99999", "SF:15662"]
+    full = Network(curation, snapshots, "v").shapes()[0].shapes["SF:F1"]
+    assert full[-1] == (-122.429214, 37.76725)
+
+    curation.ignored.root["SF:15662"] = IgnoredStop(note="Timing only.")
+    cut = Network(curation, snapshots, "v").shapes()[0].shapes["SF:F1"]
+    assert cut[-1] == (-122.432177, 37.764935)
