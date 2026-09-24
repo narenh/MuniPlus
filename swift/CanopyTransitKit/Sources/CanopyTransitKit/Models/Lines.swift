@@ -9,7 +9,7 @@ public struct Line: Decodable, Hashable, Sendable, Identifiable {
     public let name: String
     public let color: HexColor?
     /// 511's text colour for the badge. White almost everywhere, even where it barely
-    /// reads, so use `badgeText` instead.
+    /// reads, so use `legibleText` instead.
     public let textColor: HexColor?
     public let mode: Mode
     /// Curated as not for display. Leave it out of pickers.
@@ -35,7 +35,7 @@ public struct Line: Decodable, Hashable, Sendable, Identifiable {
     }
 
     /// Black or white, whichever reads better on `color` (API.md, section 7, rule 11).
-    public var badgeText: TextShade {
+    public var legibleText: TextShade {
         color?.legibleText ?? .white
     }
 

@@ -10,10 +10,11 @@ import Observation
 /// ```
 ///
 /// It polls when the answer says newer data can exist (`refreshAfter`), never on a
-/// fixed timer. When the Muni+ API can't answer, it asks 511 directly, and nothing
-/// here says which one answered. When neither can, it keeps showing the last
-/// arrivals it had. Stop running it in the background, and run it again on return
-/// (API.md, section 6), for example with `.task(id: scenePhase)`.
+/// fixed timer, and once however many views run it. When the Muni+ API can't
+/// answer, it asks 511 directly, and nothing here says which one answered. When
+/// neither can, it keeps the last arrivals it had. Stop running it in the
+/// background and run it again on return (API.md, section 6), for example with
+/// `.task(id: scenePhase)`.
 @MainActor
 @Observable
 public final class ArrivalsFeed {
@@ -32,17 +33,20 @@ public final class ArrivalsFeed {
     public private(set) var lastError: CanopyError?
 
     @ObservationIgnored private let provider: ArrivalsProvider
-    @ObservationIgnored private let sleep: @Sendable (TimeInterval) async throws -> Void
+    @ObservationIgnored private let runner: FeedRunner
+    @ObservationIgnored private let now: @Sendable () -> Date
 
     /// How long to wait after a failure before asking again.
     static let retryAfterFailure: TimeInterval = 30
 
     init(platforms: [Platform], limit: Int, provider: ArrivalsProvider,
+         now: @escaping @Sendable () -> Date = Date.init,
          sleep: @escaping @Sendable (TimeInterval) async throws -> Void = Feeds.sleep) {
         self.platforms = platforms
         self.limit = limit
         self.provider = provider
-        self.sleep = sleep
+        self.now = now
+        runner = FeedRunner(now: now, sleep: sleep)
     }
 
     /// The arrivals due at `platform`, soonest first.
@@ -52,36 +56,25 @@ public final class ArrivalsFeed {
 
     /// Polls until the task running it is cancelled.
     public func run() async {
-        while !Task.isCancelled {
-            let wait = await refresh()
-            do { try await sleep(wait) } catch { return }
-        }
+        await runner.run { await self.refresh() }
     }
 
-    /// Asks once, now. Returns the seconds to wait before asking again.
-    @discardableResult
-    public func refresh() async -> TimeInterval {
-        guard !platforms.isEmpty else { return .infinity }
+    /// Asks now, whatever `refreshAfter` said: for pull to refresh.
+    public func refresh() async {
+        guard !platforms.isEmpty else {
+            runner.nextDue = .distantFuture
+            return
+        }
         do {
             let answer = try await provider.arrivals(for: platforms, limit: limit)
             arrivals = answer.platforms
             feedAt = answer.feedAt
-            updatedAt = Date()
+            updatedAt = now()
             lastError = nil
-            return max(answer.refreshAfter, Polling.minimumInterval)
+            runner.nextDue = now().addingTimeInterval(max(answer.refreshAfter, Polling.minimumInterval))
         } catch {
             if !Task.isCancelled { lastError = error }
-            return Self.retryAfterFailure
+            runner.nextDue = now().addingTimeInterval(Self.retryAfterFailure)
         }
-    }
-}
-
-enum Feeds {
-    @Sendable static func sleep(_ seconds: TimeInterval) async throws {
-        guard seconds.isFinite else {
-            // Nothing will ever be due: wait to be cancelled.
-            while true { try await Task.sleep(for: .seconds(3600)) }
-        }
-        try await Task.sleep(for: .seconds(seconds))
     }
 }

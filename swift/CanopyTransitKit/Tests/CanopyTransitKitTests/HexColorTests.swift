@@ -26,7 +26,7 @@ struct HexColorTests {
     @Test func aLineUsesContrastNotItsTextColor() {
         let j = Line(id: "SF:J", shortName: "J", name: "J Church", color: HexColor("#FAA633"),
                      textColor: HexColor("#FFFFFF"), mode: .metro)
-        #expect(j.badgeText == .black)
-        #expect(Line(id: "SF:X", shortName: "X", name: "X", mode: .bus).badgeText == .white)
+        #expect(j.legibleText == .black)
+        #expect(Line(id: "SF:X", shortName: "X", name: "X", mode: .bus).legibleText == .white)
     }
 }

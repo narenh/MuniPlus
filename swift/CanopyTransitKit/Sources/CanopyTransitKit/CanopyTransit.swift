@@ -64,6 +64,8 @@ public final class CanopyTransit {
     @ObservationIgnored private let store: ReferenceStore
     @ObservationIgnored private let arrivals: ArrivalsProvider
     @ObservationIgnored private let lineDetailIDs: Set<LineID>
+    @ObservationIgnored private var arrivalFeeds = RecentFeeds<ArrivalsFeedKey, ArrivalsFeed>()
+    @ObservationIgnored private var vehicleFeeds = RecentFeeds<[LineID], VehiclesFeed>()
 
     public init(configuration: Configuration) {
         client = CanopyClient(baseURL: configuration.baseURL, transport: configuration.transport)
@@ -99,12 +101,44 @@ public final class CanopyTransit {
 
     /// A feed of the arrivals at `platforms` (at most 50). Resolve stored ids first
     /// (`network.resolvePlatform`), and read the answer by each platform's `id`.
+    ///
+    /// Asking again for the same platforms hands back the same feed, arrivals and
+    /// all, so a screen that comes back shows what it had and polls on schedule.
     public func arrivalsFeed(platforms: [Platform], limit: Int = 6) -> ArrivalsFeed {
-        ArrivalsFeed(platforms: platforms, limit: limit, provider: arrivals)
+        arrivalFeeds.feed(for: ArrivalsFeedKey(platforms: platforms, limit: limit)) {
+            ArrivalsFeed(platforms: platforms, limit: limit, provider: arrivals)
+        }
     }
 
     /// A feed of the vehicles on `lines`, or with none, every vehicle in service.
     public func vehiclesFeed(lines: [LineID] = []) -> VehiclesFeed {
-        VehiclesFeed(lines: lines, client: client)
+        vehicleFeeds.feed(for: lines) { VehiclesFeed(lines: lines, client: client) }
+    }
+}
+
+struct ArrivalsFeedKey: Hashable {
+    /// Whole platforms rather than ids: a refresh that gives a platform another stop
+    /// is a different feed, since 511 is asked stop by stop.
+    let platforms: [Platform]
+    let limit: Int
+}
+
+/// The feeds handed out lately, so asking twice gets the same one. Bounded: a feed
+/// nothing runs costs only its last answer, but there's no need to keep every one.
+struct RecentFeeds<Key: Hashable, Feed> {
+    private var feeds: [Key: Feed] = [:]
+    private var order: [Key] = []
+    private let capacity = 32
+
+    mutating func feed(for key: Key, make: () -> Feed) -> Feed {
+        order.removeAll { $0 == key }
+        order.append(key)
+        if let feed = feeds[key] { return feed }
+        let feed = make()
+        feeds[key] = feed
+        if order.count > capacity {
+            feeds[order.removeFirst()] = nil
+        }
+        return feed
     }
 }

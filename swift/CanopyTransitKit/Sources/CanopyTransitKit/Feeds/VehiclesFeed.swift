@@ -19,36 +19,35 @@ public final class VehiclesFeed {
     public private(set) var lastError: CanopyError?
 
     @ObservationIgnored private let client: CanopyClient
-    @ObservationIgnored private let sleep: @Sendable (TimeInterval) async throws -> Void
+    @ObservationIgnored private let runner: FeedRunner
+    @ObservationIgnored private let now: @Sendable () -> Date
 
     init(lines: [LineID], client: CanopyClient,
+         now: @escaping @Sendable () -> Date = Date.init,
          sleep: @escaping @Sendable (TimeInterval) async throws -> Void = Feeds.sleep) {
         self.lines = lines
         self.client = client
-        self.sleep = sleep
+        self.now = now
+        runner = FeedRunner(now: now, sleep: sleep)
     }
 
     /// Polls until the task running it is cancelled.
     public func run() async {
-        while !Task.isCancelled {
-            let wait = await refresh()
-            do { try await sleep(wait) } catch { return }
-        }
+        await runner.run { await self.refresh() }
     }
 
-    /// Asks once, now. Returns the seconds to wait before asking again.
-    @discardableResult
-    public func refresh() async -> TimeInterval {
+    /// Asks now, whatever `refreshAfter` said.
+    public func refresh() async {
         do {
             let answer = try await client.vehicles(lines: lines)
             vehicles = answer.vehicles
             feedAt = answer.feedAt
-            updatedAt = Date()
+            updatedAt = now()
             lastError = nil
-            return max(answer.refreshAfter, Polling.minimumInterval)
+            runner.nextDue = now().addingTimeInterval(max(answer.refreshAfter, Polling.minimumInterval))
         } catch {
             if !Task.isCancelled { lastError = error }
-            return ArrivalsFeed.retryAfterFailure
+            runner.nextDue = now().addingTimeInterval(ArrivalsFeed.retryAfterFailure)
         }
     }
 }
