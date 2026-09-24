@@ -1,6 +1,6 @@
 # Static assets only, no Worker script: public/data.json and public/map.pdf
 # are served at /data.json and /map.pdf.
-name = "muniplus-static"
+name = "muniplus"
 compatibility_date = "2026-09-14"
 
 [assets]
