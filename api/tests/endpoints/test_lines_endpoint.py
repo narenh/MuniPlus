@@ -23,7 +23,9 @@ def test_list(client):
         "mode": "bus",
         "hidden": False,
         "replaces": ["SF:L"],
+        "owl": True,
     }
+    assert not lines["SF:L"]["owl"]
     assert [line["id"] for line in body["lines"]][:7] == ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N", "SF:T", "SF:F"]
     assert "directions" not in lines["SF:J"]
 

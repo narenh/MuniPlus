@@ -8,7 +8,10 @@ import gzip
 
 import pytest
 from google.transit import gtfs_realtime_pb2 as pb
+from pydantic import TypeAdapter
 from rt_support import FIXTURES, fixture_bytes
+
+from app.models.ids import TripId
 
 from app.upstream.gtfsrt import (
     FeedError,
@@ -124,6 +127,62 @@ def test_vehicle_positions_agree_with_trip_updates(trips, vehicles):
     shared = [v for v in vehicles.vehicles if v.trip in by_trip]
     assert len(shared) == 515
     assert all(by_trip[v.trip] == v.id for v in shared)
+
+
+# MARK: - Ids
+
+
+def test_every_realtime_id_is_a_ref(trips, vehicles):
+    # The contract a 511 fallback relies on (API.md, section 3): split at the first
+    # colon, and the rest is exactly 511's id.
+    refs = TypeAdapter(TripId)
+    for t in trips.trips:
+        refs.validate_python(t.id)
+        if t.vehicle is not None:
+            refs.validate_python(t.vehicle)
+    for v in vehicles.vehicles:
+        refs.validate_python(v.id)
+        refs.validate_python(v.trip)
+
+
+def _trip_feed(trip_id: str, vehicle_id: str) -> bytes:
+    message = pb.FeedMessage()
+    message.header.gtfs_realtime_version = "2.0"
+    message.header.timestamp = 1790113897
+    for i, (trip, vehicle) in enumerate([("12134484_M11", "2019"), (trip_id, vehicle_id)]):
+        entity = message.entity.add(id=str(i))
+        tu = entity.trip_update
+        tu.trip.trip_id = trip
+        tu.trip.route_id = "L"
+        tu.trip.direction_id = 1
+        tu.vehicle.id = vehicle
+        update = tu.stop_time_update.add(stop_id="16992")
+        update.arrival.time = 1790113947
+        position = message.entity.add(id=f"v{i}").vehicle
+        position.trip.trip_id = trip
+        position.trip.route_id = "L"
+        position.vehicle.id = vehicle
+        position.position.latitude = 37.79
+        position.position.longitude = -122.39
+    return message.SerializeToString()
+
+
+@pytest.mark.parametrize("bad", ["a:b", "a/b", "a,b", "a b"])
+def test_a_trip_id_that_cannot_be_a_ref_is_dropped(bad):
+    payload = _trip_feed(bad, "2070")
+    assert [t.id for t in decode_trip_updates(payload, "SF").trips] == ["SF:12134484_M11"]
+    positions = decode_vehicle_positions(payload, "SF")
+    assert [v.id for v in positions.vehicles] == ["SF:2019"]
+    assert positions.out_of_service == 1
+
+
+@pytest.mark.parametrize("bad", ["a:b", "a/b", "a,b", "a b"])
+def test_a_vehicle_id_that_cannot_be_a_ref_is_unknown(bad):
+    payload = _trip_feed("12133095_M11", bad)
+    assert [(t.id, t.vehicle) for t in decode_trip_updates(payload, "SF").trips] == [
+        ("SF:12134484_M11", "SF:2019"), ("SF:12133095_M11", None),
+    ]  # fmt: skip
+    assert [v.id for v in decode_vehicle_positions(payload, "SF").vehicles] == ["SF:2019"]
 
 
 # MARK: - ServiceAlerts

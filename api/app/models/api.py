@@ -12,7 +12,7 @@ Editorial fields (``note``, ``verified``) are not part of the public API.
 from typing import Literal
 
 from .base import Wire
-from .ids import Color, Heading, LineId, Mode, Operator, StopId, ShapeId, StationId, SubwayId, TransferMode
+from .ids import Color, Heading, LineId, Mode, Operator, StopId, ShapeId, StationId, SubwayId, TransferMode, TripId, VehicleId
 
 # MARK: - Stations
 
@@ -36,6 +36,12 @@ class PlatformSummary(Wire):
     arrivals asked for by a former id are answered under the current ``id``."""
 
 
+class TransferOut(Wire):
+    to: StationId
+    name: str
+    mode: TransferMode
+
+
 class StationSummary(Wire):
     """One entry in ``GET /api/stations``: enough to draw the map, search, and ask
     for arrivals without a second request."""
@@ -52,6 +58,17 @@ class StationSummary(Wire):
     with platforms here, then those with none in the data yet (BART at
     Embarcadero). Stable in meaning as other operators' platforms are added."""
     platforms: list[PlatformSummary]
+    transfers: list[TransferOut]
+    """Stations reachable on foot, sorted by the other station's name. Here and not
+    only on the detail, so a station list can show every row's transfers without
+    a request per station."""
+
+
+class SubwayOut(Wire):
+    id: SubwayId
+    name: str
+    stations: list[StationId]
+    """In order along the subway. Only stations this API serves."""
 
 
 class StationsResponse(Wire):
@@ -60,6 +77,7 @@ class StationsResponse(Wire):
     former_ids: dict[StationId, StationId]
     """Old id -> current id, for migrating favourites (``mongomery`` -> ``montgomery``)."""
     stations: list[StationSummary]
+    subways: list[SubwayOut]
 
 
 class PlatformDetail(PlatformSummary):
@@ -72,12 +90,6 @@ class PlatformDetail(PlatformSummary):
     """The centroid of its stops, which are metres apart where there are several."""
 
 
-class TransferOut(Wire):
-    to: StationId
-    name: str
-    mode: TransferMode
-
-
 class SubwayRef(Wire):
     id: SubwayId
     name: str
@@ -85,7 +97,6 @@ class SubwayRef(Wire):
 
 class StationDetail(StationSummary):
     platforms: list[PlatformDetail]
-    transfers: list[TransferOut]
     subways: list[SubwayRef]
     alerts: list["Alert"]
     """Alerts active now that touch this station's platforms."""
@@ -108,6 +119,10 @@ class LineSummary(Wire):
     mode: Mode
     hidden: bool
     replaces: list[LineId]
+    owl: bool
+    """Overnight service: 511 names the line an Owl (``LOWL Owl Taraval``, ``90 San
+    Bruno Owl``). With ``replaces``, it tells the owl that covers a line's corridor
+    at night from a bus standing in for the line by day (``KBUS``)."""
 
 
 class LinesResponse(Wire):
@@ -159,8 +174,8 @@ class Arrival(Wire):
     trip's first stop: the vehicle starts its run here."""
     terminates: bool
     """True where this is the trip's last stop. Per trip, so a short turn is caught."""
-    trip: str
-    vehicle: str | None
+    trip: TripId
+    vehicle: VehicleId | None
 
 
 class ArrivalsResponse(Wire):
@@ -186,10 +201,10 @@ VehicleStatus = Literal["incomingAt", "stoppedAt", "inTransitTo"]
 
 
 class Vehicle(Wire):
-    id: str
+    id: VehicleId
     line: LineId
     direction: Literal[0, 1] | None
-    trip: str
+    trip: TripId
     lat: float
     lon: float
     bearing: float | None

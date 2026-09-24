@@ -35,6 +35,12 @@ LineId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
 ShapeId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
 """A GTFS ``shape_id``, qualified like the others (``SF:103``): shape ids are only
 unique within one operator's feed."""
+TripId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
+"""A realtime trip (``SF:12134484_M11``). The upstream part is both GTFS-rt's
+``trip_id`` and SIRI's ``DatedVehicleJourneyRef``, so a client asking 511 directly
+reads the same ids this API sends."""
+VehicleId = Annotated[str, StringConstraints(pattern=REF_PATTERN)]
+"""A vehicle (``SF:2019``): GTFS-rt's ``vehicle.id``, SIRI's ``VehicleRef``."""
 StationId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9]+$")]
 SubwayId = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9]+$")]
 

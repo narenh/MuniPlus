@@ -25,6 +25,9 @@ def test_list(client):
         "castroPlaza", "churchMarket", "clayDrumm", "embarcadero",
         "montgomery", "powell", "powellMarket", "unionSquare",
     ]  # fmt: skip
+    assert body["subways"] == [{"id": "marketStreetSubway", "name": "Market Subway", "stations": ["embarcadero", "montgomery", "powell"]}]
+    union = next(s for s in body["stations"] if s["id"] == "unionSquare")
+    assert union["transfers"] == [{"to": "powell", "name": "Powell", "mode": "indoor"}]
     church = next(s for s in body["stations"] if s["id"] == "churchMarket")
     assert church["lines"] == ["SF:J", "SF:F"]
     assert church["modes"] == ["metro", "streetcar"]

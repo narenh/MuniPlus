@@ -8,7 +8,7 @@ from pydantic import TypeAdapter, ValidationError
 
 from app.models import files
 from app.models.curation import Curation, Platform, Station, StationsFile
-from app.models.ids import LineId, StopId, StationId
+from app.models.ids import LineId, StopId, StationId, TripId, VehicleId
 
 FIXTURE = Path(__file__).parent / "fixtures" / "transit"
 
@@ -16,16 +16,22 @@ FIXTURE = Path(__file__).parent / "fixtures" / "transit"
 # MARK: - Ids
 
 
-@pytest.mark.parametrize("value", ["SF:16992", "SF:L", "SF:5R", "SF:LOWL", "BA:12", "BA:EMBR", "CT:70011"])
-def test_refs_accept(value):
-    TypeAdapter(StopId).validate_python(value)
-    TypeAdapter(LineId).validate_python(value)
+REFS = (StopId, LineId, TripId, VehicleId)
+
+
+@pytest.mark.parametrize("value", [
+    "SF:16992", "SF:L", "SF:5R", "SF:LOWL", "BA:12", "BA:EMBR", "CT:70011", "SF:12134484_M11", "SF:2019",
+])  # fmt: skip
+@pytest.mark.parametrize("kind", REFS)
+def test_refs_accept(kind, value):
+    TypeAdapter(kind).validate_python(value)
 
 
 @pytest.mark.parametrize("value", ["16992", "sf:16992", "SF:", ":16992", "SF:16992,16993", "SF:a:b", "SF:a/b", "SF: 1"])
-def test_refs_reject(value):
+@pytest.mark.parametrize("kind", REFS)
+def test_refs_reject(kind, value):
     with pytest.raises(ValidationError):
-        TypeAdapter(StopId).validate_python(value)
+        TypeAdapter(kind).validate_python(value)
 
 
 @pytest.mark.parametrize("value", ["embarcadero", "churchMarket", "500Parnassus", "3801SanBruno"])

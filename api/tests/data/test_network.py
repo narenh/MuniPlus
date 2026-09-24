@@ -66,6 +66,29 @@ def test_mode_override(net):
     assert net.line("SF:PH").mode == "cableway"
 
 
+@pytest.mark.parametrize(
+    "long_name, owl",
+    [
+        ("OWL TARAVAL", True),
+        ("SAN BRUNO OWL", True),
+        ("3RD-19TH AVE OWL", True),
+        ("GEARY (OWL)", True),
+        ("TARAVAL", False),
+        ("INGLESIDE BUS", False),
+        ("BOWLING", False),
+    ],
+)
+def test_owl_is_511s_name(curation, snapshots, long_name, owl):
+    snapshots["SF"].lines.root["SF:L"].long_name = long_name
+    assert Network(curation, snapshots, "v").line("SF:L").owl is owl
+
+
+def test_a_curated_name_does_not_make_an_owl(net, curation, snapshots):
+    assert net.line("SF:LOWL").owl and net.line("SF:NOWL").owl and not net.line("SF:L").owl
+    curation.lines.root["SF:LOWL"].name = "L Night"
+    assert Network(curation, snapshots, "v").line("SF:LOWL").owl
+
+
 def test_replaces_and_hidden(net, curation, snapshots):
     assert net.line("SF:LOWL").replaces == ["SF:L"]
     assert net.line("SF:NOWL").replaces == ["SF:N"]
@@ -236,6 +259,19 @@ def test_former_id_never_shadows_a_live_id(curation, snapshots):
     assert net.station("powell").name == "Powell"
 
 
+def test_the_list_carries_transfers_and_subways(net):
+    # Every row of a station list can show its transfers, and the subways can be
+    # browsed in order, with no request per station.
+    summaries = {s.id: s for s in net.stations().stations}
+    for sid, summary in summaries.items():
+        assert summary.transfers == net.station(sid).transfers
+    assert [(t.to, t.mode) for t in summaries["powell"].transfers] == [("powellMarket", "street"), ("unionSquare", "indoor")]
+    assert summaries["embarcadero"].transfers == []
+    assert [(s.id, s.name, s.stations) for s in net.stations().subways] == [
+        ("marketStreetSubway", "Market Subway", ["embarcadero", "montgomery", "powell"]),
+    ]
+
+
 # MARK: - Stations with no live platforms
 
 
@@ -248,6 +284,8 @@ def test_station_without_live_platforms_is_public_nowhere_but_derived(curation, 
     assert net.station("clayDrumm") is None
     assert "drumm" not in net.stations().former_ids
     assert "clayDrumm" not in [t.to for t in net.station("powell").transfers]
+    powell = next(s for s in net.stations().stations if s.id == "powell")
+    assert "clayDrumm" not in [t.to for t in powell.transfers]
     derived = net.derived().stations["clayDrumm"]
     assert (derived.lat, derived.lon, derived.lines, derived.modes) == (None, None, [], [])
 
@@ -299,6 +337,8 @@ def test_builds_from_invalid_curation(curation, snapshots):
     # The first listing of a duplicated pair wins, and it shows once.
     assert [(t.to, t.mode) for t in net.station("unionSquare").transfers] == [("powell", "indoor")]
     assert net.station("castroPlaza") is None
+    # A subway lists only stations the API serves.
+    assert net.stations().subways[0].stations == ["embarcadero", "montgomery", "powell"]
     assert net.derived().stations["empty"].lat is None
     assert net.line("SF:LOWL").replaces == ["SF:L", "SF:Q"]
 

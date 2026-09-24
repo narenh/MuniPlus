@@ -69,7 +69,7 @@ Other concepts:
 - **Transfer:** a walk between two stations, always usable both ways. It is either
   `indoor` (a passage between the two) or `street`.
 - **Subway:** a named, ordered group of underground stations (the Market Street
-  subway).
+  subway). `/stations` lists every subway with its stations in order.
 - **Operator:** a transit agency, by its 511 code. `SF` is Muni and `BA` is BART.
   Today only Muni has platforms in the data. A station reports every operator that
   serves it in `operators`.
@@ -166,8 +166,13 @@ once and revalidate it with its ETag (see [caching](#6-caching-versions-and-poll
           "stops": ["SF:16992"], "formerIds": [] },
         { "id": "SF:17217", "heading": "westbound", "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
           "stops": ["SF:17217"], "formerIds": [] }
-      ]
+      ],
+      "transfers": [ { "to": "marketEmbarcaderoSubway", "name": "Embarcadero & Market", "mode": "street" } ]
     }
+  ],
+  "subways": [
+    { "id": "marketStreetSubway", "name": "Market Subway",
+      "stations": ["embarcadero", "montgomery", "powell", "civicCenter", "…"] }
   ]
 }
 ```
@@ -188,6 +193,8 @@ once and revalidate it with its ETag (see [caching](#6-caching-versions-and-poll
 | `…platforms[].lines` | [line id] | Every line stopping at any of its stops. |
 | `…platforms[].stops` | [stop id] | Its 511 stops, primary first. Usually just one. |
 | `…platforms[].formerIds` | [stop id] | Ids it has had and lost. Usually empty. |
+| `stations[].transfers` | [{`to`, `name`, `mode`}] | Stations reachable on foot. `mode` is `indoor` (a passage between the two) or `street`. Every transfer also appears from the other station's side. Sorted by the other station's name. |
+| `subways` | [{`id`, `name`, `stations`}] | Every subway, with its stations in order along it. |
 
 Only stations with at least one stop that 511 currently lists are included. A
 station whose stops 511 has all dropped disappears until it is fixed or deleted.
@@ -216,7 +223,8 @@ id. An unknown id is a `404`.
 }
 ```
 
-It has every field of a station summary. Each platform additionally has:
+It has every field of a station summary, `transfers` included. Each platform
+additionally has:
 
 | field | type | meaning |
 |---|---|---|
@@ -228,8 +236,7 @@ And the station itself has:
 
 | field | type | meaning |
 |---|---|---|
-| `transfers` | [{`to`, `name`, `mode`}] | Stations reachable on foot. `mode` is `indoor` or `street`. Every transfer also appears from the other station's side. Sorted by the other station's name. |
-| `subways` | [{`id`, `name`}] | The subways this station is part of. |
+| `subways` | [{`id`, `name`}] | The subways this station is part of. Their stations in order are in `/stations`. |
 | `alerts` | [Alert] | Alerts active now that touch this station, including agency-wide ones. See [alerts](#get-apiv1alerts). |
 
 Sent with `Cache-Control: no-store` and no ETag, because `alerts` changes
@@ -244,9 +251,9 @@ Every line. There are 68 today, including owl, express and substitute services.
   "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
   "lines": [
     { "id": "SF:J", "shortName": "J", "name": "J Church", "color": "#FAA633", "textColor": "#FFFFFF",
-      "mode": "metro", "hidden": false, "replaces": [] },
+      "mode": "metro", "hidden": false, "replaces": [], "owl": false },
     { "id": "SF:LOWL", "shortName": "LOWL", "name": "LOWL Owl Taraval", "color": "#666666", "textColor": "#FFFFFF",
-      "mode": "bus", "hidden": false, "replaces": ["SF:L"] }
+      "mode": "bus", "hidden": false, "replaces": ["SF:L"], "owl": true }
   ]
 }
 ```
@@ -261,6 +268,7 @@ Every line. There are 68 today, including owl, express and substitute services.
 | `mode` | `metro` \| `streetcar` \| `cableway` \| `bus` | Open-ended: BART and Caltrain will add modes. Draw rail modes as circle badges and buses as pills sized to their label. |
 | `hidden` | bool | Curated as not for display. Hidden lines are still sent; leave them out of pickers. |
 | `replaces` | [line id] | Lines this one substitutes for: the LOWL replaces the L overnight, and the KBUS replaces the K during an outage. A metro-only view should include lines that replace a line it shows. |
+| `owl` | bool | Overnight service, as 511 names it: the LOWL, NOWL, 90 and 91. With `replaces`, it tells the owl covering a line's corridor at night (LOWL) from a bus standing in for the line by day (KBUS). |
 
 The order is the one to display: metro, then streetcar, then cableway, then bus.
 Within each mode, numbered lines come first, in numeric order (5, 5R, 38, 38R),
@@ -275,7 +283,7 @@ One line, with its directions. An unknown id is a `404`.
   "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
   "line": {
     "id": "SF:N", "shortName": "N", "name": "N Judah", "color": "#00529C", "textColor": "#FFFFFF",
-    "mode": "metro", "hidden": false, "replaces": [],
+    "mode": "metro", "hidden": false, "replaces": [], "owl": false,
     "directions": [
       { "direction": 0, "headsign": "Ocean Beach",
         "stations": ["fourthKing", "secondKing", "embarcaderoBrannan", "…"],
@@ -362,8 +370,8 @@ when nothing is due.
 | `…[].time` | int | The predicted time, epoch seconds. Only arrivals at or after the server's current time are included, soonest first. |
 | `…[].kind` | `arrival` \| `departure` | `departure` means the trip **starts at this platform**, and `time` is when it leaves. |
 | `…[].terminates` | bool | The trip **ends at this platform**: nobody boards it here. |
-| `…[].trip` | string | 511's trip id. Useful to tie the same trip across platforms within one answer; never store it. |
-| `…[].vehicle` | string \| null | The vehicle serving the trip, when known. It matches `Vehicle.id` in `/vehicles`. |
+| `…[].trip` | trip id | 511's trip id. Useful to tie the same trip across platforms within one answer; never store it. |
+| `…[].vehicle` | vehicle id \| null | The vehicle serving the trip, when known. It matches `Vehicle.id` in `/vehicles`. |
 
 ### `GET /api/v1/vehicles`
 

@@ -83,7 +83,8 @@ class VehiclePositions:
     vehicles: tuple[VehicleInfo, ...]
     """In service only."""
     out_of_service: int
-    """Left out for having no trip or no line. Kept as a count for tests and health."""
+    """Left out for having no trip or no line (or an id that cannot be a ref, which
+    none in the fixtures has). Kept as a count for tests and health."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -139,11 +140,12 @@ def decode_trip_updates(payload: bytes, operator: str) -> TripUpdates:
         descriptor = tu.trip
         if descriptor.schedule_relationship == pb.TripDescriptor.CANCELED:
             continue
-        # Line and direction are both required on an Arrival. All 1,435 fixture
-        # trips carry both; one that does not cannot be labelled, so it is dropped
-        # rather than guessed at.
+        # Line, trip and direction are all required on an Arrival. All 1,435
+        # fixture trips carry all three; one that does not cannot be labelled, so
+        # it is dropped rather than guessed at.
         line = _qualify(operator, descriptor.route_id)
-        if line is None or not descriptor.trip_id or not descriptor.HasField("direction_id"):
+        trip_id = _qualify(operator, descriptor.trip_id)
+        if line is None or trip_id is None or not descriptor.HasField("direction_id"):
             continue
         if descriptor.direction_id not in (0, 1):
             continue
@@ -167,9 +169,9 @@ def decode_trip_updates(payload: bytes, operator: str) -> TripUpdates:
             StopTime(stop, time, kind, terminates=(i == last and kind == "arrival"))
             for i, (stop, time, kind) in enumerate(timed)
         )
-        vehicle = ref(operator, tu.vehicle.id) if tu.HasField("vehicle") and tu.vehicle.id else None
+        vehicle = _qualify(operator, tu.vehicle.id) if tu.HasField("vehicle") else None
         trips.append(Trip(
-            id=ref(operator, descriptor.trip_id),
+            id=trip_id,
             line=line,
             direction=descriptor.direction_id,
             vehicle=vehicle,
@@ -212,17 +214,19 @@ def decode_vehicle_positions(payload: bytes, operator: str) -> VehiclePositions:
             continue
         vp = entity.vehicle
         line = _qualify(operator, vp.trip.route_id) if vp.HasField("trip") else None
-        if line is None or not vp.trip.trip_id or not vp.HasField("position"):
+        trip = _qualify(operator, vp.trip.trip_id) if vp.HasField("trip") else None
+        raw_id = vp.vehicle.id if vp.HasField("vehicle") and vp.vehicle.id else entity.id
+        vehicle_id = _qualify(operator, raw_id)
+        if line is None or trip is None or vehicle_id is None or not vp.HasField("position"):
             out_of_service += 1
             continue
-        raw_id = vp.vehicle.id if vp.HasField("vehicle") and vp.vehicle.id else entity.id
         direction = vp.trip.direction_id if vp.trip.HasField("direction_id") and vp.trip.direction_id in (0, 1) else None
         position = vp.position
         vehicles.append(VehicleInfo(
-            id=ref(operator, raw_id),
+            id=vehicle_id,
             line=line,
             direction=direction,
-            trip=ref(operator, vp.trip.trip_id),
+            trip=trip,
             lat=position.latitude,
             lon=position.longitude,
             bearing=position.bearing if position.HasField("bearing") and position.bearing != 0 else None,
@@ -314,8 +318,10 @@ def _parse(payload: bytes) -> pb.FeedMessage:
 def _qualify(operator: str, upstream: str) -> str | None:
     """``SF:<id>``, or None where the upstream id could not be a valid ref.
 
-    Checked here because a stop or line id is validated again when the
-    response is built, and one bad id would otherwise fail a whole response.
+    Checked here because every id (stop, line, trip, vehicle) is validated again
+    when the response is built, and one bad id would otherwise fail a whole
+    response. It is also what lets a client split any of them at the first colon
+    to ask 511 directly (API.md, section 3).
     """
     if not upstream or any(c in upstream for c in ",:/") or any(c.isspace() for c in upstream):
         return None

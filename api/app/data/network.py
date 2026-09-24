@@ -34,6 +34,7 @@ from ..models.api import (
     StationDetail,
     StationsResponse,
     StationSummary,
+    SubwayOut,
     SubwayRef,
     TransferOut,
 )
@@ -86,6 +87,16 @@ def title_case(text: str) -> str:
 
 def default_line_name(line: SnapshotLine) -> str:
     return f"{line.short_name} {title_case(line.long_name)}".strip()
+
+
+OWL = re.compile(r"\bowl\b", re.IGNORECASE)
+
+
+def is_owl(line: SnapshotLine) -> bool:
+    """Whether 511 names the line an Owl: ``OWL TARAVAL``, ``SAN BRUNO OWL``,
+    ``GEARY (OWL)``. 511's own long name rather than the display name, so a curated
+    rename cannot change what a line is."""
+    return bool(OWL.search(line.long_name))
 
 
 # MARK: - Ordering
@@ -194,6 +205,7 @@ class Network:
                 mode=(o and o.mode) or snap.mode,
                 hidden=bool(o and o.hidden),
                 replaces=list(o.replaces) if o else [],
+                owl=is_owl(snap),
             )
         ordered = sorted(lines.values(), key=_line_key)
         rank = {line.id: i for i, line in enumerate(ordered)}
@@ -257,6 +269,9 @@ class Network:
 
         # Stations.
         derived_stations: dict[str, DerivedStation] = {}
+        # Each served station's summary fields, held until every served station is
+        # known, since a transfer only links two of them.
+        served_stations: dict[str, dict] = {}
         summaries: dict[str, StationSummary] = {}
         details: dict[str, StationDetail] = {}
         subways_of: dict[str, list[SubwayRef]] = {}
@@ -281,7 +296,7 @@ class Network:
                 # No coordinate to draw it at. Kept in ``derived`` (the editor must see
                 # it to fix it) but left out of the public API, which promises one.
                 continue
-            summaries[sid] = StationSummary(
+            served_stations[sid] = dict(
                 id=sid,
                 name=station.name,
                 lat=centre[0],
@@ -311,6 +326,18 @@ class Network:
             for sid, links in transfers_of.items()
         }
 
+        for sid, fields in served_stations.items():
+            summaries[sid] = StationSummary(
+                **fields,
+                # A transfer to a station the API does not serve (unknown, or with no
+                # live platforms) would be a link to a 404, so it is left out.
+                transfers=[
+                    TransferOut(to=there, name=stations[there].name, mode=mode)
+                    for there, mode in transfers_of.get(sid, [])
+                    if there in served_stations
+                ],
+            )
+
         for sid, summary in summaries.items():
             station = stations[sid]
             live = [(p, [s for s in mine if s in stops]) for p, mine in owned[sid]]
@@ -334,13 +361,6 @@ class Network:
             details[sid] = StationDetail(
                 **{k: v for k, v in summary if k != "platforms"},
                 platforms=platforms,
-                # A transfer to a station the API does not serve (unknown, or with no
-                # live platforms) would be a link to a 404, so it is left out.
-                transfers=[
-                    TransferOut(to=there, name=stations[there].name, mode=mode)
-                    for there, mode in transfers_of.get(sid, [])
-                    if there in summaries
-                ],
                 subways=subways_of.get(sid, []),
                 alerts=[],
             )
@@ -349,6 +369,12 @@ class Network:
             version=version,
             former_ids=_former_ids(stations, summaries),
             stations=list(summaries.values()),
+            subways=[
+                # Only served stations, as with transfers: the list is for browsing,
+                # and a station the API does not serve cannot be opened.
+                SubwayOut(id=subway_id, name=subway.name, stations=[s for s in dict.fromkeys(subway.stations) if s in summaries])
+                for subway_id, subway in sorted(curation.stations.subways.items())
+            ],
         )
         self._former_ids = self._stations.former_ids
         self._station_details = details
