@@ -1,0 +1,9 @@
+{
+  "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+  "lines": [
+    { "id": "SF:J", "shortName": "J", "name": "J Church", "color": "#FAA633", "textColor": "#FFFFFF",
+      "mode": "metro", "hidden": false, "replaces": [], "owl": false },
+    { "id": "SF:LOWL", "shortName": "LOWL", "name": "LOWL Owl Taraval", "color": "#666666", "textColor": "#FFFFFF",
+      "mode": "bus", "hidden": false, "replaces": ["SF:L"], "owl": true }
+  ]
+}

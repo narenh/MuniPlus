@@ -1,0 +1,21 @@
+{
+  "version": "v2-data",
+  "formerIds": {},
+  "dataLicense": "ODbL",
+  "stations": [
+    {
+      "id": "embarcadero", "name": "Embarcadero", "lat": 37.792922, "lon": -122.396791,
+      "lines": ["SF:J", "BA:RED"], "modes": ["metro", "heavyRail"], "operators": ["SF", "BA"],
+      "accessibility": { "elevators": 4 },
+      "platforms": [
+        { "id": "SF:16992", "heading": "eastbound", "lines": ["SF:J"], "stops": ["SF:16992"], "formerIds": [], "level": -2 },
+        { "id": "BA:EMBR1", "heading": "towardsAirport", "lines": ["BA:RED"], "stops": ["BA:EMBR1"], "formerIds": [] }
+      ],
+      "transfers": [ { "to": "ferryBuilding", "name": "Ferry Building", "mode": "elevator" } ]
+    },
+    { "id": "broken", "name": "No coordinates", "platforms": [] },
+    { "id": "montgomery", "name": "Montgomery", "lat": 37.789005, "lon": -122.401739,
+      "lines": ["SF:J"], "modes": ["metro"], "operators": ["SF"], "platforms": [], "transfers": [] }
+  ],
+  "subways": []
+}

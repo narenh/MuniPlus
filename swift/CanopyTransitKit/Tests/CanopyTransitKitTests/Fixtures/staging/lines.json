@@ -1,0 +1,697 @@
+{
+ "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+ "lines": [
+  {
+   "id": "SF:J",
+   "shortName": "J",
+   "name": "J Church",
+   "color": "#FAA633",
+   "textColor": "#FFFFFF",
+   "mode": "metro",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:K",
+   "shortName": "K",
+   "name": "K Ingleside",
+   "color": "#579EBF",
+   "textColor": "#FFFFFF",
+   "mode": "metro",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:L",
+   "shortName": "L",
+   "name": "L Taraval",
+   "color": "#91268F",
+   "textColor": "#FFFFFF",
+   "mode": "metro",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:M",
+   "shortName": "M",
+   "name": "M Ocean View",
+   "color": "#008552",
+   "textColor": "#FFFFFF",
+   "mode": "metro",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:N",
+   "shortName": "N",
+   "name": "N Judah",
+   "color": "#00529C",
+   "textColor": "#FFFFFF",
+   "mode": "metro",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:T",
+   "shortName": "T",
+   "name": "T Third Street",
+   "color": "#D60F45",
+   "textColor": "#FFFFFF",
+   "mode": "metro",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:F",
+   "shortName": "F",
+   "name": "F Market & Wharves",
+   "color": "#B49A36",
+   "textColor": "#000000",
+   "mode": "streetcar",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:CA",
+   "shortName": "CA",
+   "name": "CA California Street Cable Car",
+   "color": "#B49A36",
+   "textColor": "#000000",
+   "mode": "cableway",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:PH",
+   "shortName": "PH",
+   "name": "PH Powell-Hyde Cable Car",
+   "color": "#B49A36",
+   "textColor": "#000000",
+   "mode": "cableway",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:PM",
+   "shortName": "PM",
+   "name": "PM Powell-Mason Cable Car",
+   "color": "#B49A36",
+   "textColor": "#000000",
+   "mode": "cableway",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:1",
+   "shortName": "1",
+   "name": "1 California",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:1X",
+   "shortName": "1X",
+   "name": "1X California Express",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:2",
+   "shortName": "2",
+   "name": "2 Sutter",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:5",
+   "shortName": "5",
+   "name": "5 Fulton",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:5R",
+   "shortName": "5R",
+   "name": "5R Fulton Rapid",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:6",
+   "shortName": "6",
+   "name": "6 Hayes-Parnassus",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:7",
+   "shortName": "7",
+   "name": "7 Haight-Noriega",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:8",
+   "shortName": "8",
+   "name": "8 Bayshore",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:8AX",
+   "shortName": "8AX",
+   "name": "8AX Bayshore A Express",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:8BX",
+   "shortName": "8BX",
+   "name": "8BX Bayshore B Express",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:9",
+   "shortName": "9",
+   "name": "9 San Bruno",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:9R",
+   "shortName": "9R",
+   "name": "9R San Bruno Rapid",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:12",
+   "shortName": "12",
+   "name": "12 Folsom-Pacific",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:14",
+   "shortName": "14",
+   "name": "14 Mission",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:14R",
+   "shortName": "14R",
+   "name": "14R Mission Rapid",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:15",
+   "shortName": "15",
+   "name": "15 Bayview Hunters Point Express",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:18",
+   "shortName": "18",
+   "name": "18 46th Avenue",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:19",
+   "shortName": "19",
+   "name": "19 Polk",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:22",
+   "shortName": "22",
+   "name": "22 Fillmore",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:23",
+   "shortName": "23",
+   "name": "23 Monterey",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:24",
+   "shortName": "24",
+   "name": "24 Divisadero",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:25",
+   "shortName": "25",
+   "name": "25 Treasure Island",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:27",
+   "shortName": "27",
+   "name": "27 Bryant",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:28",
+   "shortName": "28",
+   "name": "28 19th Avenue",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:28R",
+   "shortName": "28R",
+   "name": "28R 19th Avenue Rapid",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:29",
+   "shortName": "29",
+   "name": "29 Sunset",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:30",
+   "shortName": "30",
+   "name": "30 Stockton",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:30X",
+   "shortName": "30X",
+   "name": "30X Marina Express",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:31",
+   "shortName": "31",
+   "name": "31 Balboa",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:33",
+   "shortName": "33",
+   "name": "33 Ashbury-18th St",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:35",
+   "shortName": "35",
+   "name": "35 Eureka",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:36",
+   "shortName": "36",
+   "name": "36 Teresita",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:37",
+   "shortName": "37",
+   "name": "37 Corbett",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:38",
+   "shortName": "38",
+   "name": "38 Geary",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:38R",
+   "shortName": "38R",
+   "name": "38R Geary Rapid",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:39",
+   "shortName": "39",
+   "name": "39 Coit",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:43",
+   "shortName": "43",
+   "name": "43 Masonic",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:44",
+   "shortName": "44",
+   "name": "44 O'Shaughnessy",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:45",
+   "shortName": "45",
+   "name": "45 Union-Stockton",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:48",
+   "shortName": "48",
+   "name": "48 Quintara-24th Street",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:49",
+   "shortName": "49",
+   "name": "49 Van Ness-Mission",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:52",
+   "shortName": "52",
+   "name": "52 Excelsior",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:54",
+   "shortName": "54",
+   "name": "54 Felton",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:55",
+   "shortName": "55",
+   "name": "55 Dogpatch",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:56",
+   "shortName": "56",
+   "name": "56 Rutland",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:57",
+   "shortName": "57",
+   "name": "57 Parkmerced",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:58",
+   "shortName": "58",
+   "name": "58 Lake Merced",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:66",
+   "shortName": "66",
+   "name": "66 Quintara",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:67",
+   "shortName": "67",
+   "name": "67 Bernal Heights",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:90",
+   "shortName": "90",
+   "name": "90 San Bruno Owl",
+   "color": "#666666",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:91",
+   "shortName": "91",
+   "name": "91 3rd-19th Ave Owl",
+   "color": "#666666",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:714",
+   "shortName": "714",
+   "name": "714 BART Early Bird",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": []
+  },
+  {
+   "id": "SF:FBUS",
+   "shortName": "FBUS",
+   "name": "FBUS Market & Wharves Bus",
+   "color": "#B49A36",
+   "textColor": "#000000",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": [
+    "SF:F"
+   ]
+  },
+  {
+   "id": "SF:KBUS",
+   "shortName": "KBUS",
+   "name": "KBUS Ingleside Bus",
+   "color": "#437C93",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": [
+    "SF:K"
+   ]
+  },
+  {
+   "id": "SF:LOWL",
+   "shortName": "LOWL",
+   "name": "LOWL Owl Taraval",
+   "color": "#666666",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": [
+    "SF:L"
+   ]
+  },
+  {
+   "id": "SF:NBUS",
+   "shortName": "NBUS",
+   "name": "NBUS Judah Bus",
+   "color": "#005B95",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": [
+    "SF:N"
+   ]
+  },
+  {
+   "id": "SF:NOWL",
+   "shortName": "NOWL",
+   "name": "NOWL Owl Judah",
+   "color": "#666666",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": [
+    "SF:N"
+   ]
+  },
+  {
+   "id": "SF:TBUS",
+   "shortName": "TBUS",
+   "name": "TBUS Third Bus",
+   "color": "#BF2B45",
+   "textColor": "#FFFFFF",
+   "mode": "bus",
+   "hidden": false,
+   "replaces": [
+    "SF:T"
+   ]
+  }
+ ]
+}

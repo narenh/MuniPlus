@@ -10,3 +10,7 @@ api/.venv/
 api/.local/
 api/*.egg-info/
 api/.pytest_cache/
+
+# swift/
+swift/**/.build/
+swift/**/.swiftpm/

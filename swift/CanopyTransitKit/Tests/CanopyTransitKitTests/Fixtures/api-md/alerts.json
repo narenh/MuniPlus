@@ -1,0 +1,13 @@
+{
+  "fetchedAt": 1790197438,
+  "feedAt": 1790113697,
+  "refreshAfter": 1204,
+  "alerts": [
+    { "id": "SF_15752",
+      "header": "38, 38R STOP TEMP. MOVED Board at O'Farrell/Mason",
+      "description": "38, 38R STOP TEMP. MOVED Board at O'Farrell/Mason",
+      "activePeriods": [ { "start": 1789369200, "end": 1791356399 } ],
+      "lines": ["SF:38", "SF:38R"], "stops": ["SF:15817"], "stations": ["powellOfarrell"],
+      "url": null }
+  ]
+}

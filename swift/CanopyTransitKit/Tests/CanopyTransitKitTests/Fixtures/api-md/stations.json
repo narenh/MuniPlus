@@ -1,0 +1,26 @@
+{
+  "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+  "formerIds": { "mongomery": "montgomery", "castroPlaza": "marketCastro" },
+  "stations": [
+    {
+      "id": "embarcadero",
+      "name": "Embarcadero",
+      "lat": 37.792922,
+      "lon": -122.396791,
+      "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
+      "modes": ["metro"],
+      "operators": ["SF", "BA"],
+      "platforms": [
+        { "id": "SF:16992", "heading": "eastbound", "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
+          "stops": ["SF:16992"], "formerIds": [] },
+        { "id": "SF:17217", "heading": "westbound", "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
+          "stops": ["SF:17217"], "formerIds": [] }
+      ],
+      "transfers": [ { "to": "marketEmbarcaderoSubway", "name": "Embarcadero & Market", "mode": "street" } ]
+    }
+  ],
+  "subways": [
+    { "id": "marketStreetSubway", "name": "Market Subway",
+      "stations": ["embarcadero", "montgomery", "powell", "civicCenter"] }
+  ]
+}

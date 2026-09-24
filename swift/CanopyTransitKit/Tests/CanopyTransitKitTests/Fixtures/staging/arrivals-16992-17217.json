@@ -1,0 +1,611 @@
+{
+ "fetchedAt": 1790216736,
+ "feedAt": 1790216735,
+ "refreshAfter": 64,
+ "platforms": {
+  "SF:16992": [
+   {
+    "line": "SF:M",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790216893,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12135373_M11",
+    "vehicle": "SF:2157"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790216934,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12134512_M11",
+    "vehicle": "SF:2014"
+   },
+   {
+    "line": "SF:J",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217022,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12132451_M11",
+    "vehicle": "SF:2018"
+   },
+   {
+    "line": "SF:J",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217074,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12132450_M11",
+    "vehicle": "SF:2070"
+   },
+   {
+    "line": "SF:K",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217170,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12133270_M11",
+    "vehicle": "SF:2141"
+   },
+   {
+    "line": "SF:N",
+    "direction": 1,
+    "headsign": "Caltrain/Ballpark",
+    "time": 1790217203,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135938_M11",
+    "vehicle": "SF:2143"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217343,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12134513_M11",
+    "vehicle": "SF:2108"
+   },
+   {
+    "line": "SF:M",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217596,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12135388_M11",
+    "vehicle": "SF:2071"
+   },
+   {
+    "line": "SF:K",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217747,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12133274_M11",
+    "vehicle": "SF:2004"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790217847,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12134514_M11",
+    "vehicle": "SF:2019"
+   },
+   {
+    "line": "SF:N",
+    "direction": 1,
+    "headsign": "Caltrain/Ballpark",
+    "time": 1790217917,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135939_M11",
+    "vehicle": "SF:2125"
+   },
+   {
+    "line": "SF:J",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790218110,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12132405_M11",
+    "vehicle": "SF:2148"
+   },
+   {
+    "line": "SF:M",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790218262,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12135382_M11",
+    "vehicle": "SF:2122"
+   },
+   {
+    "line": "SF:N",
+    "direction": 1,
+    "headsign": "Caltrain/Ballpark",
+    "time": 1790218440,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135940_M11",
+    "vehicle": "SF:2007"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790218492,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12134515_M11",
+    "vehicle": "SF:2017"
+   },
+   {
+    "line": "SF:K",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790218554,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12133267_M11",
+    "vehicle": "SF:2104"
+   },
+   {
+    "line": "SF:M",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790218711,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12135387_M11",
+    "vehicle": "SF:2142"
+   },
+   {
+    "line": "SF:N",
+    "direction": 1,
+    "headsign": "Caltrain/Ballpark",
+    "time": 1790218770,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12136028_M11",
+    "vehicle": "SF:2036"
+   },
+   {
+    "line": "SF:J",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790218784,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12132449_M11",
+    "vehicle": "SF:2061"
+   },
+   {
+    "line": "SF:K",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219124,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12133268_M11",
+    "vehicle": "SF:2114"
+   },
+   {
+    "line": "SF:M",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219251,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12135386_M11",
+    "vehicle": "SF:2110"
+   },
+   {
+    "line": "SF:N",
+    "direction": 1,
+    "headsign": "Caltrain/Ballpark",
+    "time": 1790219277,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135941_M11",
+    "vehicle": "SF:2072"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219350,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12134516_M11",
+    "vehicle": "SF:2076"
+   },
+   {
+    "line": "SF:J",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219491,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12132448_M11",
+    "vehicle": "SF:2081"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219657,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12134517_M11",
+    "vehicle": "SF:2111"
+   },
+   {
+    "line": "SF:N",
+    "direction": 1,
+    "headsign": "Caltrain/Ballpark",
+    "time": 1790219817,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135942_M11",
+    "vehicle": "SF:2102"
+   },
+   {
+    "line": "SF:K",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219904,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12133269_M11",
+    "vehicle": "SF:2068"
+   },
+   {
+    "line": "SF:M",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790219911,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12135385_M11",
+    "vehicle": "SF:2113"
+   },
+   {
+    "line": "SF:L",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790220250,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12134518_M11",
+    "vehicle": "SF:2077"
+   },
+   {
+    "line": "SF:J",
+    "direction": 1,
+    "headsign": "Embarcadero Station",
+    "time": 1790220391,
+    "kind": "arrival",
+    "terminates": true,
+    "trip": "SF:12132401_M11",
+    "vehicle": "SF:2138"
+   }
+  ],
+  "SF:17217": [
+   {
+    "line": "SF:N",
+    "direction": 0,
+    "headsign": "Ocean Beach",
+    "time": 1790216877,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135910_M11",
+    "vehicle": "SF:2173"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790216901,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134415_M11",
+    "vehicle": "SF:2194"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790217120,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135229_M11",
+    "vehicle": "SF:2080"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790217194,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135226_M11",
+    "vehicle": "SF:2157"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790217234,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134416_M11",
+    "vehicle": "SF:2014"
+   },
+   {
+    "line": "SF:J",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790217322,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12132314_M11",
+    "vehicle": "SF:2018"
+   },
+   {
+    "line": "SF:J",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790217374,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12132313_M11",
+    "vehicle": "SF:2070"
+   },
+   {
+    "line": "SF:K",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790217470,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12133126_M11",
+    "vehicle": "SF:2141"
+   },
+   {
+    "line": "SF:N",
+    "direction": 0,
+    "headsign": "Ocean Beach",
+    "time": 1790217612,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135816_M11",
+    "vehicle": "SF:2024"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790217644,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134432_M11",
+    "vehicle": "SF:2108"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790217897,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135225_M11",
+    "vehicle": "SF:2071"
+   },
+   {
+    "line": "SF:K",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790218047,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12133127_M11",
+    "vehicle": "SF:2004"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790218148,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134417_M11",
+    "vehicle": "SF:2019"
+   },
+   {
+    "line": "SF:N",
+    "direction": 0,
+    "headsign": "Ocean Beach",
+    "time": 1790218332,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135834_M11",
+    "vehicle": "SF:2001"
+   },
+   {
+    "line": "SF:J",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790218410,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12132312_M11",
+    "vehicle": "SF:2148"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790218562,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135290_M11",
+    "vehicle": "SF:2122"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790218800,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134418_M11",
+    "vehicle": "SF:2017"
+   },
+   {
+    "line": "SF:K",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790218854,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12133128_M11",
+    "vehicle": "SF:2104"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790219011,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135224_M11",
+    "vehicle": "SF:2142"
+   },
+   {
+    "line": "SF:N",
+    "direction": 0,
+    "headsign": "Ocean Beach",
+    "time": 1790219052,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135818_M11",
+    "vehicle": "SF:2015"
+   },
+   {
+    "line": "SF:J",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790219085,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12132311_M11",
+    "vehicle": "SF:2061"
+   },
+   {
+    "line": "SF:K",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790219460,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12133129_M11",
+    "vehicle": "SF:2114"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790219640,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135223_M11",
+    "vehicle": "SF:2110"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790219650,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134419_M11",
+    "vehicle": "SF:2076"
+   },
+   {
+    "line": "SF:J",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790219791,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12132310_M11",
+    "vehicle": "SF:2081"
+   },
+   {
+    "line": "SF:N",
+    "direction": 0,
+    "headsign": "Ocean Beach",
+    "time": 1790219832,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135819_M11",
+    "vehicle": "SF:2126"
+   },
+   {
+    "line": "SF:K",
+    "direction": 0,
+    "headsign": "Balboa Park",
+    "time": 1790220240,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12133187_M11",
+    "vehicle": "SF:2068"
+   },
+   {
+    "line": "SF:M",
+    "direction": 0,
+    "headsign": "Balboa Park via S.F. State",
+    "time": 1790220300,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12135222_M11",
+    "vehicle": "SF:2113"
+   },
+   {
+    "line": "SF:L",
+    "direction": 0,
+    "headsign": "S.F. Zoo",
+    "time": 1790220550,
+    "kind": "departure",
+    "terminates": false,
+    "trip": "SF:12134420_M11",
+    "vehicle": "SF:2077"
+   },
+   {
+    "line": "SF:N",
+    "direction": 0,
+    "headsign": "Ocean Beach",
+    "time": 1790220612,
+    "kind": "arrival",
+    "terminates": false,
+    "trip": "SF:12135820_M11",
+    "vehicle": "SF:2143"
+   }
+  ]
+ }
+}

@@ -1,0 +1,93 @@
+{
+ "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+ "station": {
+  "id": "embarcadero",
+  "name": "Embarcadero",
+  "lat": 37.792922,
+  "lon": -122.396791,
+  "lines": [
+   "SF:J",
+   "SF:K",
+   "SF:L",
+   "SF:M",
+   "SF:N"
+  ],
+  "modes": [
+   "metro"
+  ],
+  "operators": [
+   "SF",
+   "BA"
+  ],
+  "platforms": [
+   {
+    "id": "SF:16992",
+    "heading": "eastbound",
+    "lines": [
+     "SF:J",
+     "SF:K",
+     "SF:L",
+     "SF:M",
+     "SF:N"
+    ],
+    "stops": [
+     "SF:16992"
+    ],
+    "formerIds": [],
+    "name": null,
+    "stopName": "Metro Embarcadero Station",
+    "lat": 37.793134,
+    "lon": -122.396431
+   },
+   {
+    "id": "SF:17217",
+    "heading": "westbound",
+    "lines": [
+     "SF:J",
+     "SF:K",
+     "SF:L",
+     "SF:M",
+     "SF:N"
+    ],
+    "stops": [
+     "SF:17217"
+    ],
+    "formerIds": [],
+    "name": null,
+    "stopName": "Metro Embarcadero Station",
+    "lat": 37.79271,
+    "lon": -122.39715
+   }
+  ],
+  "transfers": [
+   {
+    "to": "marketEmbarcaderoSubway",
+    "name": "Embarcadero & Market",
+    "mode": "street"
+   }
+  ],
+  "subways": [
+   {
+    "id": "marketStreetSubway",
+    "name": "Market Subway"
+   }
+  ],
+  "alerts": [
+   {
+    "id": "SF_15898",
+    "header": "Folsom Street Fair this Sunday. Muni will have reroutes in SoMa.",
+    "description": "Folsom Street Fair this Sunday. Muni will have reroutes in SoMa.",
+    "activePeriods": [
+     {
+      "start": 1789974000,
+      "end": 1790578799
+     }
+    ],
+    "lines": [],
+    "stops": [],
+    "stations": [],
+    "url": null
+   }
+  ]
+ }
+}

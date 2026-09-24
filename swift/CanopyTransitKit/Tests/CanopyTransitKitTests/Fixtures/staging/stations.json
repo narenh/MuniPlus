@@ -1,0 +1,398 @@
+{
+ "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+ "formerIds": {
+  "bayshoreLEland": "bayshoreLeland",
+  "castroPlaza": "marketCastro",
+  "churchDuboceJ": "duboceChurchN",
+  "eighteenthChurch": "doloresPark18",
+  "fourthKingN": "fourthKing",
+  "fourthKingT": "fourthKing",
+  "market15": "marketSanchez",
+  "market16": "marketNoe",
+  "marketBeale": "marketEmbarcaderoSubway",
+  "marketStBetween5th4": "powellMarket",
+  "middlePointFairFax": "middlePointFairfax",
+  "mongomery": "montgomery",
+  "sanJoseGeneva": "balboaPark",
+  "transitCenterBay27": "transitCenterBayB",
+  "transitCenterBay29": "transitCenterBayB",
+  "transitCenterBayC": "transitCenterBayB",
+  "transitCenterBayD": "transitCenterBayB",
+  "transitCenterBayE": "transitCenterBayB"
+ },
+ "stations": [
+  {
+   "id": "balboaPark",
+   "name": "Balboa Park Station",
+   "lat": 37.720667,
+   "lon": -122.446709,
+   "lines": [
+    "SF:J",
+    "SF:K",
+    "SF:M"
+   ],
+   "modes": [
+    "metro"
+   ],
+   "operators": [
+    "SF",
+    "BA"
+   ],
+   "platforms": [
+    {
+     "id": "SF:17778",
+     "heading": "northbound",
+     "lines": [
+      "SF:J",
+      "SF:K"
+     ],
+     "stops": [
+      "SF:17778"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:16262",
+     "heading": "eastbound",
+     "lines": [
+      "SF:M"
+     ],
+     "stops": [
+      "SF:16262"
+     ],
+     "formerIds": []
+    }
+   ]
+  },
+  {
+   "id": "churchMarket",
+   "name": "Church & Market",
+   "lat": 37.767405,
+   "lon": -122.429014,
+   "lines": [
+    "SF:J",
+    "SF:F",
+    "SF:22",
+    "SF:FBUS",
+    "SF:KBUS",
+    "SF:LOWL"
+   ],
+   "modes": [
+    "metro",
+    "streetcar",
+    "bus"
+   ],
+   "operators": [
+    "SF"
+   ],
+   "platforms": [
+    {
+     "id": "SF:17073",
+     "heading": "northbound",
+     "lines": [
+      "SF:J",
+      "SF:22"
+     ],
+     "stops": [
+      "SF:17073"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:18059",
+     "heading": "southbound",
+     "lines": [
+      "SF:J",
+      "SF:22"
+     ],
+     "stops": [
+      "SF:18059"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:15662",
+     "heading": "eastbound",
+     "lines": [
+      "SF:F",
+      "SF:FBUS"
+     ],
+     "stops": [
+      "SF:15662"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:15661",
+     "heading": "westbound",
+     "lines": [
+      "SF:F",
+      "SF:FBUS",
+      "SF:KBUS",
+      "SF:LOWL"
+     ],
+     "stops": [
+      "SF:15661"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:18062",
+     "heading": "eastbound",
+     "lines": [
+      "SF:KBUS",
+      "SF:LOWL"
+     ],
+     "stops": [
+      "SF:18062"
+     ],
+     "formerIds": []
+    }
+   ]
+  },
+  {
+   "id": "duboceChurchN",
+   "name": "Duboce & Church",
+   "lat": 37.769396,
+   "lon": -122.42924,
+   "lines": [
+    "SF:J",
+    "SF:N",
+    "SF:22",
+    "SF:NBUS",
+    "SF:NOWL"
+   ],
+   "modes": [
+    "metro",
+    "bus"
+   ],
+   "operators": [
+    "SF"
+   ],
+   "platforms": [
+    {
+     "id": "SF:14448",
+     "heading": "eastbound",
+     "lines": [
+      "SF:N",
+      "SF:NBUS"
+     ],
+     "stops": [
+      "SF:14448",
+      "SF:18061"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:14447",
+     "heading": "westbound",
+     "lines": [
+      "SF:N",
+      "SF:NBUS"
+     ],
+     "stops": [
+      "SF:14447"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:14006",
+     "heading": "northbound",
+     "lines": [
+      "SF:J",
+      "SF:22",
+      "SF:NOWL"
+     ],
+     "stops": [
+      "SF:14006",
+      "SF:17074"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:14005",
+     "heading": "southbound",
+     "lines": [
+      "SF:22",
+      "SF:NOWL"
+     ],
+     "stops": [
+      "SF:14005"
+     ],
+     "formerIds": []
+    }
+   ]
+  },
+  {
+   "id": "embarcadero",
+   "name": "Embarcadero",
+   "lat": 37.792922,
+   "lon": -122.396791,
+   "lines": [
+    "SF:J",
+    "SF:K",
+    "SF:L",
+    "SF:M",
+    "SF:N"
+   ],
+   "modes": [
+    "metro"
+   ],
+   "operators": [
+    "SF",
+    "BA"
+   ],
+   "platforms": [
+    {
+     "id": "SF:16992",
+     "heading": "eastbound",
+     "lines": [
+      "SF:J",
+      "SF:K",
+      "SF:L",
+      "SF:M",
+      "SF:N"
+     ],
+     "stops": [
+      "SF:16992"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:17217",
+     "heading": "westbound",
+     "lines": [
+      "SF:J",
+      "SF:K",
+      "SF:L",
+      "SF:M",
+      "SF:N"
+     ],
+     "stops": [
+      "SF:17217"
+     ],
+     "formerIds": []
+    }
+   ]
+  },
+  {
+   "id": "fourthKing",
+   "name": "4th & King",
+   "lat": 37.776233,
+   "lon": -122.393927,
+   "lines": [
+    "SF:N",
+    "SF:T",
+    "SF:91",
+    "SF:TBUS"
+   ],
+   "modes": [
+    "metro",
+    "bus"
+   ],
+   "operators": [
+    "SF",
+    "CT"
+   ],
+   "platforms": [
+    {
+     "id": "SF:15240",
+     "heading": "northbound",
+     "lines": [
+      "SF:N"
+     ],
+     "stops": [
+      "SF:15240"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:17166",
+     "heading": "northbound",
+     "lines": [
+      "SF:T"
+     ],
+     "stops": [
+      "SF:17166"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:17397",
+     "heading": "southbound",
+     "lines": [
+      "SF:T"
+     ],
+     "stops": [
+      "SF:17397"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:17405",
+     "heading": "northbound",
+     "lines": [
+      "SF:91",
+      "SF:TBUS"
+     ],
+     "stops": [
+      "SF:17405"
+     ],
+     "formerIds": []
+    }
+   ]
+  },
+  {
+   "id": "montgomery",
+   "name": "Montgomery",
+   "lat": 37.789005,
+   "lon": -122.401739,
+   "lines": [
+    "SF:J",
+    "SF:K",
+    "SF:L",
+    "SF:M",
+    "SF:N"
+   ],
+   "modes": [
+    "metro"
+   ],
+   "operators": [
+    "SF",
+    "BA"
+   ],
+   "platforms": [
+    {
+     "id": "SF:15731",
+     "heading": "eastbound",
+     "lines": [
+      "SF:J",
+      "SF:K",
+      "SF:L",
+      "SF:M",
+      "SF:N"
+     ],
+     "stops": [
+      "SF:15731"
+     ],
+     "formerIds": []
+    },
+    {
+     "id": "SF:16994",
+     "heading": "westbound",
+     "lines": [
+      "SF:J",
+      "SF:K",
+      "SF:L",
+      "SF:M",
+      "SF:N"
+     ],
+     "stops": [
+      "SF:16994"
+     ],
+     "formerIds": []
+    }
+   ]
+  }
+ ]
+}

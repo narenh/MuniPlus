@@ -1,0 +1,17 @@
+{
+  "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+  "station": {
+    "id": "montgomery", "name": "Montgomery", "lat": 37.789005, "lon": -122.401739,
+    "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"], "modes": ["metro"], "operators": ["SF", "BA"],
+    "platforms": [
+      { "id": "SF:15731", "heading": "eastbound", "lines": ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"],
+        "stops": ["SF:15731"], "formerIds": [],
+        "name": null, "stopName": "Metro Montgomery Station/Downtown",
+        "lat": 37.789219, "lon": -122.401351 }
+    ],
+    "transfers": [ { "to": "market2", "name": "Market & 2nd/Montgomery", "mode": "street" } ],
+    "subways": [ { "id": "marketStreetSubway", "name": "Market Subway" } ],
+    "alerts": [ { "id": "SF_15898", "header": "Folsom Street Fair this Sunday", "description": "Folsom Street Fair this Sunday",
+                  "activePeriods": [ { "start": 1790046000, "end": null } ], "lines": [], "stops": [], "stations": [], "url": null } ]
+  }
+}

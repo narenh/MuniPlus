@@ -1,0 +1,16 @@
+{
+  "version": "38d2f22ad7a296e47e86dc80679a0a048cf3a81e",
+  "line": {
+    "id": "SF:N", "shortName": "N", "name": "N Judah", "color": "#00529C", "textColor": "#FFFFFF",
+    "mode": "metro", "hidden": false, "replaces": [], "owl": false,
+    "directions": [
+      { "direction": 0, "headsign": "Ocean Beach",
+        "stations": ["fourthKing", "secondKing", "embarcaderoBrannan"],
+        "stops": ["SF:15240", "SF:15237", "SF:17145"],
+        "shape": "SF:9717" },
+      { "direction": 1, "headsign": "Caltrain/Ballpark",
+        "stations": ["oceanBeach", "judah46"], "stops": ["SF:15223", "SF:15216"],
+        "shape": "SF:9766" }
+    ]
+  }
+}

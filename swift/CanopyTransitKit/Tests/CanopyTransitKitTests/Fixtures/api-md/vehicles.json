@@ -1,0 +1,10 @@
+{
+  "fetchedAt": 1790197438,
+  "feedAt": 1790113896,
+  "refreshAfter": 184,
+  "vehicles": [
+    { "id": "SF:2001", "line": "SF:N", "direction": 0, "trip": "SF:12135883_M11",
+      "lat": 37.761879, "lon": -122.473503, "bearing": 255.0, "speed": 4.44,
+      "stop": "SF:15198", "status": "stoppedAt" }
+  ]
+}

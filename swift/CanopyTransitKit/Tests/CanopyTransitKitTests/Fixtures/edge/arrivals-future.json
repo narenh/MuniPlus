@@ -1,0 +1,12 @@
+{
+  "fetchedAt": 1790197438, "feedAt": 1790113897, "refreshAfter": 20, "source": "gtfs-rt",
+  "platforms": {
+    "SF:16992": [
+      { "line": "SF:L", "direction": 1, "headsign": "Embarcadero Station", "time": 1790113947,
+        "kind": "passThrough", "terminates": false, "trip": "SF:1", "vehicle": null, "occupancy": "full" },
+      { "line": "SF:M", "direction": 1, "headsign": "Embarcadero Station", "time": "soon",
+        "kind": "arrival", "terminates": false, "trip": "SF:2", "vehicle": null }
+    ],
+    "SF:17217": []
+  }
+}
