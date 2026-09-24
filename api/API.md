@@ -117,6 +117,16 @@ the three and the answer is the current platform's. The client should still reso
 ids first, to know which key to read in the answer (see
 [arrivals](#get-apiv1arrivals)).
 
+**The one exception: asking 511 directly.** Stop, line, shape, trip and vehicle ids
+are `<operator>:<511 id>`, and that format is part of v1. The operator is 511's own
+code, used verbatim; the part after the **first** colon is exactly the id 511 uses
+for the thing (a `stopcode`, a `LineRef`, a `DatedVehicleJourneyRef`, a
+`VehicleRef`), and never contains a comma, colon, slash or whitespace. A client
+that falls back to 511 when this API is unreachable may split an id at its first
+colon to ask 511, and qualify 511's ids the same way to read the answer as this
+API would have given it. Nothing else may parse or build ids. Station and subway
+ids are ours and have no such structure.
+
 ---
 
 ## 4. Endpoints
@@ -526,7 +536,8 @@ Stop polling while the app is in the background, and poll once as it returns.
    the error codes will all gain values. Decode an unknown value into an `unknown`
    case, never throw. One failed field must not fail a whole response.
 2. **Ignore unknown fields.** v1 grows by adding them.
-3. **Ids are opaque.** Pass back what was given. Never parse the `SF:` prefix.
+3. **Ids are opaque.** Pass back what was given. Never parse the `SF:` prefix,
+   except to ask 511 directly as a fallback ([section 3](#3-identifiers)).
 4. **Store only station ids, platform ids, line ids and operator codes.** Never
    store trip, vehicle or shape ids.
 5. **Resolve stored platform ids** against the latest station list: by `id`, then
@@ -547,19 +558,38 @@ Stop polling while the app is in the background, and poll once as it returns.
 
 ## 8. Migrating the App Store app's saved data
 
-The shipping app predates this API. It keeps bare stop codes (`16992`) and the old
-station ids.
+The shipping app predates this API. It saves three things in `UserDefaults`, none
+of them as platform ids:
 
-- **Stop codes → platform ids:** prefix `SF:` (`16992` → `SF:16992`), then resolve
-  as in [section 3](#3-identifiers). This is the one place a client may build an
-  id, and only for this migration.
+| saved | form | what it points at |
+|---|---|---|
+| home | `{stationId, platformIndex}` | one platform of a catalog station |
+| favourites | `[{stationId, platformIndex}]` | the same, several times |
+| custom stations | whole stations the person built, with platforms whose `id` is a bare stop code (`16992`) | their own |
+
+**`platformIndex` is not a stop code.** It is an index into that station's
+`platforms` in the app's station catalog, *after* sorting them by heading as the app
+numbers them: northbound, southbound, westbound, eastbound. The catalog is whichever
+the app had loaded: the downloaded `data.json` if one was cached and decodes,
+otherwise the bundled `muni-stations-<date>.json`. The migration must read the index
+against that same file, since the two can order platforms differently.
+
+- **Favourite or home → platform id:** look up the station in the old catalog, take
+  the platform at `platformIndex` in heading order, read its bare stop code, prefix
+  `SF:` (`16992` → `SF:16992`), then resolve as in [section 3](#3-identifiers).
+  Building an id is allowed here only for this migration.
+- **Custom station platforms:** prefix and resolve each stop code the same way.
+  Custom stations have no equivalent in this API; what the app does with the
+  resolved platforms (make them favourites, or keep custom stations as its own
+  concept) is the app's decision.
 - **Station ids:** map through `formerIds`. `mongomery` → `montgomery` is the
   best-known one; others come from merges (`castroPlaza` → `marketCastro`).
 - Anything that fails to resolve is a platform or station that no longer exists.
   Tell the person, once.
 
-Run the migration once, after the first successful `/stations` fetch, and store the
-results in the new form.
+Run the migration once, after the first successful `/stations` fetch (or against
+the bundled snapshot, if the app ships one), and store the results in the new form.
+Keep the old catalog in the app until the migration has run.
 
 ---
 
