@@ -356,6 +356,12 @@ class Realtime:
 
     # MARK: - Clock
 
+    def now(self, operator: str) -> int:
+        """The time ``arrivals`` filters ``operator``'s stops against, for a caller
+        that turns arrival times into minutes from now."""
+        state = self._state.get((operator, "tripupdates"))
+        return self._now(None, state) if state is not None else int(self._clock())
+
     def _now(self, now: int | None, state: _State) -> int:
         """The time to filter against. Explicit if given. In fixtures mode, the
         feed's own header time, because the recorded feeds are from 2026-09-22

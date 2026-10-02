@@ -22,7 +22,7 @@ from fastapi.responses import JSONResponse
 from .data.loader import load_checkout
 from .data.repo import Repo, RepoError
 from .db import Database
-from .endpoints import alerts, arrivals, health, lines, stations, vehicles
+from .endpoints import alerts, arrivals, health, lines, speech, stations, vehicles
 from .editor.install import install_editor
 from .endpoints.stations import DataUnavailable
 from .models.api import Problem
@@ -99,7 +99,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # whatever proxy happens to be in front.
     app.add_middleware(GZipMiddleware, minimum_size=1024)
 
-    for module in (stations, lines, arrivals, vehicles, alerts, health):
+    for module in (stations, lines, arrivals, speech, vehicles, alerts, health):
         app.include_router(module.router)
     install_editor(app, settings)
     return app

@@ -139,6 +139,7 @@ ids are ours and have no such structure.
 | [`GET /api/v1/lines/{id}`](#get-apiv1linesid) | one line's directions | ETag, `no-cache` |
 | [`GET /api/v1/shapes`](#get-apiv1shapes) | the path each direction draws | ETag, `no-cache` |
 | [`GET /api/v1/arrivals`](#get-apiv1arrivals) | the next arrivals at some platforms | `no-store`, `refreshAfter` |
+| [`GET /api/v1/speech`](#get-apiv1speech) | the next arrivals as a sentence to read aloud | `no-store` |
 | [`GET /api/v1/vehicles`](#get-apiv1vehicles) | live vehicle positions | `no-store`, `refreshAfter` |
 | [`GET /api/v1/alerts`](#get-apiv1alerts) | service alerts active now | `no-store`, `refreshAfter` |
 
@@ -372,6 +373,32 @@ when nothing is due.
 | `…[].terminates` | bool | The trip **ends at this platform**: nobody boards it here. |
 | `…[].trip` | trip id | 511's trip id. Useful to tie the same trip across platforms within one answer; never store it. |
 | `…[].vehicle` | vehicle id \| null | The vehicle serving the trip, when known. It matches `Vehicle.id` in `/vehicles`. |
+
+### `GET /api/v1/speech`
+
+The next arrivals at one or more platforms as one plain-text sentence, for a voice
+assistant to read aloud. A Shortcut that fetches it and passes the text to Show
+Result has Siri read it, on a HomePod too, with no JSON or date handling.
+
+`GET /api/v1/speech?platforms=SF:17217&limit=3`
+
+```text
+There's a K Ingleside in 2 minutes, a J Church in 4 minutes, and an N Judah in 4 minutes.
+```
+
+| parameter | required | meaning |
+|---|---|---|
+| `platforms` | yes | As for [arrivals](#get-apiv1arrivals). Several platforms are merged into one sentence, soonest first. |
+| `limit` | no | Arrivals spoken in all, not per platform. Default 3, maximum 10. |
+
+- One clause per line, in the order its first vehicle comes: "a 9 San Bruno in 2, 12
+  and 24 minutes". The line is its `name` from `/lines`.
+- Minutes are rounded down, so under a minute is "now".
+- Trips that end at the platform (`terminates`) are left out, since nobody boards them.
+- Nothing due is `200` "Nothing's due here right now."
+- Errors are plain text too, with the same status codes as arrivals: a `400` whose
+  body is the problem's message, and a `503` "Predictions aren't available right now."
+  when realtime is off or has not fetched yet.
 
 ### `GET /api/v1/vehicles`
 
