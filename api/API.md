@@ -139,7 +139,7 @@ ids are ours and have no such structure.
 | [`GET /api/v1/lines/{id}`](#get-apiv1linesid) | one line's directions | ETag, `no-cache` |
 | [`GET /api/v1/shapes`](#get-apiv1shapes) | the path each direction draws | ETag, `no-cache` |
 | [`GET /api/v1/arrivals`](#get-apiv1arrivals) | the next arrivals at some platforms | `no-store`, `refreshAfter` |
-| [`GET /api/v1/speech`](#get-apiv1speech) | the next arrivals as a sentence to read aloud | `no-store` |
+| [`GET /api/v1/speech`](#get-apiv1speech) | the next arrivals at one stop, as a sentence to read aloud | `no-store` |
 | [`GET /api/v1/vehicles`](#get-apiv1vehicles) | live vehicle positions | `no-store`, `refreshAfter` |
 | [`GET /api/v1/alerts`](#get-apiv1alerts) | service alerts active now | `no-store`, `refreshAfter` |
 
@@ -376,11 +376,11 @@ when nothing is due.
 
 ### `GET /api/v1/speech`
 
-The next arrivals at one or more platforms as one plain-text sentence, for a voice
+The next arrivals at one stop as one plain-text sentence, for a voice
 assistant to read aloud. A Shortcut that fetches it and passes the text to Show
 Result has Siri read it, on a HomePod too, with no JSON or date handling.
 
-`GET /api/v1/speech?platforms=SF:17217&limit=3`
+`GET /api/v1/speech?stop=SF:17217&limit=3`
 
 ```text
 There's a K Ingleside in 2 minutes, a J Church in 4 minutes, and an N Judah in 4 minutes.
@@ -388,8 +388,8 @@ There's a K Ingleside in 2 minutes, a J Church in 4 minutes, and an N Judah in 4
 
 | parameter | required | meaning |
 |---|---|---|
-| `platforms` | yes | As for [arrivals](#get-apiv1arrivals). Several platforms are merged into one sentence, soonest first. |
-| `limit` | no | Arrivals spoken in all, not per platform. Default 3, maximum 10. |
+| `stop` | yes | One platform id. Any stop of a platform also works, as for [arrivals](#get-apiv1arrivals). A list is a `400`. |
+| `limit` | no | Arrivals spoken. Default 3, maximum 10. |
 
 - One clause per line, in the order its first vehicle comes: "a 9 San Bruno in 2, 12
   and 24 minutes". The line is its `name` from `/lines`.

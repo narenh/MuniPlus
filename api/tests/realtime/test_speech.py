@@ -57,42 +57,36 @@ def say(client, **params) -> str:
 
 def test_one_clause_per_line(client):
     # Church outbound: K at 2 min, J and N at 4.
-    assert say(client, platforms="SF:17217") == (
+    assert say(client, stop="SF:17217") == (
         "There's a K Ingleside in 2 minutes, a J Church in 4 minutes, and an N Judah in 4 minutes."
     )
 
 
 def test_a_line_coming_again_is_one_clause(client):
-    assert say(client, platforms="SF:13243") == "There's a 9 San Bruno in 2, 12 and 24 minutes."
+    assert say(client, stop="SF:13243") == "There's a 9 San Bruno in 2, 12 and 24 minutes."
 
 
 def test_due_now(client):
-    assert say(client, platforms="SF:15621", limit="2") == "There's a 52 Excelsior now and a 14R Mission Rapid in 2 minutes."
+    assert say(client, stop="SF:15621", limit="2") == "There's a 52 Excelsior now and a 14R Mission Rapid in 2 minutes."
 
 
 def test_trips_ending_here_are_not_spoken(client):
     # Embarcadero inbound: all but the N end here, and nobody boards those.
-    assert say(client, platforms="SF:16992", limit="1") == "There's an N Judah in 5 minutes."
-
-
-def test_platforms_are_merged_soonest_first(client):
-    assert say(client, platforms="SF:13243,SF:17217", limit="2") == (
-        "There's a K Ingleside in 2 minutes and a 9 San Bruno in 2 minutes."
-    )
+    assert say(client, stop="SF:16992", limit="1") == "There's an N Judah in 5 minutes."
 
 
 def test_nothing_due(client):
-    assert say(client, platforms="SF:99999") == "Nothing's due here right now."
+    assert say(client, stop="SF:99999") == "Nothing's due here right now."
 
 
 def test_names_fall_back_to_the_line_id(settings, db):
     realtime = Realtime(lambda: None, settings, db=db, clock=lambda: NOW)
     realtime.ingest("SF", "tripupdates", fixture_bytes("tripupdates-1.pb.gz"), fetched_at=NOW)
     client = TestClient(make_app(realtime))
-    assert say(client, platforms="SF:17217", limit="1") == "There's a K in 2 minutes."
+    assert say(client, stop="SF:17217", limit="1") == "There's a K in 2 minutes."
 
 
-@pytest.mark.parametrize("params", [{}, {"platforms": "15621"}, {"platforms": "SF:15621", "limit": "0"}])
+@pytest.mark.parametrize("params", [{}, {"stop": "15621"}, {"stop": "SF:15621,SF:13243"}, {"stop": "SF:15621", "limit": "0"}])
 def test_bad_requests_are_sentences(client, params):
     response = client.get("/api/v1/speech", params=params)
     assert response.status_code == 400
@@ -102,14 +96,14 @@ def test_bad_requests_are_sentences(client, params):
 
 def test_no_realtime(settings, db):
     client = TestClient(make_app(None))
-    response = client.get("/api/v1/speech", params={"platforms": "SF:15621"})
+    response = client.get("/api/v1/speech", params={"stop": "SF:15621"})
     assert response.status_code == 503
     assert response.text == "Predictions aren't available right now."
 
 
 def test_before_the_first_fetch(settings, db):
     client = TestClient(make_app(Realtime(lambda: None, settings, db=db, clock=lambda: NOW)))
-    assert client.get("/api/v1/speech", params={"platforms": "SF:15621"}).status_code == 503
+    assert client.get("/api/v1/speech", params={"stop": "SF:15621"}).status_code == 503
 
 
 @pytest.mark.parametrize("short, expected", [

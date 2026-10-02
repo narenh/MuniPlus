@@ -1,4 +1,4 @@
-"""``GET /api/v1/speech?platforms=a,b&limit=3``: the next arrivals as one sentence.
+"""``GET /api/v1/speech?stop=SF:13853&limit=3``: the next arrivals at one stop as one sentence.
 
 For voice assistants: a Shortcut that fetches this and hands the text to Siri
 reads "There's a K Ingleside in 2 minutes, an M Ocean View in 5 minutes, and a 1X
@@ -17,22 +17,23 @@ from app.models.api import Arrival
 from app.models.ids import operator_of
 from app.realtime.http import NO_STORE, BadRequest, Unavailable, parse_ids, parse_int, realtime_of
 
-from .arrivals import MAX_LIMIT, MAX_PLATFORMS
+from .arrivals import MAX_LIMIT
 
 router = APIRouter(prefix="/api/v1", tags=["realtime"])
 
 DEFAULT_LIMIT = 3
-"""Arrivals spoken, across every platform asked for. Three is about what a listener
-keeps hold of."""
+"""Arrivals spoken. Three is about what a listener keeps hold of."""
 MAX_SPOKEN = 10
 
 _LEADING_NUMBER = re.compile(r"\d+")
 
 
 @router.get("/speech", response_class=PlainTextResponse)
-def speech(request: Request, platforms: str | None = None, limit: str | None = None) -> PlainTextResponse:
+def speech(request: Request, stop: str | None = None, limit: str | None = None) -> PlainTextResponse:
     try:
-        ids = parse_ids(platforms, param="platforms", kind="platform", required=True, max_count=MAX_PLATFORMS)
+        if stop is not None and "," in stop:
+            raise BadRequest("bad-request", "stop takes one stop id, like SF:13853.")
+        (stop_id,) = parse_ids(stop, param="stop", kind="platform", required=True, max_count=1)
         count = parse_int(limit, param="limit", default=DEFAULT_LIMIT, maximum=MAX_SPOKEN)
         realtime = realtime_of(request)
     except BadRequest as bad:
@@ -42,18 +43,13 @@ def speech(request: Request, platforms: str | None = None, limit: str | None = N
 
     # Asked for in full, because arrivals that terminate here are dropped below
     # and would otherwise leave fewer than ``count``.
-    answer = realtime.arrivals(ids, MAX_LIMIT)
+    answer = realtime.arrivals([stop_id], MAX_LIMIT)
     if answer.fetched_at is None:
         return _text("Predictions aren't available right now.", 503)
-    now = realtime.now(operator_of(ids[0]))
-
-    # Merged across platforms, a trip seen at two of them once, at its earlier time.
-    first: dict[str, Arrival] = {}
-    for arrival in (a for arrivals in answer.platforms.values() for a in arrivals):
-        if not arrival.terminates and (arrival.trip not in first or arrival.time < first[arrival.trip].time):
-            first[arrival.trip] = arrival
-    soonest = sorted(first.values(), key=lambda a: a.time)[:count]
-    return _text(sentence(soonest, now, _line_names(request)))
+    # One entry, keyed by the platform the stop belongs to rather than the stop.
+    (arrivals,) = answer.platforms.values()
+    boarding = [a for a in arrivals if not a.terminates][:count]
+    return _text(sentence(boarding, realtime.now(operator_of(stop_id)), _line_names(request)))
 
 
 def sentence(arrivals: list[Arrival], now: int, names: dict[str, tuple[str, str]]) -> str:
