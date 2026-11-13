@@ -57,6 +57,19 @@ against recorded answers from both.
 The package holds no key. Pass one in `Configuration.fallbackKey`, or pass nil to
 turn the fallback off.
 
+## Arrivals from a StopMonitoring relay only
+
+```swift
+.init(baseURL: muniPlusURL,
+      arrivals: .stopMonitoring(URL(string: "https://muni-relay.canopysf.com/transit/StopMonitoring")!))
+```
+
+With `.stopMonitoring(url)`, arrivals come only from that URL, which must answer
+in 511's SIRI format and need no key (a relay that holds 511's key itself). The
+Muni+ API is never asked for arrivals, and `fallbackKey` isn't used. Stations and
+lines still come from `baseURL`. It is polled every 40 s, one call per stop, and a
+failure of any stop is the feed's `lastError`, with the last arrivals kept.
+
 ## The bundled snapshot
 
 ```sh

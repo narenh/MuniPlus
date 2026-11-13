@@ -1,6 +1,8 @@
 import Foundation
 
-/// Asks 511 for one stop's arrivals, with the app's own key.
+/// Asks a StopMonitoring endpoint for one stop's arrivals: 511 itself with the
+/// app's own key, or something answering in 511's format that needs none, such as
+/// a relay holding the key for it.
 ///
 /// 511 takes one stop code per call (it refuses a comma list), so a platform of
 /// several stops costs several calls.
@@ -13,14 +15,21 @@ struct StopMonitoringClient: Sendable {
 
     static let endpoint = URL(string: "https://api.511.org/transit/StopMonitoring")!
 
-    let key: String
+    let endpoint: URL
+    /// Sent as `api_key`. Nil sends none.
+    let key: String?
     let transport: any HTTPTransport
+
+    init(endpoint: URL = StopMonitoringClient.endpoint, key: String?, transport: any HTTPTransport) {
+        self.endpoint = endpoint
+        self.key = key
+        self.transport = transport
+    }
 
     func stopMonitoring(_ stop: StopID, now: Date) async throws(Failure) -> StopMonitoring {
         guard let (op, code) = StopMonitoring.split(stop) else { return StopMonitoring.none }
-        var components = URLComponents(url: Self.endpoint, resolvingAgainstBaseURL: false)!
-        components.queryItems = [
-            URLQueryItem(name: "api_key", value: key),
+        var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)!
+        components.queryItems = (key.map { [URLQueryItem(name: "api_key", value: $0)] } ?? []) + [
             URLQueryItem(name: "agency", value: op),
             URLQueryItem(name: "stopcode", value: code),
             URLQueryItem(name: "format", value: "json"),

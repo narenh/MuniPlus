@@ -11,6 +11,10 @@ import Foundation
 /// 511 is polled every 40 seconds while it's the source. A 429 stops all calls to
 /// it until the time it gives, or the top of the hour; meanwhile a stale answer
 /// from the API is still returned, and failing that the caller keeps what it had.
+///
+/// With `stopMonitoringOnly`, the API is never asked: the StopMonitoring client
+/// (a relay answering in 511's format) is the one source, polled every 40 seconds,
+/// and its failures are the caller's errors.
 actor ArrivalsProvider {
     /// Predictions older than this are worth asking 511 about.
     static let staleAfter: TimeInterval = 5 * 60
@@ -21,20 +25,28 @@ actor ArrivalsProvider {
 
     private let client: CanopyClient
     private let fallback: StopMonitoringClient?
+    private let stopMonitoringOnly: Bool
     private let now: @Sendable () -> Date
 
     private var fallingBackUntil: Date?
     private var rateLimitedUntil: Date?
 
-    init(client: CanopyClient, fallback: StopMonitoringClient?, now: @escaping @Sendable () -> Date = Date.init) {
+    init(client: CanopyClient, fallback: StopMonitoringClient?, stopMonitoringOnly: Bool = false,
+         now: @escaping @Sendable () -> Date = Date.init) {
         self.client = client
         self.fallback = fallback
+        self.stopMonitoringOnly = stopMonitoringOnly
         self.now = now
     }
 
     /// The next `limit` arrivals at each platform (at most 50 of them), keyed by
     /// platform id. Throws only when neither source has an answer.
     func arrivals(for platforms: [Platform], limit: Int) async throws(CanopyError) -> ArrivalsResponse {
+        if stopMonitoringOnly {
+            guard canAsk511 else { throw .status(429, Problem(code: .unknown("429"), message: "Rate limited")) }
+            return try await askStopMonitoring(platforms, limit: limit).get()
+        }
+
         var asked511 = false
         if let until = fallingBackUntil, now() < until, canAsk511 {
             asked511 = true
@@ -71,7 +83,13 @@ actor ArrivalsProvider {
     }
 
     private func ask511(_ platforms: [Platform], limit: Int) async -> ArrivalsResponse? {
-        guard let fallback else { return nil }
+        try? await askStopMonitoring(platforms, limit: limit).get()
+    }
+
+    /// Asks the StopMonitoring client for every stop of `platforms`, and fails with
+    /// the first stop's failure if any of them can't answer.
+    private func askStopMonitoring(_ platforms: [Platform], limit: Int) async -> Result<ArrivalsResponse, CanopyError> {
+        guard let fallback else { return .failure(.unreadable("No StopMonitoring source")) }
         let stops = Array(Set(platforms.flatMap(\.stops)))
         let asked = now()
         let answers = await withTaskGroup(of: (StopID, Result<StopMonitoring, StopMonitoringClient.Failure>).self) { group in
@@ -90,20 +108,20 @@ actor ArrivalsProvider {
         }
 
         var byStop: [StopID: StopMonitoring] = [:]
-        var failed = false
+        var failure: CanopyError?
         for (stop, result) in answers {
             switch result {
             case .success(let visits):
                 byStop[stop] = visits
             case .failure(.rateLimited(let until)):
                 rateLimitedUntil = max(rateLimitedUntil ?? until, until)
-                failed = true
-            case .failure(.unusable):
-                failed = true
+                failure = failure ?? .status(429, Problem(code: .unknown("429"), message: "Rate limited"))
+            case .failure(.unusable(let error)):
+                failure = failure ?? error
             }
         }
         // A board missing one of its stops would look quieter than it is.
-        guard !failed else { return nil }
+        if let failure { return .failure(failure) }
 
         let at = now()
         var boards: [StopID: [Arrival]] = [:]
@@ -112,7 +130,7 @@ actor ArrivalsProvider {
                                                        now: at, limit: limit)
         }
         // With several stops, the oldest of their times, as the API does.
-        return ArrivalsResponse(fetchedAt: at, feedAt: byStop.values.compactMap(\.feedAt).min(),
-                                refreshAfter: Self.fallbackRefresh, platforms: boards)
+        return .success(ArrivalsResponse(fetchedAt: at, feedAt: byStop.values.compactMap(\.feedAt).min(),
+                                         refreshAfter: Self.fallbackRefresh, platforms: boards))
     }
 }

@@ -17,12 +17,26 @@ import Observation
 @MainActor
 @Observable
 public final class CanopyTransit {
+    /// Where arrivals come from.
+    public enum ArrivalsSource: Sendable, Hashable {
+        /// The Muni+ API, falling back to 511 with `Configuration.fallbackKey`.
+        case api
+        /// A StopMonitoring endpoint that answers in 511's SIRI format and needs no
+        /// key, such as a relay that holds 511's key itself: the full URL, ending in
+        /// `StopMonitoring`. It is the only source. The Muni+ API is never asked for
+        /// arrivals, `fallbackKey` is not used, and it is polled every 40 s, one
+        /// call per stop.
+        case stopMonitoring(URL)
+    }
+
     public struct Configuration: Sendable {
         /// The Muni+ API, without `/api/v1`.
         public var baseURL: URL
         /// A 511 key, for asking 511 for arrivals itself when the Muni+ API can't
         /// answer. Nil turns that off.
         public var fallbackKey: String?
+        /// Where arrivals come from. The Muni+ API unless told otherwise.
+        public var arrivals: ArrivalsSource
         /// Where to keep reference data between launches. Nil keeps nothing.
         public var directory: URL?
         /// The snapshot bundled with the app, written by `scripts/make_snapshot.py`:
@@ -32,11 +46,13 @@ public final class CanopyTransit {
         public var lineDetails: Set<LineID>
         public var transport: any HTTPTransport
 
-        public init(baseURL: URL, fallbackKey: String? = nil, directory: URL? = Configuration.defaultDirectory,
+        public init(baseURL: URL, fallbackKey: String? = nil, arrivals: ArrivalsSource = .api,
+                    directory: URL? = Configuration.defaultDirectory,
                     snapshot: URL? = nil, lineDetails: Set<LineID> = [],
                     transport: any HTTPTransport = URLSessionTransport()) {
             self.baseURL = baseURL
             self.fallbackKey = fallbackKey
+            self.arrivals = arrivals
             self.directory = directory
             self.snapshot = snapshot
             self.lineDetails = lineDetails
@@ -72,9 +88,17 @@ public final class CanopyTransit {
         let contents = ReferenceStore.load(directory: configuration.directory, snapshot: configuration.snapshot)
         network = contents.network
         store = ReferenceStore(contents: contents, directory: configuration.directory, client: client)
-        arrivals = ArrivalsProvider(
-            client: client,
-            fallback: configuration.fallbackKey.map { StopMonitoringClient(key: $0, transport: configuration.transport) })
+        switch configuration.arrivals {
+        case .api:
+            arrivals = ArrivalsProvider(
+                client: client,
+                fallback: configuration.fallbackKey.map { StopMonitoringClient(key: $0, transport: configuration.transport) })
+        case .stopMonitoring(let endpoint):
+            arrivals = ArrivalsProvider(
+                client: client,
+                fallback: StopMonitoringClient(endpoint: endpoint, key: nil, transport: configuration.transport),
+                stopMonitoringOnly: true)
+        }
         lineDetailIDs = configuration.lineDetails
     }
 

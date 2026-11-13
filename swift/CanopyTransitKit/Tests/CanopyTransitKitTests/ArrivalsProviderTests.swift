@@ -202,4 +202,67 @@ struct ArrivalsProviderTests {
         })
         await #expect(throws: CanopyError.self) { try await provider().arrivals(for: [both], limit: 6) }
     }
+
+    // MARK: - A keyless StopMonitoring endpoint as the only source
+
+    static let relayHost = "muni-relay.canopysf.com"
+    static let relay = URL(string: "https://muni-relay.canopysf.com/transit/StopMonitoring")!
+
+    func relayProvider() -> ArrivalsProvider {
+        ArrivalsProvider(client: CanopyClient(baseURL: stagingURL, transport: transport),
+                         fallback: StopMonitoringClient(endpoint: Self.relay, key: nil, transport: transport),
+                         stopMonitoringOnly: true,
+                         now: { [clock] in clock.now })
+    }
+
+    func answerFromRelay(_ reply: @escaping @Sendable (URLRequest) -> FakeTransport.Reply = ArrivalsProviderTests.from511) async {
+        let now = clock.now
+        await transport.answer { request in
+            request.url?.host == Self.relayHost ? reply(request) : Self.api(age: 10, at: now)
+        }
+    }
+
+    @Test func theRelayIsTheOnlySourceAndGetsNoKey() async throws {
+        await answerFromRelay()
+        let answer = try await relayProvider().arrivals(for: [Self.eastbound, Self.westbound], limit: 6)
+        #expect(answer.platforms["SF:16992"]?.first?.trip == "SF:12135937_M11")
+        #expect(answer.platforms["SF:17217"]?.first?.kind == .departure)
+        #expect(answer.refreshAfter == 40)
+        #expect(await requests(to: Self.apiHost) == 0)
+        let calls = await transport.requests(to: Self.relayHost)
+        #expect(calls.compactMap { $0.query("stopcode") }.sorted() == ["16992", "17217"])
+        #expect(calls.allSatisfy {
+            $0.url?.path == "/transit/StopMonitoring" && $0.query("api_key") == nil && $0.query("agency") == "SF"
+        })
+    }
+
+    @Test(arguments: [
+        FakeTransport.Reply.failure(.notConnectedToInternet),
+        .init(status: 502, body: Fixture.data("edge/cloudflare.html")),
+    ])
+    func aRelayFailureIsAnErrorAndTheAPIIsNotAsked(_ outage: FakeTransport.Reply) async {
+        await answerFromRelay { _ in outage }
+        await #expect(throws: CanopyError.self) {
+            try await relayProvider().arrivals(for: [Self.eastbound], limit: 6)
+        }
+        #expect(await requests(to: Self.apiHost) == 0)
+        #expect(await requests(to: Self.relayHost) == 1)
+    }
+
+    @Test func theConfigurationCanNameTheRelay() async throws {
+        await answerFromRelay()
+        let transit = await CanopyTransit(configuration: .init(baseURL: stagingURL, fallbackKey: "k",
+                                                               arrivals: .stopMonitoring(Self.relay), directory: nil,
+                                                               transport: transport))
+        let feed = await transit.arrivalsFeed(platforms: [Self.eastbound])
+        await feed.refresh()
+        // The recordings are in the past by the real clock, so the board is empty,
+        // but it is the relay's answer and not a failure.
+        #expect(await feed.lastError == nil)
+        #expect(await feed.arrivals.keys.contains("SF:16992"))
+        #expect(await requests(to: Self.relayHost) == 1)
+        #expect(await requests(to: Self.apiHost) == 0)
+        #expect(await requests(to: Self.host511) == 0)
+        #expect(await transport.requests(to: Self.relayHost).allSatisfy { $0.query("api_key") == nil })
+    }
 }

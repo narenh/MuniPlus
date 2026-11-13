@@ -11,8 +11,9 @@ import Observation
 ///
 /// It polls when the answer says newer data can exist (`refreshAfter`), never on a
 /// fixed timer, and once however many views run it. When the Muni+ API can't
-/// answer, it asks 511 directly, and nothing here says which one answered. When
-/// neither can, it keeps the last arrivals it had. Stop running it in the
+/// answer, it asks 511 directly, and nothing here says which one answered; with
+/// `ArrivalsSource.stopMonitoring`, it asks only that endpoint. When none can, it
+/// keeps the last arrivals it had. Stop running it in the
 /// background and run it again on return (API.md, section 6), for example with
 /// `.task(id: scenePhase)`.
 @MainActor
