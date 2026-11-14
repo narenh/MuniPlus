@@ -11,8 +11,9 @@ import Foundation
 /// `terminates`, never from `headsign`.
 public struct Arrival: Decodable, Hashable, Sendable, Identifiable {
     public let line: LineID
-    /// 0 or 1, meaningful only within `line`.
-    public let direction: Int
+    /// 0 or 1, meaningful only within `line`. The API always sends it; nil only
+    /// from a StopMonitoring source whose direction couldn't be read.
+    public let direction: Int?
     /// Where the vehicle is going.
     public let headsign: String
     /// The predicted time. Count down against the device clock.
@@ -27,7 +28,7 @@ public struct Arrival: Decodable, Hashable, Sendable, Identifiable {
 
     public var id: TripID { trip }
 
-    public init(line: LineID, direction: Int, headsign: String, time: Date, kind: ArrivalKind = .arrival,
+    public init(line: LineID, direction: Int?, headsign: String, time: Date, kind: ArrivalKind = .arrival,
                 terminates: Bool = false, trip: TripID, vehicle: VehicleID? = nil) {
         self.line = line
         self.direction = direction

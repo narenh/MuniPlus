@@ -124,13 +124,16 @@ extension KeyedDecodingContainer {
 
 extension StopMonitoring {
     /// The visits at `stop` as arrivals, qualified the way the API qualifies ids
-    /// (API.md, section 3). A visit with no line, trip, direction or time is skipped.
+    /// (API.md, section 3). A visit with no line, trip or time is skipped; one whose
+    /// direction can't be read is kept, with `direction` nil.
     func arrivals(at stop: StopID) -> [Arrival] {
         guard let (op, code) = StopMonitoring.split(stop) else { return [] }
         return visits.compactMap { visit in
             guard let line = StopMonitoring.qualify(op, visit.lineRef),
-                  let trip = StopMonitoring.qualify(op, visit.datedVehicleJourneyRef),
-                  let direction = StopMonitoring.direction(visit.directionRef) else { return nil }
+                  let trip = StopMonitoring.qualify(op, visit.datedVehicleJourneyRef) else { return nil }
+            // A DirectionRef this doesn't know leaves the direction unknown, not the
+            // visit out: nothing that decides what a board shows reads it.
+            let direction = StopMonitoring.direction(visit.directionRef)
 
             // A trip with nothing expected to arrive here, only to leave, starts here:
             // Embarcadero westbound, Balboa Park. Its time is when it leaves.
@@ -151,7 +154,8 @@ extension StopMonitoring {
                 direction: direction,
                 // DestinationDisplay is the headsign the API sends ("Caltrain/Ballpark");
                 // DestinationName is the last stop's name ("King St & 4th St").
-                headsign: visit.destinationDisplay ?? visit.destinationName ?? (direction == 0 ? "Outbound" : "Inbound"),
+                headsign: visit.destinationDisplay ?? visit.destinationName
+                    ?? direction.map { $0 == 0 ? "Outbound" : "Inbound" } ?? "",
                 time: time,
                 kind: kind,
                 terminates: kind == .arrival && visit.destinationRef == code,
@@ -179,11 +183,22 @@ extension StopMonitoring {
         return "\(op):\(upstream)"
     }
 
-    /// SFMTA's SIRI directions onto its GTFS ones: outbound is 0, inbound 1.
+    /// SFMTA's SIRI directions onto its GTFS `direction_id`, which is what the API
+    /// sends.
+    ///
+    /// Most lines say "OB" (0) or "IB" (1). The T says "N" or "S" instead, and its
+    /// GTFS numbering runs the other way from what "outbound" suggests: 0 is
+    /// northbound, to Chinatown, and 1 southbound, to Sunnydale (the API's
+    /// `/lines/SF:T`, and its arrivals for the same trips, November 2026). No
+    /// other line was seen using "N" or "S", nor any using "E" or "W".
+    ///
+    /// Anything else is nil: an unknown direction, kept rather than guessed. It
+    /// can't be worked out from the platform's heading, since which way is 0
+    /// differs line by line (northbound is the T's 0; eastbound is the N's 1).
     static func direction(_ ref: String?) -> Int? {
         switch ref {
-        case "OB": 0
-        case "IB": 1
+        case "OB", "N": 0
+        case "IB", "S": 1
         default: nil
         }
     }
