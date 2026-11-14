@@ -67,7 +67,9 @@ turn the fallback off.
 With `.stopMonitoring(url)`, arrivals come only from that URL, which must answer
 in 511's SIRI format and need no key (a relay that holds 511's key itself). The
 Muni+ API is never asked for arrivals, and `fallbackKey` isn't used. Stations and
-lines still come from `baseURL`. It is polled every 40 s, one call per stop.
+lines still come from `baseURL`. It is polled every 40 s, one call per stop, and
+each call is given 8 s (511 as the API's fallback keeps 20 s), so one slow stop
+doesn't hold up the rest for long.
 
 A stop can fail on its own: a timeout, a body that isn't SIRI, or the relay's 503
 `no_data` for a quiet stop it has nothing for. That costs only the platforms with

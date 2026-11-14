@@ -14,16 +14,23 @@ struct StopMonitoringClient: Sendable {
     }
 
     static let endpoint = URL(string: "https://api.511.org/transit/StopMonitoring")!
+    /// Per stop, when a StopMonitoring endpoint is the only source of arrivals: a
+    /// slow stop shouldn't hold up every board for longer than this.
+    static let onlySourceTimeout: TimeInterval = 8
 
     let endpoint: URL
     /// Sent as `api_key`. Nil sends none.
     let key: String?
     let transport: any HTTPTransport
+    /// How long one stop's request may take.
+    let timeout: TimeInterval
 
-    init(endpoint: URL = StopMonitoringClient.endpoint, key: String?, transport: any HTTPTransport) {
+    init(endpoint: URL = StopMonitoringClient.endpoint, key: String?, transport: any HTTPTransport,
+         timeout: TimeInterval = CanopyClient.referenceTimeout) {
         self.endpoint = endpoint
         self.key = key
         self.transport = transport
+        self.timeout = timeout
     }
 
     func stopMonitoring(_ stop: StopID, now: Date) async throws(Failure) -> StopMonitoring {
@@ -35,7 +42,7 @@ struct StopMonitoringClient: Sendable {
             URLQueryItem(name: "format", value: "json"),
         ]
         let request = URLRequest(url: components.url!, cachePolicy: .reloadIgnoringLocalCacheData,
-                                 timeoutInterval: CanopyClient.referenceTimeout)
+                                 timeoutInterval: timeout)
         let data: Data
         let response: HTTPURLResponse
         do {

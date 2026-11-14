@@ -25,7 +25,8 @@ public final class CanopyTransit {
         /// key, such as a relay that holds 511's key itself: the full URL, ending in
         /// `StopMonitoring`. It is the only source. The Muni+ API is never asked for
         /// arrivals, `fallbackKey` is not used, and it is polled every 40 s, one
-        /// call per stop.
+        /// call per stop, each given 8 s. A stop that fails leaves only its own
+        /// platforms out of date (`ArrivalsFeed.stalePlatforms`).
         case stopMonitoring(URL)
     }
 
@@ -96,7 +97,8 @@ public final class CanopyTransit {
         case .stopMonitoring(let endpoint):
             arrivals = ArrivalsProvider(
                 client: client,
-                fallback: StopMonitoringClient(endpoint: endpoint, key: nil, transport: configuration.transport),
+                fallback: StopMonitoringClient(endpoint: endpoint, key: nil, transport: configuration.transport,
+                                               timeout: StopMonitoringClient.onlySourceTimeout),
                 stopMonitoringOnly: true)
         }
         lineDetailIDs = configuration.lineDetails

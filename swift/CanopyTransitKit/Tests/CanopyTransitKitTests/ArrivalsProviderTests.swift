@@ -365,4 +365,20 @@ struct ArrivalsProviderTests {
         #expect(await requests(to: Self.host511) == 0)
         #expect(await transport.requests(to: Self.relayHost).allSatisfy { $0.query("api_key") == nil })
     }
+
+    @Test func relayCallsGiveUpSoonerThan511AsTheFallback() async throws {
+        await answerFromRelay()
+        let relay = await CanopyTransit(configuration: .init(baseURL: stagingURL, arrivals: .stopMonitoring(Self.relay),
+                                                             directory: nil, transport: transport))
+        await relay.arrivalsFeed(platforms: [Self.eastbound]).refresh()
+        #expect(await transport.requests(to: Self.relayHost).map(\.timeoutInterval) == [8])
+
+        // With the API as the source, 511 as its fallback waits as long as before.
+        await answer(api: { _ in .failure(.timedOut) })
+        let api = await CanopyTransit(configuration: .init(baseURL: stagingURL, fallbackKey: "k", directory: nil,
+                                                           transport: transport))
+        await api.arrivalsFeed(platforms: [Self.eastbound]).refresh()
+        #expect(await transport.requests(to: Self.host511).map(\.timeoutInterval) == [CanopyClient.referenceTimeout])
+        #expect(await transport.requests(to: Self.apiHost).map(\.timeoutInterval) == [CanopyClient.realtimeTimeout])
+    }
 }
