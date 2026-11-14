@@ -83,6 +83,12 @@ that stop:
 - Only when every stop fails is it the feed's `lastError`. Then every platform's
   arrivals are kept, and every platform is in `stalePlatforms`.
 
+A 429 for any stop stops all calls to the relay until `Retry-After`,
+`RateLimit-Reset` or the top of the hour, as with 511. The poll that got it still
+uses the stops that answered; the refused stop's platforms are stale like any
+other failure. If no stop answered, `lastError` is the 429. Until the reset, polls
+fail with a 429 without a call, and the feed keeps everything, all stale.
+
 One feed can hold many boards (a Favorites screen), so one quiet stop no longer
 blanks the rest. With `.api`, nothing changes: 511 as the fallback answers for every
 platform or not at all.

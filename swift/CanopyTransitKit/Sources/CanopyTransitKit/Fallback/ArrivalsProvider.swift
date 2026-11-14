@@ -17,6 +17,12 @@ import Foundation
 /// It is asked stop by stop, and a stop that fails costs only its own platforms
 /// their boards: they're left out of the answer and listed in `unanswered`. Only
 /// when every stop fails is it the caller's error.
+///
+/// A 429 there works as it does for 511: no more calls until the time it gives.
+/// The poll that got it still uses the stops that did answer, since those answers
+/// are as good as any (the platforms of the refused stop are left out, as for any
+/// failure), and fails, with the 429, only if none did. Polls after it fail with a
+/// 429 at once, without a call, until then, and the caller keeps what it had.
 actor ArrivalsProvider {
     /// Predictions older than this are worth asking 511 about.
     static let staleAfter: TimeInterval = 5 * 60
@@ -45,7 +51,7 @@ actor ArrivalsProvider {
     /// platform id. Throws only when neither source has an answer.
     func arrivals(for platforms: [Platform], limit: Int) async throws(CanopyError) -> ArrivalsResponse {
         if stopMonitoringOnly {
-            guard canAsk511 else { throw .status(429, Problem(code: .unknown("429"), message: "Rate limited")) }
+            guard canAsk511 else { throw Self.rateLimited }
             return try await askStopMonitoring(platforms, limit: limit).get()
         }
 
@@ -71,6 +77,8 @@ actor ArrivalsProvider {
         if !asked511, let fallen = await fallBack(platforms, limit: limit) { return fallen }
         return answer
     }
+
+    private static let rateLimited = CanopyError.status(429, Problem(code: .unknown("429"), message: "Rate limited"))
 
     private var canAsk511: Bool {
         guard fallback != nil else { return false }
@@ -124,7 +132,8 @@ actor ArrivalsProvider {
                 byStop[stop] = visits
             case .failure(.rateLimited(let until)):
                 rateLimitedUntil = max(rateLimitedUntil ?? until, until)
-                failure = failure ?? .status(429, Problem(code: .unknown("429"), message: "Rate limited"))
+                // Over any other failure: it says when to ask again.
+                failure = Self.rateLimited
             case .failure(.unusable(let error)):
                 failure = failure ?? error
             }

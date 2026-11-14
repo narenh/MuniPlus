@@ -295,6 +295,43 @@ struct ArrivalsProviderTests {
         #expect(await requests(to: Self.relayHost) == 3)
     }
 
+    @Test func a429AmongAnswersKeepsTheAnswersAndStopsCallsUntilItsReset() async throws {
+        let provider = relayProvider()
+        let reset = clock.now.addingTimeInterval(600)
+        await answerFromRelay(Self.relay(failingQuietWith: .init(status: 429, headers: ["RateLimit-Reset": "600"])))
+        // The stops that answered make boards; the refused one's platform is left out.
+        let answer = try await provider.arrivals(for: [Self.eastbound, Self.westbound, Self.quiet], limit: 6)
+        #expect(answer.platforms["SF:16992"]?.isEmpty == false)
+        #expect(answer.platforms["SF:17217"]?.isEmpty == false)
+        #expect(answer.unanswered == ["SF:15731"])
+        #expect(await requests(to: Self.relayHost) == 3)
+
+        // Until the reset, no calls at all, and a 429.
+        clock.advance(300)
+        await #expect {
+            try await provider.arrivals(for: [Self.eastbound, Self.westbound, Self.quiet], limit: 6)
+        } throws: { error in
+            if case .status(429, _) = error as? CanopyError { true } else { false }
+        }
+        #expect(await requests(to: Self.relayHost) == 3)
+
+        clock.advance(reset.timeIntervalSince(clock.now))
+        await answerFromRelay()
+        #expect(try await provider.arrivals(for: [Self.eastbound, Self.westbound], limit: 6).unanswered.isEmpty)
+        #expect(await requests(to: Self.relayHost) == 5)
+    }
+
+    @Test func a429AndNothingElseIsA429() async {
+        await answerFromRelay { request in
+            request.query("stopcode") == "16992" ? .init(status: 429) : .failure(.timedOut)
+        }
+        await #expect {
+            try await relayProvider().arrivals(for: [Self.eastbound, Self.westbound, Self.quiet], limit: 6)
+        } throws: { error in
+            if case .status(429, _) = error as? CanopyError { true } else { false }
+        }
+    }
+
     @Test func aFullAnswerLeavesNothingOut() async throws {
         await answerFromRelay()
         let answer = try await relayProvider().arrivals(for: [Self.eastbound, Self.westbound], limit: 6)
