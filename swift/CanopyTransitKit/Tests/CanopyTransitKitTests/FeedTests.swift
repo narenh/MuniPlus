@@ -65,6 +65,65 @@ struct FeedTests {
         #expect(feed.lastError != nil)
     }
 
+    @Test func aPlatformLeftOutKeepsItsArrivalsAndIsStale() async throws {
+        let transport = FakeTransport()
+        let provider = ArrivalsProvider(client: CanopyClient(baseURL: stagingURL, transport: transport),
+                                        fallback: StopMonitoringClient(endpoint: ArrivalsProviderTests.relay, key: nil,
+                                                                       transport: transport),
+                                        stopMonitoringOnly: true, now: { [clock] in clock.now })
+        let east = ArrivalsProviderTests.eastbound, west = ArrivalsProviderTests.westbound
+        let feed = ArrivalsFeed(platforms: [east, west], limit: 6, provider: provider, now: { [clock] in clock.now })
+
+        await transport.answer(with: ArrivalsProviderTests.from511)
+        await feed.refresh()
+        let westBefore = feed.arrivals(at: west)
+        #expect(!westBefore.isEmpty)
+        #expect(feed.stalePlatforms.isEmpty)
+
+        // Westbound's stop fails: eastbound is answered afresh, westbound keeps what it had.
+        clock.advance(40)
+        await transport.answer { request in
+            request.query("stopcode") == "17217" ? ArrivalsProviderTests.noData : ArrivalsProviderTests.from511(request)
+        }
+        await feed.refresh()
+        #expect(feed.arrivals(at: west) == westBefore)
+        #expect(feed.arrivals(at: east).allSatisfy { $0.time >= clock.now })
+        #expect(feed.stalePlatforms == ["SF:17217"])
+        #expect(feed.isStale(west) && !feed.isStale(east))
+        #expect(feed.lastError == nil)
+        #expect(feed.updatedAt == clock.now)
+
+        // Every stop fails: everything is kept, and everything is stale.
+        await transport.answer { _ in .failure(.timedOut) }
+        let eastBefore = feed.arrivals(at: east)
+        await feed.refresh()
+        #expect(feed.arrivals(at: east) == eastBefore && feed.arrivals(at: west) == westBefore)
+        #expect(feed.stalePlatforms == ["SF:16992", "SF:17217"])
+        #expect(feed.lastError != nil)
+
+        // Back: nothing stale.
+        await transport.answer(with: ArrivalsProviderTests.from511)
+        await feed.refresh()
+        #expect(feed.stalePlatforms.isEmpty)
+        #expect(feed.lastError == nil)
+    }
+
+    @Test func aPlatformNeverAnsweredHasNoArrivalsAndIsStale() async throws {
+        let transport = FakeTransport()
+        let provider = ArrivalsProvider(client: CanopyClient(baseURL: stagingURL, transport: transport),
+                                        fallback: StopMonitoringClient(endpoint: ArrivalsProviderTests.relay, key: nil,
+                                                                       transport: transport),
+                                        stopMonitoringOnly: true, now: { [clock] in clock.now })
+        let east = ArrivalsProviderTests.eastbound, quiet = ArrivalsProviderTests.quiet
+        let feed = ArrivalsFeed(platforms: [east, quiet], limit: 6, provider: provider, now: { [clock] in clock.now })
+        await transport.answer(with: ArrivalsProviderTests.relay(failingQuietWith: ArrivalsProviderTests.noData))
+        await feed.refresh()
+        #expect(!feed.arrivals(at: east).isEmpty)
+        #expect(feed.arrivals["SF:15731"] == nil)
+        #expect(feed.stalePlatforms == ["SF:15731"])
+        #expect(feed.lastError == nil)
+    }
+
     @Test func twoRunnersPollOnce() async throws {
         let transport = FakeTransport()
         let now = clock.now

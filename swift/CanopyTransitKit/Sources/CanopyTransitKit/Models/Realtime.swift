@@ -66,14 +66,22 @@ public struct ArrivalsResponse: Decodable, Sendable {
     /// Seconds until newer data can exist. Poll no sooner.
     public let refreshAfter: TimeInterval
     /// Keyed by platform id. Every platform asked for is here, as an empty list when
-    /// nothing is due, soonest first.
+    /// nothing is due, soonest first. (From a StopMonitoring endpoint, a platform one
+    /// of whose stops couldn't be asked is left out; `ArrivalsFeed` deals with that.)
     public let platforms: [StopID: [Arrival]]
+    /// Platforms asked for that have no board in `platforms`, because one of their
+    /// stops couldn't be asked. Only a StopMonitoring endpoint answers this way, one
+    /// call per stop; the API answers for every platform or fails. `ArrivalsFeed`
+    /// keeps their last arrivals and reports them as `stalePlatforms`.
+    var unanswered: Set<StopID> = []
 
-    init(fetchedAt: Date?, feedAt: Date?, refreshAfter: TimeInterval, platforms: [StopID: [Arrival]]) {
+    init(fetchedAt: Date?, feedAt: Date?, refreshAfter: TimeInterval, platforms: [StopID: [Arrival]],
+         unanswered: Set<StopID> = []) {
         self.fetchedAt = fetchedAt
         self.feedAt = feedAt
         self.refreshAfter = refreshAfter
         self.platforms = platforms
+        self.unanswered = unanswered
     }
 
     private enum CodingKeys: String, CodingKey {

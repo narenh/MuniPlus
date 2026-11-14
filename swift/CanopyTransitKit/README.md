@@ -67,8 +67,25 @@ turn the fallback off.
 With `.stopMonitoring(url)`, arrivals come only from that URL, which must answer
 in 511's SIRI format and need no key (a relay that holds 511's key itself). The
 Muni+ API is never asked for arrivals, and `fallbackKey` isn't used. Stations and
-lines still come from `baseURL`. It is polled every 40 s, one call per stop, and a
-failure of any stop is the feed's `lastError`, with the last arrivals kept.
+lines still come from `baseURL`. It is polled every 40 s, one call per stop.
+
+A stop can fail on its own: a timeout, a body that isn't SIRI, or the relay's 503
+`no_data` for a quiet stop it has nothing for. That costs only the platforms with
+that stop:
+
+- A platform whose stops all answered gets a fresh board.
+- A platform with any failed stop gets none this time, since a board missing one of
+  its stops would look quieter than it is. The feed keeps the arrivals it last had
+  for it (none, if it never had any) and lists its id in `stalePlatforms`
+  (`feed.isStale(platform)`), so the app can mark that board as out of date. That
+  isn't a `lastError`.
+- `feedAt` comes from the stops that answered.
+- Only when every stop fails is it the feed's `lastError`. Then every platform's
+  arrivals are kept, and every platform is in `stalePlatforms`.
+
+One feed can hold many boards (a Favorites screen), so one quiet stop no longer
+blanks the rest. With `.api`, nothing changes: 511 as the fallback answers for every
+platform or not at all.
 
 ## The bundled snapshot
 

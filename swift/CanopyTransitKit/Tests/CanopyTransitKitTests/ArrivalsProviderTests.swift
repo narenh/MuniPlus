@@ -249,6 +249,69 @@ struct ArrivalsProviderTests {
         #expect(await requests(to: Self.relayHost) == 1)
     }
 
+    /// A stop with no recording, which the relay is made to fail.
+    static let quiet = Platform(id: "SF:15731", heading: .westbound)
+    /// What the relay says for a stop when 511 is paused, Umo has nothing, and it
+    /// holds no older copy.
+    static let noData = FakeTransport.Reply.json(Data(#"{"error": "no_data", "message": "No data for this stop"}"#.utf8),
+                                                 status: 503)
+
+    /// The recordings, and `failure` for the quiet stop.
+    static func relay(failingQuietWith failure: FakeTransport.Reply) -> @Sendable (URLRequest) -> FakeTransport.Reply {
+        { request in request.query("stopcode") == "15731" ? failure : from511(request) }
+    }
+
+    @Test(arguments: [noData, .failure(.timedOut), .init(status: 200, body: Fixture.data("edge/cloudflare.html"))])
+    func oneStopFailingLeavesOnlyItsPlatformOut(_ failure: FakeTransport.Reply) async throws {
+        await answerFromRelay(Self.relay(failingQuietWith: failure))
+        let answer = try await relayProvider().arrivals(for: [Self.eastbound, Self.westbound, Self.quiet], limit: 6)
+        #expect(answer.platforms["SF:16992"]?.first?.trip == "SF:12135937_M11")
+        #expect(answer.platforms["SF:17217"]?.first?.kind == .departure)
+        #expect(answer.platforms["SF:15731"] == nil)
+        #expect(answer.unanswered == ["SF:15731"])
+        // From the stops that answered.
+        #expect(answer.feedAt == Date(timeIntervalSince1970: 1790216848))
+        #expect(await requests(to: Self.relayHost) == 3)
+    }
+
+    @Test func aPlatformWithOneFailingStopIsLeftOut() async throws {
+        // Embarcadero eastbound with a second stop that fails: its board would be
+        // missing that stop's trips, so there's none. Westbound is unaffected.
+        let both = Platform(id: "SF:16992", heading: .eastbound, stops: ["SF:16992", "SF:15731"])
+        await answerFromRelay(Self.relay(failingQuietWith: Self.noData))
+        let answer = try await relayProvider().arrivals(for: [both, Self.westbound], limit: 6)
+        #expect(answer.platforms["SF:16992"] == nil)
+        #expect(answer.platforms["SF:17217"]?.isEmpty == false)
+        #expect(answer.unanswered == ["SF:16992"])
+    }
+
+    @Test func everyStopFailingIsAnError() async {
+        await answerFromRelay { request in
+            request.query("stopcode") == "16992" ? .failure(.timedOut) : Self.noData
+        }
+        await #expect(throws: CanopyError.self) {
+            try await relayProvider().arrivals(for: [Self.eastbound, Self.westbound, Self.quiet], limit: 6)
+        }
+        #expect(await requests(to: Self.relayHost) == 3)
+    }
+
+    @Test func aFullAnswerLeavesNothingOut() async throws {
+        await answerFromRelay()
+        let answer = try await relayProvider().arrivals(for: [Self.eastbound, Self.westbound], limit: 6)
+        #expect(answer.unanswered.isEmpty)
+    }
+
+    @Test func asTheAPIsFallback511StillAnswersForEveryPlatformOrNone() async throws {
+        // A stale API answer beats boards with one left out.
+        let now = clock.now
+        await answer(api: { _ in Self.api(age: 900, at: now) }, on511: { request in
+            request.query("stopcode") == "17217" ? Self.noData : Self.from511(request)
+        })
+        let answer = try await provider().arrivals(for: [Self.eastbound, Self.westbound], limit: 6)
+        #expect(answer.platforms["SF:16992"]?.map(\.trip) == ["SF:api"])
+        #expect(answer.unanswered.isEmpty)
+    }
+
     @Test func theConfigurationCanNameTheRelay() async throws {
         await answerFromRelay()
         let transit = await CanopyTransit(configuration: .init(baseURL: stagingURL, fallbackKey: "k",

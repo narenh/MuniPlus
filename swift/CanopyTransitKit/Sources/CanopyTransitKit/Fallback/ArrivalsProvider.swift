@@ -13,8 +13,10 @@ import Foundation
 /// from the API is still returned, and failing that the caller keeps what it had.
 ///
 /// With `stopMonitoringOnly`, the API is never asked: the StopMonitoring client
-/// (a relay answering in 511's format) is the one source, polled every 40 seconds,
-/// and its failures are the caller's errors.
+/// (a relay answering in 511's format) is the one source, polled every 40 seconds.
+/// It is asked stop by stop, and a stop that fails costs only its own platforms
+/// their boards: they're left out of the answer and listed in `unanswered`. Only
+/// when every stop fails is it the caller's error.
 actor ArrivalsProvider {
     /// Predictions older than this are worth asking 511 about.
     static let staleAfter: TimeInterval = 5 * 60
@@ -82,12 +84,19 @@ actor ArrivalsProvider {
         return await ask511(platforms, limit: limit)
     }
 
+    /// 511 as the API's fallback answers for every platform or not at all: a stale
+    /// answer from the API beats a board missing one of its stops.
     private func ask511(_ platforms: [Platform], limit: Int) async -> ArrivalsResponse? {
-        try? await askStopMonitoring(platforms, limit: limit).get()
+        guard let answer = try? await askStopMonitoring(platforms, limit: limit).get(),
+              answer.unanswered.isEmpty else { return nil }
+        return answer
     }
 
-    /// Asks the StopMonitoring client for every stop of `platforms`, and fails with
-    /// the first stop's failure if any of them can't answer.
+    /// Asks the StopMonitoring client for every stop of `platforms`.
+    ///
+    /// A platform gets a board only if all its stops answered: a board missing one
+    /// of its stops would look quieter than it is. The others are left out and
+    /// listed in `unanswered`. Fails only when no stop answered.
     private func askStopMonitoring(_ platforms: [Platform], limit: Int) async -> Result<ArrivalsResponse, CanopyError> {
         guard let fallback else { return .failure(.unreadable("No StopMonitoring source")) }
         let stops = Array(Set(platforms.flatMap(\.stops)))
@@ -120,17 +129,24 @@ actor ArrivalsProvider {
                 failure = failure ?? error
             }
         }
-        // A board missing one of its stops would look quieter than it is.
-        if let failure { return .failure(failure) }
+        if let failure, byStop.isEmpty, !stops.isEmpty { return .failure(failure) }
 
         let at = now()
         var boards: [StopID: [Arrival]] = [:]
+        var unanswered: Set<StopID> = []
         for platform in platforms {
-            boards[platform.id] = StopMonitoring.merge(platform.stops.map { byStop[$0]?.arrivals(at: $0) ?? [] },
+            let visits = platform.stops.compactMap { byStop[$0] }
+            guard visits.count == platform.stops.count else {
+                unanswered.insert(platform.id)
+                continue
+            }
+            boards[platform.id] = StopMonitoring.merge(zip(platform.stops, visits).map { $1.arrivals(at: $0) },
                                                        now: at, limit: limit)
         }
-        // With several stops, the oldest of their times, as the API does.
+        // From the stops that answered: with several, the oldest of their times, as
+        // the API does.
         return .success(ArrivalsResponse(fetchedAt: at, feedAt: byStop.values.compactMap(\.feedAt).min(),
-                                         refreshAfter: Self.fallbackRefresh, platforms: boards))
+                                         refreshAfter: Self.fallbackRefresh, platforms: boards,
+                                         unanswered: unanswered))
     }
 }
