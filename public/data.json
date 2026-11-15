@@ -2515,7 +2515,7 @@
         {
           "id": "17778",
           "heading": "northbound",
-          "name": null,
+          "name": "Northbound (Terminus)",
           "latitude": 37.721238,
           "longitude": -122.446222
         }
@@ -2820,7 +2820,7 @@
         {
           "id": "16262",
           "heading": "eastbound",
-          "name": null,
+          "name": "Eastbound (Terminus)",
           "latitude": 37.720096,
           "longitude": -122.447196
         }
@@ -3597,7 +3597,7 @@
         {
           "id": "16932",
           "heading": "eastbound",
-          "name": null,
+          "name": "Eastbound (Terminus)",
           "latitude": 37.736125,
           "longitude": -122.504351
         }
