@@ -3729,14 +3729,14 @@
       "platforms": [
         {
           "id": "14502",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.806629,
           "longitude": -122.40603
         },
         {
           "id": "14501",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.806945,
           "longitude": -122.406278
