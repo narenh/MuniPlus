@@ -3757,14 +3757,14 @@
       "platforms": [
         {
           "id": "14529",
-          "heading": "eastbound",
+          "heading": "southbound",
           "name": null,
           "latitude": 37.805022,
           "longitude": -122.403314
         },
         {
           "id": "17281",
-          "heading": "westbound",
+          "heading": "northbound",
           "name": null,
           "latitude": 37.805146,
           "longitude": -122.403233
@@ -3925,7 +3925,7 @@
       "platforms": [
         {
           "id": "14727",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.793918,
           "longitude": -122.393438
@@ -4248,14 +4248,14 @@
       "platforms": [
         {
           "id": "15652",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.77741,
           "longitude": -122.41634
         },
         {
           "id": "15680",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.777598,
           "longitude": -122.416236
@@ -4360,14 +4360,14 @@
       "platforms": [
         {
           "id": "17123",
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": null,
           "latitude": 37.765632,
           "longitude": -122.431216
         },
         {
           "id": "15690",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": null,
           "latitude": 37.766185,
           "longitude": -122.430707
