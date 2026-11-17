@@ -1,52 +1,50 @@
-<img src="appicon.png" alt="Muni+ app icon" width="128">
+# Canopy Transit Editor
 
-# Muni+
+> **Looking for the Muni+ app?** This repo is still its App Store support page.
+> [Open an issue](../../issues) to report a bug or a data problem.
 
-**Muni+**: a station-based transit app for San Francisco's Muni Metro system.
+The data side of Muni+: an editor for the station and line data the app is built
+on, and the files it publishes.
 
-Unlike other transit apps, Muni+ is station-based instead of trip-based, giving you fast access to upcoming trains without worrying about entering a destination.
+**Status:** being reorganised. The old hosted editors have been retired, and the
+new editor doesn't have a home yet. Data is still published by hand in the
+meantime.
 
-## Features
+## Branches
 
-- Shows predictions for every light rail stop in SF
-- Fast API thanks to Cloudflare
-- All metro lines: L-Taraval, M-Ocean View, J-Church, N-Judah, T-Third St
-- Search stations by name
-- Set home and favorites
-- See nearby stations on a map, with walking estimates
-- Custom bus stops via 5-digit stop codes
-- Transfer stations displayed
-- Offline Muni Metro map
+| Branch | What it holds |
+|---|---|
+| `master` | Code: the API and editor, tools, and the app's hand-curated `appdata/data.json` |
+| `static-data` | The editor's own data: curated stations, lines and shapes in `curation/`, plus a 511 GTFS snapshot in `snapshot/`. Formerly the `narenh/sf-transit` repo, history included |
+| `static` | **Transit Static**: what muni.canopysf.com serves (`public/data.json`, `public/map.pdf`, `public/map-dark.pdf`). Deployed with `wrangler deploy` from this branch |
+| `claude/beautiful-cerf-23u8yd` | **Atlas**: a map-first editor for `appdata/data.json` (`editor/`). Read-only as it was last deployed |
 
-<p>
-  <img src="screenshots/home.png" alt="Home screen" width="160">
-  <img src="screenshots/favorites.png" alt="Favorites screen" width="160">
-  <img src="screenshots/nearme.png" alt="Near Me screen" width="160">
-  <img src="screenshots/stations.png" alt="Stations screen" width="160">
-  <img src="screenshots/map.png" alt="Map screen" width="160">
-</p>
+## Where the data lives
 
-## Get the app
+- **What the app reads today:** `data.json`, edited by hand on `master` and
+  copied to `static` to publish.
+- **The future source of truth:** the editor's data on `static-data`. It is not
+  in the app's format yet, and an exporter to `data.json` still needs writing.
+  Until then the two are kept in step by hand, and they have drifted apart:
+  - some station ids differ (`mongomery` vs `montgomery`);
+  - Balboa Park is grouped differently;
+  - the fixes from 14 November 2026 are only in `data.json`.
 
-Available on the App Store: [Muni+ on the App Store](https://apps.apple.com/us/app/muni-underground/id1484151359)
+## Layout of `master`
 
-- **Category:** Navigation
-- **Price:** Free
-- **Compatibility:**
-  - iPhone: iOS 17.6 or later
-  - iPad: iPadOS 17.6 or later
-- **Languages:** English
-- **Age Rating:** 4+
-- **Privacy:** The developer does not collect any data from this app.
+| Path | What it is |
+|---|---|
+| `appdata/` | `data.json` (Metro and the F, hand-curated), `bus.json` (generated), `map.pdf` |
+| `tools/` | `build_bus_data.py` (bus and cable car stations) and `map_dark.py` (the dark-mode system map). See [tools/README.md](tools/README.md) |
+| `api/` | The Python v1 API and its built-in editor, which saved to `static-data`'s data. Retired; kept for its editor code |
+| `src/`, `wrangler.toml` | The `muniplus-backend` Worker, a 511 proxy. Retired. **Don't deploy from `master`** to update data; that's the `static` branch |
+| `swift/CanopyTransitKit` | Swift client for the v1 API. Shelved |
 
-## About this repo
-This is the public home for Muni+.
-**Open an issue here to report bugs, request features, or flag data problems** (e.g. incorrect stop codes, missing stations, outdated line info).
+## Related repos
 
-## AI disclosure
-
-This support repo was created with AI assistance.
-Muni+ app itself is mostly human-coded (100% of the UI was built by hand). AI assistance was used for data parsing and map features.
+- **Muni+**, the iOS app.
+- **canopy-muni-relay**: the Worker behind muni-relay.canopysf.com that
+  translates prediction APIs.
 
 ## License
 
