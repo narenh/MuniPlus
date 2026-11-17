@@ -197,23 +197,6 @@
       ]
     },
     {
-      "id": "S",
-      "name": "S Shuttle",
-      "shortName": "S",
-      "color": "#FCDB00",
-      "stationIds": [
-        "embarcadero",
-        "mongomery",
-        "powell",
-        "civicCenter",
-        "vanNess",
-        "church",
-        "castro",
-        "forestHill",
-        "westPortal"
-      ]
-    },
-    {
       "id": "F",
       "name": "F Market & Wharves",
       "shortName": "F",
@@ -292,8 +275,7 @@
         "K",
         "L",
         "M",
-        "N",
-        "S"
+        "N"
       ],
       "latitude": 37.792862,
       "longitude": -122.39685,
@@ -329,8 +311,7 @@
         "K",
         "L",
         "M",
-        "N",
-        "S"
+        "N"
       ],
       "latitude": 37.789005,
       "longitude": -122.401739,
@@ -366,8 +347,7 @@
         "K",
         "L",
         "M",
-        "N",
-        "S"
+        "N"
       ],
       "latitude": 37.784476,
       "longitude": -122.407454,
@@ -405,8 +385,7 @@
         "K",
         "L",
         "M",
-        "N",
-        "S"
+        "N"
       ],
       "latitude": 37.779476,
       "longitude": -122.413785,
@@ -443,8 +422,7 @@
         "K",
         "L",
         "M",
-        "N",
-        "S"
+        "N"
       ],
       "latitude": 37.77518,
       "longitude": -122.419296,
@@ -476,8 +454,7 @@
       "lines": [
         "K",
         "L",
-        "M",
-        "S"
+        "M"
       ],
       "latitude": 37.767814,
       "longitude": -122.429067,
@@ -510,8 +487,7 @@
       "lines": [
         "K",
         "L",
-        "M",
-        "S"
+        "M"
       ],
       "latitude": 37.762652,
       "longitude": -122.43526,
@@ -543,8 +519,7 @@
       "lines": [
         "K",
         "L",
-        "M",
-        "S"
+        "M"
       ],
       "latitude": 37.748261,
       "longitude": -122.458908,
@@ -574,8 +549,7 @@
       "lines": [
         "K",
         "L",
-        "M",
-        "S"
+        "M"
       ],
       "latitude": 37.741455,
       "longitude": -122.465373,
