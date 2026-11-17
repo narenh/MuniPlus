@@ -3553,7 +3553,7 @@
         {
           "id": "SF:17876",
           "heading": "southbound",
-          "name": "Southbound"
+          "terminus": true
         }
       ],
       "verified": "2026-09-22"
@@ -7772,7 +7772,8 @@
         {
           "id": "SF:15240",
           "heading": "northbound",
-          "name": "Ocean Beach via Embarcadero"
+          "name": "Ocean Beach via Embarcadero",
+          "terminus": true
         },
         {
           "id": "SF:17166",
@@ -14398,7 +14399,8 @@
         {
           "id": "SF:15223",
           "heading": "eastbound",
-          "name": "To Embarcadero"
+          "name": "To Embarcadero",
+          "terminus": true
         },
         {
           "id": "SF:15221",
@@ -18834,7 +18836,7 @@
         {
           "id": "SF:17398",
           "heading": "northbound",
-          "name": "Northbound"
+          "terminus": true
         },
         {
           "id": "SF:17297",
