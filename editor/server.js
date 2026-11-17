@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Muni+ data.json editor - server.
+// Canopy Transit Editor, for data.json: the server.
 //
 // Deliberately dependency-free: `node server.js` is the whole runtime, which
 // keeps the Coolify image to a base node layer plus git.
@@ -27,7 +27,7 @@ const PUBLIC = path.join(__dirname, 'public');
 /**
  * Find a data.json to serve, and decide whether it can be written back.
  *
- * With no configuration at all we still want a working, read-only Atlas, so
+ * With no configuration at all we still want a working, read-only editor, so
  * the repo copy is preferred and a seed baked into the image is the fallback.
  * Nothing here throws: a missing file downgrades the server, it does not stop
  * it, and /api/state explains itself to the UI.
@@ -310,7 +310,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, HOST, async () => {
   const m = await meta();
-  console.log(`Muni+ Atlas  http://${HOST}:${PORT}`);
+  console.log(`Canopy Transit Editor  http://${HOST}:${PORT}`);
   console.log(`  repo    ${REPO_ROOT}`);
   console.log(`  file    ${DATA_ABS || '(none found)'}`);
   console.log(`  git     ${m.git ? `${m.branch}${m.dirty ? ' (uncommitted changes)' : ''}` : 'unavailable'}`);

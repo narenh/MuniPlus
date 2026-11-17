@@ -1,10 +1,10 @@
-# Muni+ Atlas - the data.json editor.
+# Canopy Transit Editor, for data.json.
 #
 # BUILD CONTEXT IS THE REPOSITORY ROOT, not editor/:
-#     docker build -f editor/Dockerfile -t atlas .
+#     docker build -f editor/Dockerfile -t transit-editor .
 # In Coolify: Base Directory "/", Dockerfile Location "/editor/Dockerfile".
 #
-# With no environment variables at all this produces a working, read-only Atlas:
+# With no environment variables at all this produces a working, read-only editor:
 # the repo (including appdata/data.json) is copied in, and a second copy is kept
 # as a seed so the editor still has something to show even if REPO_ROOT is later
 # pointed at an empty volume. Set GIT_REPO_URL to make it editable.
@@ -28,8 +28,8 @@ ENV PORT=8787 \
     HOST=0.0.0.0 \
     REPO_ROOT=/srv/repo \
     DATA_FILE=appdata/data.json \
-    GIT_AUTHOR_NAME="Muni+ Atlas" \
-    GIT_AUTHOR_EMAIL="atlas@muniplus.local"
+    GIT_AUTHOR_NAME="Canopy Transit Editor" \
+    GIT_AUTHOR_EMAIL="editor@canopy-transit.local"
 
 EXPOSE 8787
 

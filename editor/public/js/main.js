@@ -16,7 +16,7 @@ import {
 } from './ui.js';
 
 const $ = id => document.getElementById(id);
-const DRAFT_KEY = 'muniplus.atlas.draft.v1';
+const DRAFT_KEY = 'canopy.editor.draft.v1';
 
 // ============================================================ boot
 (async function boot() {

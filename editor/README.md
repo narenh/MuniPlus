@@ -1,4 +1,4 @@
-# Muni+ Atlas
+# Canopy Transit Editor
 
 A map-first editor for `appdata/data.json`. It draws the eight Muni lines on a
 dark basemap, lets you drag individual platform poles onto the right corner,
@@ -30,8 +30,8 @@ separate service from the Worker that serves `appdata/`.
 **The build context is the repository root, not `editor/`:**
 
 ```sh
-docker build -f editor/Dockerfile -t atlas .
-docker run -p 8787:8787 atlas          # works, read-only, no env vars
+docker build -f editor/Dockerfile -t transit-editor .
+docker run -p 8787:8787 transit-editor          # works, read-only, no env vars
 ```
 
 In Coolify: Base Directory `/`, Dockerfile Location `/editor/Dockerfile`.
@@ -39,10 +39,10 @@ In Coolify: Base Directory `/`, Dockerfile Location `/editor/Dockerfile`.
 ### Read-only is a first-class mode
 
 With no environment variables at all the image serves a fully working, read-only
-Atlas: the whole map, the route strips, the inspector, the feed check — you just
+editor: the whole map, the route strips, the inspector, the feed check — you just
 cannot save. That is deliberate, so a deploy succeeds before any secret exists.
 
-Atlas degrades instead of failing. It writes only when it has somewhere to write,
+The editor degrades instead of failing. It writes only when it has somewhere to write,
 and says which of these is stopping it:
 
 | situation | what happens |
@@ -204,7 +204,7 @@ Both apply in the route strip as well as on the map.
 ### Transfers
 
 `transferStations` is one-way: a link from A to B says nothing about B to A, and
-that asymmetry is deliberate, so Atlas never symmetrises anything on its own.
+that asymmetry is deliberate, so the editor never symmetrises anything on its own.
 
 On the map a transfer is a dotted walking path with a chevron at each end it
 actually points to — one chevron for a one-way link, two for a mutual one. The
