@@ -3110,7 +3110,7 @@
     },
     {
       "id": "rightOfWayEucalyptus",
-      "name": "Right Of Way/Eucalyptus Dr",
+      "name": "Right Of Way & Eucalyptus Dr",
       "kind": "streetLevel",
       "lines": [
         "M"
@@ -3138,7 +3138,7 @@
     },
     {
       "id": "rightOfWayOcean",
-      "name": "Right Of Way/Ocean Ave",
+      "name": "Right Of Way & Ocean Ave",
       "kind": "streetLevel",
       "lines": [
         "M"
