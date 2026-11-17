@@ -5598,7 +5598,7 @@
       "platforms": [
         {
           "id": "SF:14727",
-          "heading": "northbound"
+          "heading": "eastbound"
         },
         {
           "id": "SF:14726",
@@ -6209,11 +6209,11 @@
       "platforms": [
         {
           "id": "SF:14502",
-          "heading": "eastbound"
+          "heading": "southbound"
         },
         {
           "id": "SF:14501",
-          "heading": "westbound"
+          "heading": "northbound"
         }
       ],
       "verified": "2026-09-22"
@@ -6330,11 +6330,11 @@
       "platforms": [
         {
           "id": "SF:14529",
-          "heading": "eastbound"
+          "heading": "southbound"
         },
         {
           "id": "SF:17281",
-          "heading": "westbound"
+          "heading": "northbound"
         }
       ],
       "verified": "2026-09-22"
@@ -11978,11 +11978,11 @@
       "platforms": [
         {
           "id": "SF:15652",
-          "heading": "northbound"
+          "heading": "eastbound"
         },
         {
           "id": "SF:15680",
-          "heading": "southbound"
+          "heading": "westbound"
         }
       ],
       "verified": "2026-09-22"
@@ -12122,7 +12122,7 @@
       "platforms": [
         {
           "id": "SF:15686",
-          "heading": "southbound",
+          "heading": "westbound",
           "name": "To Castro"
         },
         {
@@ -12147,11 +12147,11 @@
           "stops": [
             "SF:15691"
           ],
-          "heading": "northbound"
+          "heading": "eastbound"
         },
         {
           "id": "SF:15690",
-          "heading": "southbound"
+          "heading": "westbound"
         },
         {
           "id": "SF:15653",
