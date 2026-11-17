@@ -1364,11 +1364,13 @@
       "platforms": [
         {
           "id": "SF:17778",
-          "heading": "northbound"
+          "heading": "northbound",
+          "terminus": true
         },
         {
           "id": "SF:16262",
-          "heading": "eastbound"
+          "heading": "eastbound",
+          "terminus": true
         }
       ],
       "transferAgencies": [
@@ -17789,7 +17791,8 @@
       "platforms": [
         {
           "id": "SF:16932",
-          "heading": "eastbound"
+          "heading": "eastbound",
+          "terminus": true
         }
       ],
       "verified": "2026-09-22"
