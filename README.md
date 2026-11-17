@@ -17,7 +17,7 @@ meantime.
 | `master` | Code: the API and editor, tools, and the app's hand-curated `appdata/data.json` |
 | `static-data` | The editor's own data: curated stations, lines and shapes in `curation/`, plus a 511 GTFS snapshot in `snapshot/`. Formerly the `narenh/sf-transit` repo, history included |
 | `static` | **Transit Static**: what transit-static.canopysf.com serves (`public/data.json`, `public/map.pdf`, `public/map-dark.pdf`); muni.canopysf.com is an alias. Deployed with `wrangler deploy` from this branch, using the wrangler installed on `master` (`package.json`) |
-| `claude/beautiful-cerf-23u8yd` | **Atlas**: a map-first editor for `appdata/data.json` (`editor/`). Read-only as it was last deployed |
+| `claude/beautiful-cerf-23u8yd` | A standalone, map-first version of the editor for `appdata/data.json` (`editor/`, Node). Read-only as it was last deployed |
 
 ## Where the data lives
 

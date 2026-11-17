@@ -195,7 +195,7 @@ Its fetch paths are relative (`api/state`), so it works under either prefix.
 **Remove:** levels, exits, `isIsland` and all their UI; pole dragging; editing
 `stopName`; editing a platform's lines; editing `terminates`; the client-side
 validator; the Node server, `lib/`, Dockerfile, entrypoint; the SFMTA zip "feed
-check"; the name "Atlas".
+check"; the old product name.
 
 **Change:** load `EditorState`; qualified ids; flat platforms; station coordinate
 = centroid; the line strip shows `directions` read-only; save posts the whole
