@@ -4420,5 +4420,13 @@
         }
       ]
     }
-  ]
+  ],
+  "arrivalStops": {
+    "15239": "fourthKingN",
+    "15418": "balboaPark",
+    "16269": "balboaPark",
+    "17219": "oceanBeach",
+    "17396": "sunnydale",
+    "17869": "sfZoo"
+  }
 }
