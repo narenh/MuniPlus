@@ -676,7 +676,10 @@
           "heading": "southbound",
           "name": null,
           "latitude": 37.778341,
-          "longitude": -122.396613
+          "longitude": -122.396613,
+          "replacementStops": [
+            "13156"
+          ]
         }
       ]
     },
@@ -701,14 +704,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.776278,
-          "longitude": -122.393864
+          "longitude": -122.393864,
+          "replacementStops": [
+            "17405"
+          ]
         },
         {
           "id": "17397",
           "heading": "southbound",
           "name": null,
           "latitude": 37.776135,
-          "longitude": -122.393829
+          "longitude": -122.393829,
+          "replacementStops": [
+            "17366"
+          ]
         }
       ]
     },
@@ -1289,7 +1298,10 @@
           "heading": "westbound",
           "name": null,
           "latitude": 37.765863,
-          "longitude": -122.449804
+          "longitude": -122.449804,
+          "replacementStops": [
+            "17282"
+          ]
         }
       ]
     },
@@ -1310,14 +1322,20 @@
           "heading": "eastbound",
           "name": null,
           "latitude": 37.769285,
-          "longitude": -122.433511
+          "longitude": -122.433511,
+          "replacementStops": [
+            "14451"
+          ]
         },
         {
           "id": "17252",
           "heading": "westbound",
           "name": null,
           "latitude": 37.769357,
-          "longitude": -122.433557
+          "longitude": -122.433557,
+          "replacementStops": [
+            "17075"
+          ]
         }
       ]
     },
@@ -1341,14 +1359,21 @@
           "heading": "eastbound",
           "name": null,
           "latitude": 37.769409,
-          "longitude": -122.4294
+          "longitude": -122.4294,
+          "replacementStops": [
+            "14005",
+            "18061"
+          ]
         },
         {
           "id": "14447",
           "heading": "westbound",
           "name": null,
           "latitude": 37.769472,
-          "longitude": -122.429408
+          "longitude": -122.429408,
+          "replacementStops": [
+            "17074"
+          ]
         }
       ]
     },
@@ -1369,14 +1394,20 @@
           "heading": "southbound",
           "name": "To Caltrain",
           "latitude": 37.790481,
-          "longitude": -122.389692
+          "longitude": -122.389692,
+          "replacementStops": [
+            "14511"
+          ]
         },
         {
           "id": "14510",
           "heading": "northbound",
           "name": "To Ocean Beach",
           "latitude": 37.790749,
-          "longitude": -122.389841
+          "longitude": -122.389841,
+          "replacementStops": [
+            "14508"
+          ]
         }
       ]
     },
@@ -1404,7 +1435,10 @@
           "heading": "northbound",
           "name": "To Ocean Beach",
           "latitude": 37.784627,
-          "longitude": -122.387977
+          "longitude": -122.387977,
+          "replacementStops": [
+            "17447"
+          ]
         }
       ]
     },
@@ -1425,14 +1459,20 @@
           "heading": "southbound",
           "name": "To Caltrain",
           "latitude": 37.77972,
-          "longitude": -122.389872
+          "longitude": -122.389872,
+          "replacementStops": [
+            "15236"
+          ]
         },
         {
           "id": "15237",
           "heading": "northbound",
           "name": "To Ocean Beach",
           "latitude": 37.779621,
-          "longitude": -122.389824
+          "longitude": -122.389824,
+          "replacementStops": [
+            "15235"
+          ]
         }
       ]
     },
@@ -1478,14 +1518,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.772984,
-          "longitude": -122.389683
+          "longitude": -122.389683,
+          "replacementStops": [
+            "13153"
+          ]
         },
         {
           "id": "17359",
           "heading": "southbound",
           "name": null,
           "latitude": 37.772832,
-          "longitude": -122.389717
+          "longitude": -122.389717,
+          "replacementStops": [
+            "13016"
+          ]
         }
       ]
     },
@@ -1513,7 +1559,10 @@
           "heading": "southbound",
           "name": null,
           "latitude": 37.768237,
-          "longitude": -122.389366
+          "longitude": -122.389366,
+          "replacementStops": [
+            "17324"
+          ]
         }
       ]
     },
@@ -1534,14 +1583,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.764391,
-          "longitude": -122.388853
+          "longitude": -122.388853,
+          "replacementStops": [
+            "17381"
+          ]
         },
         {
           "id": "17361",
           "heading": "southbound",
           "name": null,
           "latitude": 37.764239,
-          "longitude": -122.388865
+          "longitude": -122.388865,
+          "replacementStops": [
+            "17382"
+          ]
         }
       ]
     },
@@ -1562,14 +1617,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.760518,
-          "longitude": -122.388558
+          "longitude": -122.388558,
+          "replacementStops": [
+            "13103"
+          ]
         },
         {
           "id": "17362",
           "heading": "southbound",
           "name": null,
           "latitude": 37.760367,
-          "longitude": -122.388593
+          "longitude": -122.388593,
+          "replacementStops": [
+            "13104"
+          ]
         }
       ]
     },
@@ -1590,14 +1651,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.755414,
-          "longitude": -122.388001
+          "longitude": -122.388001,
+          "replacementStops": [
+            "13107"
+          ]
         },
         {
           "id": "17363",
           "heading": "southbound",
           "name": null,
           "latitude": 37.755263,
-          "longitude": -122.388047
+          "longitude": -122.388047,
+          "replacementStops": [
+            "13108"
+          ]
         }
       ]
     },
@@ -1618,14 +1685,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.748999,
-          "longitude": -122.387445
+          "longitude": -122.387445,
+          "replacementStops": [
+            "17377"
+          ]
         },
         {
           "id": "17364",
           "heading": "southbound",
           "name": null,
           "latitude": 37.749097,
-          "longitude": -122.387525
+          "longitude": -122.387525,
+          "replacementStops": [
+            "17378"
+          ]
         }
       ]
     },
@@ -1646,14 +1719,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.742726,
-          "longitude": -122.38792
+          "longitude": -122.38792,
+          "replacementStops": [
+            "17961"
+          ]
         },
         {
           "id": "17365",
           "heading": "southbound",
           "name": null,
           "latitude": 37.742727,
-          "longitude": -122.388034
+          "longitude": -122.388034,
+          "replacementStops": [
+            "13123"
+          ]
         }
       ]
     },
@@ -1674,7 +1753,10 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.739916,
-          "longitude": -122.388884
+          "longitude": -122.388884,
+          "replacementStops": [
+            "13127"
+          ]
         },
         {
           "id": "17390",
@@ -1702,14 +1784,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.737641,
-          "longitude": -122.389688
+          "longitude": -122.389688,
+          "replacementStops": [
+            "13134"
+          ]
         },
         {
           "id": "17391",
           "heading": "southbound",
           "name": null,
           "latitude": 37.73765,
-          "longitude": -122.389734
+          "longitude": -122.389734,
+          "replacementStops": [
+            "13135"
+          ]
         }
       ]
     },
@@ -1730,14 +1818,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.734358,
-          "longitude": -122.390836
+          "longitude": -122.390836,
+          "replacementStops": [
+            "13141"
+          ]
         },
         {
           "id": "17392",
           "heading": "southbound",
           "name": null,
           "latitude": 37.73435,
-          "longitude": -122.390893
+          "longitude": -122.390893,
+          "replacementStops": [
+            "13143"
+          ]
         }
       ]
     },
@@ -1758,14 +1852,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.732262,
-          "longitude": -122.391502
+          "longitude": -122.391502,
+          "replacementStops": [
+            "13145"
+          ]
         },
         {
           "id": "17393",
           "heading": "southbound",
           "name": null,
           "latitude": 37.732289,
-          "longitude": -122.391605
+          "longitude": -122.391605,
+          "replacementStops": [
+            "13113"
+          ]
         }
       ]
     },
@@ -1793,7 +1893,10 @@
           "heading": "southbound",
           "name": null,
           "latitude": 37.729211,
-          "longitude": -122.392684
+          "longitude": -122.392684,
+          "replacementStops": [
+            "13150"
+          ]
         }
       ]
     },
@@ -1814,14 +1917,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.725491,
-          "longitude": -122.394222
+          "longitude": -122.394222,
+          "replacementStops": [
+            "13116"
+          ]
         },
         {
           "id": "17344",
           "heading": "southbound",
           "name": null,
           "latitude": 37.725241,
-          "longitude": -122.394394
+          "longitude": -122.394394,
+          "replacementStops": [
+            "13115"
+          ]
         }
       ]
     },
@@ -1849,7 +1958,10 @@
           "heading": "southbound",
           "name": null,
           "latitude": 37.722199,
-          "longitude": -122.395782
+          "longitude": -122.395782,
+          "replacementStops": [
+            "17171"
+          ]
         }
       ]
     },
@@ -1870,7 +1982,10 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.718809,
-          "longitude": -122.397468
+          "longitude": -122.397468,
+          "replacementStops": [
+            "17376"
+          ]
         },
         {
           "id": "17394",
@@ -1898,7 +2013,10 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.712226,
-          "longitude": -122.402339
+          "longitude": -122.402339,
+          "replacementStops": [
+            "17334"
+          ]
         },
         {
           "id": "17395",
@@ -1987,7 +2105,10 @@
           "heading": "eastbound",
           "name": null,
           "latitude": 37.76725,
-          "longitude": -122.429214
+          "longitude": -122.429214,
+          "replacementStops": [
+            "18062"
+          ]
         },
         {
           "id": "15661",
@@ -2491,7 +2612,10 @@
           "heading": "northbound",
           "name": "Northbound (Terminus)",
           "latitude": 37.721238,
-          "longitude": -122.446222
+          "longitude": -122.446222,
+          "replacementStops": [
+            "16260"
+          ]
         }
       ]
     },
@@ -2542,14 +2666,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.734825,
-          "longitude": -122.471446
+          "longitude": -122.471446,
+          "replacementStops": [
+            "17205"
+          ]
         },
         {
           "id": "16503",
           "heading": "southbound",
           "name": null,
           "latitude": 37.734807,
-          "longitude": -122.471618
+          "longitude": -122.471618,
+          "replacementStops": [
+            "15141"
+          ]
         }
       ]
     },
@@ -2570,14 +2700,20 @@
           "heading": "northbound",
           "name": null,
           "latitude": 37.731628,
-          "longitude": -122.471707
+          "longitude": -122.471707,
+          "replacementStops": [
+            "15138"
+          ]
         },
         {
           "id": "17114",
           "heading": "southbound",
           "name": null,
           "latitude": 37.731271,
-          "longitude": -122.471818
+          "longitude": -122.471818,
+          "replacementStops": [
+            "15792"
+          ]
         }
       ]
     },
@@ -3496,7 +3632,10 @@
           "heading": "westbound",
           "name": null,
           "latitude": 37.741823,
-          "longitude": -122.50449
+          "longitude": -122.50449,
+          "replacementStops": [
+            "17892"
+          ]
         }
       ]
     },
@@ -3962,7 +4101,10 @@
           "heading": "eastbound",
           "name": null,
           "latitude": 37.792984,
-          "longitude": -122.396627
+          "longitude": -122.396627,
+          "replacementStops": [
+            "15658"
+          ]
         },
         {
           "id": "15669",
@@ -4337,7 +4479,10 @@
           "heading": "eastbound",
           "name": null,
           "latitude": 37.765632,
-          "longitude": -122.431216
+          "longitude": -122.431216,
+          "replacementStops": [
+            "15691"
+          ]
         },
         {
           "id": "15690",
@@ -4416,7 +4561,11 @@
           "heading": "eastbound",
           "name": null,
           "latitude": 37.762576,
-          "longitude": -122.434979
+          "longitude": -122.434979,
+          "replacementStops": [
+            "15665",
+            "15667"
+          ]
         }
       ]
     }
