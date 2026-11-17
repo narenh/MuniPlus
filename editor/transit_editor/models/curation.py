@@ -129,6 +129,36 @@ class StationsFile(FileModel):
         return out
 
 
+class ColorPair(FileModel):
+    """One colour for light appearance and one for dark."""
+
+    light: Color
+    dark: Color
+
+
+class LineStyle(FileModel):
+    """How the app draws a line's badge, in light and dark appearance. The app's
+    own palette, kept here so it is edited in one place rather than in app code."""
+
+    fill: ColorPair
+    """The badge, and the line on the map."""
+    text: ColorPair
+    """The letter or number on the badge."""
+    text_edge: ColorPair | None = None
+    """An outline round the text, for a fill too light to carry white text alone
+    (the J, the S)."""
+
+
+class LineDirection(FileModel):
+    """One direction of a hand-entered line: where it goes and the platforms it
+    stops at, in order."""
+
+    headsign: NonBlank
+    platforms: Annotated[list[StopId], Field(min_length=2)]
+    """Curated platform ids (a platform's primary ``id``, never one of its extra
+    ``stops``), in the order the line serves them."""
+
+
 class LineOverride(FileModel):
     """Where a person overrides or adds to what 511 says about a line."""
 
@@ -142,6 +172,20 @@ class LineOverride(FileModel):
     replaces: list[LineId] = []
     """Lines this one substitutes for: ``SF:LOWL`` replaces ``SF:L``. Line-level
     only; there is no mapping of replacement stops to stations."""
+    style: LineStyle | None = None
+    """The app's badge colours. ``color`` and ``textColor`` stay what the map
+    draws with; where they are not set, ``style``'s light fill and text stand in."""
+    directions: Annotated[list[LineDirection], Field(max_length=2)] = []
+    """Hand-entered stop order, used instead of 511's patterns for this line; empty
+    means 511's. The first entry is direction 0, the second direction 1 (511's own
+    numbering, where 0 is outbound for Muni Metro). For service 511 publishes no
+    trips for: the S Shuttle is not in 511's GTFS at all, so with this a line can
+    exist that 511 does not list."""
+    listed_at_stations: bool = True
+    """False leaves the line off every station's and platform's line list (no
+    badge, no transfer chip), while the line and its directions stay in the line
+    list. The S: the app shows its trains in arrivals by line id, but it runs over
+    the K, L and M's platforms and is not a line to list there."""
     note: str | None = None
 
 

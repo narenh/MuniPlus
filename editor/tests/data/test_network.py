@@ -411,3 +411,121 @@ def test_a_platforms_former_id_still_finds_it(curation, snapshots):
     assert net.station_of("SF:15731") is None  # an alias for platforms, not a stop
     summary = next(s for s in net.stations().stations if s.id == "montgomery")
     assert summary.platforms[0].former_ids == ["SF:15731"]
+
+
+# MARK: - Hand-entered lines and styles
+
+
+def shuttle(**fields) -> LineOverride:
+    """An S Shuttle over the fixture's three subway stations, as the real one is
+    entered: 511 does not list it, so its directions are all there is."""
+    return LineOverride.model_validate({
+        "name": "S Shuttle",
+        "mode": "metro",
+        "directions": [
+            {"headsign": "West Portal", "platforms": ["SF:17217", "SF:16994", "SF:16995"]},
+            {"headsign": "Embarcadero", "platforms": ["SF:15417", "SF:15731", "SF:16992"]},
+        ],
+        **fields,
+    })
+
+
+def test_a_hand_entered_line_511_lacks_exists(curation, snapshots):
+    curation.lines.root["SF:S"] = shuttle()
+    net = Network(curation, snapshots, "v")
+    s = net.line("SF:S")
+    assert (s.short_name, s.name, s.mode, s.owl, s.color) == ("S", "S Shuttle", "metro", False, None)
+    assert [(d.direction, d.headsign) for d in s.directions] == [(0, "West Portal"), (1, "Embarcadero")]
+    assert s.directions[0].stations == ["embarcadero", "montgomery", "powell"]
+    assert s.directions[1].stations == ["powell", "montgomery", "embarcadero"]
+    assert s.directions[0].stops == ["SF:17217", "SF:16994", "SF:16995"]
+    assert all(d.shape is None for d in s.directions)
+    assert net.headsign("SF:S", 1) == "Embarcadero"
+    # Metro, so among J-T, sorted by its short name.
+    assert [line.id for line in net.lines().lines][:7] == ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N", "SF:S", "SF:T"]
+    assert "SF:S" in net.derived().lines
+    # Listed at stations by default, like any line.
+    assert "SF:S" in net.station("powell").lines
+
+
+def test_hand_entered_directions_replace_511s_patterns(curation, snapshots):
+    # The N's 511 patterns run Embarcadero -> Powell and back; hand-entered, one way only.
+    curation.lines.root["SF:N"] = LineOverride.model_validate(
+        {"directions": [{"headsign": "Downtown", "platforms": ["SF:15417", "SF:15731"]}]}
+    )
+    net = Network(curation, snapshots, "v")
+    n = net.line("SF:N")
+    assert n.name == "N Judah" and n.mode == "metro"
+    assert [(d.direction, d.headsign, d.stations) for d in n.directions] == [(0, "Downtown", ["powell", "montgomery"])]
+    assert net.headsign("SF:N", 1) is None
+    platforms = {p.id: p for s in net.stations().stations for p in s.platforms}
+    # Only the platforms it lists now serve it, not those of 511's patterns.
+    assert "SF:N" in platforms["SF:15417"].lines
+    assert "SF:N" not in platforms["SF:17217"].lines
+    assert "SF:N" not in net.derived().stops["SF:16992"].lines
+
+
+def test_a_hand_entered_platform_stands_for_all_its_stops(curation, snapshots):
+    # Powell's eastbound platform takes in a second stop; the line serves both.
+    curation.stations.stations["powell"].platforms[0].stops.append("SF:16063")
+    curation.stations.stations["powellMarket"].platforms.pop(0)
+    curation.lines.root["SF:S"] = shuttle()
+    net = Network(curation, snapshots, "v")
+    assert "SF:S" in net.derived().stops["SF:16063"].lines
+    assert net.line("SF:S").directions[1].stops[0] == "SF:15417"
+
+
+def test_an_unknown_platform_is_left_out_of_the_direction(curation, snapshots):
+    s = shuttle()
+    s.directions[0].platforms.insert(1, "SF:99999")
+    curation.lines.root["SF:S"] = s
+    assert Network(curation, snapshots, "v").line("SF:S").directions[0].stations == ["embarcadero", "montgomery", "powell"]
+
+
+def test_a_line_not_listed_at_stations(curation, snapshots):
+    curation.lines.root["SF:S"] = shuttle(listedAtStations=False)
+    net = Network(curation, snapshots, "v")
+    # Still a line, with its directions...
+    s = net.line("SF:S")
+    assert not s.listed_at_stations
+    assert "SF:S" in [line.id for line in net.lines().lines]
+    assert s.directions[0].stations == ["embarcadero", "montgomery", "powell"]
+    # ...but no station, platform or stop lists it.
+    for station in net.stations().stations:
+        assert "SF:S" not in station.lines
+        assert all("SF:S" not in p.lines for p in station.platforms)
+    assert all("SF:S" not in p.lines for p in net.station("powell").platforms)
+    assert all("SF:S" not in d.lines for d in net.derived().stations.values())
+    assert all("SF:S" not in d.lines for d in net.derived().stops.values())
+    assert net.station("powell").lines == ["SF:J", "SF:K", "SF:L", "SF:M", "SF:N"]
+
+
+def test_a_511_line_not_listed_at_stations(curation, snapshots):
+    curation.lines.root["SF:K"] = LineOverride(listed_at_stations=False)
+    net = Network(curation, snapshots, "v")
+    assert "SF:K" not in net.station("powell").lines
+    assert [d.stations for d in net.line("SF:K").directions] == [
+        ["embarcadero", "montgomery", "powell"], ["powell", "montgomery", "embarcadero"]
+    ]
+    assert net.line("SF:J").listed_at_stations
+
+
+def test_style_is_on_the_line_and_colours_fall_back_to_it(curation, snapshots):
+    style = {"fill": {"light": "#91268F", "dark": "#B243AF"}, "text": {"light": "#FFFFFF", "dark": "#FFFFFF"}}
+    curation.lines.root["SF:L"] = LineOverride.model_validate({"style": style})
+    curation.lines.root["SF:J"] = LineOverride.model_validate({"color": "#FAA633", "style": {
+        **style, "fill": {"light": "#000000", "dark": "#000000"}, "textEdge": {"light": "#C98A00", "dark": "#C98A00"}}})
+    curation.lines.root["SF:S"] = shuttle(style={**style, "fill": {"light": "#FCDB00", "dark": "#FCDB00"}})
+    net = Network(curation, snapshots, "v")
+    lines = {line.id: line for line in net.lines().lines}
+    assert lines["SF:L"].style.fill.dark == "#B243AF"
+    assert lines["SF:L"].style.text_edge is None
+    # No colour of its own: the style's light fill stands in for 511's.
+    assert (lines["SF:L"].color, lines["SF:L"].text_color) == ("#91268F", "#FFFFFF")
+    # A curated colour still wins.
+    assert lines["SF:J"].color == "#FAA633" and lines["SF:J"].style.text_edge.light == "#C98A00"
+    assert lines["SF:S"].color == "#FCDB00"
+    assert lines["SF:K"].style is None
+    wire = net.line("SF:J").model_dump(mode="json")
+    assert wire["style"]["textEdge"] == {"light": "#C98A00", "dark": "#C98A00"}
+    assert wire["listedAtStations"] is True

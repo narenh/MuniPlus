@@ -12,6 +12,7 @@ fields (``note``, ``verified``) are not part of them.
 from typing import Literal
 
 from .base import Wire
+from .curation import LineStyle
 from .ids import Color, Heading, LineId, Mode, Operator, StopId, ShapeId, StationId, SubwayId, TransferMode
 
 # MARK: - Stations
@@ -121,6 +122,11 @@ class LineSummary(Wire):
     mode: Mode
     hidden: bool
     replaces: list[LineId]
+    style: LineStyle | None
+    """The app's badge colours, light and dark, where curated."""
+    listed_at_stations: bool
+    """False: no station or platform lists this line (the S Shuttle), though it is
+    here with its directions, and arrivals may name it."""
     owl: bool
     """Overnight service: 511 names the line an Owl (``LOWL Owl Taraval``, ``90 San
     Bruno Owl``). With ``replaces``, it tells the owl that covers a line's corridor
@@ -136,10 +142,12 @@ class Direction(Wire):
     direction: Literal[0, 1]
     headsign: str
     stations: list[StationId]
-    """The most-run pattern in this direction, mapped to stations, in order. Its
+    """The most-run pattern in this direction, mapped to stations, in order; or,
+    for a line with hand-entered directions, its listed platforms' stations. Its
     first and last entries are the line's terminals in this direction."""
     stops: list[StopId]
-    """The same pattern as stops. Stops no station claims are left out."""
+    """The same pattern as stops. Stops no station claims are left out. For a
+    hand-entered direction, each platform's first stop in 511's data."""
     shape: ShapeId | None = None
     """The path this pattern drives, a key into ``GET /api/shapes``. None when the
     snapshot has no shape for it; draw through ``stops`` instead."""

@@ -201,15 +201,36 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
                     f"Subway {subway.name} ({subway_id}) lists {sid!r}, which is not a station.",
                 )
 
+    # A platform's primary id -> where it is, and every extra stop -> its platform,
+    # for checking hand-entered directions.
+    platform_at = {p.id: sid for sid, station in stations.items() for p in station.platforms}
+    extra_of = {stop: p.id for station in stations.values() for p in station.platforms for stop in p.stops}
     for line_id, override in sorted(curation.lines.root.items()):
-        if line_id not in known_lines:
+        for i, direction in enumerate(override.directions):
+            for pid in direction.platforms:
+                if pid in platform_at:
+                    continue
+                hint = f" It is a stop of platform {extra_of[pid]}; list that." if pid in extra_of else ""
+                error(
+                    "unknown-platform",
+                    f"{line_id}'s direction {i} (to {direction.headsign}) lists {pid}, which is not a platform.{hint}",
+                    line=line_id,
+                    stop=pid,
+                )
+        if override.directions and line_id not in known_lines and not override.mode:
+            error(
+                "line-without-mode",
+                f"{line_id} is not in 511's data, so it needs a mode of its own (metro, bus...).",
+                line=line_id,
+            )
+        if line_id not in known_lines and not override.directions:
             warn(
                 "unknown-line-override",
                 f"lines.json has an override for {line_id}, which 511 does not list.",
                 line=line_id,
             )
         for replaced in override.replaces:
-            if replaced not in known_lines:
+            if replaced not in known_lines and not (curation.lines.root.get(replaced) and curation.lines.root[replaced].directions):
                 # A warning, not an error: 511 dropping a line in a service change
                 # must never block every save until someone edits lines.json.
                 warn(
@@ -224,7 +245,11 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
     # its line, must not block every save until someone redraws the patch.
     shapes = {sid: pts for snap in snapshots.values() for sid, pts in snap.shapes.root.items()}
     patterns = {lid: ps for snap in snapshots.values() for lid, ps in snap.patterns.root.items()}
-    most_run = {lid: list(_most_run(patterns.get(lid, [])).values()) for lid in known_lines}
+    # As the network draws them: a line with hand-entered directions draws no 511 shape.
+    most_run = {
+        lid: [] if (o := curation.lines.root.get(lid)) and o.directions else list(_most_run(patterns.get(lid, [])).values())
+        for lid in known_lines
+    }
     drawn = {lid: [p.shape for p in ps if p.shape in shapes] for lid, ps in most_run.items()}
     drawn_stops: dict[str, list[str]] = {}
     for ps in most_run.values():

@@ -591,6 +591,17 @@ body.read-only #review { display: none; }
 .swatch::-webkit-color-swatch-wrapper { padding: 3px; }
 .swatch::-webkit-color-swatch { border: none; border-radius: 5px; }
 .tchip.clear { flex: none; padding-right: 9px; cursor: pointer; }
+.style-preview { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.style-pane { display: inline-flex; padding: 6px; border-radius: 8px; border: 1px solid var(--line); }
+.style-pane.light { background: #ffffff; }
+.style-pane.dark { background: #000000; }
+.style-badge {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px;
+  padding: 0 4px; border-radius: 99px; font-weight: 700; font-size: 13px;
+}
+.style-rows { display: flex; flex-direction: column; gap: 2px; font-size: 11px; }
+.style-row { display: flex; align-items: center; gap: 4px; }
+.style-row .micro { width: 32px; }
 label.check { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink); cursor: pointer; }
 label.check input { accent-color: var(--accent); width: 15px; height: 15px; }
 

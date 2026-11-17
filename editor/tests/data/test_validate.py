@@ -156,6 +156,59 @@ def test_unknown_line_override(curation, snapshots):
     assert result.errors == []
 
 
+# MARK: - Hand-entered lines
+
+
+def hand_entered(platforms_0, platforms_1=("SF:15417", "SF:15731", "SF:16992"), **fields) -> LineOverride:
+    return LineOverride.model_validate({
+        "name": "S Shuttle",
+        "mode": "metro",
+        "directions": [
+            {"headsign": "West Portal", "platforms": list(platforms_0)},
+            {"headsign": "Embarcadero", "platforms": list(platforms_1)},
+        ],
+        **fields,
+    })
+
+
+def test_a_hand_entered_line_511_lacks_is_no_unknown_override(curation, snapshots):
+    curation.lines.root["SF:S"] = hand_entered(["SF:17217", "SF:16994", "SF:16995"], listedAtStations=False)
+    result = validate(curation, snapshots)
+    assert result.errors == []
+    assert codes(result.warnings) == ["unassigned-stop"]
+
+
+def test_unknown_platform_in_hand_entered_directions(curation, snapshots):
+    curation.lines.root["SF:S"] = hand_entered(["SF:17217", "SF:99999", "SF:16995"])
+    issue = only(validate(curation, snapshots).errors, "unknown-platform")
+    assert (issue.line, issue.stop) == ("SF:S", "SF:99999")
+    assert "direction 0" in issue.message
+
+
+def test_an_extra_stop_is_not_a_platform_id(curation, snapshots):
+    # A platform's second stop finds the platform everywhere else, but a line lists
+    # platforms by their id, so this says which one to list.
+    curation.stations.stations["powell"].platforms[1].stops.append("SF:99998")
+    curation.lines.root["SF:S"] = hand_entered(["SF:17217", "SF:16994", "SF:99998"])
+    issue = only(validate(curation, snapshots).errors, "unknown-platform")
+    assert issue.stop == "SF:99998" and "platform SF:16995" in issue.message
+
+
+def test_a_hand_entered_line_511_lacks_needs_a_mode(curation, snapshots):
+    curation.lines.root["SF:S"] = hand_entered(["SF:17217", "SF:16994"], mode=None)
+    assert only(validate(curation, snapshots).errors, "line-without-mode").line == "SF:S"
+    # A 511 line has 511's mode.
+    curation.lines.root.pop("SF:S")
+    curation.lines.root["SF:K"] = hand_entered(["SF:17217", "SF:16994"], mode=None)
+    assert validate(curation, snapshots).errors == []
+
+
+def test_replacing_a_hand_entered_line_is_no_unknown_line(curation, snapshots):
+    curation.lines.root["SF:S"] = hand_entered(["SF:17217", "SF:16994"])
+    curation.lines.root["SF:SBUS"] = LineOverride(replaces=["SF:S"])
+    assert "unknown-line" not in codes(validate(curation, snapshots).warnings)
+
+
 # MARK: - The set of codes
 
 
@@ -176,6 +229,7 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
     s["churchMarket"].platforms = [Platform(id="SF:99999", heading="eastbound")]
     curation.lines.root["SF:S"] = LineOverride()
     curation.stations.subways["x"] = Subway(name="X", stations=["nowhere"])
+    curation.lines.root["SF:X"] = hand_entered(["SF:17217", "SF:99997"], mode=None)
 
     result = validate(curation, snapshots)
     assert set(codes(result.errors)) == {
@@ -188,6 +242,8 @@ def test_every_code_in_the_plan_is_reachable(curation, snapshots):
         "transfer-to-itself",
         "duplicate-transfer",
         "station-has-no-platforms",
+        "unknown-platform",
+        "line-without-mode",
     }
     assert set(codes(result.warnings)) == {
         "stop-not-in-snapshot",

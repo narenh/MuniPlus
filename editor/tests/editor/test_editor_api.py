@@ -176,6 +176,34 @@ def test_a_shape_patch_is_saved_to_its_own_file_and_served(world):
     assert world.state()["curation"]["shapes"]["f-corner"]["note"] == "Checked on site."
 
 
+def test_a_hand_entered_line_is_saved_and_served(world):
+    curation = copy.deepcopy(world.state()["curation"])
+    style = {"fill": {"light": "#FCDB00", "dark": "#FCDB00"}, "text": {"light": "#FFFFFF", "dark": "#FFFFFF"},
+             "textEdge": {"light": "#A88400", "dark": "#A88400"}}
+    curation["lines"]["SF:S"] = {
+        "name": "S Shuttle", "mode": "metro", "style": style, "listedAtStations": False,
+        "directions": [
+            {"headsign": "West Portal", "platforms": ["SF:17217", "SF:16994", "SF:16995"]},
+            {"headsign": "Embarcadero", "platforms": ["SF:15417", "SF:15731", "SF:16992"]},
+        ],
+    }
+    res = world.save(curation, message="Enter the S Shuttle")
+    assert res.status_code == 200, res.text
+    commit = res.json()["commit"]
+    assert git(world.checkout, "show", "--format=", "--name-only", commit).split() == ["curation/lines.json"]
+    assert res.json()["validation"]["errors"] == []
+
+    state = world.state()
+    s = state["derived"]["lines"]["SF:S"]
+    assert (s["listedAtStations"], s["style"]["textEdge"]["dark"], s["color"]) == (False, "#A88400", "#FCDB00")
+    assert [len(d["stations"]) for d in s["directions"]] == [3, 3]
+    assert all("SF:S" not in d["lines"] for d in state["derived"]["stations"].values())
+    # Sent back as saved, and saving it again changes nothing.
+    assert state["curation"]["lines"]["SF:S"]["listedAtStations"] is False
+    res = world.save(state["curation"], base=commit)
+    assert (res.status_code, res.json()["commit"]) == (200, None)
+
+
 def test_an_unchanged_save_makes_no_commit(world):
     network = world.app.state.network
     res = world.save(world.state()["curation"])

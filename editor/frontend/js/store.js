@@ -613,15 +613,22 @@ export function toggleLayer(k) {
 }
 
 // ------------------------------------------------------------------ diffing
-/** Canonical JSON: keys sorted, and "not stated" (null, false, []) dropped, so
- *  a field cleared in the editor compares equal to one never written. */
+/** Fields whose "not stated" is true, not false: a line's `listedAtStations`.
+ *  Everywhere else false is the default and means nothing was said. */
+const DEFAULT_TRUE = new Set(['listedAtStations']);
+/** Whether `key: value` says nothing: null, [], or the field's default. */
+const unstated = (key, y) => y === null || y === undefined || (Array.isArray(y) && !y.length)
+  || (DEFAULT_TRUE.has(key) ? y === true : y === false);
+
+/** Canonical JSON: keys sorted, and "not stated" (null, the default boolean,
+ *  []) dropped, so a field cleared in the editor compares equal to one never written. */
 export function canon(v) {
   return JSON.stringify(v, (k, x) => {
     if (x && typeof x === 'object' && !Array.isArray(x)) {
       const o = {};
       for (const key of Object.keys(x).sort()) {
         const y = x[key];
-        if (y === null || y === undefined || y === false || (Array.isArray(y) && !y.length)) continue;
+        if (unstated(key, y)) continue;
         o[key] = y;
       }
       return o;
@@ -719,10 +726,13 @@ export function changes() {
     const a = LA[id] || {}, b = LB[id] || {};
     const T = lineById(id)?.name || id;
     for (const f of LINE_FIELDS) {
-      if (same(a[f], b[f])) continue;
+      if ((unstated(f, a[f]) && unstated(f, b[f])) || same(a[f], b[f])) continue;
       const v = b[f];
       const shown = f === 'hidden' ? (v ? 'hidden' : 'shown')
+        : f === 'listedAtStations' ? (v === false ? 'not listed' : 'listed')
         : f === 'replaces' ? (v || []).join(' ') || 'nothing'
+        : f === 'directions' ? (v || []).map(d => `${d.headsign} (${d.platforms.length})`).join(', ') || '511\'s'
+        : f === 'style' ? (v ? `fill ${v.fill.light}/${v.fill.dark}` : 'none')
         : v ?? '511 default';
       push('edit', `${T} · line`, `${LINE_LABEL[f]} → ${code(shown)}`);
     }
@@ -740,10 +750,12 @@ export function changes() {
 }
 
 /** The fields of a line override, in the order the inspector shows them. */
-export const LINE_FIELDS = ['name', 'color', 'textColor', 'mode', 'hidden', 'replaces', 'note'];
+export const LINE_FIELDS = ['name', 'color', 'textColor', 'mode', 'hidden', 'replaces', 'style', 'directions',
+  'listedAtStations', 'note'];
 const LINE_LABEL = {
   name: 'Name', color: 'Colour', textColor: 'Text colour', mode: 'Mode',
-  hidden: 'Visibility', replaces: 'Replaces', note: 'Note',
+  hidden: 'Visibility', replaces: 'Replaces', style: 'Style', directions: 'Directions',
+  listedAtStations: 'At stations', note: 'Note',
 };
 
 /**
@@ -757,9 +769,7 @@ export function setLineOverride(curation, lineId, field, value) {
   const empty = value === null || value === undefined || value === '' || value === false
     || (Array.isArray(value) && !value.length);
   if (empty) delete o[field]; else o[field] = value;
-  for (const [k, v] of Object.entries(o)) {
-    if (v === null || v === false || (Array.isArray(v) && !v.length)) delete o[k];
-  }
+  for (const [k, v] of Object.entries(o)) if (unstated(k, v)) delete o[k];
   if (Object.keys(o).length) all[lineId] = o; else delete all[lineId];
 }
 

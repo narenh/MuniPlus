@@ -22,7 +22,7 @@ import re
 from collections.abc import Iterable, Mapping
 
 from ..names import ACRONYMS, FIXUPS, MINOR_WORDS
-from ..models.ids import operator_of
+from ..models.ids import operator_of, upstream_of
 from ..models.api import (
     Direction,
     LineDetail,
@@ -191,38 +191,35 @@ class Network:
             shapes.update(snapshot.shapes.root)
         self._stops = stops
 
-        # Lines. A line exists if 511 lists it; an override for any other line is a
-        # warning in the validator and has nothing to attach to here.
+        # Lines. A line exists if 511 lists it, or if curation gives it directions of
+        # its own (the S Shuttle, which 511 does not list). An override for any other
+        # line is a warning in the validator and has nothing to attach to here.
         lines: dict[str, LineSummary] = {}
-        for line_id, snap in snapshot_lines.items():
+        hand_entered = {lid: o for lid, o in overrides.items() if o.directions}
+        for line_id in snapshot_lines.keys() | hand_entered.keys():
+            snap = snapshot_lines.get(line_id)
             o = overrides.get(line_id)
+            style = o.style if o else None
             lines[line_id] = LineSummary(
                 id=line_id,
-                short_name=snap.short_name,
-                name=(o and o.name) or default_line_name(snap),
-                color=(o and o.color) or snap.color,
-                text_color=(o and o.text_color) or snap.text_color,
-                mode=(o and o.mode) or snap.mode,
+                short_name=snap.short_name if snap else upstream_of(line_id),
+                name=(o and o.name) or (default_line_name(snap) if snap else upstream_of(line_id)),
+                color=(o and o.color) or (style and style.fill.light) or (snap and snap.color),
+                text_color=(o and o.text_color) or (style and style.text.light) or (snap and snap.text_color),
+                # A hand-entered line with no mode is an error in the validator; until
+                # it is fixed, it is drawn as the generic case.
+                mode=(o and o.mode) or (snap.mode if snap else "bus"),
                 hidden=bool(o and o.hidden),
                 replaces=list(o.replaces) if o else [],
-                owl=is_owl(snap),
+                style=style,
+                listed_at_stations=o.listed_at_stations if o else True,
+                owl=is_owl(snap) if snap else False,
             )
         ordered = sorted(lines.values(), key=_line_key)
         rank = {line.id: i for i, line in enumerate(ordered)}
 
         def in_line_order(ids: Iterable[str]) -> list[str]:
             return sorted(set(ids), key=rank.__getitem__)
-
-        # Stop lines: every pattern that stops there, not only the most-run one, so a
-        # short turn or school trip still lists its line at the stops it serves.
-        served: dict[str, set[str]] = {}
-        for line_id, line_patterns in patterns.items():
-            if line_id not in lines:
-                continue
-            for pattern in line_patterns:
-                for stop in pattern.stops:
-                    served.setdefault(stop, set()).add(line_id)
-        stop_lines = {pid: in_line_order(ids) for pid, ids in served.items()}
 
         # Ownership, stop by stop: the first claim wins (see the module docstring). A
         # platform keeps the stops no earlier station claimed, and one left with none
@@ -249,6 +246,26 @@ class Network:
         self._station_of = station_of
         self._platform_of = platform_of
         self._platform_stops = {platform.id: mine for plats in owned.values() for platform, mine in plats}
+
+        # Stop lines: every pattern that stops there, not only the most-run one, so a
+        # short turn or school trip still lists its line at the stops it serves. A
+        # line with hand-entered directions serves its listed platforms instead of
+        # 511's patterns, and a line not listed at stations serves none here: these
+        # lists are what stations and platforms show.
+        served: dict[str, set[str]] = {}
+        for line_id, line in lines.items():
+            if not line.listed_at_stations:
+                continue
+            if line_id in hand_entered:
+                for d in hand_entered[line_id].directions:
+                    for platform_id in d.platforms:
+                        for stop in self._platform_stops.get(platform_id, []):
+                            served.setdefault(stop, set()).add(line_id)
+                continue
+            for pattern in patterns.get(line_id, []):
+                for stop in pattern.stops:
+                    served.setdefault(stop, set()).add(line_id)
+        stop_lines = {pid: in_line_order(ids) for pid, ids in served.items()}
 
         # Derived stops: every stop a platform names, and every stop in a snapshot, so
         # the editor's review queue can show what serves a stop nobody has assigned.
@@ -388,6 +405,23 @@ class Network:
         self._line_details: dict[str, LineDetail] = {}
         for line in ordered:
             directions = []
+            if line.id in hand_entered:
+                for direction, d in enumerate(hand_entered[line.id].directions):
+                    self._headsigns[(line.id, direction)] = d.headsign
+                    claimed = []
+                    along = []
+                    for platform_id in d.platforms:
+                        # The platform's first stop in 511's data stands for it. An id
+                        # that is no platform's is the validator's to report.
+                        live = [s for s in self._platform_stops.get(platform_id, []) if s in stops]
+                        if not live:
+                            continue
+                        claimed.append(live[0])
+                        if not along or along[-1] != station_of[live[0]]:
+                            along.append(station_of[live[0]])
+                    directions.append(Direction(direction=direction, headsign=d.headsign, stations=along, stops=claimed))
+                self._line_details[line.id] = LineDetail(**dict(line), directions=directions)
+                continue
             for direction, pattern in sorted(_most_run(patterns.get(line.id, [])).items()):
                 self._headsigns[(line.id, direction)] = pattern.headsign
                 claimed = [s for s in pattern.stops if s in station_of and s in stops]

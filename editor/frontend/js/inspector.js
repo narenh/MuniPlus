@@ -854,6 +854,7 @@ function renderLine(ln) {
     </div>
     ${colour('color', 'Colour')}
     ${colour('textColor', 'Text colour')}
+    ${styleField(ln)}
     <div class="field">
       <label class="micro">Mode ${sub(from511(snap.mode))}</label>
       <div class="row-inp">
@@ -866,6 +867,8 @@ function renderLine(ln) {
       <label class="check"><input type="checkbox" data-lf="hidden" data-key="l-hidden" ${o.hidden ? 'checked' : ''}>
         Hidden ${sub('left out of the app\'s line lists')}</label>
     </div>
+    ${ln.listedAtStations === false ? `<div class="field"><div class="derived">Not listed at stations
+      ${sub('no station or platform shows it; <code>listedAtStations</code> in lines.json')}</div></div>` : ''}
     <div class="field">
       <label class="micro">Replaces ${sub('lines this one substitutes for')}</label>
       <div class="chips">${replaces}
@@ -881,13 +884,39 @@ function renderLine(ln) {
     </div>
   </div>
   <div class="sect">
-    <div class="sect-head"><div class="micro">Directions ${sub('511\'s most-run pattern each way')}</div></div>
+    <div class="sect-head"><div class="micro">Directions ${sub((o.directions || []).length
+      ? 'hand-entered in lines.json, in place of 511\'s patterns' : '511\'s most-run pattern each way')}</div></div>
     ${(ln.directions || []).map(d => `
       <div class="derived" style="margin-bottom:6px">→ <b>${esc(d.headsign)}</b>
         <span class="mono" style="color:var(--ink-faint)"> · ${d.stations.length} stations · ${d.stops.length} stops</span></div>`).join('')
       || '<div class="empty">None.</div>'}
   </div>`;
   wireLine(ln);
+}
+
+/** The app's badge colours (`style` in lines.json), light and dark, read-only:
+ *  they are edited in the file for now. */
+function styleField(ln) {
+  const st = ln.style;
+  if (!st) return `<div class="field"><label class="micro">Style ${sub('the app\'s badge colours; none in lines.json')}</label></div>`;
+  const badge = mode => {
+    const edge = st.textEdge?.[mode];
+    // An outline round the letter, as the app draws textEdge.
+    const shadow = edge ? `text-shadow:${[[-1, -1], [1, -1], [-1, 1], [1, 1], [0, 1], [0, -1], [1, 0], [-1, 0]]
+      .map(([x, y]) => `${x}px ${y}px 0 ${edge}`).join(',')}` : '';
+    return `<span class="style-badge" style="background:${esc(st.fill[mode])};color:${esc(st.text[mode])};${esc(shadow)}">${esc(ln.shortName)}</span>`;
+  };
+  const row = (label, pair) => pair ? `<span class="style-row"><span class="micro">${label}</span>
+    <span class="swatch-dot" style="background:${esc(pair.light)}"></span><code>${esc(pair.light)}</code>
+    <span class="swatch-dot" style="background:${esc(pair.dark)}"></span><code>${esc(pair.dark)}</code></span>` : '';
+  return `
+    <div class="field">
+      <label class="micro">Style ${sub('the app\'s badge, light / dark; edited in lines.json')}</label>
+      <div class="style-preview">
+        <span class="style-pane light">${badge('light')}</span><span class="style-pane dark">${badge('dark')}</span>
+        <span class="style-rows">${row('Fill', st.fill)}${row('Text', st.text)}${row('Edge', st.textEdge)}</span>
+      </div>
+    </div>`;
 }
 
 const HEX = /^#?[0-9a-fA-F]{6}$/;

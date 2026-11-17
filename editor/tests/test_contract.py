@@ -7,7 +7,7 @@ import pytest
 from pydantic import TypeAdapter, ValidationError
 
 from transit_editor.models import files
-from transit_editor.models.curation import Curation, Platform, Station, StationsFile
+from transit_editor.models.curation import Curation, LineOverride, LinesFile, LineStyle, Platform, Station, StationsFile
 from transit_editor.models.ids import LineId, StopId, StationId, TripId, VehicleId
 
 FIXTURE = Path(__file__).parent / "fixtures" / "transit"
@@ -184,3 +184,99 @@ def test_terminus_round_trips_byte_identically(tmp_path):
     assert (root / files.STATIONS).read_text() == text
     # Through JSON too, as the editor posts it.
     assert files.dumps(Curation.model_validate_json(again.model_dump_json()).stations) == files.dumps(again.stations)
+
+
+# MARK: - Line styles, hand-entered directions, listedAtStations
+
+
+S_SHUTTLE = """  "SF:S": {
+    "name": "S Shuttle",
+    "color": "#FCDB00",
+    "mode": "metro",
+    "style": {
+      "fill": {
+        "light": "#FCDB00",
+        "dark": "#FCDB00"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      },
+      "textEdge": {
+        "light": "#A88400",
+        "dark": "#A88400"
+      }
+    },
+    "directions": [
+      {
+        "headsign": "West Portal",
+        "platforms": [
+          "SF:17217",
+          "SF:16994"
+        ]
+      },
+      {
+        "headsign": "Embarcadero",
+        "platforms": [
+          "SF:15731",
+          "SF:16992"
+        ]
+      }
+    ],
+    "listedAtStations": false
+  }
+"""
+
+
+def test_style_directions_and_listing_round_trip_byte_identically(tmp_path):
+    root = tmp_path / "transit"
+    shutil.copytree(FIXTURE, root)
+    path = root / files.LINES
+    text = path.read_text()
+    # After the last entry, SF:NOWL, which sorts before SF:S.
+    text = text[: text.rindex("}")].rstrip() + ",\n" + S_SHUTTLE + "}\n"
+    path.write_text(text)
+
+    curation = files.read_curation(root)
+    s = curation.lines.root["SF:S"]
+    assert s.style.text_edge.dark == "#A88400" and s.listed_at_stations is False
+    assert [d.platforms for d in s.directions] == [["SF:17217", "SF:16994"], ["SF:15731", "SF:16992"]]
+    assert files.write_curation(root, curation) == []
+    assert path.read_text() == text
+    # Through JSON too, as the editor posts it (with every unset field spelt out).
+    again = Curation.model_validate_json(curation.model_dump_json())
+    assert files.dumps(again.lines) == text
+
+
+def test_lines_without_the_new_fields_omit_them(tmp_path):
+    text = files.dumps(files.read_curation(FIXTURE).lines)
+    for unset in ("style", "directions", "listedAtStations", "null"):
+        assert unset not in text
+    assert files.dumps(LinesFile({"SF:K": LineOverride(listed_at_stations=True)})) == '{\n  "SF:K": {}\n}\n'
+
+
+@pytest.mark.parametrize("bad", ["#fcdb00", "FCDB00", "#FCDB0", "#FCDB00 ", "yellow"])
+def test_style_colours_are_upper_case_hex(bad):
+    with pytest.raises(ValidationError):
+        LineStyle.model_validate({"fill": {"light": bad, "dark": "#FCDB00"}, "text": {"light": "#FFFFFF", "dark": "#FFFFFF"}})
+
+
+@pytest.mark.parametrize("style", [
+    {"fill": {"light": "#FCDB00", "dark": "#FCDB00"}},
+    {"fill": {"light": "#FCDB00"}, "text": {"light": "#FFFFFF", "dark": "#FFFFFF"}},
+    {"fill": {"light": "#FCDB00", "dark": "#FCDB00"}, "text": {"light": "#FFFFFF", "dark": "#FFFFFF"}, "edge": None},
+])  # fmt: skip
+def test_style_needs_fill_and_text_in_both_appearances(style):
+    with pytest.raises(ValidationError):
+        LineStyle.model_validate(style)
+
+
+@pytest.mark.parametrize("directions", [
+    [{"headsign": "X", "platforms": ["SF:1"]}],
+    [{"headsign": " ", "platforms": ["SF:1", "SF:2"]}],
+    [{"headsign": "X", "platforms": ["SF:1", "2"]}],
+    [{"headsign": "X", "platforms": ["SF:1", "SF:2"]}] * 3,
+])  # fmt: skip
+def test_hand_entered_directions_are_checked(directions):
+    with pytest.raises(ValidationError):
+        LineOverride.model_validate({"directions": directions})

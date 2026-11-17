@@ -37,7 +37,9 @@ it.
 | modes | 511's line `TransportMode` verbatim (`metro`, `bus`, `cableway`). One curated override: the F is `streetcar` |
 | replacements | `replaces` on a line (`SF:LOWL` replaces `SF:L`). **No** replacement platforms, no station-level mapping |
 | terminates | **not curated.** A realtime client derives it per trip: departure-only = the trip starts here; arrival-only last stop = the trip ends here |
-| line diagrams | the most-run 511 pattern per direction, read-only in the editor; no manual reordering |
+| line diagrams | the most-run 511 pattern per direction, read-only in the editor; no manual reordering. The exception is a line 511 publishes no trips for (the S Shuttle is not in 511's GTFS): `directions` in its `lines.json` entry, each `{headsign, platforms[]}` of curated platform ids, used instead of 511's patterns |
+| lines at stations | `listedAtStations: false` on a line leaves it off every station's and platform's line list, though it stays in the line list with its directions. The S: arrivals name it, stations do not list it |
+| line styles | `style` on a line: the app's badge colours, `fill`, `text` and optional `textEdge`, each `{light, dark}`. `color`/`textColor` stay what the map draws; unset, `style`'s light fill and text stand in |
 | new 511 stops | not in the derived data until assigned to a station (or ignored) in the editor's review queue |
 | validation | one Python validator, run by the server for the loader and the editor; no copy in the browser |
 | hubs | `hub: true` on a station marks a major metro interchange (4th & King, Union Square, Balboa Park). Curated, because a rule on line counts also catches every stop where two branches meet |
@@ -47,7 +49,7 @@ it.
 
 ```
 curation/stations.json   { subways: {id: {name, stations[]}}, stations: {id: Station} }
-curation/lines.json      { lineId: LineOverride }     overrides only
+curation/lines.json      { lineId: LineOverride }     overrides, and hand-entered lines (with `directions`)
 curation/ignored.json    { stopId: {note} }           511 stops deliberately left out
 curation/shapes.json     { patchId: {lines[], path[[lon, lat]...], note?} }   corrections to 511's shapes
 snapshot/SF/meta.json    service period, fetch time, sha256 of the GTFS zip
@@ -80,7 +82,9 @@ trips drive; a feed without shapes gives none and the map draws through the stop
 * station: `lat`/`lon` (centroid of its live stops), `lines`, `modes`
 * line: `name` default `"{shortName} {Title Case longName}"`; `mode` (override,
   else snapshot); `directions` (the most-run pattern per direction, mapped to
-  stations; unassigned stops dropped)
+  stations; unassigned stops dropped; or the line's hand-entered `directions`).
+  A line exists if 511 lists it or it has hand-entered `directions`. Stop,
+  platform and station `lines` leave out lines with `listedAtStations: false`
 
 ### Validation (`Issue.code` values are stable identifiers)
 
@@ -99,6 +103,9 @@ Errors, which block a save:
 * `transfer-to-itself`, `duplicate-transfer` (the same pair twice, in either order)
 * `platform-former-id-collides`: a platform's former id is a current stop, or another platform's former id
 * `station-has-no-platforms`
+* `unknown-platform`: a line's hand-entered direction lists an id that is no
+  curated platform's `id` (including one of a platform's extra `stops`)
+* `line-without-mode`: a hand-entered line 511 does not list has no `mode`
 
 Warnings, which never block:
 
@@ -107,7 +114,7 @@ Warnings, which never block:
   two ids for one shelter sit metres apart)
 * `station-has-no-live-platforms` (left out of the station list `Network` builds; still in `derived`)
 * `unassigned-stop` (in the snapshot, in no station, not ignored: this is the review queue)
-* `unknown-line-override` (`lines.json` names a line 511 does not have, e.g. `S`)
+* `unknown-line-override` (`lines.json` names a line 511 does not have and gives it no `directions`)
 * `unknown-line` (`replaces` names a line 511 does not have)
 * `shape-patch-unknown-line` (a shape patch names a line 511 does not have)
 * `shape-patch-unmatched` (511's shape for a patched line no longer passes within 25 m of both ends of the patch; 511's path is drawn instead)
