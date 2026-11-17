@@ -1,6 +1,6 @@
 # Static assets only, no Worker script: everything in public/ (data.json,
 # map.pdf, map-dark.pdf) is served at the root.
-name = "muniplus"
+name = "transit-static"
 compatibility_date = "2026-09-14"
 
 routes = [
