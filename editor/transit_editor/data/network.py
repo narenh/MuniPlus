@@ -305,7 +305,8 @@ class Network:
                 modes=modes,
                 operators=operators_of(station),
                 platforms=[
-                    PlatformSummary(id=p.id, heading=p.heading, lines=union(ss), stops=ss, former_ids=list(p.former_ids))
+                    PlatformSummary(id=p.id, heading=p.heading, lines=union(ss), stops=ss, former_ids=list(p.former_ids),
+                                    terminus=p.terminus)
                     for p, ss in live
                 ],
             )
@@ -352,6 +353,7 @@ class Network:
                     lines=union(ss),
                     stops=ss,
                     former_ids=list(p.former_ids),
+                    terminus=p.terminus,
                     name=p.name,
                     # The primary's name while it is live, else the first live stop's.
                     stop_name=stops[ss[0]].name,

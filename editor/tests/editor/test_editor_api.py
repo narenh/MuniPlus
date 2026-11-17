@@ -132,6 +132,35 @@ def test_rename_is_a_one_line_commit(world):
     assert world.state()["version"] == commit
 
 
+def test_a_terminus_is_saved_on_its_platform_only(world):
+    state = world.state()
+    platforms = state["curation"]["stations"]["stations"]["castroPlaza"]["platforms"]
+    assert all(not p.get("terminus") for p in platforms)
+    curation = copy.deepcopy(state["curation"])
+    target = curation["stations"]["stations"]["castroPlaza"]["platforms"][0]
+    target["terminus"] = True
+    res = world.save(curation, message="Castro Plaza terminus")
+    assert res.status_code == 200, res.text
+    commit = res.json()["commit"]
+    assert diff_lines(world.checkout, commit) == [
+        '-          "heading": "eastbound"',
+        '+          "heading": "eastbound",',
+        '+          "terminus": true',
+    ]
+    # Served back to the editor and /map, and to the app's shapes.
+    after = world.state()["curation"]["stations"]["stations"]["castroPlaza"]["platforms"]
+    assert [bool(p.get("terminus")) for p in after] == [True] + [False] * (len(after) - 1)
+    mapped = world.client.get("/map/api/state").json()["curation"]["stations"]["stations"]["castroPlaza"]["platforms"]
+    assert mapped[0]["terminus"] is True
+    assert world.app.state.network.station("castroPlaza").platforms[0].terminus is True
+
+    # Clearing it removes the key again: the file is back to the seed.
+    curation["stations"]["stations"]["castroPlaza"]["platforms"][0].pop("terminus")
+    res = world.save(curation, message="Not a terminus", base=commit)
+    assert res.status_code == 200, res.text
+    assert git(world.checkout, "diff", world.seed, "HEAD") == ""
+
+
 def test_a_shape_patch_is_saved_to_its_own_file_and_served(world):
     # The editor's test app has no public routes; the network is what /api/shapes serves.
     served = lambda: [list(p) for p in world.app.state.network.shapes()[0].shapes["SF:F1"]]  # noqa: E731

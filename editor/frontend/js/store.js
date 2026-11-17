@@ -667,6 +667,7 @@ export function changes() {
       if (!q) { push('add', T, `Added platform ${code(upstream(pid))} (${esc(p.heading)})`); continue; }
       if (q.heading !== p.heading) push('edit', P, `Heading ${code(q.heading)} → ${code(p.heading)}`);
       if (!same(q.name, p.name)) push('edit', P, `Signage → ${code(p.name || 'none')}`);
+      if (!!q.terminus !== !!p.terminus) push('edit', P, p.terminus ? 'Marked a terminus' : 'No longer a terminus');
       if (!same(q.note, p.note)) push('edit', P, p.note ? `Note → ${code(p.note)}` : 'Note removed');
       const qs = q.stops || [], ps = p.stops || [];
       for (const x of ps) if (!qs.includes(x)) push('add', P, `Stop ${code(upstream(x))} is at this platform`);

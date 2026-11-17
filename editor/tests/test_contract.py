@@ -148,3 +148,39 @@ def test_written_files_are_world_readable(tmp_path):
     root = tmp_path / "transit"
     files.write_curation(root, files.read_curation(FIXTURE))
     assert ((root / files.STATIONS).stat().st_mode & 0o777) == 0o644
+
+
+# MARK: - Terminus
+
+
+def test_terminus_is_written_only_when_true():
+    off = Platform(id="SF:1", heading="northbound")
+    on = Platform(id="SF:1", heading="northbound", name="Platform 1", terminus=True)
+    assert "terminus" not in files.dumps(Station(name="X", platforms=[off]))
+    assert files.dumps(Station(name="X", platforms=[on])).splitlines()[3:9] == [
+        '    {',
+        '      "id": "SF:1",',
+        '      "heading": "northbound",',
+        '      "name": "Platform 1",',
+        '      "terminus": true',
+        '    }',
+    ]
+    # Never words in the signage.
+    assert on.name == "Platform 1"
+
+
+def test_terminus_round_trips_byte_identically(tmp_path):
+    root = tmp_path / "transit"
+    shutil.copytree(FIXTURE, root)
+    curation = files.read_curation(root)
+    curation.stations.stations["powell"].platforms[0].terminus = True
+    assert files.write_curation(root, curation) == [files.STATIONS]
+    text = (root / files.STATIONS).read_text()
+    assert text.count('"terminus"') == 1
+
+    again = files.read_curation(root)
+    assert again.stations.stations["powell"].platforms[0].terminus is True
+    assert files.write_curation(root, again) == []
+    assert (root / files.STATIONS).read_text() == text
+    # Through JSON too, as the editor posts it.
+    assert files.dumps(Curation.model_validate_json(again.model_dump_json()).stations) == files.dumps(again.stations)

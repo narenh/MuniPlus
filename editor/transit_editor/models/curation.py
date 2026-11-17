@@ -48,6 +48,9 @@ class Platform(FileModel):
     heading: Heading
     name: str | None = None
     """Signage, where the platform has any ("Platform 1", "To Castro"). Not the 511 stop name."""
+    terminus: bool = False
+    """Trains in this platform's direction end here: the app labels it "Terminus".
+    A flag rather than words in ``name``, which is only ever signage."""
     note: str | None = None
     """Why this platform is here, when that is not obvious: a verified-on-the-street
     reassignment, a pole with two ids. The record of what was checked and how."""

@@ -34,6 +34,8 @@ class PlatformSummary(Wire):
     """Ids this platform has had and lost (a stop 511 retired or renumbered). A
     stored platform id is found by ``id``, then ``stops``, then ``formerIds``;
     arrivals asked for by a former id are answered under the current ``id``."""
+    terminus: bool
+    """Trains in this platform's direction end here; the app labels it "Terminus"."""
 
 
 class TransferOut(Wire):

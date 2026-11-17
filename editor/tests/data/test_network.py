@@ -240,6 +240,16 @@ def test_station_detail(net):
     assert powell.alerts == []
 
 
+def test_terminus_is_served_on_platforms(net, curation, snapshots):
+    assert not any(p.terminus for p in net.station("powell").platforms)
+    curation.stations.stations["powell"].platforms[0].terminus = True
+    marked = Network(curation, snapshots, "v")
+    assert [p.terminus for p in marked.station("powell").platforms][:2] == [True, False]
+    summary = next(s for s in marked.stations().stations if s.id == "powell")
+    assert summary.platforms[0].terminus is True
+    assert summary.platforms[0].model_dump()["terminus"] is True
+
+
 def test_station_order_is_by_id(net):
     ids = [s.id for s in net.stations().stations]
     assert ids == sorted(ids)

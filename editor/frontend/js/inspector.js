@@ -304,7 +304,7 @@ function platformCards(st) {
       ${pub ? `
       <div class="field">
         <label class="micro">Heading</label>
-        <div class="derived">${esc(p.heading)}${p.name ? ` · signed <b>${esc(p.name)}</b>` : ''}</div>
+        <div class="derived">${esc(p.heading)}${p.name ? ` · signed <b>${esc(p.name)}</b>` : ''}${p.terminus ? ' · <b>terminus</b>' : ''}</div>
       </div>` : `
       <div class="field">
         <label class="micro">Heading</label>
@@ -315,6 +315,10 @@ function platformCards(st) {
       <div class="field">
         <label class="micro">Signage ${sub('e.g. Platform 1; not the 511 name')}</label>
         <input class="inp" data-pf="name" data-pid="${esc(pid)}" data-key="n-${esc(pid)}" value="${esc(p.name ?? '')}" placeholder="none">
+      </div>
+      <div class="field">
+        <label class="check"><input type="checkbox" data-pt="terminus" data-pid="${esc(pid)}" data-key="t-${esc(pid)}" ${p.terminus ? 'checked' : ''}>
+          Terminus ${sub('trains in this direction end here')}</label>
       </div>
       <div class="field">
         <label class="micro">Note</label>
@@ -571,6 +575,18 @@ function wireStation(st, sid) {
       commit(`${label} of ${upstream(pid)}`, s => {
         const p = plat(s, pid);
         if (v) p[f] = v; else delete p[f];
+      });
+    };
+  });
+
+  body.querySelectorAll('[data-pt="terminus"]').forEach(el => {
+    el.onchange = () => {
+      const pid = el.dataset.pid;
+      if (el.checked === !!plat(st, pid)?.terminus) return;
+      // Unset rather than false, so the file only says what someone decided.
+      commit(`${el.checked ? 'Terminus' : 'Not a terminus'}: ${upstream(pid)}`, s => {
+        const p = plat(s, pid);
+        if (el.checked) p.terminus = true; else delete p.terminus;
       });
     };
   });
