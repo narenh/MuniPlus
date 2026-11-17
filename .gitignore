@@ -4,13 +4,13 @@ __pycache__/
 .wrangler/
 node_modules/
 
-# api/
-api/.env
-api/.venv/
-api/.local/
-api/*.egg-info/
-api/.pytest_cache/
+# editor/
+editor/.env
+editor/.venv/
+editor/.local/
+editor/*.egg-info/
+editor/.pytest_cache/
 
-# swift/
-swift/**/.build/
-swift/**/.swiftpm/
+# The retired v1 API (removed from master; its history is in git). A checkout
+# from before the move may still hold its .env, venv and downloads here.
+api/

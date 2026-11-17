@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canopy Transit Editor</title>
+<script>
+  // The same page is the public map at /map/. Named before the first paint, so
+  // the tab never reads "Editor" there; main.js confirms it from the state.
+  if (location.pathname.startsWith('/map')) {
+    document.title = 'Canopy Transit Map';
+    document.documentElement.classList.add('public-map');
+  }
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2306070a'/%3E%3Cpath d='M8 22c0-8 4-12 8-12s8 4 8 12' stroke='%2300529C' stroke-width='3.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='22' r='3' fill='%23FAA633'/%3E%3Ccircle cx='24' cy='22' r='3' fill='%23D60F45'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="no-inspector">
+
+<div id="boot">
+  <div class="boot-in">
+    <svg class="worm" width="56" height="38" viewBox="0 0 56 38" fill="none">
+      <path d="M6 30C6 14 14 7 24 7s16 8 16 23" stroke="#00529C" stroke-width="5" stroke-linecap="round"/>
+      <path d="M16 31c0-12 6-18 14-18s14 7 14 18" stroke="#FAA633" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+      <circle cx="6" cy="30" r="4.5" fill="#D60F45"/>
+      <circle cx="44" cy="31" r="4.5" fill="#008552"/>
+    </svg>
+    <div class="boot-bar"><i></i></div>
+    <p id="boot-msg">Loading the network…</p>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ===================== TOP BAR ===================== -->
+  <header id="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="img/logo.png" alt="Canopy Transit">
+    </div>
+
+    <div class="divider editorial"></div>
+
+    <button class="chip button editorial" id="branch-chip" title="Commit history">
+      <span class="dot live"></span><span id="branch-name">…</span>
+    </button>
+
+    <div class="divider editorial"></div>
+
+    <div class="stat-group editorial">
+      <div class="stat"><b id="n-stations">–</b><i>stations</i></div>
+      <div class="stat"><b id="n-platforms">–</b><i>platforms</i></div>
+      <div class="stat"><b id="n-lines">–</b><i>lines</i></div>
+      <div class="stat verified" id="stat-verified"><b id="n-verified">–</b><i>verified</i></div>
+    </div>
+
+    <div class="grow"></div>
+
+    <button class="chip button editorial edit-only" id="review-chip" title="Review queue (Q)">
+      <span class="dot" id="review-dot"></span><span>Review</span><b id="review-count">…</b>
+    </button>
+
+    <button class="chip button editorial" id="issues-chip" title="Validation issues" hidden>
+      <span class="dot live" id="issues-dot"></span><span id="issues-text">Valid</span>
+    </button>
+
+    <div class="divider editorial"></div>
+
+    <button class="btn ghost edit-only" id="btn-undo" title="Undo (⌘Z)" disabled>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 4L3 7l3 3M3 7h7a3 3 0 010 6H8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="btn ghost edit-only" id="btn-redo" title="Redo (⇧⌘Z)" disabled>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 4l3 3-3 3M13 7H6a3 3 0 000 6h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="btn ghost" id="btn-search" title="Find anything (⌘K)">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.3" stroke="currentColor" stroke-width="1.6"/><path d="M10.2 10.2L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span class="kbd">⌘K</span>
+    </button>
+    <button class="btn primary edit-only" id="btn-save" disabled>
+      Save<span class="count" id="save-count">0</span>
+    </button>
+  </header>
+
+  <!-- ===================== BODY ===================== -->
+  <div id="body">
+
+    <!-- line rail -->
+    <nav id="rail">
+      <div class="micro rail-label">LINES</div>
+      <button class="bullet all on" id="bullet-all" data-line="" title="Show every line (A)">ALL</button>
+      <div id="rail-lines"></div>
+    </nav>
+
+    <!-- line strip: read-only, both directions of the focused line -->
+    <aside id="strip" class="closed">
+      <div class="strip-head">
+        <div class="strip-title">
+          <div class="badge" id="strip-badge">J</div>
+          <div style="min-width:0">
+            <h2 id="strip-name">J Church</h2>
+            <div class="sub" id="strip-sub">25 stations</div>
+          </div>
+        </div>
+        <div class="strip-tools">
+          <button class="btn" id="strip-fit" title="Zoom the map to this line">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 2H2v4M10 2h4v4M10 14h4v-4M6 14H2v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Fit
+          </button>
+          <button class="btn editorial" id="strip-details" title="Name, colour, mode, visibility and replacements">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M3 8h10M3 11.5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Line details
+          </button>
+        </div>
+      </div>
+      <div class="strip-scroll" id="strip-list"></div>
+    </aside>
+
+    <!-- review: the queue of 511 disagreements, and the snapshot refresh (review.js) -->
+    <aside id="review" class="closed editorial edit-only">
+      <div class="rv-head">
+        <div class="row1">
+          <h2>Review</h2>
+          <div class="grow"></div>
+          <button class="icon-btn" id="review-reload" title="Ask the server again">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 11-1.5-3.6M13 2.5v3h-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="icon-btn" id="review-close" title="Close (Q)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="rv-tabs">
+          <button class="rv-tab on" data-tab="queue">Queue <em id="rv-tab-count"></em></button>
+          <button class="rv-tab" data-tab="snapshot">511 snapshot</button>
+        </div>
+      </div>
+      <div class="rv-scroll" id="review-body"></div>
+    </aside>
+
+    <!-- map -->
+    <div style="position:relative;flex:1 1 auto;min-width:0">
+      <div id="map"></div>
+
+      <div id="filters"></div>
+      <!-- filled from LAYER_TOOLS in main.js -->
+      <div id="map-tools"></div>
+
+      <div class="map-hud" id="hud-coords"><span id="hud-coords-text">—</span></div>
+      <div class="map-hud" id="hud-hint"></div>
+    </div>
+
+    <!-- inspector -->
+    <aside id="inspector" class="closed">
+      <div class="insp-head">
+        <div class="row1">
+          <div style="flex:1;min-width:0">
+            <h2 id="insp-name">—</h2>
+            <div class="insp-id mono" id="insp-id">—</div>
+          </div>
+          <button class="icon-btn" id="insp-close" title="Close (Esc)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="insp-lines" id="insp-lines"></div>
+      </div>
+      <div class="insp-scroll" id="insp-body"></div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ===================== OVERLAYS ===================== -->
+<div id="scrim"></div>
+
+<div id="rail-tip"></div>
+
+<div class="modal glass" id="palette">
+  <input id="pal-input" placeholder="Jump to a station, line, or stop id…" autocomplete="off" spellcheck="false">
+  <div class="pal-list" id="pal-list"></div>
+  <div class="pal-foot">
+    <span><span class="kbd">↑↓</span> navigate</span>
+    <span><span class="kbd">↵</span> open</span>
+    <span><span class="kbd">esc</span> close</span>
+    <span class="grow"></span>
+    <span id="pal-count"></span>
+  </div>
+</div>
+
+<div class="modal glass" id="sheet">
+  <div class="sheet-head">
+    <h3 id="sheet-title">Review changes</h3>
+    <p id="sheet-sub">These edits will be committed to the data branch.</p>
+  </div>
+  <div class="sheet-body" id="sheet-body"></div>
+  <div class="sheet-foot">
+    <button class="btn" id="sheet-cancel">Cancel</button>
+    <div class="grow"></div>
+    <button class="btn primary" id="sheet-commit">Save and commit</button>
+  </div>
+</div>
+
+<div class="modal glass" id="history" style="top:10vh;width:min(680px,94vw);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;max-height:80vh">
+  <div class="sheet-head"><h3>History</h3><p id="hist-sub">Recent data branch commits touching curation/</p></div>
+  <div class="sheet-body" id="hist-body"></div>
+  <div class="sheet-foot"><button class="btn" id="hist-close">Close</button></div>
+</div>
+
+<div class="modal glass" id="issues" style="top:8vh;width:min(760px,94vw);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;max-height:84vh">
+  <div class="sheet-head"><h3>Issues</h3><p id="issues-sub"></p></div>
+  <div class="sheet-body" id="issues-body"></div>
+  <div class="sheet-foot"><span class="micro">Click an issue to go to it</span><div class="grow"></div><button class="btn" id="issues-close">Close</button></div>
+</div>
+
+<div id="toasts"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
