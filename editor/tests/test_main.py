@@ -51,7 +51,10 @@ def test_starts_clones_and_loads(tmp_path, remote):
         assert state.headers.get("content-encoding") == "gzip"
         assert state.json()["version"] == health["version"]
         assert client.get("/map/").status_code == 200
-        assert client.get("/", follow_redirects=False).headers["location"] == "/editor/"
+        assert client.get("/login").status_code == 200
+        assert client.get("/", follow_redirects=False).status_code == 200  # no password: read-only
+        assert client.get("/css/app.css").status_code == 200
+        assert client.get("/editor/", follow_redirects=False).headers["location"] == "/"
     assert (tmp_path / "data" / "data" / ".git").is_dir()
 
 

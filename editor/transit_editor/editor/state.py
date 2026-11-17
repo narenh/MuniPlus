@@ -19,7 +19,7 @@ from .checkout import Checkout, Loaded
 from .errors import ProblemError
 
 EDITOR_DIR = Path(__file__).resolve().parents[2] / "frontend"
-"""``editor/frontend/``: the frontend, served at both ``/editor/`` and ``/map/``."""
+"""``editor/frontend/``: the frontend, served at both ``/`` and ``/map/``."""
 
 PUBLIC_MAP = "public map"
 

@@ -139,11 +139,11 @@ def keyed(make):
 
 
 def fetch(world, **body):
-    return world.client.post("/editor/api/snapshot/fetch", json=body)
+    return world.client.post("/api/snapshot/fetch", json=body)
 
 
 def commit(world, pending: str, base: str):
-    return world.client.post("/editor/api/snapshot/commit", json={"pending": pending, "baseVersion": base})
+    return world.client.post("/api/snapshot/commit", json={"pending": pending, "baseVersion": base})
 
 
 def drifted() -> dict:
@@ -305,7 +305,7 @@ def test_needs_a_session_and_json(make):
     wire(world, upstream)
     assert fetch(world).status_code == 401
     world.login()
-    res = world.client.post("/editor/api/snapshot/fetch", content=b"", headers={"Content-Type": "text/plain"})
+    res = world.client.post("/api/snapshot/fetch", content=b"", headers={"Content-Type": "text/plain"})
     assert res.status_code == 415
     assert upstream.requests == []
 
@@ -313,7 +313,7 @@ def test_needs_a_session_and_json(make):
 def test_an_empty_body_and_an_unknown_operator(keyed):
     upstream = Upstream(fixture_feed())
     wire(keyed, upstream)
-    res = keyed.client.post("/editor/api/snapshot/fetch", headers={"Content-Type": "application/json"})
+    res = keyed.client.post("/api/snapshot/fetch", headers={"Content-Type": "application/json"})
     assert res.status_code == 200, res.text
     assert fetch(keyed, operator="BA").status_code == 400
     assert len(upstream.requests) == 2
@@ -383,7 +383,7 @@ def test_commit_writes_only_the_snapshot_and_swaps_the_network(keyed):
     assert network.station("clayDrumm") is None
     assert old_network.station("clayDrumm") is not None
     assert network.line("SF:714") is not None
-    assert keyed.client.get("/editor/api/review").json()["version"] == sha
+    assert keyed.client.get("/api/review").json()["version"] == sha
 
     # The pending snapshot is gone.
     assert not (keyed.settings.data_dir / PENDING_DIR).exists()
@@ -499,4 +499,4 @@ def test_commit_refuses_when_read_only(make):
 
 def test_the_schema_lists_the_new_endpoints(keyed):
     paths = keyed.app.openapi()["paths"]
-    assert {"/editor/api/review", "/editor/api/snapshot/fetch", "/editor/api/snapshot/commit"} <= set(paths)
+    assert {"/api/review", "/api/snapshot/fetch", "/api/snapshot/commit"} <= set(paths)

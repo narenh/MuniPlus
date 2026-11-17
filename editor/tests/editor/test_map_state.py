@@ -51,7 +51,7 @@ def test_map_page_is_public(world):
 
 
 def test_map_state_is_never_editable(make):
-    # Even with no password, where /editor itself is open, /map says "public map".
+    # Even with no password, where the editor at / is open, /map says "public map".
     world = make(editor_password="")
     assert world.client.get("/map/api/state").json()["readOnlyReason"] == "public map"
 

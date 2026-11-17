@@ -1,7 +1,7 @@
-"""``/editor/api/*``: state, validate, save, history. All need the session.
+"""``/api/*``: state, validate, save, history. All need the session.
 
 The one exception: with no editor password configured, nobody can have a
-session, yet ``/editor`` still serves the editor read-only (PLAN.md), and that
+session, yet ``/`` still serves the editor read-only (PLAN.md), and that
 page loads ``api/state``. So then the read-only ``GET`` endpoints are open, as
 ``/map/api/state`` always is; everything they return is in the public data repo
 already. ``POST``s stay closed.
@@ -33,12 +33,12 @@ class SessionRoute(ProblemRoute):
         editor = editor_of(request)
         open_read = request.method == "GET" and not editor.settings.editor_password
         if not open_read and not editor.sessions.of(request):
-            raise ProblemError(401, "unauthorized", "Log in at /editor/login.")
+            raise ProblemError(401, "unauthorized", "Log in at /login.")
         # After the session check, so a caller without one learns nothing else.
         require_json(request)
 
 
-router = APIRouter(prefix="/editor/api", route_class=SessionRoute, tags=["editor"])
+router = APIRouter(prefix="/api", route_class=SessionRoute, tags=["editor"])
 
 UNAUTHORIZED = {401: {"model": Problem}}
 

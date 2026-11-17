@@ -1,5 +1,5 @@
 // The editor's server calls. Paths are relative, so the same frontend works at
-// /editor/ (behind the login) and at /map/ (public, read-only).
+// / (the editor, behind the login) and at /map/ (public, read-only).
 
 const j = async (res) => {
   const body = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));

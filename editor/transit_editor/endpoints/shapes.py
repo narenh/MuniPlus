@@ -1,4 +1,4 @@
-"""``GET /editor/api/shapes`` and ``GET /map/api/shapes``: every line direction's
+"""``GET /api/shapes`` and ``GET /map/api/shapes``: every line direction's
 path, for the map. Public under both prefixes, like ``/map/api/state``: the
 frontend fetches the relative ``api/shapes``, and the data is public anyway.
 """
@@ -21,5 +21,5 @@ def list_shapes(request: Request, response: Response):
     return shapes
 
 
-for prefix in ("/editor/api", "/map/api"):
+for prefix in ("/api", "/map/api"):
     router.add_api_route(f"{prefix}/shapes", list_shapes, methods=["GET"], response_model=ShapesResponse)

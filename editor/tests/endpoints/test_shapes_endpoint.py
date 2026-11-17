@@ -1,4 +1,4 @@
-"""``/editor/api/shapes`` and ``/map/api/shapes`` against tests/fixtures/transit."""
+"""``/api/shapes`` and ``/map/api/shapes`` against tests/fixtures/transit."""
 
 import pytest
 
@@ -6,7 +6,7 @@ from transit_editor.endpoints.http import etag_of
 from transit_editor.models.api import ShapesResponse
 
 VERSION = "0123456789abcdef0123456789abcdef01234567"
-PATHS = ("/editor/api/shapes", "/map/api/shapes")
+PATHS = ("/api/shapes", "/map/api/shapes")
 
 
 @pytest.mark.parametrize("path", PATHS)

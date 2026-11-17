@@ -11,7 +11,8 @@ from .state import EDITOR_DIR, Editor
 
 
 def install_editor(app: FastAPI, settings: Settings, *, editor_dir: Path = EDITOR_DIR) -> Editor:
-    """Add ``/editor`` (login, pages, ``/editor/api/*``) and ``/map`` (page and
+    """Add the editor at the root (``/``, ``/login``, ``/logout``, ``/api/*``,
+    and ``/editor/*`` redirecting there) and ``/map`` (page and
     ``/map/api/state``) to ``app``, and keep their state on ``app.state.editor``.
 
     Expects ``app.state.network`` to hold the network loaded from the checkout at

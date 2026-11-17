@@ -70,17 +70,17 @@ class World:
     password: str = PASSWORD
 
     def login(self) -> None:
-        res = self.client.post("/editor/login", json={"password": PASSWORD})
+        res = self.client.post("/login", json={"password": PASSWORD})
         assert res.status_code == 204, res.text
 
     def state(self) -> dict:
-        res = self.client.get("/editor/api/state")
+        res = self.client.get("/api/state")
         assert res.status_code == 200, res.text
         return res.json()
 
     def save(self, curation: dict, message: str = "Edit", base: str | None = None):
         return self.client.post(
-            "/editor/api/save",
+            "/api/save",
             json={"curation": curation, "message": message, "baseVersion": base or self.seed},
         )
 

@@ -426,7 +426,7 @@ def commit_snapshot(checkout: Checkout, snapshot: Snapshot) -> str | None:
 
 # MARK: - Routes
 
-router = APIRouter(prefix="/editor/api", route_class=SessionRoute, tags=["editor"])
+router = APIRouter(prefix="/api", route_class=SessionRoute, tags=["editor"])
 
 
 @router.post(

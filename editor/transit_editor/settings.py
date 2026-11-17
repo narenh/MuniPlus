@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     git_author_email: str = ""
 
     editor_password: str = ""
-    """Empty disables login entirely: /editor then serves read-only."""
+    """Empty disables login entirely: / then serves the editor read-only."""
     session_secret: str = ""
 
     @cached_property

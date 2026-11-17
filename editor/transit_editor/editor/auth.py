@@ -1,11 +1,12 @@
-"""Login for ``/editor``: one password, a signed session cookie, and a throttle.
+"""Login for the editor (``/login``, ``/logout``): one password, a signed
+session cookie, and a throttle.
 
 There is one editor and one password (``EDITOR_PASSWORD``), so a session is
 nothing but proof that someone knew it: a cookie signed with ``SESSION_SECRET``
 by ``itsdangerous``, checked by the routes themselves, so ``transit_editor.main`` needs no
-session middleware. With no password, nobody can log in and ``/editor`` is
-read-only. With no secret, sessions are refused outright: a default secret would
-be one anybody can read in this public repo and sign their own cookie with.
+session middleware. With no password, nobody can log in and the editor at
+``/`` is read-only. With no secret, sessions are refused outright: a default
+secret would be one anybody can read in this public repo and sign their own cookie with.
 """
 
 import hashlib
@@ -23,7 +24,7 @@ from ..settings import Settings
 from .errors import ProblemError, ProblemRoute
 
 COOKIE = "transit_editor"
-COOKIE_PATH = "/editor"
+COOKIE_PATH = "/"
 SESSION_SECONDS = 14 * 24 * 3600
 """Two weeks: one owner on their own machines, so a login a week or so apart is
 enough friction, and a leaked cookie still dies on its own."""
@@ -144,7 +145,7 @@ def client_ip(request: Request) -> str:
 
 # MARK: - Routes
 
-router = APIRouter(prefix="/editor", route_class=ProblemRoute, include_in_schema=False)
+router = APIRouter(route_class=ProblemRoute, include_in_schema=False)
 
 
 def _editor(request: Request):
@@ -159,7 +160,7 @@ def login_page(editor_dir: Path) -> Path:
 def login_form(request: Request):
     editor = _editor(request)
     if editor.sessions.of(request):
-        return RedirectResponse("/editor/", status_code=303)
+        return RedirectResponse("/", status_code=303)
     return FileResponse(login_page(editor.editor_dir), headers={"Cache-Control": "no-cache"})
 
 

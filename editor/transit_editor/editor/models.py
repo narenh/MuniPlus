@@ -104,7 +104,7 @@ class DeadStation(Wire):
 
 
 class ReviewResponse(Wire):
-    """``GET /editor/api/review``: where 511 and the curation disagree."""
+    """``GET /api/review``: where 511 and the curation disagree."""
 
     version: str
     """The data checkout HEAD this was computed from. Proposals are only good against the
@@ -231,7 +231,7 @@ class SnapshotFetchRequest(Wire):
 
 
 class SnapshotFetchResponse(Wire):
-    """``POST /editor/api/snapshot/fetch``. Nothing is committed."""
+    """``POST /api/snapshot/fetch``. Nothing is committed."""
 
     pending: str
     """Names the pending snapshot for ``snapshot/commit``. A newer fetch replaces it."""

@@ -15,7 +15,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse
 
 from .data.loader import load_checkout
 from .data.repo import Repo, RepoError
@@ -91,11 +91,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health.router)
     app.include_router(shapes.router)
     install_editor(app, settings)
-
-    @app.get("/", include_in_schema=False)
-    def root():
-        return RedirectResponse("/editor/", status_code=307)
-
     return app
 
 

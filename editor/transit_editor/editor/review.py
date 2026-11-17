@@ -1,4 +1,4 @@
-"""``GET /editor/api/review``: the review queue.
+"""``GET /api/review``: the review queue.
 
 Three lists, each the list form of one validator warning, so the queue and the
 editor's warnings can never disagree about what needs looking at:
@@ -27,7 +27,7 @@ from .errors import json_response
 from .models import DeadStop, DeadStation, ReviewResponse, UnassignedStop
 from .state import current_network, editor_of, loaded
 
-router = APIRouter(prefix="/editor/api", route_class=SessionRoute, tags=["editor"])
+router = APIRouter(prefix="/api", route_class=SessionRoute, tags=["editor"])
 
 
 @router.get("/review", response_model=ReviewResponse, responses=UNAUTHORIZED)

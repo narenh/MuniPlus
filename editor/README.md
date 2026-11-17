@@ -4,9 +4,16 @@ The editor for the station and line data on branch `static-data`, and a public,
 read-only map of the same data. A FastAPI server (`transit_editor/`) and a
 vanilla-JS frontend with no build step (`frontend/`).
 
-- `/editor/` — the editor, behind a password login (`/editor/login`)
-- `/map/` — the same page, read-only, no login
+Served at https://transit-editor.canopysf.com:
+
+- `/` — the editor, behind a password login (`/login`, `/logout`); its API is
+  `/api/*`, its session cookie has path `/`
+- `/map/` — the same page, read-only, no login; its API is `/map/api/*`
 - `/health` — whether the data checkout is loaded
+- `/editor`, `/editor/*` — the editor's old home; 308 to the same path at `/`
+
+The editor's assets (`/css`, `/js`, `/img`, `/v/<version>/`) share the root with
+these routes; the server refuses to start if a frontend folder would shadow one.
 
 The design, data format and rules are in [PLAN.md](PLAN.md).
 
@@ -38,7 +45,7 @@ The editor never calls 511 directly and serves nothing to the Muni+ app.
 | `transit_editor/data/` | The checkout (read side), the derived network, validation, shapes |
 | `transit_editor/models/` | The data files' models and the wire shapes |
 | `transit_editor/ingest/` | GTFS zip → snapshot, and the station proposer |
-| `frontend/` | The page served at `/editor/` and `/map/` |
+| `frontend/` | The page served at `/` and `/map/` |
 | `tests/` | pytest; no network (the relay is an `httpx.MockTransport`, git remotes are local bare repos) |
 
 ## Settings
@@ -52,7 +59,7 @@ See [.env.example](.env.example). All optional; an empty value means the default
 | `DATA_BRANCH` | `static-data` | |
 | `DATA_DEPLOY_KEY` | | Private key with write access. Without it an SSH `DATA_REPO` is read-only |
 | `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL` | | Without both the editor is read-only |
-| `EDITOR_PASSWORD` | | Without it `/editor/` is served read-only to anyone and nothing can be saved |
+| `EDITOR_PASSWORD` | | Without it `/` is served read-only to anyone and nothing can be saved |
 | `SESSION_SECRET` | | Signs the session cookie |
 | `RELAY_URL` | `https://transit-relay.canopysf.com` | |
 | `OPERATORS` | `["SF"]` | JSON list |

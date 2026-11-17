@@ -15,7 +15,7 @@ def world(world):
 
 
 def review(world) -> dict:
-    res = world.client.get("/editor/api/review")
+    res = world.client.get("/api/review")
     assert res.status_code == 200, res.text
     return res.json()
 
@@ -59,7 +59,7 @@ def state_stations(world) -> dict:
 
 def test_needs_a_session(make):
     world = make()
-    res = world.client.get("/editor/api/review")
+    res = world.client.get("/api/review")
     assert res.status_code == 401
     assert res.json()["error"] == "unauthorized"
 

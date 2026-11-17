@@ -1,4 +1,4 @@
-"""Shapes for the editor (``/editor/api/*``, behind login) and the public map
+"""Shapes for the editor (``/api/*``, behind login) and the public map
 (``/map/api/state``).
 
 The two pages are one frontend. ``/map`` loads the same ``EditorState`` with
@@ -84,7 +84,7 @@ class RepoStatus(Wire):
 class EditorState(Wire):
     mode: Literal["editor", "map"]
     """Which page this state is for, set by the endpoint that serves it:
-    ``/editor/api/state`` or ``/map/api/state``. The frontend keys its chrome off
+    ``/api/state`` or ``/map/api/state``. The frontend keys its chrome off
     this, never off ``readOnlyReason``, which is a sentence for people to read."""
     version: str
     """The data checkout HEAD commit the state was read from."""

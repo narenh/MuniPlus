@@ -138,11 +138,13 @@ stricter: assigned *and* in the snapshot. `Derived.lines` carries full
 
 ## Editor and /map
 
-State and requests: `transit_editor/models/editor.py`. `/editor/api/*` and all of `/editor`
-require the session cookie; `/map` and `/map/api/state` are public. The frontend
+State and requests: `transit_editor/models/editor.py`. The editor lives at the
+site root: `/` and `/api/*` require the session cookie (path `/`; `/login`,
+`/logout`), `/map` and `/map/api/state` are public, and the old `/editor/*`
+paths 308 to the root. The frontend
 is vanilla ES modules with no build step, taken from branch
 `claude/beautiful-cerf-23u8yd` (`editor/public/`), and lives in `editor/frontend/`.
-Its fetch paths are relative (`api/state`), so it works under either prefix.
+Its fetch paths are relative (`api/state`), so it works at `/` and under `/map/`.
 
 **Remove:** levels, exits, `isIsland` and all their UI; pole dragging; editing
 `stopName`; editing a platform's lines; editing `terminates`; the client-side
@@ -160,7 +162,7 @@ line editing (name, colour, mode, hidden, replaces); notes; review queue;
 `/map` read-only mode. (The live vehicle layer went with the v1 API's realtime
 feeds, November 2026.)
 
-Editor endpoints, all under `/editor/api/` and all requiring the session:
+Editor endpoints, all under `/api/` and all requiring the session:
 
 | endpoint | |
 |---|---|
@@ -181,7 +183,7 @@ entry, the one our own proxy adds; the first is client-controlled. With no
 `EDITOR_PASSWORD`, `GET state` and `GET history` are open (the data is public)
 and every POST is refused.
 
-Public, under both `/editor/api/` and `/map/api/`: `GET shapes` (`ShapesResponse`,
+Public, under both `/api/` and `/map/api/`: `GET shapes` (`ShapesResponse`,
 every line direction's path; ETag is the shapes' own hash). `/map/api/state` is
 `EditorState` with `readOnly` set and no validation or repo status. `GET /health`
 says whether the data is loaded.

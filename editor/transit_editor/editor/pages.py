@@ -1,9 +1,15 @@
-"""The frontend's files, at ``/editor/`` (behind login) and ``/map/`` (public).
+"""The frontend's files, at ``/`` (behind login) and ``/map/`` (public).
 
 One frontend, ``editor/frontend/``, served twice. Its fetch paths are relative
-(``api/state``), so the page at ``/editor/`` talks to ``/editor/api/`` and the one
-at ``/map/`` to ``/map/api/``; each decides what to show from ``readOnly`` in the
-state it loads.
+(``api/state``), so the page at ``/`` talks to ``/api/`` and the one at ``/map/``
+to ``/map/api/``; each decides what to show from ``readOnly`` in the state it
+loads. The editor's assets sit at the root too (``/css``, ``/js``, ``/img``,
+``/v/<version>/``), beside ``/api``, ``/map``, ``/login`` and ``/health``; a
+frontend folder named like one of those would shadow it, so ``mount_assets``
+refuses one.
+
+The editor used to live under ``/editor/``. Those URLs redirect (308) to the
+same path at the root, so old bookmarks keep working.
 
 Only ``index.html`` is gated. The scripts and styles are served to anyone: they
 are the same files as in the public repo, and the login page must not need them.
@@ -46,6 +52,12 @@ VERSIONED = "v"
 ASSET_REFS = ('href="css/', 'src="js/', 'src="img/')
 
 router = APIRouter(include_in_schema=False)
+
+PREFIXES = ("", "/map")
+"""Where the page and its assets are served: the editor at the root, the map
+under ``/map``."""
+RESERVED = {"api", "map", "login", "logout", "health", "editor", VERSIONED}
+"""Root paths that are routes, not frontend folders."""
 
 
 class _Assets(StaticFiles):
@@ -93,21 +105,23 @@ def _index(request: Request) -> Response:
     return HTMLResponse(html, headers=headers)
 
 
-@router.get("/editor")
-def editor_bare():
-    # The trailing slash matters: without it, the page's relative ``api/state``
-    # would resolve to ``/api/state``.
-    return RedirectResponse("/editor/", status_code=308)
-
-
-@router.get("/editor/")
+@router.get("/")
 def editor_page(request: Request):
     editor = editor_of(request)
     # No password: nobody can log in, so the page is served read-only to anyone
     # rather than hidden behind a login that cannot succeed.
     if editor.settings.editor_password and not editor.sessions.of(request):
-        return RedirectResponse("/editor/login", status_code=303)
+        return RedirectResponse("/login", status_code=303)
     return _index(request)
+
+
+@router.api_route("/editor", methods=["GET", "HEAD", "POST"])
+@router.api_route("/editor/{path:path}", methods=["GET", "HEAD", "POST"])
+def old_editor(request: Request, path: str = ""):
+    """The editor's old home. 308 keeps the method and body, so even an old
+    tab's ``POST /editor/api/save`` lands on ``/api/save``."""
+    query = request.url.query
+    return RedirectResponse(f"/{path}" + (f"?{query}" if query else ""), status_code=308)
 
 
 @router.get("/map")
@@ -122,20 +136,23 @@ def map_page(request: Request):
 
 def mount_assets(app: FastAPI, editor_dir: Path) -> None:
     """Every folder of the frontend (``js/``, ``css/``, and any the frontend adds),
-    under both prefixes. Folders are read once, at startup."""
+    at the root and under ``/map``. Folders are read once, at startup."""
     if not editor_dir.is_dir():
         return
     version = asset_version(editor_dir)
-    for folder in sorted(p for p in editor_dir.iterdir() if p.is_dir()):
+    folders = sorted(p for p in editor_dir.iterdir() if p.is_dir())
+    if taken := {p.name for p in folders} & RESERVED:
+        raise RuntimeError(f"frontend folders {sorted(taken)} would shadow routes at the root")
+    for folder in folders:
         # Unversioned too, revalidated on every load, for anything that still asks
         # for a file by its plain path.
         current = _Assets(directory=folder, headers=FOREVER)
         plain = _Assets(directory=folder, headers=NO_CACHE)
-        for prefix in ("/editor", "/map"):
-            name = f"{prefix.strip('/')}-{folder.name}"
+        for prefix in PREFIXES:
+            name = f"{prefix.strip('/') or 'root'}-{folder.name}"
             app.mount(f"{prefix}/{VERSIONED}/{version}/{folder.name}", current, name=f"{name}-versioned")
             app.mount(f"{prefix}/{folder.name}", plain, name=name)
-    for prefix in ("/editor", "/map"):
+    for prefix in PREFIXES:
         # After the mounts above, so only a version this server does not have
         # gets here.
         app.add_api_route(f"{prefix}/{VERSIONED}/{{version}}/{{path:path}}", _other_version, include_in_schema=False)

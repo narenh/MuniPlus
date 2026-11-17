@@ -76,7 +76,7 @@ def test_validate_an_unsaved_curation_with_an_error(world):
     stations = curation["stations"]["stations"]
     stolen = stations["castroPlaza"]["platforms"][0]
     stations["clayDrumm"]["platforms"].append(stolen)
-    res = world.client.post("/editor/api/validate", json={"curation": curation})
+    res = world.client.post("/api/validate", json={"curation": curation})
     assert res.status_code == 200, res.text
     body = res.json()
     assert [i["code"] for i in body["validation"]["errors"]] == ["stop-in-two-stations"]
@@ -93,7 +93,7 @@ def test_validate_an_unsaved_curation_with_an_error(world):
 def test_validate_rejects_a_malformed_curation(world):
     curation = copy.deepcopy(world.state()["curation"])
     curation["stations"]["stations"]["castroPlaza"]["platforms"][0]["heading"] = "upwards"
-    res = world.client.post("/editor/api/validate", json={"curation": curation})
+    res = world.client.post("/api/validate", json={"curation": curation})
     assert res.status_code == 400
     assert res.json()["error"] == "bad-request"
     assert "heading" in res.json()["message"]
@@ -332,7 +332,7 @@ def test_history(world):
     )
     commit = world.save(rename(curation, "castroPlaza", "Castro Square"), "Rename").json()["commit"]
     assert git(world.checkout, "rev-parse", f"{commit}^") == snapshot_only
-    res = world.client.get("/editor/api/history")
+    res = world.client.get("/api/history")
     assert res.status_code == 200
     commits = res.json()["commits"]
     # Newest first, curation only: the snapshot commit is not there.
@@ -345,7 +345,7 @@ def test_history(world):
     world.app.state.editor.settings = world.settings.model_copy(
         update={"data_repo": "git@github.com:narenh/sf-transit.git"}
     )
-    url = world.client.get("/editor/api/history").json()["commits"][0]["url"]
+    url = world.client.get("/api/history").json()["commits"][0]["url"]
     assert url == f"https://github.com/narenh/sf-transit/commit/{commit}"
 
 
@@ -372,7 +372,7 @@ def test_a_checkout_that_does_not_load_is_a_503(world):
     # A hand edit pushed straight to sf-transit with a duplicate key.
     commit_file(world.other, "curation/ignored.json", '{"SF:1": {}, "SF:1": {}}\n', "Broken")
     git(world.checkout, "pull", "-q", "--ff-only")
-    for res in (world.client.get("/editor/api/state"), world.client.get("/map/api/state")):
+    for res in (world.client.get("/api/state"), world.client.get("/map/api/state")):
         assert res.status_code == 503
         assert res.json()["error"] == "unavailable"
         assert "duplicate key" in res.json()["message"]
@@ -380,4 +380,4 @@ def test_a_checkout_that_does_not_load_is_a_503(world):
 
 def test_the_schema_still_builds(world):
     paths = world.app.openapi()["paths"]
-    assert {"/editor/api/state", "/editor/api/save", "/editor/api/history", "/map/api/state"} <= set(paths)
+    assert {"/api/state", "/api/save", "/api/history", "/map/api/state"} <= set(paths)
