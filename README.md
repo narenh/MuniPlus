@@ -16,7 +16,7 @@ meantime.
 |---|---|
 | `master` | Code: the API and editor, tools, and the app's hand-curated `appdata/data.json` |
 | `static-data` | The editor's own data: curated stations, lines and shapes in `curation/`, plus a 511 GTFS snapshot in `snapshot/`. Formerly the `narenh/sf-transit` repo, history included |
-| `static` | **Transit Static**: what muni.canopysf.com serves (`public/data.json`, `public/map.pdf`, `public/map-dark.pdf`). Deployed with `wrangler deploy` from this branch |
+| `static` | **Transit Static**: what transit-static.canopysf.com serves (`public/data.json`, `public/map.pdf`, `public/map-dark.pdf`); muni.canopysf.com is an alias. Deployed with `wrangler deploy` from this branch, using the wrangler installed on `master` (`package.json`) |
 | `claude/beautiful-cerf-23u8yd` | **Atlas**: a map-first editor for `appdata/data.json` (`editor/`). Read-only as it was last deployed |
 
 ## Where the data lives
@@ -37,14 +37,13 @@ meantime.
 | `appdata/` | `data.json` (Metro and the F, hand-curated), `bus.json` (generated), `map.pdf` |
 | `tools/` | `build_bus_data.py` (bus and cable car stations) and `map_dark.py` (the dark-mode system map). See [tools/README.md](tools/README.md) |
 | `api/` | The Python v1 API and its built-in editor, which saved to `static-data`'s data. Retired; kept for its editor code |
-| `src/`, `wrangler.toml` | The `muniplus-backend` Worker, a 511 proxy. Retired. **Don't deploy from `master`** to update data; that's the `static` branch |
 | `swift/CanopyTransitKit` | Swift client for the v1 API. Shelved |
 
 ## Related repos
 
-- **Muni+**, the iOS app.
-- **canopy-muni-relay**: the Worker behind muni-relay.canopysf.com that
-  translates prediction APIs.
+- **canopy-transit**: Muni+, the iOS app.
+- **canopy-transit-relay**: the Worker behind transit-relay.canopysf.com
+  (alias muni-relay.canopysf.com) that translates prediction APIs.
 
 ## License
 
