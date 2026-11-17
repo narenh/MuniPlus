@@ -1,7 +1,14 @@
-# Static assets only, no Worker script: public/data.json and public/map.pdf
-# are served at /data.json and /map.pdf.
+# Static assets only, no Worker script: everything in public/ (data.json,
+# map.pdf, map-dark.pdf) is served at the root.
 name = "muniplus"
 compatibility_date = "2026-09-14"
+
+routes = [
+  { pattern = "transit-static.canopysf.com", custom_domain = true },
+  # Old name, kept serving directly (not a redirect): shipped app versions fetch
+  # muni.canopysf.com/data.json and /map.pdf.
+  { pattern = "muni.canopysf.com", custom_domain = true },
+]
 
 [assets]
 directory = "public"
