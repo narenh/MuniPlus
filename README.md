@@ -14,14 +14,14 @@ meantime.
 
 | Branch | What it holds |
 |---|---|
-| `master` | Code: the editor, tools, and the app's hand-curated `appdata/data.json` |
+| `main` | Code: the editor, tools, and the app's hand-curated `appdata/data.json` |
 | `static-data` | The editor's own data: curated stations, lines and shapes in `curation/`, plus a 511 GTFS snapshot in `snapshot/`. Formerly the `narenh/sf-transit` repo, history included |
-| `static` | **Transit Static**: what transit-static.canopysf.com serves (`public/data.json`, `public/map.pdf`, `public/map-dark.pdf`); muni.canopysf.com is an alias. Deployed with `wrangler deploy` from this branch, using the wrangler installed on `master` (`package.json`) |
-| `claude/beautiful-cerf-23u8yd` | A standalone, map-first version of the editor for `appdata/data.json` (its own `editor/`, Node; unrelated to `master`'s). Read-only as it was last deployed |
+| `static` | **Transit Static**: what transit-static.canopysf.com serves (`public/data.json`, `public/map.pdf`, `public/map-dark.pdf`); muni.canopysf.com is an alias. Deployed with `wrangler deploy` from this branch, using the wrangler installed on `main` (`package.json`) |
+| `claude/beautiful-cerf-23u8yd` | A standalone, map-first version of the editor for `appdata/data.json` (its own `editor/`, Node; unrelated to `main`'s). Read-only as it was last deployed |
 
 ## Where the data lives
 
-- **What the app reads today:** `data.json`, edited by hand on `master` and
+- **What the app reads today:** `data.json`, edited by hand on `main` and
   copied to `static` to publish.
 - **The future source of truth:** the editor's data on `static-data`. It is not
   in the app's format yet, and an exporter to `data.json` still needs writing.
@@ -30,7 +30,7 @@ meantime.
   - Balboa Park is grouped differently;
   - the fixes from 14 November 2026 are only in `data.json`.
 
-## Layout of `master`
+## Layout of `main`
 
 | Path | What it is |
 |---|---|
@@ -46,7 +46,7 @@ meantime.
   511's static GTFS files to the editor's snapshot refresh.
 
 The Python v1 API (`api/`) and its Swift client (`swift/CanopyTransitKit`) were
-removed from `master` in November 2026; both are in git history.
+removed from `main` (then `master`) in November 2026; both are in git history.
 
 ## License
 

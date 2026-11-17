@@ -11,6 +11,6 @@ editor/.local/
 editor/*.egg-info/
 editor/.pytest_cache/
 
-# The retired v1 API (removed from master; its history is in git). A checkout
+# The retired v1 API (removed from main (then master); its history is in git). A checkout
 # from before the move may still hold its .env, venv and downloads here.
 api/
