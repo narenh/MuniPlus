@@ -260,3 +260,17 @@ changed in a way that needs a human decision, not a retry.
   curb from one that is a signal cycle away. Neither signal is available in the feed.
   That is what `station-overrides.json` is for — when you check a corner in person or
   on Street View, record it there rather than tuning a threshold and hoping.
+
+## `map_dark.py` — dark-mode system map
+
+Makes `map-dark.pdf` from SFMTA's `map.pdf` by recolouring the vectors (no filters,
+geometry and text untouched): black background, white text, lines in the app's
+dark palette, brighter N labels. Rerun it whenever SFMTA publishes a new map, then
+put both files in `public/` on the `static` branch:
+
+    pip install pikepdf numpy
+    python3 tools/map_dark.py map.pdf map-dark.pdf
+
+Options go in a JSON third argument, e.g. `'{"bg":"#111111"}'` or
+`'{"capsule":"white"}'` (solid white trunk capsules). The script stops with
+"unmapped colour" if a new map uses a colour it doesn't know — add it to `base()`.
