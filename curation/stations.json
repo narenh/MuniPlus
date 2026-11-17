@@ -5657,11 +5657,13 @@
         },
         {
           "id": "SF:14006",
-          "stops": [
-            "SF:17074"
-          ],
           "heading": "eastbound",
-          "note": "One shelter on Church, facing north: SF:17074 is the 22 and owl stop at the same place. Eastbound by direction of travel: the J turns east onto Duboce into the tunnel just past it, so like the N's platform it goes downtown. The 22 carries on north up Church."
+          "note": "Eastbound by direction of travel: the J stops on Church St facing north, then turns east onto Duboce into the tunnel, so like the N's platform it goes downtown. The 22 and owl stop at the same shelter is its own platform, SF:17074, northbound."
+        },
+        {
+          "id": "SF:17074",
+          "heading": "northbound",
+          "note": "The 22 and owl stop in the J's shelter on Church St. Its own platform because the 22 carries on north up Church while the J turns east."
         },
         {
           "id": "SF:14005",
