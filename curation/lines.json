@@ -1,8 +1,18 @@
 {
   "SF:F": {
     "name": "F Market & Wharves",
-    "color": "#B49A36",
+    "color": "#9999FF",
     "mode": "streetcar",
+    "style": {
+      "fill": {
+        "light": "#9999FF",
+        "dark": "#9999FF"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    },
     "note": "511 calls the F metro, like J-T. It is a heritage streetcar."
   },
   "SF:FBUS": {
@@ -12,11 +22,35 @@
   },
   "SF:J": {
     "name": "J Church",
-    "color": "#FAA633"
+    "color": "#FAA633",
+    "style": {
+      "fill": {
+        "light": "#FAA633",
+        "dark": "#FAA633"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      },
+      "textEdge": {
+        "light": "#C98A00",
+        "dark": "#C98A00"
+      }
+    }
   },
   "SF:K": {
     "name": "K Ingleside",
-    "color": "#579EBF"
+    "color": "#579EBF",
+    "style": {
+      "fill": {
+        "light": "#579EBF",
+        "dark": "#579EBF"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    }
   },
   "SF:KBUS": {
     "replaces": [
@@ -25,7 +59,17 @@
   },
   "SF:L": {
     "name": "L Taraval",
-    "color": "#91268F"
+    "color": "#91268F",
+    "style": {
+      "fill": {
+        "light": "#91268F",
+        "dark": "#B243AF"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    }
   },
   "SF:LOWL": {
     "replaces": [
@@ -34,11 +78,31 @@
   },
   "SF:M": {
     "name": "M Ocean View",
-    "color": "#008552"
+    "color": "#008552",
+    "style": {
+      "fill": {
+        "light": "#008552",
+        "dark": "#008552"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    }
   },
   "SF:N": {
     "name": "N Judah",
-    "color": "#00529C"
+    "color": "#00529C",
+    "style": {
+      "fill": {
+        "light": "#00529C",
+        "dark": "#266BBC"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    }
   },
   "SF:NBUS": {
     "replaces": [
@@ -53,11 +117,67 @@
   "SF:S": {
     "name": "S Shuttle",
     "color": "#FCDB00",
-    "hidden": true
+    "mode": "metro",
+    "style": {
+      "fill": {
+        "light": "#FCDB00",
+        "dark": "#FCDB00"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      },
+      "textEdge": {
+        "light": "#A88400",
+        "dark": "#A88400"
+      }
+    },
+    "directions": [
+      {
+        "headsign": "West Portal",
+        "platforms": [
+          "SF:17217",
+          "SF:16994",
+          "SF:16995",
+          "SF:16997",
+          "SF:16996",
+          "SF:16998",
+          "SF:16991",
+          "SF:16993",
+          "SF:16739"
+        ]
+      },
+      {
+        "headsign": "Embarcadero",
+        "platforms": [
+          "SF:16740",
+          "SF:15730",
+          "SF:15728",
+          "SF:15726",
+          "SF:15419",
+          "SF:15727",
+          "SF:15417",
+          "SF:15731",
+          "SF:16992"
+        ]
+      }
+    ],
+    "listedAtStations": false,
+    "note": "Not in 511's GTFS, which publishes no S trips; entered by hand from sfmta.com/routes/s-shuttle. Weekdays 7 a.m. to 8:20 p.m., and for special events."
   },
   "SF:T": {
     "name": "T Third Street",
-    "color": "#D60F45"
+    "color": "#D60F45",
+    "style": {
+      "fill": {
+        "light": "#D60F45",
+        "dark": "#D60F45"
+      },
+      "text": {
+        "light": "#FFFFFF",
+        "dark": "#FFFFFF"
+      }
+    }
   },
   "SF:TBUS": {
     "replaces": [
