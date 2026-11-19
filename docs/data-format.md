@@ -1,7 +1,15 @@
 # Published data format, version 1 (draft)
 
 What the Canopy Transit Editor publishes for Muni+ to download. Status: **draft
-for review**. Nothing implements it yet.
+for review**. Implemented by `editor/transit_editor/publish/`:
+
+```
+python -m transit_editor.publish --data <static-data checkout> --out <dir>
+```
+
+builds the files from a data checkout (`curation/` + `snapshot/`) and writes them
+to `<dir>/data/1/`. It refuses to write anything if the editor's validator reports
+an error or the published files would not be self-consistent (see "Checks").
 
 ## Principles
 
@@ -11,9 +19,10 @@ for review**. Nothing implements it yet.
   in the editor. Nothing reaches the published files until the user accepts it.
 - **Download once per change.** Every data file is named by a hash of its
   contents and never changes. A small manifest says which files are current.
-- **Metro and the F first.** Version 1 holds 9 lines and about 148 stations.
-  Nothing in it assumes rail only, so buses can be added later as more data, not
-  a new format.
+- **Everything Muni runs.** Version 1 holds every line that isn't hidden in the
+  editor (Metro, the F, cable cars, every bus, owls and replacement lines: 69 in
+  November 2026) and every curated station that has a stop in 511's current data
+  (1,789 of 1,791), bus-only ones included.
 
 ## Files and URLs
 
@@ -41,6 +50,7 @@ Served by Transit Static (`transit-static.canopysf.com`):
   "format": 1,
   "published": "2026-11-20T18:04:00Z",
   "source": "4f1c2a9…",                  // the static-data commit it was built from
+                                         // (null if the data isn't a git checkout)
   "files": {
     "network": { "path": "network.3f9a1c0be2d4a771.json", "sha256": "3f9a1c0b…", "bytes": 81234 },
     "shapes":  { "path": "shapes.a0c4e19d55b2f803.json",  "sha256": "a0c4e19d…", "bytes": 40211 }
@@ -50,6 +60,11 @@ Served by Transit Static (`transit-static.canopysf.com`):
 
 Paths are relative to the manifest. The app verifies each file's `sha256` before
 using it.
+
+`published` is the source commit's commit time (UTC), not the clock, so
+publishing the same commit twice writes the same manifest byte for byte. The
+manifest is pretty-printed; the hashed files are compact (no whitespace), UTF-8,
+with keys in the order this document lists them.
 
 ## network.json
 
@@ -83,8 +98,13 @@ The palette settled in the November 2026 colour audit moves here from
 
 - **`textEdge`** is optional: the thin edge around the badge letter (J and S).
   How thick it's drawn is the app's business.
-- **Buses later:** they will add shared styles such as `bus-local` and
-  `bus-rapid`, which many lines point to.
+- **Style ids.** A line with a curated style (the Metro lines, the F, the S) uses
+  the palette's, under the line's id. Every other line (buses, cable cars) has a
+  style of its own under its line id, made from 511's route colour and text
+  colour, the same value for light and dark. Only styles some line uses are
+  published. Moving buses to shared styles such as `bus-local` and `bus-rapid`
+  later is a change to the style id a line points to, not to the format
+  (`_own_style` in `publish/build.py`).
 
 ### lines
 
@@ -98,19 +118,42 @@ The palette settled in the November 2026 colour audit moves here from
   "drawn": "solid",                     // solid | outlined
   "replaces": null,                     // set on owl and bus-replacement lines
   "listedAtStations": true,             // false: never shown on stations (the S)
+  "owl": false,                         // overnight service (NOWL, LOWL, 90, 91)
   "directions": [
-    { "id": "inbound",  "headsign": "Embarcadero",  "platforms": ["15418", "…"] },
-    { "id": "outbound", "headsign": "Balboa Park",  "platforms": ["…", "17778"] }
+    { "id": "0", "headsign": "Balboa Park",          "platforms": ["17217", "…"] },
+    { "id": "1", "headsign": "Embarcadero Station",  "platforms": ["17778", "…"] }
   ]
 }
 ```
+
+- **`name`** is the curated name, else `"<short name> <511 long name in title
+  case>"` (`"14R Mission Rapid"`, `"NOWL Owl Judah"`). **`badge`** is 511's short
+  name (`J`, `14R`, `NOWL`).
+- **Order.** Lines are listed rail first (Metro, the F, cable cars, then buses),
+  numbers in numeric order (5 < 5R < 38 < 38R) before lettered lines. A
+  platform's `lines` use the same order.
+- **`directions[].id`** is GTFS `direction_id` as a string, `"0"` or `"1"`, the
+  same value GTFS-rt uses. For SFMTA, `0` is usually outbound and `1` inbound,
+  but not for every line (the T's `0` runs to Chinatown, the 39's to Coit Tower),
+  so the format doesn't claim it. A line may have only one direction (the 30X).
+  A hand-entered line's first direction is `"0"`. Each direction is the most-run
+  511 pattern in that direction (or the hand-entered stop order). A stop that no
+  station has is skipped, and two consecutive stops on one platform appear once.
+- **`owl`**: 511 names the line an Owl. With `replaces`, it tells an owl that
+  covers a line overnight (NOWL) from a bus standing in for it by day (KBUS),
+  for the app's OWL BUS label. An owl with nothing to replace (90, 91) is drawn
+  `solid` in its own style.
 
 - **`directions[].platforms`** is the stop order, as platform ids, in travel
   order. It replaces the old single `stationIds` list. A loop or a one-way
   section is written out as it really runs.
 - **Owl and replacement lines** (NOWL, KBUS, …): `"replaces": "N"`,
   `"drawn": "outlined"`, and the same style as the line they replace. The app
-  keeps its convention without hard-coding it.
+  keeps its convention without hard-coding it. The editor stores `replaces` as a
+  list; the first entry is published (no line has more than one today). Every
+  other line is `"drawn": "solid"`, `"replaces": null`.
+- **Hidden lines** (hidden in the editor) are not published at all, and no
+  platform lists them.
 - **Ids** are the line's public name (`J`, `NOWL`, `KBUS`). There's no `SF:`
   prefix, because the agency is given once at the top. They're the same as
   511's `LineRef`.
@@ -139,7 +182,8 @@ The palette settled in the November 2026 colour audit moves here from
   "agencies": ["bart"],                 // bart | caltrain
   "transfers": [ { "station": "marketEmbarcaderoSubway", "mode": "street" } ],
   "platforms": [
-    { "id": "16992", "heading": "eastbound",
+    { "id": "16992", "stops": ["16992"], "formerIds": [],
+      "heading": "eastbound",
       "coordinate": { "lat": 37.793134, "lon": -122.396431 },
       "lines": ["J", "K", "L", "M", "N"],
       "label": null,
@@ -151,6 +195,26 @@ The palette settled in the November 2026 colour audit moves here from
 - **Platform `id`** is the SFMTA stop code: what predictions are fetched by, and
   **permanent**. Favourites and homes store it, not the platform's position in
   the list as today.
+- **Platform `stops`** is every stop code at the platform that 511 currently
+  publishes, the `id` first. Usually just the `id`; where 511 numbers one place
+  twice (the N and its bus substitute at Duboce & Church, 14448 and 18061), the
+  app fetches predictions for each and shows them together. A direction lists
+  the platform's `id`, whichever of its stops 511's pattern names.
+- **Platform `formerIds`** are stop codes the platform had before (a stop 511
+  retired or renumbered). A saved platform id not found as an `id` is looked up
+  here.
+- **`kind`** is `underground` for a station in a subway's `stations` list,
+  otherwise `streetLevel`.
+- **`coordinate`** of a station is the centroid of its platforms' stops; of a
+  platform, the centroid of its stops. Six decimal places.
+- **`agencies`** are the other operators reachable there, from the editor's
+  transfer agencies: `bart`, `caltrain`. Any other 511 operator code would be
+  published lower-cased (none today).
+- **`transfers`** are the walks to other stations, listed on both stations, in
+  order of the other station's name. Only to published stations.
+- **Order.** Stations are listed by id; platforms in the curated order.
+- A curated station with no stop in 511's current data has no coordinate and is
+  left out until it has one (the validator warns about it).
 - **`formerIds`** lists retired station ids. The app uses them to move saved
   favourites and homes onto the new station, for example `mongomery` →
   `montgomery`.
@@ -180,8 +244,30 @@ The palette settled in the November 2026 colour audit moves here from
 ```
 
 The path each direction of each line draws, as `[lat, lon]` pairs with 6
-decimals. It's a separate file because it's the largest file and the one that
-changes least.
+decimals, keyed by line id and then direction id (`"0"`, `"1"`). It's a
+separate file because it's the largest file and the one that changes least.
+
+- The path is 511's shape for the direction's most-run pattern, with the
+  editor's curated corrections spliced in, cut to the first and last stops
+  riders use, and simplified to within half a metre.
+- A direction with no shape is absent: a hand-entered line (the S) has none.
+  The app draws it through its platforms' coordinates, or not at all.
+
+## Checks
+
+Before writing, the publisher runs the editor's validator (any error stops it;
+warnings are printed) and then checks the files themselves:
+
+- no duplicate line, station, platform or subway id, or direction id in a line;
+- no former station or platform id that is a current id or claimed twice;
+- every station has at least one platform;
+- every platform a direction lists, every transfer's station, every subway
+  station, every line a platform lists and every style a line uses exists;
+- `replaces` names a published line, and no platform lists a line with
+  `listedAtStations: false`;
+- every direction has at least one platform, and every shape belongs to a
+  published line direction and has two or more points;
+- each file reads back from JSON to the same value.
 
 ## What the app does
 
