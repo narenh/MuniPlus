@@ -10,7 +10,7 @@
 import {
   store, edit, select, stationById, stationIds, linesOf, lineById, allLines, esc,
   metresBetween, platformsOf, stopsOf, platformIdOf, derivedStation, derivedStop, stationPos,
-  stopPos, upstream, unclaimedNear, today, lineOverride, snapshotLine,
+  stopPos, upstream, unclaimedNear, arrivalCandidatesNear, today, lineOverride, snapshotLine,
   setLineOverride, knownModes, setActiveLine, transferPartners, deleteStationIn,
   transfersOf, findTransfer, addTransferIn, removeTransferIn,
   mergeStationsIn, movePlatformIn, foldPlatformIn, stationsNear, suggestStationId, stationIdProblem, badgeShape, inkOn, lineBadge,
@@ -326,6 +326,7 @@ function platformCards(st) {
       </div>`}
       ${moveRow(store.selStation, pid)}
       ${stopsField(p, all)}
+      ${arrivalField(p)}
       <div class="field">
         <label class="micro">Lines ${sub('from 511, over all its stops')}</label>
         <div class="insp-lines">${lines}</div>
@@ -358,7 +359,9 @@ function stopsField(p, all) {
       <span class="mono">${esc(upstream(x))}</span>${i ? '' : ' <em>primary</em>'}${far !== null ? ` <em>${far} m</em>` : ''}${
       d?.live ? '' : ' <em style="color:var(--warn)">not in 511</em>'}${
       i ? `<button class="x edit-only" data-act="split-stop" data-pid="${esc(p.id)}" data-stop="${esc(x)}"
-        title="Make ${esc(upstream(x))} a platform of its own again">split out</button>` : ''}</span>`;
+        title="Make ${esc(upstream(x))} a platform of its own again">split out</button>
+      <button class="x edit-only" data-act="to-arrival" data-pid="${esc(p.id)}" data-stop="${esc(x)}"
+        title="Trips only ever end at ${esc(upstream(x))}: make it an arrival stop, never shown as a departure">arrival only</button>` : ''}</span>`;
   }).join('');
 
   const option = (osid, q) => `<option value="${esc(osid)}|${esc(q.id)}">${esc(upstream(q.id))} · ${esc(q.heading)}${
@@ -379,6 +382,42 @@ function stopsField(p, all) {
         <div class="chips">${chips}</div>
         ${(p.formerIds || []).length ? `<div class="former-ids" title="Ids this platform had before 511 retired or renumbered them. Homes and favourites kept on them still find it.">Formerly ${p.formerIds.map(x => `<code>${esc(upstream(x))}</code>`).join(' ')}</div>` : ''}
         ${merge}
+      </div>`;
+}
+
+/**
+ * Arrival stops: where trips arriving at this platform end, where 511 numbers that
+ * apart from where riders board (the L ends at 47th & Cutler, round the loop from
+ * SF Zoo's platform). The app names a prediction's destination by its last stop,
+ * and these let it find this station. Never boarded at, so never departures.
+ */
+function arrivalField(p) {
+  const arrivals = p.arrivalStops || [];
+  if (store.publicMap && !arrivals.length) return '';
+  const chips = arrivals.map(x => {
+    const d = derivedStop(x);
+    const far = stopPos(p.id) && stopPos(x) ? metresBetween(stopPos(p.id), stopPos(x)) : null;
+    return `<span class="tchip arrival" title="${esc(d?.name || '')}">
+      <span class="mono">${esc(upstream(x))}</span>${far !== null ? ` <em>${far} m</em>` : ''}${
+      d?.live ? '' : ' <em style="color:var(--warn)">not in 511</em>'}
+      <button class="x edit-only" data-act="del-arrival" data-pid="${esc(p.id)}" data-stop="${esc(x)}"
+        title="Remove ${esc(upstream(x))} as an arrival stop">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button></span>`;
+  }).join('');
+  const options = store.publicMap ? [] : arrivalCandidatesNear(stopPos(p.id));
+  const add = options.length ? `
+    <select class="inp edit-only" data-act-change="add-arrival" data-pid="${esc(p.id)}" data-key="a-${esc(p.id)}"
+      title="A 511 stop where trips arriving at this platform end">
+      <option value="">Add arrival stop…</option>
+      ${options.map(c => `<option value="${esc(c.id)}">${esc(upstream(c.id))} · ${esc(c.p.name || '')} · ${c.metres} m${
+        c.ignored ? ' · ignored' : ''}</option>`).join('')}
+    </select>` : '';
+  return `
+      <div class="field">
+        <label class="micro">Arrival stops ${sub('trips ending here; not shown as departures')}</label>
+        ${chips ? `<div class="chips">${chips}</div>` : '<div class="derived empty">none</div>'}
+        ${add}
       </div>`;
 }
 
@@ -608,6 +647,17 @@ function wireStation(st, sid) {
     };
   });
 
+  body.querySelectorAll('[data-act-change="add-arrival"]').forEach(el => {
+    el.onchange = () => {
+      const pid = el.dataset.pid, stop = el.value;
+      if (!stop) return;
+      commit(`Arrival stop ${upstream(stop)} at ${upstream(pid)}`, s => {
+        const p = plat(s, pid);
+        p.arrivalStops = [...(p.arrivalStops || []), stop];
+      });
+    };
+  });
+
   // The merge form and the move row keep what is typed without re-rendering on
   // every key, which would drop the focus.
   body.querySelectorAll('input[name="merge-keep"]').forEach(r => {
@@ -690,6 +740,27 @@ function wireStation(st, sid) {
           s.platforms.splice(s.platforms.indexOf(p) + 1, 0, { id: stop, heading: p.heading });
         });
         select(sid, stop);
+      }
+
+      if (act === 'del-arrival') {
+        const stop = b.dataset.stop;
+        commit(`Arrival stop ${upstream(stop)} removed from ${upstream(pid)}`, s => {
+          const p = plat(s, pid);
+          p.arrivalStops = (p.arrivalStops || []).filter(x => x !== stop);
+          if (!p.arrivalStops.length) delete p.arrivalStops;
+        });
+      }
+
+      // An extra stop trips only ever end at: an arrival stop rather than one
+      // riders board at, so it is never polled for departures.
+      if (act === 'to-arrival') {
+        const stop = b.dataset.stop;
+        commit(`${upstream(stop)} is an arrival stop of ${upstream(pid)}`, s => {
+          const p = plat(s, pid);
+          p.stops = (p.stops || []).filter(x => x !== stop);
+          if (!p.stops.length) delete p.stops;
+          p.arrivalStops = [...(p.arrivalStops || []), stop];
+        });
       }
 
       if (act === 'del-plat') {

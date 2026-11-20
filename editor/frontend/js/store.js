@@ -278,6 +278,44 @@ function owners() {
   }
   return ownerCache.map;
 }
+/** Arrival stop -> the station and platform listing it: where trips arriving at
+ *  that platform end. Kept apart from `owners()`, since nobody boards there. */
+let arrivalCache = { rev: -1, map: new Map() };
+function arrivalOwners() {
+  if (arrivalCache.rev !== store._rev) {
+    const map = new Map();
+    for (const sid of stationIds().sort()) {
+      for (const p of platformsOf(stations()[sid])) {
+        for (const stop of p.arrivalStops || []) if (!map.has(stop)) map.set(stop, { sid, platform: p.id });
+      }
+    }
+    arrivalCache = { rev: store._rev, map };
+  }
+  return arrivalCache.map;
+}
+/** The station whose platform lists `stop` as an arrival stop, or null. */
+export const arrivalOwnerOf = stop => arrivalOwners().get(stop)?.sid || null;
+
+/**
+ * 511 stops within `within` metres that can become an arrival stop of a platform
+ * at `at`, nearest first:
+ * live, no platform's stop and no platform's arrival stop already. Ignored stops
+ * are offered (and say so): 511 ends trips at a timing point nobody boards at,
+ * which is exactly an arrival stop.
+ */
+export function arrivalCandidatesNear(at, limit = 12, within = 1000) {
+  if (!at) return [];
+  const ignored = store.curation.ignored || {};
+  const out = [];
+  for (const [pid, p] of Object.entries(store.derived.stops)) {
+    if (!p.live || ownerOf(pid) || arrivalOwnerOf(pid) || !isNum(p.lat)) continue;
+    const metres = metresBetween(at, [p.lon, p.lat]);
+    if (metres <= within) out.push({ id: pid, p, ignored: !!ignored[pid], metres });
+  }
+  out.sort((a, b) => a.metres - b.metres || a.id.localeCompare(b.id));
+  return out.slice(0, limit);
+}
+
 /** The station a stop belongs to, through its platform. */
 export const ownerOf = stop => owners().get(stop)?.sid || null;
 /** The id of the platform a stop belongs to: its primary stop. */
@@ -293,7 +331,8 @@ export function platformByStop(stop) {
 
 /**
  * Snapshot stops no station has claimed, nearest first: the only things a
- * platform, or an extra stop of one, can be added from. Ignored stops are left
+ * platform, or an extra stop of one, can be added from. Arrival stops are
+ * placed already, so they are left out too. Ignored stops are left
  * out, because assigning one is a validation error; un-ignoring is the review
  * queue's job.
  */
@@ -301,7 +340,7 @@ export function unclaimedNear(at, limit = Infinity) {
   const ignored = store.curation.ignored || {};
   const out = [];
   for (const [pid, p] of Object.entries(store.derived.stops)) {
-    if (!p.live || ownerOf(pid) || ignored[pid] || !isNum(p.lat)) continue;
+    if (!p.live || ownerOf(pid) || arrivalOwnerOf(pid) || ignored[pid] || !isNum(p.lat)) continue;
     out.push({ id: pid, p, metres: at ? metresBetween(at, [p.lon, p.lat]) : 0 });
   }
   out.sort((a, b) => a.metres - b.metres || a.id.localeCompare(b.id));
@@ -454,6 +493,8 @@ export function foldPlatformIn(c, from, pid, to, into) {
   // src's id lives on as one of dst's stops; any ids src had lost come along too,
   // so a home or favourite kept on any of them still finds this platform.
   if (src.formerIds?.length) dst.formerIds = [...new Set([...(dst.formerIds || []), ...src.formerIds])];
+  // Trips that ended at src now end at dst.
+  if (src.arrivalStops?.length) dst.arrivalStops = [...new Set([...(dst.arrivalStops || []), ...src.arrivalStops])];
 }
 
 /** Record that platform `p` no longer answers to stop `id`. The app keeps
@@ -679,6 +720,9 @@ export function changes() {
       const qs = q.stops || [], ps = p.stops || [];
       for (const x of ps) if (!qs.includes(x)) push('add', P, `Stop ${code(upstream(x))} is at this platform`);
       for (const x of qs) if (!ps.includes(x)) push('del', P, `Stop ${code(upstream(x))} no longer at this platform`);
+      const qa = q.arrivalStops || [], pa = p.arrivalStops || [];
+      for (const x of pa) if (!qa.includes(x)) push('add', P, `Arrival stop ${code(upstream(x))}: trips ending here`);
+      for (const x of qa) if (!pa.includes(x)) push('del', P, `Arrival stop ${code(upstream(x))} removed`);
       const qf = q.formerIds || [], pf = p.formerIds || [];
       for (const x of pf) if (!qf.includes(x)) push('edit', P, `${code(upstream(x))} kept as a former id`);
       for (const x of qf) if (!pf.includes(x)) push('del', P, `Former id ${code(upstream(x))} removed`);

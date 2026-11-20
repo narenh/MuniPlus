@@ -29,7 +29,8 @@ class Platform(FileModel):
     511 numbers one place more than once (the N and its bus substitute share a
     shelter at Duboce & Church as SF:14448 and SF:18061), ``id`` is the primary
     stop and ``stops`` lists the rest. Read every stop through ``all_stops``,
-    never ``id`` alone, or the extra ones are silently missed.
+    never ``id`` alone, or the extra ones are silently missed. ``arrival_stops``
+    are not part of ``all_stops``: they are where trips end, not where anyone boards.
 
     A platform belongs to exactly one station. Its coordinates, 511 stop names and
     the lines serving it all come from the snapshot.
@@ -40,6 +41,12 @@ class Platform(FileModel):
     removed, so a saved platform keeps meaning the same place."""
     stops: list[StopId] = []
     """The other stops at this same place, if any. Never includes ``id``."""
+    arrival_stops: list[StopId] = []
+    """Where trips arriving at this platform end, when 511 numbers that apart from
+    where riders board: the unloading stop at a terminal (SF:17869, 47th Ave &
+    Cutler, for the L at SF Zoo). A realtime prediction names its trip's last stop,
+    and this is how that stop finds its station. Never boarded at, so never a
+    departure and never polled; never one of any platform's ``all_stops``."""
     former_ids: list[StopId] = []
     """Stop ids this platform has had and lost while it lived on: a primary 511
     retired, replaced by the next stop or by a new stop at the same place. The

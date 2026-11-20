@@ -186,6 +186,25 @@ def test_terminus_round_trips_byte_identically(tmp_path):
     assert files.dumps(Curation.model_validate_json(again.model_dump_json()).stations) == files.dumps(again.stations)
 
 
+def test_arrival_stops_round_trip_and_default_to_absent(tmp_path):
+    root = tmp_path / "transit"
+    shutil.copytree(FIXTURE, root)
+    curation = files.read_curation(root)
+    # Existing data has none, and an unchanged save writes nothing.
+    assert all(p.arrival_stops == [] for st in curation.stations.stations.values() for p in st.platforms)
+    assert files.write_curation(root, curation) == []
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418"]
+    assert files.write_curation(root, curation) == [files.STATIONS]
+    text = (root / files.STATIONS).read_text()
+    assert text.count('"arrivalStops"') == 1
+
+    again = files.read_curation(root)
+    assert again.stations.stations["powell"].platforms[0].arrival_stops == ["SF:15418"]
+    assert files.write_curation(root, again) == []
+    assert (root / files.STATIONS).read_text() == text
+    assert files.dumps(Curation.model_validate_json(again.model_dump_json()).stations) == files.dumps(again.stations)
+
+
 # MARK: - Line styles, hand-entered directions, listedAtStations
 
 
