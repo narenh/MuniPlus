@@ -697,6 +697,10 @@ select.inp { appearance: none; cursor: pointer;
 .tchip .x { width: 16px; height: 16px; border-radius: 4px; display: grid; place-items: center; color: var(--ink-faint); }
 .tchip .x:hover { background: rgba(251,113,133,.2); color: var(--bad); }
 .tchip.add { border-style: dashed; padding-right: 9px; cursor: pointer; }
+/* Arrival stops: where trips end, not where anyone boards. Dashed and blue-tinted,
+   apart from the platform's own stops. */
+.tchip.arrival { border-style: dashed; border-color: rgba(96,165,250,.45); background: rgba(96,165,250,.08); }
+.field .derived.empty { color: var(--ink-faint); }
 .tchip.agency-on { border-style: solid; color: var(--ink); background: rgba(255,255,255,.1); }
 
 /* a transfer link chip: direction glyph, name, walking distance, action */

@@ -315,3 +315,46 @@ def test_a_platform_former_id_belongs_to_one_platform(curation, snapshots):
     curation.stations.stations["montgomery"].platforms[0].former_ids = ["SF:99901"]
     curation.stations.stations["embarcadero"].platforms[0].former_ids = ["SF:99901"]
     only(validate(curation, snapshots).errors, "platform-former-id-collides")
+
+
+# MARK: - Arrival stops
+
+
+def test_an_arrival_stop_is_placed_and_leaves_the_queue(curation, snapshots):
+    # SF:15418, Balboa Park BART, is where 511 ends trips: an arrival stop names
+    # its station without anyone boarding there.
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418"]
+    result = validate(curation, snapshots)
+    assert result.errors == []
+    assert "unassigned-stop" not in codes(result.warnings)
+
+
+def test_an_arrival_stop_must_not_be_boarded_at(curation, snapshots):
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:16995"]  # Powell's other platform
+    issue = only(validate(curation, snapshots).errors, "arrival-stop-boards")
+    assert (issue.station, issue.stop) == ("powell", "SF:16995")
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15731"]  # Montgomery's
+    assert "Montgomery" in only(validate(curation, snapshots).errors, "arrival-stop-boards").message
+
+
+def test_an_arrival_stop_is_listed_once(curation, snapshots):
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418", "SF:15418"]
+    only(validate(curation, snapshots).errors, "arrival-stop-listed-twice")
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418"]
+    curation.stations.stations["montgomery"].platforms[0].arrival_stops = ["SF:15418"]
+    issue = only(validate(curation, snapshots).errors, "arrival-stop-listed-twice")
+    assert issue.station == "powell"
+
+
+def test_an_arrival_stop_may_be_ignored(curation, snapshots):
+    # Ignored means no platform boards there, which is true of an arrival stop.
+    curation.ignored.root["SF:15418"] = IgnoredStop(note="timing point")
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418"]
+    assert validate(curation, snapshots).errors == []
+
+
+def test_an_arrival_stop_511_dropped_is_a_warning(curation, snapshots):
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:99998"]
+    result = validate(curation, snapshots)
+    assert result.errors == []
+    assert only(result.warnings, "arrival-stop-not-in-snapshot").stop == "SF:99998"

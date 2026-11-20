@@ -529,3 +529,18 @@ def test_style_is_on_the_line_and_colours_fall_back_to_it(curation, snapshots):
     wire = net.line("SF:J").model_dump(mode="json")
     assert wire["style"]["textEdge"] == {"light": "#C98A00", "dark": "#C98A00"}
     assert wire["listedAtStations"] is True
+
+
+def test_arrival_stops_are_served_on_platforms(net, curation, snapshots):
+    assert all(p.arrival_stops == [] for p in net.station("powell").platforms)
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418", "SF:99998"]
+    marked = Network(curation, snapshots, "v")
+    # Only those 511 lists, as with ``stops``; never one of the platform's stops.
+    detail = marked.station("powell").platforms[0]
+    assert detail.arrival_stops == ["SF:15418"]
+    assert "SF:15418" not in detail.stops
+    summary = next(s for s in marked.stations().stations if s.id == "powell")
+    assert summary.platforms[0].model_dump()["arrivalStops"] == ["SF:15418"]
+    # Never boarded at: not a stop of the station, and not live.
+    assert marked.station_of("SF:15418") is None
+    assert not marked.is_live("SF:15418")

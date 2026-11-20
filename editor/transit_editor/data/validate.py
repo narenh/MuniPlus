@@ -145,6 +145,45 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
                 station=sid,
             )
 
+    # MARK: Arrival stops
+
+    # Where trips end, never where anyone boards: a stop that is both would be
+    # polled for departures and also name a destination, so it is an error. Each
+    # one names one station, so it is listed once in all the data.
+    arrival_of: dict[str, tuple[str, str]] = {}
+    for sid, station in stations.items():
+        for platform in station.platforms:
+            for pid in platform.arrival_stops:
+                if pid in owner:
+                    other = owner[pid]
+                    error(
+                        "arrival-stop-boards",
+                        f"{pid} is an arrival stop of platform {platform.id} in {station.name} ({sid}), "
+                        f"but it is also a stop riders board at in {stations[other].name} ({other}).",
+                        station=sid,
+                        stop=pid,
+                    )
+                if pid in arrival_of:
+                    first_sid, first_platform = arrival_of[pid]
+                    where = "twice" if first_platform == platform.id else (
+                        f"and also of platform {first_platform} in {stations[first_sid].name} ({first_sid})"
+                    )
+                    error(
+                        "arrival-stop-listed-twice",
+                        f"{pid} is an arrival stop of platform {platform.id} in {station.name} ({sid}) {where}.",
+                        station=sid,
+                        stop=pid,
+                    )
+                    continue
+                arrival_of[pid] = (sid, platform.id)
+                if pid not in stops:
+                    warn(
+                        "arrival-stop-not-in-snapshot",
+                        f"Arrival stop {pid} in {station.name} ({sid}) is not in 511's current data.",
+                        station=sid,
+                        stop=pid,
+                    )
+
     # MARK: Platforms' former ids
 
     # A former id is an alias homes and favourites resolve through. One that is also
@@ -275,7 +314,7 @@ def validate(curation: Curation, snapshots: Mapping[str, Snapshot]) -> Validatio
 
     # MARK: Review queue
 
-    for pid in sorted(stops.keys() - owner.keys() - ignored.keys()):
+    for pid in sorted(stops.keys() - owner.keys() - arrival_of.keys() - ignored.keys()):
         warn(
             "unassigned-stop",
             f"{pid} ({stops[pid].name}) is in 511's data but in no station, and not ignored.",

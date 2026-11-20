@@ -31,6 +31,7 @@ it.
 | ids | `<511 operator>:<upstream id>` for stops and lines (`SF:16992`, `SF:LOWL`), no mapping table. A platform's id is its primary stop's. Station ids are ours, `[A-Za-z0-9]+`, permanent |
 | renames | `mongomery` → `montgomery`; the old id lives in `formerIds` and is flagged as a client favourites migration |
 | stations | one flat platform list; a platform may take in several stops (`stops`), curated by hand, never by distance. Levels/exits come later as an optional `layout` field. All hand-curated station info is in `curation/stations.json` |
+| arrival stops | `arrivalStops` on a platform: 511 stops where trips arriving at it end, numbered apart from where riders board (the L ends at SF:17869, 47th & Cutler, not at SF Zoo's SF:16932). A realtime prediction's destination is its trip's last stop; these let that stop find its station. Never boarded at: never polled, never a departure, never in any platform's `stops`. A station's arrival stops are the union of its platforms' |
 | platform identity | the app keeps **platform** ids (the primary stop's) as homes and favourites, so they must last. A stored id is found by a platform's `id`, then its `stops`, then its `formerIds`. The editor records a former id whenever a platform survives losing a stop id: removing a dead primary, or the review queue's "Replaces" (a 511 renumbering, e.g. 18165 for 13244 at 11th & Market). Only a deleted platform's id is truly gone |
 | transfers | always both ways: one entry per pair of stations, in `stations.json`'s top-level `transfers` (`{between: [a, b], mode}`), so a one-way transfer cannot be written. Only the 12 pairs from the iOS app's data were kept; the generator's one-way links were dropped (2026-09-23) |
 | coordinates | never curated. Stops take 511's; a platform is the centroid of its live stops, a station of all its live stops |
@@ -101,6 +102,8 @@ Errors, which block a save:
   counts wherever a platform lists it, as its id or in its `stops`)
 * `unknown-station`: a transfer or subway naming a station that does not exist
 * `transfer-to-itself`, `duplicate-transfer` (the same pair twice, in either order)
+* `arrival-stop-boards`: an arrival stop is also a stop of a platform (where riders board)
+* `arrival-stop-listed-twice`: an arrival stop listed twice, on one platform or two
 * `platform-former-id-collides`: a platform's former id is a current stop, or another platform's former id
 * `station-has-no-platforms`
 * `unknown-platform`: a line's hand-entered direction lists an id that is no
@@ -110,10 +113,11 @@ Errors, which block a save:
 Warnings, which never block:
 
 * `stop-not-in-snapshot` (dropped from the derived station and line data)
+* `arrival-stop-not-in-snapshot` (an arrival stop 511 no longer lists; left out of the derived platform)
 * `platform-stops-far-apart` (a platform's extra stop more than 25 m from its primary:
   two ids for one shelter sit metres apart)
 * `station-has-no-live-platforms` (left out of the station list `Network` builds; still in `derived`)
-* `unassigned-stop` (in the snapshot, in no station, not ignored: this is the review queue)
+* `unassigned-stop` (in the snapshot, in no station or arrival stops, not ignored: this is the review queue)
 * `unknown-line-override` (`lines.json` names a line 511 does not have and gives it no `directions`)
 * `unknown-line` (`replaces` names a line 511 does not have)
 * `shape-patch-unknown-line` (a shape patch names a line 511 does not have)

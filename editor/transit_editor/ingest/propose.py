@@ -541,7 +541,10 @@ def propose(snapshot: Snapshot, curation: Curation, stop_ids: Iterable[str]) -> 
     """
     stops = snapshot.stops.root
     ignored = set(curation.ignored.root)
-    assigned = {s for st in curation.stations.stations.values() for p in st.platforms for s in p.all_stops}
+    # An arrival stop is placed too: it names its station, so nothing is proposed for it.
+    assigned = {
+        s for st in curation.stations.stations.values() for p in st.platforms for s in (*p.all_stops, *p.arrival_stops)
+    }
 
     wanted = []
     for pid in dict.fromkeys(stop_ids):
