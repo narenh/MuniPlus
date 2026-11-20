@@ -544,3 +544,17 @@ def test_arrival_stops_are_served_on_platforms(net, curation, snapshots):
     # Never boarded at: not a stop of the station, and not live.
     assert marked.station_of("SF:15418") is None
     assert not marked.is_live("SF:15418")
+
+
+def test_a_direction_ending_at_an_arrival_stop_ends_at_its_station(curation, snapshots):
+    # 511 ends the J at SF:15418, which no platform boards at.
+    j = snapshots["SF"].patterns.root["SF:J"]
+    j[0] = Pattern(direction=0, headsign="Balboa Park", trips=120, stops=["SF:17217", "SF:16994", "SF:15418"])
+    d = Network(curation, snapshots, "v").line("SF:J").directions[0]
+    assert d.stations == ["embarcadero", "montgomery"]
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418"]
+    net = Network(curation, snapshots, "v")
+    d = net.line("SF:J").directions[0]
+    assert d.stations == ["embarcadero", "montgomery", "powell"]
+    assert d.stops == ["SF:17217", "SF:16994", "SF:15418"]
+    assert net.platform_of("SF:15418") == "SF:15417"
