@@ -150,7 +150,8 @@ class Direction(Wire):
     for a line with hand-entered directions, its listed platforms' stations. Its
     first and last entries are the line's terminals in this direction."""
     stops: list[StopId]
-    """The same pattern as stops. Stops no station claims are left out. For a
+    """The same pattern as stops. Stops no station claims are left out; a
+    platform's arrival stop counts as its station's. For a
     hand-entered direction, each platform's first stop in 511's data."""
     shape: ShapeId | None = None
     """The path this pattern drives, a key into ``GET /api/shapes``. None when the

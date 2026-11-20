@@ -243,6 +243,18 @@ class Network:
             for platform, _ in plats:
                 for former in platform.former_ids:
                     platform_of.setdefault(former, platform.id)
+        # Arrival stops: where trips arriving at a platform end. Nobody boards there, so
+        # they are no station's stops; but a line's direction that ends at one ends
+        # at that platform's station, and the platform answers to it as an alias.
+        # A stop some platform boards at is never also an arrival stop (the
+        # validator's error); the first claim wins, as for stops.
+        arrival_station_of: dict[str, str] = {}
+        for sid, plats in owned.items():
+            for platform, _ in plats:
+                for stop in platform.arrival_stops:
+                    if stop not in station_of and stop not in arrival_station_of:
+                        arrival_station_of[stop] = sid
+                        platform_of.setdefault(stop, platform.id)
         self._station_of = station_of
         self._platform_of = platform_of
         self._platform_stops = {platform.id: mine for plats in owned.values() for platform, mine in plats}
@@ -402,6 +414,9 @@ class Network:
         self._station_details = details
 
         # Line diagrams.
+        # A trip ending at an arrival stop ends at its station, so a direction's last
+        # station is the terminal riders know.
+        at_station = {**arrival_station_of, **station_of}
         self._headsigns: dict[tuple[str, int], str] = {}
         drawn: dict[str, list[str]] = {}
         drawn_stops: dict[str, list[str]] = {}
@@ -427,12 +442,12 @@ class Network:
                 continue
             for direction, pattern in sorted(_most_run(patterns.get(line.id, [])).items()):
                 self._headsigns[(line.id, direction)] = pattern.headsign
-                claimed = [s for s in pattern.stops if s in station_of and s in stops]
+                claimed = [s for s in pattern.stops if s in at_station and s in stops]
                 along: list[str] = []
                 for pid in claimed:
                     # A station with two poles on one block appears once, not twice.
-                    if not along or along[-1] != station_of[pid]:
-                        along.append(station_of[pid])
+                    if not along or along[-1] != at_station[pid]:
+                        along.append(at_station[pid])
                 # A shape the snapshot names but does not carry is left out rather than
                 # sent as a key the shapes endpoint cannot answer.
                 shape = pattern.shape if pattern.shape in shapes else None
@@ -474,7 +489,8 @@ class Network:
         return self._station_of.get(stop_id)
 
     def platform_of(self, stop_id: str) -> str | None:
-        """The platform a stop belongs to (its primary stop's id), if assigned."""
+        """The platform a stop belongs to (its primary stop's id), if assigned. An
+        arrival stop or former id answers with its platform too."""
         return self._platform_of.get(stop_id)
 
     def stops_of(self, stop_id: str) -> list[str]:
