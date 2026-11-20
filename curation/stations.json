@@ -7776,22 +7776,21 @@
           "stops": [
             "SF:15239"
           ],
-          "heading": "northbound",
+          "heading": "eastbound",
           "name": "Ocean Beach via Embarcadero",
           "terminus": true,
           "note": "SF:15239 is the N's arrival stop for trips ending here, 8 m away: 511 numbers the arrival and the departure separately."
         },
         {
           "id": "SF:17166",
+          "stops": [
+            "SF:17405"
+          ],
           "heading": "northbound"
         },
         {
           "id": "SF:17397",
           "heading": "southbound"
-        },
-        {
-          "id": "SF:17405",
-          "heading": "northbound"
         }
       ],
       "transferAgencies": [
