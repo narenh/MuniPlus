@@ -1364,11 +1364,17 @@
       "platforms": [
         {
           "id": "SF:17778",
+          "arrivalStops": [
+            "SF:15418"
+          ],
           "heading": "northbound",
           "terminus": true
         },
         {
           "id": "SF:16262",
+          "arrivalStops": [
+            "SF:16269"
+          ],
           "heading": "eastbound",
           "terminus": true
         }
@@ -7773,7 +7779,7 @@
       "platforms": [
         {
           "id": "SF:15240",
-          "stops": [
+          "arrivalStops": [
             "SF:15239"
           ],
           "heading": "eastbound",
@@ -14403,7 +14409,7 @@
       "platforms": [
         {
           "id": "SF:15223",
-          "stops": [
+          "arrivalStops": [
             "SF:17219"
           ],
           "heading": "eastbound",
@@ -17802,6 +17808,9 @@
       "platforms": [
         {
           "id": "SF:16932",
+          "arrivalStops": [
+            "SF:17869"
+          ],
           "heading": "eastbound",
           "terminus": true
         }
@@ -18844,6 +18853,9 @@
       "platforms": [
         {
           "id": "SF:17398",
+          "arrivalStops": [
+            "SF:17396"
+          ],
           "heading": "northbound",
           "terminus": true
         },
