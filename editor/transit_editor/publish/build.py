@@ -152,6 +152,7 @@ def build_network(network: Network, curation: Curation) -> dict:
                 {
                     "id": _id(p.id),
                     "stops": [_id(s) for s in p.stops],
+                    "arrivalStops": [_id(s) for s in p.arrival_stops],
                     "formerIds": [_id(f) for f in p.former_ids],
                     "heading": p.heading,
                     "coordinate": _coordinate(p.lat, p.lon),

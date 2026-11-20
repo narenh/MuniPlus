@@ -40,6 +40,15 @@ def check(network: dict, shapes: dict) -> list[str]:
         if f in platforms:
             problems.append(f"former platform id {f!r} is a current platform id")
 
+    # Arrival stops name a destination's station: never a stop anyone boards at, and
+    # each names one station only.
+    boarding = {stop for s in network["stations"] for p in s["platforms"] for stop in p["stops"]}
+    arrivals = [a for s in network["stations"] for p in s["platforms"] for a in p["arrivalStops"]]
+    dupes("arrival stop", arrivals)
+    for a in arrivals:
+        if a in boarding:
+            problems.append(f"arrival stop {a!r} is also a platform's stop")
+
     for line in network["lines"]:
         lid = line["id"]
         if line["style"] not in network["styles"]:

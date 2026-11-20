@@ -182,7 +182,7 @@ The palette settled in the November 2026 colour audit moves here from
   "agencies": ["bart"],                 // bart | caltrain
   "transfers": [ { "station": "marketEmbarcaderoSubway", "mode": "street" } ],
   "platforms": [
-    { "id": "16992", "stops": ["16992"], "formerIds": [],
+    { "id": "16992", "stops": ["16992"], "arrivalStops": [], "formerIds": [],
       "heading": "eastbound",
       "coordinate": { "lat": 37.793134, "lon": -122.396431 },
       "lines": ["J", "K", "L", "M", "N"],
@@ -200,6 +200,15 @@ The palette settled in the November 2026 colour audit moves here from
   twice (the N and its bus substitute at Duboce & Church, 14448 and 18061), the
   app fetches predictions for each and shows them together. A direction lists
   the platform's `id`, whichever of its stops 511's pattern names.
+- **Platform `arrivalStops`** are stop codes where trips arriving at the
+  platform end, where 511 numbers that apart from where riders board: the
+  unloading stop at a terminal (the L's trips end at 17869, 47th Ave & Cutler,
+  round the loop from SF Zoo's platform 16932). Always present, `[]` for most
+  platforms. A prediction's destination is its trip's last stop code; the app
+  names it by finding that code in a platform's `stops` or `arrivalStops`, so a
+  station's arrival stops are the union of its platforms'. Never in any
+  platform's `stops`, never polled, never shown as departures. Only stops 511
+  currently publishes.
 - **Platform `formerIds`** are stop codes the platform had before (a stop 511
   retired or renumbered). A saved platform id not found as an `id` is looked up
   here.

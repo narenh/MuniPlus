@@ -132,9 +132,28 @@ def test_station_fields(doc):
     assert embarcadero["agencies"] == ["bart"]
     assert stations["castroPlaza"]["kind"] == "streetLevel"
     platform = embarcadero["platforms"][0]
-    assert list(platform) == ["id", "stops", "formerIds", "heading", "coordinate", "lines", "label", "terminus"]
+    assert list(platform) == [
+        "id", "stops", "arrivalStops", "formerIds", "heading", "coordinate", "lines", "label", "terminus",
+    ]
     assert platform["stops"][0] == platform["id"]
     assert set(platform["coordinate"]) == {"lat", "lon"}
+
+
+def test_arrival_stops_are_always_present(curation, snapshots, doc):
+    assert all(p["arrivalStops"] == [] for s in doc["stations"] for p in s["platforms"])
+    # SF:15418 (Balboa Park BART) is where 511 ends trips; SF:99998 is not in 511.
+    curation.stations.stations["powell"].platforms[0].arrival_stops = ["SF:15418", "SF:99998"]
+    network, shapes = documents(curation, snapshots)
+    powell = by_id(network["stations"])["powell"]
+    assert powell["platforms"][0]["arrivalStops"] == ["15418"]
+    assert "15418" not in powell["platforms"][0]["stops"]
+    assert check(network, shapes) == []
+
+
+def test_check_finds_an_arrival_stop_that_boards(doc):
+    platform = doc["stations"][0]["platforms"][0]
+    platform["arrivalStops"] = [platform["id"]]
+    assert any("also a platform's stop" in p for p in check(doc, {"format": 1, "lines": {}}))
 
 
 def test_direction_platforms_are_platform_ids(doc):
